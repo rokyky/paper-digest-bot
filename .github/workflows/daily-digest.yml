@@ -20,6 +20,8 @@ on:
 jobs:
   digest:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai           # 所有步骤使用北京时间
     # 同一小时内只跑一次，防止 2 小时窗口重叠
     concurrency:
       group: daily-digest-${{ github.schedule }}
