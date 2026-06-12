@@ -40,12 +40,6 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: 恢复队列数据库（跨运行持久化）
-        uses: actions/cache@v4
-        with:
-          path: data/
-          key: paper-digest-queue
-
       - name: 安装依赖
         run: |
           pip install -r requirements.txt
@@ -61,15 +55,15 @@ jobs:
           python main.py --mode "$MODE"
         timeout-minutes: 30
 
-      # 将去重记录提交回仓库，永久持久化
-      - name: 提交去重记录
+      # 将队列文件+去重记录提交回仓库（永久持久化）
+      - name: 提交状态文件
         run: |
           git config user.name "PaperDigestBot"
           git config user.email "bot@paper-digest"
-          git add pushed_ids.json 2>/dev/null || true
+          git add pushed_ids.json digest_queue.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "无变更，跳过提交"
           else
-            git commit -m "update pushed_ids [skip ci]"
+            git commit -m "update state [skip ci]"
             git push || echo "注意：git push 失败，但 pipeline 已成功"
           fi

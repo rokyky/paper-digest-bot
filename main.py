@@ -185,32 +185,24 @@ class Pipeline:
         self.logger.info("=" * 60)
         start_time = datetime.now()
 
-        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
-
         # 计算当前是今日第几篇（基于当前小时在时间表中的位置）
-        from datetime import date
-        today = date.today().isoformat()
         schedule_hours = [8, 11, 15, 18, 19, 20, 21]
         current_hour = datetime.now().hour
-        # 找到当前小时在 schedule 中的序号（0-based）
         positions = {h: i+1 for i, h in enumerate(schedule_hours)}
         target_pos = positions.get(current_hour, 1)
 
-        with SQLiteStore(str(db_path)) as store:
-            # 检查队列中是否有未推送的
-            remaining = store.queue_remaining(today)
-            paper, digest = store.dequeue(target_pos, today)
-
-            if not digest:
-                # 回退：取队列中第一个未推送的
-                for pos in range(1, 8):
-                    paper, digest = store.dequeue(pos, today)
-                    if digest:
-                        self.logger.info("回退到位置 %d", pos)
-                        break
+        # 从队列文件取一篇
+        digest, entry = self._dequeue_from_file(target_pos)
+        if not digest:
+            # 回退：取第一个未推送的
+            for pos in range(1, 8):
+                digest, entry = self._dequeue_from_file(pos)
+                if digest:
+                    self.logger.info("回退到位置 %d", pos)
+                    break
 
         if not digest:
-            self.logger.warning("队列为空，跳过推送。今日队列剩余: %d", remaining)
+            self.logger.warning("队列为空，跳过推送")
             self._print_summary(start_time)
             return
 
@@ -242,30 +234,93 @@ class Pipeline:
         self._print_summary(start_time)
 
     def _stage_enqueue(self, digests: list[Digest]):
-        """将解读存入队列"""
-        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
-        with SQLiteStore(str(db_path)) as store:
-            # 先清空今天的旧队列
-            store.clear_queue()
-            for i, digest in enumerate(digests):
-                store.enqueue(digest.paper, digest, i + 1)
-                self.stats["queued"] = i + 1
-            self.logger.info("已存入 %d 篇解读到队列", len(digests))
-        # 同时写入去重文件
+        """将解读存入队列文件（JSON，跟随 git 提交永久持久化）"""
+        import json
+        queue_file = ROOT_DIR / "digest_queue.json"
+        queue = []
+        for i, digest in enumerate(digests):
+            entry = {
+                "position": i + 1,
+                "pushed": False,
+                "paper": {
+                    "external_id": digest.paper.external_id,
+                    "title": digest.paper.title,
+                    "authors": digest.paper.authors,
+                    "source": digest.paper.source,
+                    "url": digest.paper.url,
+                    "published_date": digest.paper.published_date,
+                    "is_engineering": digest.paper.is_engineering,
+                    "abstract": digest.paper.abstract[:500],
+                },
+                "digest": {
+                    "one_liner": digest.one_liner,
+                    "chinese_overview": digest.chinese_overview,
+                    "problem": digest.problem,
+                    "method": digest.method,
+                    "diff_from_prior": digest.diff_from_prior,
+                    "metrics": digest.metrics,
+                    "engineering_insight": digest.engineering_insight,
+                    "deployment": digest.deployment,
+                    "limitations": digest.limitations,
+                    "target_audience": digest.target_audience,
+                },
+            }
+            queue.append(entry)
+        with open(queue_file, "w", encoding="utf-8") as f:
+            json.dump(queue, f, ensure_ascii=False, indent=2)
+        self.stats["queued"] = len(queue)
+        self.logger.info("已存入 %d 篇解读到队列文件", len(queue))
         self._sync_dedup_file()
 
+    def _dequeue_from_file(self, position: int) -> tuple[Optional[Digest], Optional[dict]]:
+        """从队列文件中取出指定位置的未推送篇"""
+        import json
+        queue_file = ROOT_DIR / "digest_queue.json"
+        if not queue_file.exists():
+            return None, None
+        with open(queue_file, encoding="utf-8") as f:
+            queue = json.load(f)
+        for entry in queue:
+            if entry["position"] == position and not entry["pushed"]:
+                entry["pushed"] = True
+                with open(queue_file, "w", encoding="utf-8") as f:
+                    json.dump(queue, f, ensure_ascii=False, indent=2)
+                p = entry["paper"]
+                d = entry["digest"]
+                paper = Paper(
+                    external_id=p["external_id"],
+                    title=p["title"],
+                    authors=p["authors"],
+                    abstract=p.get("abstract", ""),
+                    source=p.get("source", ""),
+                    url=p.get("url", ""),
+                    published_date=p.get("published_date", ""),
+                    is_engineering=p.get("is_engineering", False),
+                )
+                digest = Digest(paper=paper, **d)
+                return digest, entry
+        return None, None
+
     def _sync_dedup_file(self):
-        """同步去重记录到 JSON 文件（git 可提交）"""
+        """同步去重记录到 pushed_ids.json"""
+        import json
+        queue_file = ROOT_DIR / "digest_queue.json"
         dedup_file = ROOT_DIR / "pushed_ids.json"
-        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
         try:
-            import json
-            with SQLiteStore(str(db_path)) as store:
-                ids = store.get_existing_external_ids()
-            with open(dedup_file, "w", encoding="utf-8") as f:
-                json.dump(sorted(ids), f, ensure_ascii=False)
-            self.logger.info("去重文件已同步: %d 条", len(ids))
+            if queue_file.exists():
+                with open(queue_file, encoding="utf-8") as f:
+                    queue = json.load(f)
+                pushed_ids = []
+                for entry in queue:
+                    if entry["pushed"]:
+                        pushed_ids.append(entry["paper"]["external_id"])
+                    else:
+                        break  # 队列是按顺序标记的
+                with open(dedup_file, "w", encoding="utf-8") as f:
+                    json.dump(pushed_ids, f, ensure_ascii=False)
+                self.logger.info("去重文件已同步: %d 条", len(pushed_ids))
         except Exception as e:
+            self.logger.warning("去重文件同步失败: %s", e)
             self.logger.warning("去重文件同步失败: %s", e)
 
     def _stage_fetch(self) -> list[Paper]:
