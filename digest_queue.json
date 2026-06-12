@@ -1,7 +1,7 @@
 [
   {
     "position": 1,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.13145",
       "title": "The Clustering Strikes Back: Building Cost-Effective and High-Performance ANNS at Scale with Helmsman",
