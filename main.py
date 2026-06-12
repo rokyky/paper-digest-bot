@@ -94,9 +94,10 @@ def resolve_api_key(config: dict, provider: str) -> str:
 class Pipeline:
     """日报生成 Pipeline"""
 
-    def __init__(self, config: dict, dry_run: bool = False):
+    def __init__(self, config: dict, dry_run: bool = False, mode: str = "auto"):
         self.config = config
         self.dry_run = dry_run
+        self.mode = mode
         self.logger = logging.getLogger("pipeline")
 
         # Stats
@@ -107,12 +108,27 @@ class Pipeline:
             "selected": 0,
             "digested": 0,
             "pushed": 0,
+            "queued": 0,
         }
 
     def run(self):
-        """执行完整 Pipeline"""
+        """执行 Pipeline（根据模式走不同路径）"""
+        # auto 模式：8 点走 collect，其他小时走 push
+        mode = self.mode
+        if mode == "auto":
+            hour = datetime.now().hour
+            mode = "collect" if hour == 8 else "push"
+            self.logger.info("Auto 模式: hour=%d → mode=%s", hour, mode)
+
+        if mode == "collect":
+            self._run_collect()
+        else:
+            self._run_push()
+
+    def _run_collect(self):
+        """Collect 模式：抓取→筛选→解读→入库队列"""
         self.logger.info("=" * 60)
-        self.logger.info("搜广推日报 Pipeline 启动 (dry_run=%s)", self.dry_run)
+        self.logger.info("📦 Collect 模式：批量生成今日解读队列")
         self.logger.info("=" * 60)
         start_time = datetime.now()
 
@@ -125,7 +141,7 @@ class Pipeline:
             self._print_summary(start_time)
             return
 
-        # ── Stage 2: 去重 ──
+        # ── Stage 2: 去重（检查 paper 表和 pushed_ids.json）──
         self.logger.info("[Stage 2/5] 去重...")
         new_papers = self._stage_dedup(all_papers)
         self.stats["after_dedup"] = len(new_papers)
@@ -134,7 +150,7 @@ class Pipeline:
             self._print_summary(start_time)
             return
 
-        # ── Stage 3: 相关性筛选 + 排序 ──
+        # ── Stage 3: LLM 筛选 + 排序 ──
         self.logger.info("[Stage 3/5] LLM 相关性筛选 + 排序...")
         selected = self._stage_filter(new_papers)
         self.stats["selected"] = len(selected)
@@ -144,7 +160,7 @@ class Pipeline:
             return
 
         # ── Stage 4: 深度解读 ──
-        self.logger.info("[Stage 4/5] LLM 深度解读...")
+        self.logger.info("[Stage 4/5] LLM 深度解读（生成全部入队列）...")
         digests = self._stage_summarize(selected)
         self.stats["digested"] = len(digests)
         if not digests:
@@ -152,16 +168,102 @@ class Pipeline:
             self._print_summary(start_time)
             return
 
-        # ── Stage 5: 推送 ──
-        self.logger.info("[Stage 5/5] 飞书推送...")
-        if self.dry_run:
-            self._print_dry_run(digests)
-        else:
-            pushed = self._stage_push(digests, len(all_papers))
-            self.stats["pushed"] = pushed
+        # ── Stage 5: 全部入队列 ──
+        self.logger.info("[Stage 5/5] 存入队列...")
+        if not self.dry_run:
+            self._stage_enqueue(digests)
 
-        # ── 完成 ──
         self._print_summary(start_time)
+
+    def _run_push(self):
+        """Push 模式：从队列取一篇推送"""
+        self.logger.info("=" * 60)
+        self.logger.info("📤 Push 模式：从队列取一篇推送")
+        self.logger.info("=" * 60)
+        start_time = datetime.now()
+
+        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
+
+        # 计算当前是今日第几篇（基于当前小时在时间表中的位置）
+        from datetime import date
+        today = date.today().isoformat()
+        schedule_hours = [8, 11, 15, 18, 19, 20, 21]
+        current_hour = datetime.now().hour
+        # 找到当前小时在 schedule 中的序号（0-based）
+        positions = {h: i+1 for i, h in enumerate(schedule_hours)}
+        target_pos = positions.get(current_hour, 1)
+
+        with SQLiteStore(str(db_path)) as store:
+            # 检查队列中是否有未推送的
+            remaining = store.queue_remaining(today)
+            paper, digest = store.dequeue(target_pos, today)
+
+            if not digest:
+                # 回退：取队列中第一个未推送的
+                for pos in range(1, 8):
+                    paper, digest = store.dequeue(pos, today)
+                    if digest:
+                        self.logger.info("回退到位置 %d", pos)
+                        break
+
+        if not digest:
+            self.logger.warning("队列为空，跳过推送。今日队列剩余: %d", remaining)
+            self._print_summary(start_time)
+            return
+
+        self.stats["digested"] = 1
+
+        # ── 推送 ──
+        self.logger.info("[Push] 飞书推送...")
+        if self.dry_run:
+            self._print_dry_run([digest])
+        else:
+            # 先查今天已推了多少篇（用于卡片编号）
+            with SQLiteStore(str(db_path)) as store:
+                today_count = store.get_today_digest_count()
+
+            push_config = self.config.get("push", {}).get("feishu", {})
+            topic_name = self.config.get("topic", {}).get("name", "搜广推前沿论文速报")
+            pusher = FeishuPusher(push_config)
+            success = pusher.push_digest(
+                digests=[digest],
+                topic_name=topic_name,
+                total_candidates=self.stats["total_fetched"] or 1,
+                daily_seq_start=today_count + 1,
+            )
+            self.stats["pushed"] = success
+
+            # 更新配置文件去重
+            self._sync_dedup_file()
+
+        self._print_summary(start_time)
+
+    def _stage_enqueue(self, digests: list[Digest]):
+        """将解读存入队列"""
+        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
+        with SQLiteStore(str(db_path)) as store:
+            # 先清空今天的旧队列
+            store.clear_queue()
+            for i, digest in enumerate(digests):
+                store.enqueue(digest.paper, digest, i + 1)
+                self.stats["queued"] = i + 1
+            self.logger.info("已存入 %d 篇解读到队列", len(digests))
+        # 同时写入去重文件
+        self._sync_dedup_file()
+
+    def _sync_dedup_file(self):
+        """同步去重记录到 JSON 文件（git 可提交）"""
+        dedup_file = ROOT_DIR / "pushed_ids.json"
+        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
+        try:
+            import json
+            with SQLiteStore(str(db_path)) as store:
+                ids = store.get_existing_external_ids()
+            with open(dedup_file, "w", encoding="utf-8") as f:
+                json.dump(sorted(ids), f, ensure_ascii=False)
+            self.logger.info("去重文件已同步: %d 条", len(ids))
+        except Exception as e:
+            self.logger.warning("去重文件同步失败: %s", e)
 
     def _stage_fetch(self) -> list[Paper]:
         """Stage 1: 从所有源抓取"""
@@ -404,6 +506,13 @@ def parse_args():
         help="覆盖配置中的每日最大论文数",
     )
     parser.add_argument(
+        "--mode",
+        type=str,
+        default="auto",
+        choices=["auto", "collect", "push"],
+        help="运行模式: auto(8点搜集/其他时间推送), collect(批量生成入队), push(从队列取一篇推送)",
+    )
+    parser.add_argument(
         "--config",
         type=str,
         default=str(ROOT_DIR / "config.yaml"),
@@ -422,10 +531,10 @@ def main():
 
     # 日志
     logger = setup_logging(config)
-    logger.info("配置加载完成: %s", args.config)
+    logger.info("配置加载完成: %s | mode=%s", args.config, args.mode)
 
     # 运行 Pipeline
-    pipeline = Pipeline(config, dry_run=args.dry_run)
+    pipeline = Pipeline(config, dry_run=args.dry_run, mode=args.mode)
     pipeline.run()
 
 

@@ -34,6 +34,12 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+      - name: 恢复队列数据库（跨运行持久化）
+        uses: actions/cache@v4
+        with:
+          path: data/
+          key: paper-digest-queue
+
       - name: 安装依赖
         run: |
           pip install -r requirements.txt

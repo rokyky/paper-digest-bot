@@ -67,6 +67,18 @@ class SQLiteStore:
             CREATE INDEX IF NOT EXISTS idx_papers_external_id ON papers(external_id);
             CREATE INDEX IF NOT EXISTS idx_digests_pushed_date ON digests(pushed_date);
             CREATE INDEX IF NOT EXISTS idx_papers_source ON papers(source);
+
+            CREATE TABLE IF NOT EXISTS digest_queue (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                queue_date TEXT NOT NULL,
+                position INTEGER NOT NULL DEFAULT 0,
+                pushed INTEGER DEFAULT 0,
+                paper_json TEXT NOT NULL,
+                digest_json TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_queue_date_pos ON digest_queue(queue_date, position);
         """)
         self.conn.commit()
 
@@ -170,6 +182,57 @@ class SQLiteStore:
             "SELECT COUNT(*) FROM digests WHERE pushed_date = ?", (today,)
         )
         row = cursor.fetchone()
+        return row[0] if row else 0
+
+    # ── 队列方法 ──────────────────────────────────────
+
+    def clear_queue(self, queue_date: str = None):
+        """清空旧队列"""
+        if queue_date is None:
+            from datetime import date
+            queue_date = date.today().isoformat()
+        self.conn.execute("DELETE FROM digest_queue WHERE queue_date = ?", (queue_date,))
+        self.conn.commit()
+
+    def enqueue(self, paper: Paper, digest: Digest, position: int, queue_date: str = None):
+        """将解读加入队列"""
+        from datetime import date
+        if queue_date is None:
+            queue_date = date.today().isoformat()
+        self.conn.execute(
+            "INSERT INTO digest_queue (queue_date, position, pushed, paper_json, digest_json) VALUES (?, ?, 0, ?, ?)",
+            (queue_date, position, json.dumps(paper.__dict__, ensure_ascii=False),
+             json.dumps({k: v for k, v in digest.__dict__.items() if k != "paper"}, ensure_ascii=False, default=str)),
+        )
+        self.conn.commit()
+
+    def dequeue(self, position: int, queue_date: str = None) -> tuple[Optional[Paper], Optional[Digest]]:
+        """从队列取出指定位置的一篇（标记已推）"""
+        from datetime import date
+        if queue_date is None:
+            queue_date = date.today().isoformat()
+        row = self.conn.execute(
+            "SELECT * FROM digest_queue WHERE queue_date = ? AND position = ? AND pushed = 0 LIMIT 1",
+            (queue_date, position),
+        ).fetchone()
+        if not row:
+            return None, None
+        self.conn.execute("UPDATE digest_queue SET pushed = 1 WHERE id = ?", (row["id"],))
+        self.conn.commit()
+        paper_dict = json.loads(row["paper_json"])
+        digest_dict = json.loads(row["digest_json"])
+        paper = Paper(**paper_dict)
+        digest = Digest(paper=paper, **digest_dict)
+        return paper, digest
+
+    def queue_remaining(self, queue_date: str = None) -> int:
+        """队列中还有多少未推送"""
+        from datetime import date
+        if queue_date is None:
+            queue_date = date.today().isoformat()
+        row = self.conn.execute(
+            "SELECT COUNT(*) FROM digest_queue WHERE queue_date = ? AND pushed = 0", (queue_date,)
+        ).fetchone()
         return row[0] if row else 0
 
     def close(self):
