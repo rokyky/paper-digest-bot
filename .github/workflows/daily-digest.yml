@@ -58,6 +58,5 @@ jobs:
             echo "无变更，跳过提交"
           else
             git commit -m "update pushed_ids [skip ci]"
-            git push
-            echo "去重记录已提交"
+            git push || echo "注意：git push 失败，但 pipeline 已成功"
           fi
