@@ -179,14 +179,38 @@ class Pipeline:
         return papers
 
     def _stage_dedup(self, papers: list[Paper]) -> list[Paper]:
-        """Stage 2: 去重"""
+        """Stage 2: 去重（双重保障：SQLite + JSON 文件）"""
         db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
-        with SQLiteStore(str(db_path)) as store:
-            existing_ids = store.get_existing_external_ids()
+        dedup_file = ROOT_DIR / "data" / "pushed_ids.json"
+
+        # 收集已推送的 ID
+        existing_ids: set[str] = set()
+
+        # 第一层：SQLite
+        db_ok = False
+        try:
+            with SQLiteStore(str(db_path)) as store:
+                existing_ids = store.get_existing_external_ids()
+                db_ok = True
+        except Exception as e:
+            self.logger.warning("SQLite 读取失败，回退到文件去重: %s", e)
+
+        # 第二层：JSON 文件（Actions cache 更稳定）
+        if not db_ok or not existing_ids:
+            try:
+                if dedup_file.exists():
+                    import json
+                    with open(dedup_file, encoding="utf-8") as f:
+                        file_ids = set(json.load(f))
+                    if file_ids:
+                        existing_ids = file_ids
+                        self.logger.info("从 JSON 文件恢复 %d 条去重记录", len(file_ids))
+            except Exception as e:
+                self.logger.warning("文件去重读取失败: %s", e)
 
         new_papers = [p for p in papers if p.external_id not in existing_ids]
-        self.logger.info("去重前: %d 篇, 去重后: %d 篇（已推送 %d 篇）",
-                         len(papers), len(new_papers), len(papers) - len(new_papers))
+        self.logger.info("去重前: %d 篇, 去重后: %d 篇（已推送 %d 篇, DB=%s）",
+                         len(papers), len(new_papers), len(papers) - len(new_papers), db_ok)
         return new_papers
 
     def _stage_filter(self, papers: list[Paper]) -> list[Paper]:
@@ -281,12 +305,30 @@ class Pipeline:
         else:
             self.logger.error("❌ 推送失败（0 个 webhook 成功）")
 
-        # 记录推送历史
+        # 记录推送历史（SQLite + JSON 双重保险）
+        pushed_ids_from_db: set[str] = set()
         with SQLiteStore(str(db_path)) as store:
             for digest in digests:
                 paper_id = store.insert_paper(digest.paper)
                 if paper_id:
                     store.insert_digest(digest, paper_id)
+                    pushed_ids_from_db.add(digest.paper.external_id)
+
+        # 同步写入 JSON 文件（Actions cache 更可靠）
+        dedup_file = ROOT_DIR / "data" / "pushed_ids.json"
+        try:
+            import json
+            existing = set()
+            if dedup_file.exists():
+                with open(dedup_file, encoding="utf-8") as f:
+                    existing = set(json.load(f))
+            existing.update(pushed_ids_from_db)
+            dedup_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(dedup_file, "w", encoding="utf-8") as f:
+                json.dump(sorted(existing), f, ensure_ascii=False)
+            self.logger.info("已写入去重文件: %d 条记录", len(existing))
+        except Exception as e:
+            self.logger.warning("写入去重文件失败: %s", e)
 
         return success
 
