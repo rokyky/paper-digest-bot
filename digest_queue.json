@@ -44,7 +44,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.13610",
       "title": "One Polluted Page Is Enough: Evaluating Web Content Pollution in Generative Recommenders",
