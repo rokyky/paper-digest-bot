@@ -152,6 +152,9 @@ class Pipeline:
 
         # ── Stage 3: LLM 筛选 + 排序 ──
         self.logger.info("[Stage 3/5] LLM 相关性筛选 + 排序...")
+        # Collect 模式需要生成足够篇数填满一天的时间槽
+        # 时间槽: 8, 11, 15, 18, 19, 20, 21 = 7 个
+        self.config.setdefault("topic", {})["max_items"] = 7
         selected = self._stage_filter(new_papers)
         self.stats["selected"] = len(selected)
         if not selected:
