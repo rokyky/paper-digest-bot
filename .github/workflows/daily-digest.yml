@@ -12,8 +12,14 @@ on:
   schedule:
     - cron: '0 0,2,4,6,8,10,12,14 * * *'
     # 北京时间 8:00/10:00/12:00/14:00/16:00/18:00/20:00/22:00
-  workflow_dispatch:           # 支持手动触发
-  repository_dispatch:         # 支持外部 cron 服务触发
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '运行模式'
+        type: choice
+        options: [auto, collect, push]
+        default: auto
+  repository_dispatch:
     types: [trigger-digest]
 
 jobs:
@@ -51,7 +57,8 @@ jobs:
 
       - name: 运行日报 Pipeline
         run: |
-          python main.py
+          MODE="${{ inputs.mode || 'auto' }}"
+          python main.py --mode "$MODE"
         timeout-minutes: 30
 
       # 将去重记录提交回仓库，永久持久化
