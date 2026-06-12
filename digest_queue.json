@@ -231,7 +231,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "Blog:ACL-2026.html",
       "title": "ACL 2026美团论文精选：从能力评测到推理优化，构建生成新范式",
