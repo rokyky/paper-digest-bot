@@ -25,6 +25,7 @@ class FeishuPusher:
         digests: list[Digest],
         topic_name: str = "搜广推前沿日报",
         total_candidates: int = 0,
+        daily_seq_start: int = 1,
     ) -> int:
         """
         推送日报到飞书
@@ -33,6 +34,7 @@ class FeishuPusher:
             digests: 解读列表
             topic_name: 日报名称
             total_candidates: 当日候选总数
+            daily_seq_start: 当天序号起点（第几篇）
 
         Returns:
             成功推送的 webhook 数量
@@ -47,6 +49,7 @@ class FeishuPusher:
             topic_name=topic_name,
             total_candidates=total_candidates,
             max_content_length=self.max_card_length,
+            daily_seq_start=daily_seq_start,
         )
 
         if card is None:

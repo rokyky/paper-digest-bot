@@ -262,11 +262,18 @@ class Pipeline:
         push_config = self.config.get("push", {}).get("feishu", {})
         topic_name = self.config.get("topic", {}).get("name", "搜广推前沿日报")
 
+        # 查今天已推送篇数，用于卡片编号（推送前查，当前这批还没入库）
+        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
+        with SQLiteStore(str(db_path)) as store:
+            today_count = store.get_today_digest_count()
+        daily_seq_start = today_count + 1
+
         pusher = FeishuPusher(push_config)
         success = pusher.push_digest(
             digests=digests,
             topic_name=topic_name,
             total_candidates=total_candidates,
+            daily_seq_start=daily_seq_start,
         )
 
         if success > 0:
@@ -275,7 +282,6 @@ class Pipeline:
             self.logger.error("❌ 推送失败（0 个 webhook 成功）")
 
         # 记录推送历史
-        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
         with SQLiteStore(str(db_path)) as store:
             for digest in digests:
                 paper_id = store.insert_paper(digest.paper)
@@ -290,9 +296,12 @@ class Pipeline:
         print("🟡 DRY RUN MODE — 以下内容将推送到飞书")
         print("=" * 60)
 
+        from datetime import datetime
+        date_label = datetime.now().strftime("%y-%m-%d")
         for i, d in enumerate(digests):
+            seq = i + 1
             print(f"\n{'─' * 60}")
-            print(f"📄 #{i + 1}: {d.paper.title}")
+            print(f"📄 {date_label}({seq}): {d.paper.title}")
             print(f"🔗 {d.paper.url}")
             print(f"{'─' * 60}")
 

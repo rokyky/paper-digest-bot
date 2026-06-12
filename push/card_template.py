@@ -47,7 +47,7 @@ def truncate_text(text: str, max_len: int = 800) -> str:
     return text[:max_len] + "...(已截断)"
 
 
-def _build_paper_section(digest: Digest, index: int, max_field_len: int = 600) -> dict:
+def _build_paper_section(digest: Digest, label: str, max_field_len: int = 600) -> dict:
     """构建单篇论文的卡片 section（div element）"""
     paper = digest.paper
     source_icon = "📄" if not paper.is_engineering else "📝"
@@ -55,7 +55,7 @@ def _build_paper_section(digest: Digest, index: int, max_field_len: int = 600) -
 
     # 构建每篇论文的详细内容
     content_parts = [
-        f"**{source_icon} {index}. {paper.title}**",
+        f"**{source_icon} {label}. {paper.title}**",
         f"*{source_tag} | {', '.join(paper.authors[:4])} | {paper.published_date or ''}*",
         "",
     ]
@@ -108,6 +108,7 @@ def build_digest_card(
     topic_name: str = "搜广推前沿日报",
     total_candidates: int = 0,
     max_content_length: int = 4000,
+    daily_seq_start: int = 1,        # 当天已推送篇数+1，用于编号
 ) -> Optional[dict]:
     """
     构建飞书消息卡片
@@ -117,6 +118,7 @@ def build_digest_card(
         topic_name: 日报名称
         total_candidates: 当日候选总数
         max_content_length: 卡片内容的最大字符数
+        daily_seq_start: 当天序号起点（第几篇），用于 YY-MM-DD(N) 编号
 
     Returns:
         消息卡片 JSON 字典，如果内容为空则返回 None
@@ -125,12 +127,15 @@ def build_digest_card(
         logger.info("No digests to build card from")
         return None
 
-    today = datetime.now().strftime("%Y-%m-%d")
+    now = datetime.now()
+    date_str = now.strftime("%Y-%m-%d")
+    time_str = now.strftime("%H:%M")
+    date_label = now.strftime("%y-%m-%d")  # 用于论文编号：YY-MM-DD(N)
 
-    # 构建 header
-    header_text = f"【{topic_name}】{today}"
+    # 构建 header（精确到分钟）
+    header_text = f"【{topic_name}】{date_str} {time_str}"
     if total_candidates > 0:
-        header_text += f"  今日筛选 {total_candidates} 篇，保留 {len(digests)} 篇"
+        header_text += f"  今日筛选 {total_candidates} 篇，第 {daily_seq_start} 篇"
 
     # 构建 elements
     elements = []
@@ -149,7 +154,8 @@ def build_digest_card(
     # 每篇论文
     content_length = 0
     for i, digest in enumerate(digests):
-        section = _build_paper_section(digest, i + 1)
+        seq = daily_seq_start + i  # 当天序号：如第 5 篇
+        section = _build_paper_section(digest, f"{date_label}({seq})")
 
         # 估算内容长度
         text_content = section.get("text", {}).get("content", "")
@@ -178,7 +184,7 @@ def build_digest_card(
         "elements": [
             {
                 "tag": "plain_text",
-                "content": f"🤖 由 PaperDigestBot 自动生成 | {today} | 数据来源: arXiv / Semantic Scholar / OpenReview / 工程博客",
+                "content": f"🤖 由 PaperDigestBot 自动生成 | {date_str} {time_str} | 数据来源: arXiv / Semantic Scholar / OpenReview / 工程博客",
             }
         ],
     })
@@ -203,7 +209,9 @@ def build_digest_card(
 
 def build_empty_card(topic_name: str = "搜广推前沿日报", reason: str = "今日无匹配论文") -> dict:
     """构建空日报卡片（当天无论文时推送）"""
-    today = datetime.now().strftime("%Y-%m-%d")
+    now = datetime.now()
+    today = now.strftime("%Y-%m-%d")
+    time_str = now.strftime("%H:%M")
 
     return {
         "config": {
@@ -212,7 +220,7 @@ def build_empty_card(topic_name: str = "搜广推前沿日报", reason: str = "�
         "header": {
             "title": {
                 "tag": "plain_text",
-                "content": f"【{topic_name}】{today}",
+                "content": f"【{topic_name}】{today} {time_str}",
             },
             "template": "grey",
         },

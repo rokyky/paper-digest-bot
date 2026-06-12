@@ -162,6 +162,16 @@ class SQLiteStore:
         )
         return cursor.fetchone() is not None
 
+    def get_today_digest_count(self) -> int:
+        """获取今天已经推送了多少篇论文"""
+        from datetime import date
+        today = date.today().isoformat()
+        cursor = self.conn.execute(
+            "SELECT COUNT(*) FROM digests WHERE pushed_date = ?", (today,)
+        )
+        row = cursor.fetchone()
+        return row[0] if row else 0
+
     def close(self):
         if self.conn:
             self.conn.close()
