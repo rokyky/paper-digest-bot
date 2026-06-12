@@ -1,5 +1,5 @@
 # 搜广推日报 — GitHub Actions 定时任务
-# 每 2 小时推送 1 篇，北京时间 8:00~22:00
+# 北京时间 8:00 collect 生成队列并 push 第 1 篇，10:00~22:00 每 2 小时继续 push 1 篇
 #
 # 首次使用前需要在 GitHub 仓库设置 Secrets：
 # Settings → Secrets and variables → Actions → New repository secret
@@ -11,7 +11,7 @@ name: 搜广推日报
 on:
   schedule:
     - cron: '0 0,2,4,6,8,10,12,14 * * *'
-    # 北京时间 8:00/10:00/12:00/14:00/16:00/18:00/20:00/22:00
+    # 北京时间 8:00 collect + push；10:00/12:00/14:00/16:00/18:00/20:00/22:00 push
   workflow_dispatch:
     inputs:
       mode:

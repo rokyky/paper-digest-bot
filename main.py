@@ -9,11 +9,13 @@ Usage:
 """
 
 import argparse
+import dataclasses
 import logging
 import sys
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from dotenv import load_dotenv
@@ -117,7 +119,16 @@ class Pipeline:
         mode = self.mode
         if mode == "auto":
             hour = datetime.now().hour
-            mode = "collect" if hour == 8 else "push"
+            if hour == 8:
+                self.logger.info("Auto 模式: hour=%d → collect + push", hour)
+                self._run_collect()
+                if self.dry_run:
+                    self.logger.info("Dry-run 模式：跳过 collect 后的实际 push")
+                else:
+                    self._run_push()
+                return
+
+            mode = "push"
             self.logger.info("Auto 模式: hour=%d → mode=%s", hour, mode)
 
         if mode == "collect":
@@ -152,9 +163,9 @@ class Pipeline:
 
         # ── Stage 3: LLM 筛选 + 排序 ──
         self.logger.info("[Stage 3/5] LLM 相关性筛选 + 排序...")
-        # Collect 模式需要生成足够篇数填满一天的时间槽
-        # 时间槽: 8, 11, 15, 18, 19, 20, 21 = 7 个
-        self.config.setdefault("topic", {})["max_items"] = 7
+        # Collect 模式需要生成足够篇数填满当天推送时间槽
+        # 8 点 collect 后立即 push，10/12/14/16/18/20/22 点继续 push，共 8 篇
+        self.config.setdefault("topic", {})["max_items"] = 8
         selected = self._stage_filter(new_papers)
         self.stats["selected"] = len(selected)
         if not selected:
@@ -186,7 +197,7 @@ class Pipeline:
         start_time = datetime.now()
 
         # 计算当前是今日第几篇（基于当前小时在时间表中的位置）
-        schedule_hours = [8, 11, 15, 18, 19, 20, 21]
+        schedule_hours = [8, 10, 12, 14, 16, 18, 20, 22]
         current_hour = datetime.now().hour
         positions = {h: i+1 for i, h in enumerate(schedule_hours)}
         target_pos = positions.get(current_hour, 1)
@@ -214,6 +225,7 @@ class Pipeline:
             self._print_dry_run([digest])
         else:
             # 先查今天已推了多少篇（用于卡片编号）
+            db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
             with SQLiteStore(str(db_path)) as store:
                 today_count = store.get_today_digest_count()
 
@@ -228,8 +240,12 @@ class Pipeline:
             )
             self.stats["pushed"] = success
 
-            # 更新配置文件去重
-            self._sync_dedup_file()
+            if success > 0:
+                self._mark_queue_entry_pushed(entry)
+                self._record_pushed_digest(digest)
+                self._sync_dedup_file()
+            else:
+                self.logger.error("推送失败，队列条目保持未推送状态")
 
         self._print_summary(start_time)
 
@@ -242,38 +258,20 @@ class Pipeline:
             entry = {
                 "position": i + 1,
                 "pushed": False,
-                "paper": {
-                    "external_id": digest.paper.external_id,
-                    "title": digest.paper.title,
-                    "authors": digest.paper.authors,
-                    "source": digest.paper.source,
-                    "url": digest.paper.url,
-                    "published_date": digest.paper.published_date,
-                    "is_engineering": digest.paper.is_engineering,
-                    "abstract": digest.paper.abstract[:500],
-                },
-                "digest": {
-                    "one_liner": digest.one_liner,
-                    "chinese_overview": digest.chinese_overview,
-                    "problem": digest.problem,
-                    "method": digest.method,
-                    "diff_from_prior": digest.diff_from_prior,
-                    "metrics": digest.metrics,
-                    "engineering_insight": digest.engineering_insight,
-                    "deployment": digest.deployment,
-                    "limitations": digest.limitations,
-                    "target_audience": digest.target_audience,
-                },
+                "paper": self._paper_to_dict(digest.paper),
+                "digest": self._digest_to_dict(digest),
             }
             queue.append(entry)
         with open(queue_file, "w", encoding="utf-8") as f:
             json.dump(queue, f, ensure_ascii=False, indent=2)
         self.stats["queued"] = len(queue)
         self.logger.info("已存入 %d 篇解读到队列文件", len(queue))
-        self._sync_dedup_file()
 
     def _dequeue_from_file(self, position: int) -> tuple[Optional[Digest], Optional[dict]]:
-        """从队列文件中取出指定位置的未推送篇"""
+        """从队列文件中读取指定位置的未推送篇。
+
+        注意：这里只读取，不标记 pushed。只有飞书推送成功后才落盘更新队列。
+        """
         import json
         queue_file = ROOT_DIR / "digest_queue.json"
         if not queue_file.exists():
@@ -282,24 +280,65 @@ class Pipeline:
             queue = json.load(f)
         for entry in queue:
             if entry["position"] == position and not entry["pushed"]:
-                entry["pushed"] = True
-                with open(queue_file, "w", encoding="utf-8") as f:
-                    json.dump(queue, f, ensure_ascii=False, indent=2)
-                p = entry["paper"]
-                d = entry["digest"]
-                paper = Paper(
-                    external_id=p["external_id"],
-                    title=p["title"],
-                    authors=p["authors"],
-                    abstract=p.get("abstract", ""),
-                    source=p.get("source", ""),
-                    url=p.get("url", ""),
-                    published_date=p.get("published_date", ""),
-                    is_engineering=p.get("is_engineering", False),
-                )
-                digest = Digest(paper=paper, **d)
+                paper = self._paper_from_dict(entry.get("paper", {}))
+                digest = self._digest_from_dict(paper, entry.get("digest", {}))
                 return digest, entry
         return None, None
+
+    def _paper_to_dict(self, paper: Paper) -> dict:
+        return dataclasses.asdict(paper)
+
+    def _digest_to_dict(self, digest: Digest) -> dict:
+        data = dataclasses.asdict(digest)
+        data.pop("paper", None)
+        return data
+
+    def _paper_from_dict(self, data: dict) -> Paper:
+        valid = {field.name for field in dataclasses.fields(Paper)}
+        clean = {k: v for k, v in data.items() if k in valid}
+        return Paper(**clean)
+
+    def _digest_from_dict(self, paper: Paper, data: dict) -> Digest:
+        valid = {field.name for field in dataclasses.fields(Digest)}
+        clean = {k: v for k, v in data.items() if k in valid and k != "paper"}
+        return Digest(paper=paper, **clean)
+
+    def _mark_queue_entry_pushed(self, target_entry: dict):
+        """将已成功推送的队列条目标记为 pushed。"""
+        import json
+        queue_file = ROOT_DIR / "digest_queue.json"
+        if not queue_file.exists():
+            self.logger.warning("队列文件不存在，无法标记 pushed")
+            return
+        with open(queue_file, encoding="utf-8") as f:
+            queue = json.load(f)
+
+        target_position = target_entry.get("position")
+        target_external_id = target_entry.get("paper", {}).get("external_id")
+        for entry in queue:
+            if (
+                entry.get("position") == target_position
+                and entry.get("paper", {}).get("external_id") == target_external_id
+            ):
+                entry["pushed"] = True
+                break
+        else:
+            self.logger.warning("未找到队列条目，无法标记 pushed: position=%s id=%s",
+                                target_position, target_external_id)
+            return
+
+        with open(queue_file, "w", encoding="utf-8") as f:
+            json.dump(queue, f, ensure_ascii=False, indent=2)
+        self.logger.info("队列条目已标记 pushed: position=%s id=%s",
+                         target_position, target_external_id)
+
+    def _record_pushed_digest(self, digest: Digest):
+        """记录成功推送历史到 SQLite。"""
+        db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
+        with SQLiteStore(str(db_path)) as store:
+            paper_id = store.insert_paper(digest.paper)
+            if paper_id:
+                store.insert_digest(digest, paper_id)
 
     def _sync_dedup_file(self):
         """同步去重记录到 pushed_ids.json"""
@@ -307,20 +346,24 @@ class Pipeline:
         queue_file = ROOT_DIR / "digest_queue.json"
         dedup_file = ROOT_DIR / "pushed_ids.json"
         try:
+            pushed_ids = set()
+            if dedup_file.exists():
+                with open(dedup_file, encoding="utf-8") as f:
+                    pushed_ids.update(json.load(f))
+
             if queue_file.exists():
                 with open(queue_file, encoding="utf-8") as f:
                     queue = json.load(f)
-                pushed_ids = []
                 for entry in queue:
-                    if entry["pushed"]:
-                        pushed_ids.append(entry["paper"]["external_id"])
-                    else:
-                        break  # 队列是按顺序标记的
-                with open(dedup_file, "w", encoding="utf-8") as f:
-                    json.dump(pushed_ids, f, ensure_ascii=False)
-                self.logger.info("去重文件已同步: %d 条", len(pushed_ids))
+                    if entry.get("pushed"):
+                        external_id = entry.get("paper", {}).get("external_id")
+                        if external_id:
+                            pushed_ids.add(external_id)
+
+            with open(dedup_file, "w", encoding="utf-8") as f:
+                json.dump(sorted(pushed_ids), f, ensure_ascii=False)
+            self.logger.info("去重文件已同步: %d 条", len(pushed_ids))
         except Exception as e:
-            self.logger.warning("去重文件同步失败: %s", e)
             self.logger.warning("去重文件同步失败: %s", e)
 
     def _stage_fetch(self) -> list[Paper]:
@@ -568,7 +611,7 @@ def parse_args():
         type=str,
         default="auto",
         choices=["auto", "collect", "push"],
-        help="运行模式: auto(8点搜集/其他时间推送), collect(批量生成入队), push(从队列取一篇推送)",
+        help="运行模式: auto(8点搜集并推送首篇/其他时间推送), collect(批量生成入队), push(从队列取一篇推送)",
     )
     parser.add_argument(
         "--config",
