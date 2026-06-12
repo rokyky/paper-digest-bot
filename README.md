@@ -1,14 +1,15 @@
 # 搜广推论文日报机器人 (PaperDigestBot)
 
-每天自动从学术源和工程博客抓取搜索、广告、推荐（搜广推）领域的最新论文/文章，用 LLM 筛选和深度解读，通过飞书群机器人推送结构化日报。
+每 2 小时从学术源和工程博客抓取搜索、广告、推荐（搜广推）领域的最新论文/文章，用 LLM 筛选和深度解读，通过飞书群机器人推送结构化日报（每天 8:00~22:00，每篇深度推荐）。
 
 ## 功能
 
 - **多源抓取**：arXiv、Semantic Scholar、OpenReview、工程博客 RSS
-- **LLM 筛选**：按搜广推主题关键词 + LLM 相关性判断，从候选池选 Top 5
+- **LLM 筛选**：按搜广推主题关键词 + LLM 相关性判断，精选当前窗口 Top 1
 - **深度解读**：每篇论文生成结构化解读（问题、方法、工程启发、局限性）+ **300-500 字中文精读**，而非简单翻译
 - **飞书推送**：通过飞书自定义机器人发送结构化消息卡片
-- **去重存储**：SQLite 记录已推送论文，避免重复
+- **去重存储**：SQLite 记录已推送论文，避免重复推送
+- **定时运行**：GitHub Actions 每天 8 个时间窗口（8:00 / 10:00 / 12:00 / 14:00 / 16:00 / 18:00 / 20:00 / 22:00）
 - **配置驱动**：所有参数通过 `config.yaml` 控制
 
 ## 快速开始
@@ -62,19 +63,19 @@ python main.py
 python main.py --max-papers 3
 ```
 
-### 5. 设置定时任务
+### 5. 设置 GitHub Actions 定时任务（无需开电脑）
 
-**Windows：**
 ```bash
-# 以管理员身份运行
-scripts\schedule_windows.bat 09:00
+# 把代码推送到 GitHub
+git push
+
+# 在 GitHub 仓库设置 Secrets（Settings → Secrets and variables → Actions）：
+# 添加 FEISHU_WEBHOOK 和 DEEPSEEK_API_KEY
 ```
 
-**Linux (crontab)：**
-```bash
-# 每天 9:00 运行
-0 9 * * * cd /path/to/paper-digest-bot && .venv/bin/python main.py >> logs/cron.log 2>&1
-```
+之后每天自动按以下时间运行：**8:00 / 10:00 / 12:00 / 14:00 / 16:00 / 18:00 / 20:00 / 22:00**
+
+也可在 Actions 页面手动触发：**https://github.com/你的用户名/paper-digest-bot/actions**
 
 ## 项目结构
 
@@ -113,16 +114,16 @@ paper-digest-bot/
 ```yaml
 topic:
   name: "搜广推前沿日报"
-  max_items: 5              # 每日精选篇数
+  max_items: 1              # 每次推送篇数（每2小时推1篇）
   keywords: [...]           # 搜广推主题关键词
 
 llm:
   filter:                   # 初筛模型（便宜）
-    provider: openai
-    model: gpt-4o-mini
+    provider: deepseek
+    model: deepseek-chat
   digest:                   # 解读模型（强模型）
-    provider: openai
-    model: gpt-4o
+    provider: deepseek
+    model: deepseek-chat
 
 push:
   channel: feishu
@@ -156,7 +157,7 @@ sources:
 ```
 ┌─────────────────────────────────────────────┐
 │ 【搜广推前沿日报】2026-06-12                │
-│ 今日筛选 42 篇，保留 5 篇                    │
+│ 今日筛选 42 篇，精选 1 篇                     │
 ├─────────────────────────────────────────────┤
 │ 📄 1. 论文标题                              │
 │    作者 | arXiv | 2026-06-11                │
@@ -231,8 +232,8 @@ python main.py --help
 
 ## 常见问题
 
-**Q: 每天推送多少篇？**
-默认 5 篇，可通过 `topic.max_items` 调整。
+**Q: 多久推送一次？一次几篇？**
+每天 8:00~22:00 每 2 小时推 1 篇（共 8 次），每次 1 篇。通过 `topic.max_items` 调整每篇数量。
 
 **Q: 想只推学术论文/只推工程博客？**
 在 `config.yaml` 中设置 `sources.engineering_blog.enabled: false` 或 `sources.arxiv.enabled: false`。
