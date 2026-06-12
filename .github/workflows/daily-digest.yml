@@ -19,6 +19,8 @@ on:
 jobs:
   digest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write              # 允许提交 pushed_ids.json 回仓库
     env:
       TZ: Asia/Shanghai           # 使用北京时间
 
