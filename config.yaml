@@ -3,7 +3,7 @@
 # topic 配置
 topic:
   name: "搜广推前沿日报"
-  max_items: 5          # 每日精选论文数
+  max_items: 1          # 每次推送论文数（每2小时推1篇）
   keywords:
     - recommender system
     - ranking

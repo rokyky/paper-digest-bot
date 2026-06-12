@@ -1,5 +1,5 @@
 # 搜广推日报 — GitHub Actions 定时任务
-# 每天北京时间 9:00 (UTC 1:00) 自动运行
+# 每 2 小时推送 1 篇，北京时间 8:00~22:00
 #
 # 首次使用前需要在 GitHub 仓库设置 Secrets：
 # Settings → Secrets and variables → Actions → New repository secret
@@ -11,15 +11,16 @@ name: 搜广推日报
 
 on:
   schedule:
-    - cron: '0 1 * * *'       # 每天 UTC 1:00 = 北京时间 9:00
+    - cron: '0 0,2,4,6,8,10,12,14 * * *'
+    # 北京时间 8:00/10:00/12:00/14:00/16:00/18:00/20:00/22:00
   workflow_dispatch:           # 支持手动触发
 
 jobs:
   digest:
     runs-on: ubuntu-latest
-    # 防止同一天多次运行（例如手动 + 定时重叠）
+    # 同一小时内只跑一次，防止 2 小时窗口重叠
     concurrency:
-      group: daily-digest
+      group: daily-digest-${{ github.schedule }}
       cancel-in-progress: false
 
     steps:
@@ -31,6 +32,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+
+      - name: 恢复 SQLite 去重数据库（跨运行持久化）
+        uses: actions/cache@v4
+        with:
+          path: data/
+          key: paper-digest-db
 
       - name: 安装依赖
         run: |
