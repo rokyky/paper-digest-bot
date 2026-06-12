@@ -14,6 +14,8 @@ on:
     - cron: '0 0,2,4,6,8,10,12,14 * * *'
     # 北京时间 8:00/10:00/12:00/14:00/16:00/18:00/20:00/22:00
   workflow_dispatch:           # 支持手动触发
+  repository_dispatch:         # 支持外部 cron 服务触发
+    types: [trigger-digest]
 
 jobs:
   digest:
