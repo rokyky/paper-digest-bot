@@ -181,7 +181,7 @@ class Pipeline:
     def _stage_dedup(self, papers: list[Paper]) -> list[Paper]:
         """Stage 2: 去重（双重保障：SQLite + JSON 文件）"""
         db_path = ROOT_DIR / self.config.get("storage", {}).get("database", "data/papers.db")
-        dedup_file = ROOT_DIR / "data" / "pushed_ids.json"
+        dedup_file = ROOT_DIR / "pushed_ids.json"  # 放在根目录，可以提交到 git
 
         # 收集已推送的 ID
         existing_ids: set[str] = set()
@@ -315,7 +315,7 @@ class Pipeline:
                     pushed_ids_from_db.add(digest.paper.external_id)
 
         # 同步写入 JSON 文件（Actions cache 更可靠）
-        dedup_file = ROOT_DIR / "data" / "pushed_ids.json"
+        dedup_file = ROOT_DIR / "pushed_ids.json"
         try:
             import json
             existing = set()
@@ -323,7 +323,6 @@ class Pipeline:
                 with open(dedup_file, encoding="utf-8") as f:
                     existing = set(json.load(f))
             existing.update(pushed_ids_from_db)
-            dedup_file.parent.mkdir(parents=True, exist_ok=True)
             with open(dedup_file, "w", encoding="utf-8") as f:
                 json.dump(sorted(existing), f, ensure_ascii=False)
             self.logger.info("已写入去重文件: %d 条记录", len(existing))

@@ -5,7 +5,6 @@
 # Settings → Secrets and variables → Actions → New repository secret
 #   - FEISHU_WEBHOOK: 飞书群机器人 webhook URL
 #   - DEEPSEEK_API_KEY: DeepSeek API Key
-#   - OPENAI_API_KEY: (可选) 如果用 OpenAI 代替 DeepSeek
 
 name: 搜广推日报
 
@@ -21,11 +20,7 @@ jobs:
   digest:
     runs-on: ubuntu-latest
     env:
-      TZ: Asia/Shanghai           # 所有步骤使用北京时间
-    # 同一小时内只跑一次，防止 2 小时窗口重叠
-    concurrency:
-      group: daily-digest-${{ github.schedule }}
-      cancel-in-progress: false
+      TZ: Asia/Shanghai           # 使用北京时间
 
     steps:
       - name: 检出代码
@@ -37,12 +32,6 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: 恢复 SQLite 去重数据库（跨运行持久化）
-        uses: actions/cache@v4
-        with:
-          path: data/
-          key: paper-digest-db
-
       - name: 安装依赖
         run: |
           pip install -r requirements.txt
@@ -51,9 +40,22 @@ jobs:
         run: |
           echo "FEISHU_WEBHOOK=${{ secrets.FEISHU_WEBHOOK }}" >> $GITHUB_ENV
           echo "DEEPSEEK_API_KEY=${{ secrets.DEEPSEEK_API_KEY }}" >> $GITHUB_ENV
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
 
       - name: 运行日报 Pipeline
         run: |
           python main.py
         timeout-minutes: 30
+
+      # 将去重记录提交回仓库，永久持久化
+      - name: 提交去重记录
+        run: |
+          git config user.name "PaperDigestBot"
+          git config user.email "bot@paper-digest"
+          git add pushed_ids.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "无变更，跳过提交"
+          else
+            git commit -m "update pushed_ids [skip ci]"
+            git push
+            echo "去重记录已提交"
+          fi
