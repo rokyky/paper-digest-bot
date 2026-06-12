@@ -133,9 +133,9 @@ def build_digest_card(
     date_label = now.strftime("%y-%m-%d")  # 用于论文编号：YY-MM-DD(N)
 
     # 构建 header（精确到分钟）
-    header_text = f"【{topic_name}】{date_str} {time_str}"
+    header_text = f"【{topic_name}】{date_str} {time_str}  今日第 {daily_seq_start} 篇"
     if total_candidates > 0:
-        header_text += f"  今日筛选 {total_candidates} 篇，第 {daily_seq_start} 篇"
+        header_text = f"【{topic_name}】{date_str} {time_str}  今日第 {daily_seq_start} 篇"
 
     # 构建 elements
     elements = []
@@ -145,7 +145,7 @@ def build_digest_card(
         "tag": "div",
         "text": {
             "tag": "lark_md",
-            "content": f"今日从 **{total_candidates}** 篇候选文章中精选 **{len(digests)}** 篇深度解读 👇",
+            "content": f"从 **{total_candidates}** 篇候选中精选今日第 **{daily_seq_start}** 篇 📖",
         },
     }
     elements.append(summary_line)
@@ -184,7 +184,7 @@ def build_digest_card(
         "elements": [
             {
                 "tag": "plain_text",
-                "content": f"🤖 由 PaperDigestBot 自动生成 | {date_str} {time_str} | 数据来源: arXiv / Semantic Scholar / OpenReview / 工程博客",
+                "content": f"🤖 搜广推论文速报 | {date_str} {time_str} | arXiv / Semantic Scholar / OpenReview / 工程博客",
             }
         ],
     })
@@ -207,7 +207,7 @@ def build_digest_card(
     return card
 
 
-def build_empty_card(topic_name: str = "搜广推前沿日报", reason: str = "今日无匹配论文") -> dict:
+def build_empty_card(topic_name: str = "搜广推前沿论文速报", reason: str = "今日无匹配论文") -> dict:
     """构建空日报卡片（当天无论文时推送）"""
     now = datetime.now()
     today = now.strftime("%Y-%m-%d")
@@ -229,7 +229,7 @@ def build_empty_card(topic_name: str = "搜广推前沿日报", reason: str = "�
                 "tag": "div",
                 "text": {
                     "tag": "lark_md",
-                    "content": f"😴 **{reason}**\n\n过了今天再看看吧。",
+                    "content": f"😴 **{reason}**\n\n下次推送见。",
                 },
             }
         ],

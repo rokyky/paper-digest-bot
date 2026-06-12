@@ -23,7 +23,7 @@ class FeishuPusher:
     def push_digest(
         self,
         digests: list[Digest],
-        topic_name: str = "搜广推前沿日报",
+        topic_name: str = "搜广推前沿论文速报",
         total_candidates: int = 0,
         daily_seq_start: int = 1,
     ) -> int:
