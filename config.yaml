@@ -1,0 +1,106 @@
+# 搜广推论文日报机器人
+#
+# topic 配置
+topic:
+  name: "搜广推前沿日报"
+  max_items: 5          # 每日精选论文数
+  keywords:
+    - recommender system
+    - ranking
+    - retrieval
+    - CTR prediction
+    - CVR prediction
+    - advertising
+    - sponsored search
+    - auction
+    - bidding
+    - two-tower
+    - candidate generation
+    - learning to rank
+    - personalization
+    - user modeling
+    - graph recommendation
+    - sequential recommendation
+    - LLM for recommendation
+    - generative recommendation
+    - dense retrieval
+    - vector search
+    - ANN
+    - reranking
+    - marketplace
+    - feed ranking
+    - search ranking
+    - multi-task learning
+    - multi-goal
+
+# 学术源配置
+sources:
+  arxiv:
+    enabled: true
+    categories:
+      - cs.IR
+      - cs.LG
+      - cs.AI
+      - stat.ML
+    lookback_hours: 48     # 抓取过去 N 小时内的论文
+    max_results: 200
+  semantic_scholar:
+    enabled: true
+    seed_paper_ids:        # 以这些论文为种子找相似论文
+      - "arXiv:2006.16366"  # DLRM
+      - "arXiv:2205.13727"  # P5
+      - "arXiv:1906.00091"  # DCN V2
+    limit: 50
+  openreview:
+    enabled: true
+    venues:
+      - "ICLR.cc/2026/Conference"
+      - "NeurIPS.cc/2025/Conference"
+      - "ICML.cc/2025/Conference"
+  engineering_blog:
+    enabled: true
+    blogs:
+      - name: "Google Research"
+        url: "https://blog.research.google/feeds/posts/default"
+      - name: "Netflix TechBlog"
+        url: "https://netflixtechblog.com/feed"
+      - name: "Pinterest Engineering"
+        url: "https://medium.com/feed/@Pinterest_Engineering"
+      - name: "Meta Engineering"
+        url: "https://engineering.fb.com/feed/"
+      - name: "美团技术"
+        url: "https://tech.meituan.com/feed/"
+      - name: "阿里妈妈技术"
+        url: "https://zhuanlan.zhihu.com/columns/152293110?feed=1"
+
+# LLM 配置
+llm:
+  # 筛选模型（便宜，用于初筛 + 排序）
+  filter:
+    provider: "deepseek"     # openai / claude / deepseek / qwen
+    model: "deepseek-chat"
+    max_tokens: 500
+    temperature: 0.1
+  # 解读模型（强模型，用于深度解读）
+  digest:
+    provider: "deepseek"     # openai / claude / deepseek / qwen
+    model: "deepseek-chat"
+    max_tokens: 4000
+    temperature: 0.3
+
+# 推送配置
+push:
+  channel: "feishu"
+  feishu:
+    webhooks:
+      - "${FEISHU_WEBHOOK}"       # 飞书机器人 webhook URL
+    max_card_content_length: 4000 # 单卡片最大字符数
+
+# 存储配置
+storage:
+  database: "data/papers.db"      # SQLite 数据库路径
+
+# 调度配置
+schedule:
+  enabled: false                   # 默认不启用定时，手动触发
+  time: "09:00"                    # 每天执行时间

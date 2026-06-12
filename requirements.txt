@@ -1,0 +1,13 @@
+# Python 依赖
+# 核心
+requests>=2.31.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# LLM API
+openai>=1.0.0
+anthropic>=0.30.0
+
+# 论文/文章来源
+arxiv>=2.1.0
+feedparser>=6.0.10
