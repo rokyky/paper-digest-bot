@@ -41,7 +41,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.13204",
       "title": "CoDeR: Local Constraint-Compatible Retrieval Beyond Semantic Similarity",
