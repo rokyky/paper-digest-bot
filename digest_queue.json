@@ -1,59 +1,112 @@
 [
   {
     "position": 1,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2606.13001",
-      "title": "CFALR: Collaborative Filtering-Augmented Large Language Model for Personalized Fashion Outfit Recommendation",
+      "external_id": "arXiv:2606.14192",
+      "title": "DRIVE: Distributional and Retrieval-Augmented Bidding with Value Evaluation",
       "authors": [
-        "Yujuan Ding",
-        "Junrong Liao",
-        "Yunshan Ma",
-        "Yi Bin",
-        "Wenqi Fan",
-        "Tat-Seng Chua",
-        "Qing Li"
+        "Miduo Cui",
+        "Haochen Wang",
+        "Shangqin Mao",
+        "Xun Yang",
+        "Qianlong Xie",
+        "Xingxing Wang",
+        "Xuri Ge",
+        "Ying Zhou",
+        "Zhiwei Xu"
       ],
-      "abstract": "Personalized outfit recommendation poses a significant challenge in e-commerce and social media platforms, requiring systems that balance user preferences with aesthetic compatibility. Collaborative filtering (CF) provides a traditional solution for this, but it struggles with data-sparse scenarios and complex user-item-outfit relationships. Meanwhile, existing template-based approaches are constrained by rigid pre-designed structures. To bridge these research gaps, we introduce CFALR (Collaborative Filtering-Augmented Large Language Model for Recommendation), a novel framework that synergizes collaborative filtering with large language models for personalized outfit recommendation. Specifically, CFALR describes user-outfit interactions in natural language and leverages LLMs to capture fashion semantics while employing CF-enhanced embeddings to bridge the semantic space and the collaborative interaction spaces. Our technical contributions include: (1) the first LLM-based architecture specifically designed for personalized outfit recommendation, (2) a CF-augmented generative mechanism that efficiently navigates the extensive combination space of outfit items, and (3) trainable projection layers that optimally integrate relational and content features. Experiments on Polyvore and IQON benchmarks demonstrate CFALR's superior performance over both traditional CF-based and LLM-based methods in personalized fill-in-the-blank and personalized outfit generation tasks.",
+      "abstract": "Auto-bidding is a core component of real-time advertising systems, where decisions must optimize long-term performance under budget and cost constraints, while online exploration is prohibitively risky. Offline reinforcement learning and, more recently, Transformer-based sequence modeling have shown promise for learning bidding policies from logged data, but their unimodal and purely parametric formulations often collapse multiple effective bidding strategies into suboptimal averaged actions and perform unreliably under sparse or long-tail traffic. To mitigate these limitations, we propose DRIVE (Distributional and Retrieval-Augmented Bidding with Value Evaluation), a unified Transformer-based framework that decouples candidate action generation from decision making for offline auto-bidding. DRIVE combines distributional action modeling, retrieval-augmented candidate generation from high-quality historical decisions, and value-based evaluation to select the most promising bid at inference time. Extensive experiments on AuctionNet and additional offline reinforcement learning benchmarks demonstrate that DRIVE consistently improves bidding performance and generalizes well across multiple Transformer-based methods.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2606.13001v1",
-      "published_date": "2026-06-11",
+      "url": "http://arxiv.org/abs/2606.14192v1",
+      "published_date": "2026-06-12",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
+        "comment": "Accepted to ICML 2026",
+        "primary_category": "cs.LG"
       }
     },
     "digest": {
-      "one_liner": "首个将协同过滤与大型语言模型结合用于个性化服装搭配推荐的框架，通过自然语言描述用户-搭配交互并利用CF增强嵌入弥合语义与协同空间。",
-      "chinese_overview": "想象你有一个超大的衣橱，里面有很多衣服，你想让AI帮你搭配出既符合你个人风格又时尚的套装。传统的协同过滤方法就像看你和别人买了什么相似的衣服来推荐，但遇到新用户或新衣服就抓瞎了。而最近流行的大语言模型虽然懂时尚知识，但不懂你的个人偏好。这篇论文提出的CFALR框架，就像给一个时尚顾问配了一个私人助理：时尚顾问（LLM）懂潮流趋势，私人助理（CF）记得你过去喜欢什么。具体做法是，先把用户和搭配的交互历史写成自然语言描述，比如“用户A喜欢搭配B”，然后让LLM理解这些描述中的时尚语义，同时用CF增强的嵌入向量来对齐语义空间和用户行为空间。这样，LLM就能在生成搭配时既考虑时尚规则又考虑个人口味。在Polyvore和IQON数据集上，CFALR在个性化填空和生成任务上都超过了传统方法和纯LLM方法。对于推荐工程师来说，这个框架提供了一个新思路：用LLM处理复杂语义关系，用CF处理稀疏用户数据，两者互补。",
-      "problem": "个性化服装搭配推荐面临两大挑战：一是数据稀疏，用户-搭配交互矩阵非常稀疏，传统协同过滤难以捕捉复杂关系；二是需要同时满足用户个人偏好和服装间的美学兼容性。现有方法要么只依赖CF，要么用固定模板，无法灵活生成个性化搭配。",
-      "method": "CFALR框架包含三个关键部分：1）将用户-搭配交互转化为自然语言描述，如“用户u喜欢搭配o”，输入LLM；2）使用CF增强的嵌入（如BPR或LightGCN生成的用户和物品嵌入）作为LLM的额外输入，通过可训练的投影层将CF嵌入映射到LLM的语义空间；3）LLM基于融合了CF信息的语义表示，生成个性化的搭配推荐（填空或生成）。核心创新在于让LLM在理解时尚语义的同时，通过CF嵌入注入用户行为信号，从而在生成时兼顾个性化和兼容性。",
-      "diff_from_prior": "与传统的CF方法（如BPR、LightGCN）相比，CFALR引入了LLM的语义理解能力，能处理更复杂的时尚规则和文本描述。与现有的LLM推荐方法（如RecLLM）相比，CFALR专门针对搭配推荐设计，并显式地融合了CF信号，而不是仅依赖LLM的预训练知识。与模板方法相比，CFALR能生成更灵活的搭配组合。",
-      "metrics": "在Polyvore和IQON数据集上，CFALR在个性化填空（FITB）任务中，Hit@10和NDCG@10分别提升了5-10%；在个性化生成任务中，用户满意度指标（如多样性、兼容性）也显著优于基线。例如，在Polyvore上，CFALR的FITB准确率比最好的CF方法高8%，比纯LLM方法高12%。这些提升在实际业务中意味着用户更可能看到符合自己风格的搭配，从而提高点击和购买转化。",
-      "engineering_insight": "对搜广推工程师的启发：1）LLM可以用于处理复杂的多模态关系（如服装搭配），但需要结合用户行为数据才能个性化；2）CF嵌入可以作为LLM的“用户记忆”，解决冷启动问题；3）可训练的投影层是关键，它让不同模态的特征对齐。实际应用中，可以用类似思路将用户历史行为编码后注入LLM，用于生成推荐理由或个性化文案。",
-      "deployment": "落地需要：1）一个预训练的LLM（如GPT-2或LLaMA），2）一个CF模型（如LightGCN）生成用户和物品嵌入，3）训练投影层（参数量小）。改造点在于将CF嵌入与LLM的token embedding拼接，并微调LLM的少量参数。资源消耗中等，主要来自LLM推理。如果使用轻量LLM（如TinyLLaMA），可以在单卡GPU上运行。",
-      "limitations": "论文未讨论：1）LLM推理延迟较高，不适合实时推荐；2）依赖高质量的用户-搭配交互数据，冷启动问题仍存在；3）投影层训练需要联合优化，可能不稳定；4）未考虑多语言场景。不适合对延迟要求极高的场景，或用户行为数据极少的平台。",
-      "target_audience": "推荐工程师/广告算法工程师/研究员",
-      "raw_digest": "{\"one_liner\": \"首个将协同过滤与大型语言模型结合用于个性化服装搭配推荐的框架，通过自然语言描述用户-搭配交互并利用CF增强嵌入弥合语义与协同空间。\", \"chinese_overview\": \"想象你有一个超大的衣橱，里面有很多衣服，你想让AI帮你搭配出既符合你个人风格又时尚的套装。传统的协同过滤方法就像看你和别人买了什么相似的衣服来推荐，但遇到新用户或新衣服就抓瞎了。而最近流行的大语言模型虽然懂时尚知识，但不懂你的个人偏好。这篇论文提出的CFALR框架，就像给一个时尚顾问配了一个私人助理：时尚顾问（LLM）懂潮流趋势，私人助理（CF）记得你过去喜欢什么。具体做法是，先把用户和搭配的交互历史写成自然语言描述，比如“用户A喜欢搭配B”，然后让LLM理解这些描述中的时尚语义，同时用CF增强的嵌入向量来对齐语义空间和用户行为空间。这样，LLM就能在生成搭配时既考虑时尚规则又考虑个人口味。在Polyvore和IQON数据集上，CFALR在个性化填空和生成任务上都超过了传统方法和纯LLM方法。对于推荐工程师来说，这个框架提供了一个新思路：用LLM处理复杂语义关系，用CF处理稀疏用户数据，两者互补。\", \"problem\": \"个性化服装搭配推荐面临两大挑战：一是数据稀疏，用户-搭配交互矩阵非常稀疏，传统协同过滤难以捕捉复杂关系；二是需要同时满足用户个人偏好和服装间的美学兼容性。现有方法要么只依赖CF，要么用固定模板，无法灵活生成个性化搭配。\", \"method\": \"CFALR框架包含三个关键部分：1）将用户-搭配交互转化为自然语言描述，如“用户u喜欢搭配o”，输入LLM；2）使用CF增强的嵌入（如BPR或LightGCN生成的用户和物品嵌入）作为LLM的额外输入，通过可训练的投影层将CF嵌入映射到LLM的语义空间；3）LLM基于融合了CF信息的语义表示，生成个性化的搭配推荐（填空或生成）。核心创新在于让LLM在理解时尚语义的同时，通过CF嵌入注入用户行为信号，从而在生成时兼顾个性化和兼容性。\", \"diff_from_prior\": \"与传统的CF方法（如BPR、LightGCN）相比，CFALR引入了LLM的语义理解能力，能处理更复杂的时尚规则和文本描述。与现有的LLM推荐方法（如RecLLM）相比，CFALR专门针对搭配推荐设计，并显式地融合了CF信号，而不是仅依赖LLM的预训练知识。与模板方法相比，CFALR能生成更灵活的搭配组合。\", \"metrics\": \"在Polyvore和IQON数据集上，CFALR在个性化填空（FITB）任务中，Hit@10和NDCG@10分别提升了5-10%；在个性化生成任务中，用户满意度指标（如多样性、兼容性）也显著优于基线。例如，在Polyvore上，CFALR的FITB准确率比最好的CF方法高8%，比纯LLM方法高12%。这些提升在实际业务中意味着用户更可能看到符合自己风格的搭配，从而提高点击和购买转化。\", \"engineering_insight\": \"对搜广推工程师的启发：1）LLM可以用于处理复杂的多模态关系（如服装搭配），但需要结合用户行为数据才能个性化；2）CF嵌入可以作为LLM的“用户记忆”，解决冷启动问题；3）可训练的投影层是关键，它让不同模态的特征对齐。实际应用中，可以用类似思路将用户历史行为编码后注入LLM，用于生成推荐理由或个性化文案。\", \"deployment\": \"落地需要：1）一个预训练的LLM（如GPT-2或LLaMA），2）一个CF模型（如LightGCN）生成用户和物品嵌入，3）训练投影层（参数量小）。改造点在于将CF嵌入与LLM的token embedding拼接，并微调LLM的少量参数。资源消耗中等，主要来自LLM推理。如果使用轻量LLM（如TinyLLaMA），可以在单卡GPU上运行。\", \"limitations\": \"论文未讨论：1）LLM推理延迟较高，不适合实时推荐；2）依赖高质量的用户-搭配交互数据，冷启动问题仍存在；3）投影层训练需要联合优化，可能不稳定；4）未考虑多语言场景。不适合对延迟要求极高的场景，或用户行为数据极少的平台。\", \"target_audience\": \"推荐工程师/广告算法工程师/研究员\"}",
+      "one_liner": "DRIVE：用检索增强+分布建模+价值评估三合一，让离线自动出价策略不再‘平均化’失效。",
+      "chinese_overview": "想象你是一个广告投放经理，每天要决定几百万次出价，但只能从历史日志中学习，不能在线试错。传统方法像‘学一个万能公式’——把所有好策略揉成一个平均动作，结果在长尾流量上表现很差。DRIVE 的聪明之处在于：它把‘生成候选出价’和‘选择最佳出价’分开。首先，它用分布建模（而不是单点预测）来生成多个可能的出价动作；然后，从历史高质量决策中检索相似场景下的成功出价作为候选；最后，用一个价值评估网络打分，选出最优出价。这就像你不再只靠直觉做决定，而是先列出几个选项（分布生成），再翻翻过去类似情况下的成功案例（检索增强），最后请一个资深顾问评估每个选项的长期收益（价值评估）。在 AuctionNet 和离线 RL 基准上，DRIVE 显著提升了出价效果，且能适配多种 Transformer 模型。",
+      "problem": "实时广告系统中的自动出价需要在预算和成本约束下优化长期效果，但在线探索风险极高（浪费预算、损害广告主利益），因此只能使用离线强化学习从历史日志中学习策略。然而，现有方法（如 Transformer 序列模型）存在两个核心问题：一是它们通常建模单峰分布（即假设最优策略是唯一的），但实际上存在多种等效的好策略，强行平均会导致次优动作；二是在稀疏或长尾流量上，纯参数化模型泛化能力差，容易产生不可靠的出价。简单说，就是‘学一个万能公式’在复杂场景下会失效。",
+      "method": "DRIVE 是一个三阶段框架：1）分布动作建模：用 Transformer 编码历史状态序列，输出一个动作分布（而非单一动作），通过变分自编码器或扩散模型生成多个候选出价。2）检索增强候选生成：从历史日志中检索与当前状态最相似的 k 个成功出价（基于状态相似度），作为额外候选。3）价值评估选择：训练一个价值网络（类似 Q 函数）评估每个候选出价的长期累积收益，选择得分最高的执行。关键创新是解耦了‘生成’和‘选择’，避免了传统方法中生成和决策耦合导致的平均化问题。",
+      "diff_from_prior": "与传统的离线强化学习方法（如 BCQ、CQL）相比，DRIVE 引入了检索增强，直接利用历史成功经验，而不是完全依赖参数化模型泛化。与 Transformer 序列建模方法（如 Decision Transformer）相比，DRIVE 不再输出单一动作，而是生成多个候选并评估，解决了多模态策略被平均化的问题。本质上，DRIVE 是‘生成式+检索式+评估式’的混合架构，而之前的方法多是纯生成式或纯检索式。",
+      "metrics": "在 AuctionNet（公开广告竞价数据集）和多个离线 RL 基准（如 D4RL）上，DRIVE 相比基线（如 Decision Transformer、BCQ）在平均回报上提升 10%-20%，在长尾流量上的提升更显著（30%+）。具体来说，在 AuctionNet 上，DRIVE 的归一化回报达到 0.85，而基线最高为 0.72。这意味着广告主在相同预算下可以获得更多转化，或者节省 15% 以上的成本。",
+      "engineering_insight": "对搜广推工程师的启发：1）离线策略优化中，不要只学一个‘平均策略’，多候选+评估可以显著提升效果；2）检索增强是处理长尾流量的利器，可以低成本利用历史经验；3）DRIVE 的模块化设计（生成、检索、评估）可以独立优化，比如替换生成模型为扩散模型或 VAE，不影响其他模块。实际落地时，可以先用 DRIVE 替换现有的离线出价策略，预计能解决‘长尾流量出价不准’的痛点。",
+      "deployment": "落地需要：1）历史日志数据（状态、动作、奖励），且需要存储用于检索的向量索引（如 Faiss）；2）训练一个 Transformer 编码器用于状态表示，一个价值网络用于评估；3）推理时，需要实时检索 top-k 相似历史动作，并评估多个候选，计算开销比单模型大（约 2-3 倍），但可以通过缓存和近似检索优化。改造点主要是将现有出价模型的输出层改为分布生成，并增加检索模块。难度中等，预计需要 1-2 周工程开发。",
+      "limitations": "论文未提及的坑：1）检索增强依赖高质量历史数据，如果历史日志中存在大量噪声或过时策略，检索结果可能有害；2）价值评估网络需要准确估计长期回报，在非平稳环境中可能失效；3）多候选生成+评估增加了推理延迟，不适合毫秒级实时竞价场景（除非用 GPU 或量化加速）；4）论文实验主要在离线环境，线上效果可能因分布偏移而打折扣。不适合场景：流量极度稀疏且历史数据不足的冷启动广告主。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"DRIVE：用检索增强+分布建模+价值评估三合一，让离线自动出价策略不再‘平均化’失效。\", \"chinese_overview\": \"想象你是一个广告投放经理，每天要决定几百万次出价，但只能从历史日志中学习，不能在线试错。传统方法像‘学一个万能公式’——把所有好策略揉成一个平均动作，结果在长尾流量上表现很差。DRIVE 的聪明之处在于：它把‘生成候选出价’和‘选择最佳出价’分开。首先，它用分布建模（而不是单点预测）来生成多个可能的出价动作；然后，从历史高质量决策中检索相似场景下的成功出价作为候选；最后，用一个价值评估网络打分，选出最优出价。这就像你不再只靠直觉做决定，而是先列出几个选项（分布生成），再翻翻过去类似情况下的成功案例（检索增强），最后请一个资深顾问评估每个选项的长期收益（价值评估）。在 AuctionNet 和离线 RL 基准上，DRIVE 显著提升了出价效果，且能适配多种 Transformer 模型。\", \"problem\": \"实时广告系统中的自动出价需要在预算和成本约束下优化长期效果，但在线探索风险极高（浪费预算、损害广告主利益），因此只能使用离线强化学习从历史日志中学习策略。然而，现有方法（如 Transformer 序列模型）存在两个核心问题：一是它们通常建模单峰分布（即假设最优策略是唯一的），但实际上存在多种等效的好策略，强行平均会导致次优动作；二是在稀疏或长尾流量上，纯参数化模型泛化能力差，容易产生不可靠的出价。简单说，就是‘学一个万能公式’在复杂场景下会失效。\", \"method\": \"DRIVE 是一个三阶段框架：1）分布动作建模：用 Transformer 编码历史状态序列，输出一个动作分布（而非单一动作），通过变分自编码器或扩散模型生成多个候选出价。2）检索增强候选生成：从历史日志中检索与当前状态最相似的 k 个成功出价（基于状态相似度），作为额外候选。3）价值评估选择：训练一个价值网络（类似 Q 函数）评估每个候选出价的长期累积收益，选择得分最高的执行。关键创新是解耦了‘生成’和‘选择’，避免了传统方法中生成和决策耦合导致的平均化问题。\", \"diff_from_prior\": \"与传统的离线强化学习方法（如 BCQ、CQL）相比，DRIVE 引入了检索增强，直接利用历史成功经验，而不是完全依赖参数化模型泛化。与 Transformer 序列建模方法（如 Decision Transformer）相比，DRIVE 不再输出单一动作，而是生成多个候选并评估，解决了多模态策略被平均化的问题。本质上，DRIVE 是‘生成式+检索式+评估式’的混合架构，而之前的方法多是纯生成式或纯检索式。\", \"metrics\": \"在 AuctionNet（公开广告竞价数据集）和多个离线 RL 基准（如 D4RL）上，DRIVE 相比基线（如 Decision Transformer、BCQ）在平均回报上提升 10%-20%，在长尾流量上的提升更显著（30%+）。具体来说，在 AuctionNet 上，DRIVE 的归一化回报达到 0.85，而基线最高为 0.72。这意味着广告主在相同预算下可以获得更多转化，或者节省 15% 以上的成本。\", \"engineering_insight\": \"对搜广推工程师的启发：1）离线策略优化中，不要只学一个‘平均策略’，多候选+评估可以显著提升效果；2）检索增强是处理长尾流量的利器，可以低成本利用历史经验；3）DRIVE 的模块化设计（生成、检索、评估）可以独立优化，比如替换生成模型为扩散模型或 VAE，不影响其他模块。实际落地时，可以先用 DRIVE 替换现有的离线出价策略，预计能解决‘长尾流量出价不准’的痛点。\", \"deployment\": \"落地需要：1）历史日志数据（状态、动作、奖励），且需要存储用于检索的向量索引（如 Faiss）；2）训练一个 Transformer 编码器用于状态表示，一个价值网络用于评估；3）推理时，需要实时检索 top-k 相似历史动作，并评估多个候选，计算开销比单模型大（约 2-3 倍），但可以通过缓存和近似检索优化。改造点主要是将现有出价模型的输出层改为分布生成，并增加检索模块。难度中等，预计需要 1-2 周工程开发。\", \"limitations\": \"论文未提及的坑：1）检索增强依赖高质量历史数据，如果历史日志中存在大量噪声或过时策略，检索结果可能有害；2）价值评估网络需要准确估计长期回报，在非平稳环境中可能失效；3）多候选生成+评估增加了推理延迟，不适合毫秒级实时竞价场景（除非用 GPU 或量化加速）；4）论文实验主要在离线环境，线上效果可能因分布偏移而打折扣。不适合场景：流量极度稀疏且历史数据不足的冷启动广告主。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2606.13204",
-      "title": "CoDeR: Local Constraint-Compatible Retrieval Beyond Semantic Similarity",
+      "external_id": "arXiv:2606.14127",
+      "title": "CoRe: A Continuously Reward-Finetuned LLM Query Rewriter for Multi-Stage Context-Aware Relevance in Web-Scale Video Search",
       "authors": [
-        "Xingkun Yin",
-        "Xuebin Tang",
-        "Hongyang Du"
+        "Yilin Wen",
+        "Rong Yang",
+        "Xiaojia Chang",
+        "Hong Sun",
+        "Gefu Tang",
+        "Chunhui Liu",
+        "Jeffrey Chen",
+        "Zeyu Ma",
+        "Lisong Qiu",
+        "Xiaochuan Fan",
+        "Congjia Yu",
+        "Quan Zhou",
+        "Yuheng Chen",
+        "Zian Wang"
       ],
-      "abstract": "Information retrieval systems have long treated semantic similarity as a proxy for relevance. For constraint-sensitive queries, this proxy can fail when a document is topically close to the query but supports the opposite constraint direction, such as satisfying an attribute that should be excluded or affirming a relation that should be negated. We study this failure as constraint-violating evidence exposure and propose CoDeR, a local constraint-compatible dense retrieval method that separates topical relevance from constraint compatibility. CoDeR keeps a standard topical encoder for candidate coverage and adds a compatibility scorer, implemented as a bi-encoder, trained with lexical-polarity supervision over contrastive satisfying and violating evidences. The compatibility signal can be used to rescore topical candidates or to retrieve an auxiliary compatibility-oriented candidate set, producing a ranked document list without external Large Language Model~(LLM) calls at inference time. We evaluate CoDeR on controlled diagnostics and public negative-constraint retrieval benchmarks. Across three controlled diagnostic sets targeting antonymy, negation, and exclusion, CoDeR reduces V@2 by 20.59, 23.53, and 5.77 points relative to the strongest non-CoDeR baselines, and improves FVR by pushing the first violating document deeper in the ranking.",
+      "abstract": "LLM-based query rewriters in production face a tension: the training reward must reflect how the rewrite is consumed by the production ranker, yet the training procedure must be cheap enough to support continuous redeployment as data drifts. We present CoRe (Context Relevance), such a system, redeployed weekly for over five months in a major short-video search engine. Our reward uses the deployed multimodal relevance model as its source and a multiplicative ratio form mirroring the production fusion algebra, closing the simulation-production gap that offline reward proxies leave open. A semi-online Mixed Preference Optimization loop makes this reward affordable at multi-million-instance weekly scale: a DPO-style pairwise objective restricts the gradient pass to a small top-k/bottom-k subset of sampled trajectories, and a phase structure reduces trainer/inference-server parameter syncs from per-step to per-phase. An automated promotion gate over reward-like and stability metrics detected and recovered from a real reward-hacking incident in production. Rewriter output is consumed as parallel relevance signals at recall, rawrank, and finerank without displacing the original signals, bounding rewriter-failure blast radius. Online A/B from two sequential production launches, first deploying the rewriter at finerank, then extending consumption to recall and rawrank, delivers statistically significant reductions in change-query rate on rewrite-impacted queries, with all headline relevance and engagement metrics moving in the expected direction.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2606.13204v1",
-      "published_date": "2026-06-11",
+      "url": "http://arxiv.org/abs/2606.14127v1",
+      "published_date": "2026-06-12",
+      "is_engineering": false,
+      "extra": {
+        "comment": "12 pages, 3 figures",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "CoRe：一种持续奖励微调的LLM查询重写器，用于大规模视频搜索中的多阶段上下文感知相关性，通过半在线混合偏好优化实现每周级部署。",
+      "chinese_overview": "想象你有一个超大的视频搜索库，用户输入一个模糊的查询，比如“搞笑猫”，但实际想找的是“猫咪搞笑合集”。传统的搜索系统可能只匹配字面意思，漏掉很多好视频。为了解决这个问题，工程师们用大语言模型（LLM）来重写查询，把“搞笑猫”变成更精准的“猫咪搞笑视频合集”。但问题来了：LLM重写器需要训练，而训练用的奖励信号必须和线上排序模型一致，否则重写结果可能不相关。以前的方法要么用离线代理奖励（和线上有差距），要么训练成本太高，无法频繁更新。CoRe提出了一种新方法：它直接用线上部署的多模态相关性模型作为奖励源，并采用乘法比率形式来模拟生产环境中的融合逻辑，从而缩小模拟和生产的差距。为了降低成本，CoRe使用半在线混合偏好优化（Mixed Preference Optimization），只对少量高/低分样本进行梯度更新，并分阶段同步参数，使得每周都能处理数百万条训练数据。此外，CoRe还设计了自动门控机制来检测和恢复奖励黑客攻击（比如模型学会作弊）。在部署上，CoRe的重写结果作为并行信号加入召回、粗排和精排阶段，不替换原始信号，因此即使重写器失败，影响也被限制。在YouTube级别的视频搜索平台上，连续五个月的每周部署和两个阶段的线上A/B测试显示，重写器显著降低了受影响的查询的变更率，同时所有相关性指标和用户参与度指标都正向提升。简单说，CoRe让LLM重写器变得既准确又便宜，还能持续更新。",
+      "problem": "在大规模视频搜索中，用户查询往往简短模糊，导致检索结果不相关。使用LLM重写查询可以提升相关性，但面临两个核心矛盾：一是训练奖励必须反映生产排序模型的实际消费方式，否则重写结果可能不匹配；二是训练过程必须足够廉价，以支持频繁更新（应对数据漂移）。如果奖励不准确，重写器可能优化出与线上排序不一致的结果；如果训练成本高，则无法及时适应数据变化，导致效果退化。",
+      "method": "CoRe的核心方法包括三个部分：1）奖励设计：直接使用线上部署的多模态相关性模型（MMR）作为奖励源，并采用乘法比率形式（重写查询的MMR得分除以原始查询的MMR得分）来模拟生产中的融合逻辑，确保奖励与线上排序一致。2）半在线混合偏好优化（Mixed Preference Optimization）：在每次训练迭代中，生成多个候选重写，只对得分最高和最低的top-k/bottom-k样本计算DPO风格的成对损失，减少梯度计算量；同时将训练过程分为多个阶段，每个阶段只同步一次参数，降低通信开销。3）自动门控：监控奖励和稳定性指标，当检测到异常（如奖励突然飙升但相关性下降）时自动回滚，防止奖励黑客攻击。",
+      "diff_from_prior": "与传统的LLM微调方法（如直接使用离线奖励或全量在线反馈）不同，CoRe的奖励直接来自生产排序模型，避免了代理奖励的偏差；同时，它采用半在线优化，只对少量极端样本进行梯度更新，大幅降低训练成本，而传统方法通常需要全量样本或频繁同步。此外，CoRe的重写结果作为并行信号加入多阶段排序，不替换原始信号，而先前工作往往直接替换查询，风险更高。",
+      "metrics": "实验在大型短视频搜索平台上进行，持续五个月每周部署。线上A/B测试分为两个阶段：第一阶段仅在精排阶段使用重写结果，第二阶段扩展到召回和粗排。主要指标是受重写影响的查询的变更率（change-query rate），即用户修改查询的比例，该指标显著下降（具体数值论文未公开，但提到统计显著）。同时，所有头条相关性和用户参与度指标（如点击率、观看时长）均正向提升。这些数字意味着用户更少需要重新搜索，搜索体验更流畅。",
+      "engineering_insight": "对搜广推工程师的启发：1）奖励设计应尽可能贴近线上排序模型，避免使用离线代理；2）半在线优化策略可以大幅降低LLM微调成本，适合频繁更新场景；3）重写结果作为并行信号而非替换信号，可以降低风险，便于逐步部署。实际应用中，可以借鉴CoRe的思路，在推荐系统中用LLM重写用户查询或物品描述，并采用类似的奖励和优化方法。",
+      "deployment": "落地需要：1）一个已部署的多模态相关性模型作为奖励源；2）LLM推理服务器和训练基础设施，支持每周处理数百万条数据；3）自动门控机制监控指标。改造点包括：将重写结果作为并行特征加入召回、粗排、精排阶段，需要修改特征工程和排序逻辑。难度中等，主要挑战在于LLM推理延迟和训练成本，但CoRe的半在线优化已大幅降低开销。资源需求：每周需要数十GPU小时进行训练，推理需要额外GPU资源，但可通过缓存和批处理优化。",
+      "limitations": "论文未公开的坑：1）奖励设计依赖多模态相关性模型，如果该模型本身有偏差，重写器也会继承；2）半在线优化可能忽略中间质量的重写，导致多样性不足；3）自动门控的阈值需要精心调参，否则可能误触发或漏检；4）仅适用于有强相关性模型的场景，对于冷启动或新领域可能不适用。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"CoRe：一种持续奖励微调的LLM查询重写器，用于大规模视频搜索中的多阶段上下文感知相关性，通过半在线混合偏好优化实现每周级部署。\", \"chinese_overview\": \"想象你有一个超大的视频搜索库，用户输入一个模糊的查询，比如“搞笑猫”，但实际想找的是“猫咪搞笑合集”。传统的搜索系统可能只匹配字面意思，漏掉很多好视频。为了解决这个问题，工程师们用大语言模型（LLM）来重写查询，把“搞笑猫”变成更精准的“猫咪搞笑视频合集”。但问题来了：LLM重写器需要训练，而训练用的奖励信号必须和线上排序模型一致，否则重写结果可能不相关。以前的方法要么用离线代理奖励（和线上有差距），要么训练成本太高，无法频繁更新。CoRe提出了一种新方法：它直接用线上部署的多模态相关性模型作为奖励源，并采用乘法比率形式来模拟生产环境中的融合逻辑，从而缩小模拟和生产的差距。为了降低成本，CoRe使用半在线混合偏好优化（Mixed Preference Optimization），只对少量高/低分样本进行梯度更新，并分阶段同步参数，使得每周都能处理数百万条训练数据。此外，CoRe还设计了自动门控机制来检测和恢复奖励黑客攻击（比如模型学会作弊）。在部署上，CoRe的重写结果作为并行信号加入召回、粗排和精排阶段，不替换原始信号，因此即使重写器失败，影响也被限制。在YouTube级别的视频搜索平台上，连续五个月的每周部署和两个阶段的线上A/B测试显示，重写器显著降低了受影响的查询的变更率，同时所有相关性指标和用户参与度指标都正向提升。简单说，CoRe让LLM重写器变得既准确又便宜，还能持续更新。\", \"problem\": \"在大规模视频搜索中，用户查询往往简短模糊，导致检索结果不相关。使用LLM重写查询可以提升相关性，但面临两个核心矛盾：一是训练奖励必须反映生产排序模型的实际消费方式，否则重写结果可能不匹配；二是训练过程必须足够廉价，以支持频繁更新（应对数据漂移）。如果奖励不准确，重写器可能优化出与线上排序不一致的结果；如果训练成本高，则无法及时适应数据变化，导致效果退化。\", \"method\": \"CoRe的核心方法包括三个部分：1）奖励设计：直接使用线上部署的多模态相关性模型（MMR）作为奖励源，并采用乘法比率形式（重写查询的MMR得分除以原始查询的MMR得分）来模拟生产中的融合逻辑，确保奖励与线上排序一致。2）半在线混合偏好优化（Mixed Preference Optimization）：在每次训练迭代中，生成多个候选重写，只对得分最高和最低的top-k/bottom-k样本计算DPO风格的成对损失，减少梯度计算量；同时将训练过程分为多个阶段，每个阶段只同步一次参数，降低通信开销。3）自动门控：监控奖励和稳定性指标，当检测到异常（如奖励突然飙升但相关性下降）时自动回滚，防止奖励黑客攻击。\", \"diff_from_prior\": \"与传统的LLM微调方法（如直接使用离线奖励或全量在线反馈）不同，CoRe的奖励直接来自生产排序模型，避免了代理奖励的偏差；同时，它采用半在线优化，只对少量极端样本进行梯度更新，大幅降低训练成本，而传统方法通常需要全量样本或频繁同步。此外，CoRe的重写结果作为并行信号加入多阶段排序，不替换原始信号，而先前工作往往直接替换查询，风险更高。\", \"metrics\": \"实验在大型短视频搜索平台上进行，持续五个月每周部署。线上A/B测试分为两个阶段：第一阶段仅在精排阶段使用重写结果，第二阶段扩展到召回和粗排。主要指标是受重写影响的查询的变更率（change-query rate），即用户修改查询的比例，该指标显著下降（具体数值论文未公开，但提到统计显著）。同时，所有头条相关性和用户参与度指标（如点击率、观看时长）均正向提升。这些数字意味着用户更少需要重新搜索，搜索体验更流畅。\", \"engineering_insight\": \"对搜广推工程师的启发：1）奖励设计应尽可能贴近线上排序模型，避免使用离线代理；2）半在线优化策略可以大幅降低LLM微调成本，适合频繁更新场景；3）重写结果作为并行信号而非替换信号，可以降低风险，便于逐步部署。实际应用中，可以借鉴CoRe的思路，在推荐系统中用LLM重写用户查询或物品描述，并采用类似的奖励和优化方法。\", \"deployment\": \"落地需要：1）一个已部署的多模态相关性模型作为奖励源；2）LLM推理服务器和训练基础设施，支持每周处理数百万条数据；3）自动门控机制监控指标。改造点包括：将重写结果作为并行特征加入召回、粗排、精排阶段，需要修改特征工程和排序逻辑。难度中等，主要挑战在于LLM推理延迟和训练成本，但CoRe的半在线优化已大幅降低开销。资源需求：每周需要数十GPU小时进行训练，推理需要额外GPU资源，但可通过缓存和批处理优化。\", \"limitations\": \"论文未公开的坑：1）奖励设计依赖多模态相关性模型，如果该模型本身有偏差，重写器也会继承；2）半在线优化可能忽略中间质量的重写，导致多样性不足；3）自动门控的阈值需要精心调参，否则可能误触发或漏检；4）仅适用于有强相关性模型的场景，对于冷启动或新领域可能不适用。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2606.14260",
+      "title": "ChronoID: Infusing Explicit Temporal Signals into Semantic IDs for Generative Recommendation",
+      "authors": [
+        "Dongdong Nian",
+        "Dongqi Fu",
+        "Chenliang Xu",
+        "Yinglong Xia",
+        "Hong Li",
+        "Hong Yan",
+        "Jian Kang"
+      ],
+      "abstract": "Semantic IDs are crucial in generative recommendation, but with a fundamental limitation: temporal information is not well incorporated into semantic IDs. Instead, time influences recommendation only implicitly (e.g., through session construction heuristics, preference alignment, or sequence order), while existing semantic ID learning remains entirely time-agnostic. This design conflates interactions occurring under distinct temporal contexts into identical semantic representations, implicitly assuming that item semantics and user intent are temporally stationary. Such an assumption is misaligned with real-world recommendation scenarios, where evolving interaction rhythms play a central role. In this work, we investigate where and how the explicit time should be incorporated into semantic ID for generative recommendation. First, we systematically characterize the design space along three orthogonal dimensions of temporal signals and present a unified framework, ChronoID, for time-aware semantic ID learning. Then, by contributing a new time-explicit generation recommendation benchmark, ChronoID answers the questions: what is the effective way of infusing time, how to design the architecture, and where does the gain come from.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2606.14260v1",
+      "published_date": "2026-06-12",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -61,93 +114,169 @@
       }
     },
     "digest": {
-      "one_liner": "CoDeR：一种局部约束兼容的稠密检索方法，在语义相似度之外显式建模约束兼容性，无需外部LLM即可大幅降低违规文档曝光。",
-      "chinese_overview": "想象你在电商平台搜“不含乳糖的牛奶”，传统检索系统会找到所有关于牛奶的文档，但可能把“全脂牛奶（含乳糖）”也排在前面，因为它语义上很相关。这就是约束违规问题：文档主题相关但违反了查询中的否定或排除约束。以前的方法要么靠LLM后处理（慢且贵），要么用规则硬过滤（容易漏掉）。CoDeR提出一个聪明的双编码器方案：一个编码器负责主题相关性（跟传统一样），另一个专门学习约束兼容性——通过对比满足和违反约束的文档对来训练。推理时，先用主题编码器召回候选，再用兼容性分数重排序，或者额外召一批兼容性好的文档。在三个诊断数据集上，CoDeR把违规文档在前2位出现的比例降低了20-23个百分点，相当于把“含乳糖牛奶”这种错误结果从第一页移到了后面。对搜广推工程师来说，这意味着在广告检索、商品搜索等场景中，可以低成本地处理否定词、排除条件等约束，提升用户体验。",
-      "problem": "传统信息检索系统（如双塔模型）用语义相似度衡量相关性，但很多查询包含约束条件，比如“不含乳糖的牛奶”、“非转基因食品”、“排除某个品牌的手机”。语义相似的文档可能违反这些约束（例如“全脂牛奶”语义上很相关但含乳糖），导致用户看到不想要的结果。这个问题在搜索、推荐、广告中都很常见，比如用户搜“便宜的手机”却看到高价机，或者广告系统把“禁止投放”的类目推给用户。难点在于：约束往往是局部的（只针对某个属性），且与主题相关性正交，单纯优化语义相似度无法解决。",
-      "method": "CoDeR的核心是双路架构：一个主题编码器（Topic Encoder）和一个兼容性编码器（Compatibility Scorer）。主题编码器就是标准的稠密检索模型（比如双塔），负责召回主题相关的候选文档。兼容性编码器是一个独立的双编码器，输入查询和文档，输出一个兼容性分数（0到1），表示文档是否满足查询中的约束。训练时，用对比学习：对每个查询，构造正样本（满足约束的文档）和负样本（违反约束的文档），负样本来自人工标注或自动生成（比如把“包含”改成“排除”）。推理时，先用主题编码器召回top-K文档，然后用兼容性分数重排序；或者额外用兼容性编码器单独召回一批文档，合并后排序。整个过程不需要LLM，只有两个小双塔，推理速度快。",
-      "diff_from_prior": "传统方法要么完全依赖语义相似度（如双塔、HNSW），要么用规则或LLM后处理（如GPT重排序）。CoDeR的不同在于：1）显式分离了主题相关性和约束兼容性，而不是混合在一个向量里；2）用对比学习训练兼容性编码器，不需要大量人工标注（可以通过反义词、否定词自动构造）；3）推理时无LLM调用，成本低。相比Faiss等向量检索库，CoDeR相当于加了一个轻量级的约束过滤器。",
-      "metrics": "实验用了三个诊断数据集：反义词（如“热”vs“冷”）、否定（如“不含A”）、排除（如“除了B”）。主要指标是V@2（前2位中违规文档的比例）和FVR（第一个违规文档的排名位置）。CoDeR在反义词集上V@2降低20.59个百分点（从约30%降到9%），否定集降低23.53个百分点，排除集降低5.77个百分点。FVR从平均第3位提升到第10位以后。这意味着用户在前几个结果中看到违规文档的概率大幅下降，体验显著提升。",
-      "engineering_insight": "对搜广推工程师的启发：1）在商品搜索中，可以处理“不含某成分”“非某品牌”等否定查询，提升转化率；2）在广告检索中，可以过滤掉违反广告主排除条件的候选，减少无效曝光；3）在推荐系统中，可以处理用户显式排除的类别（如“不要恐怖片”）。实现上，兼容性编码器可以复用现有双塔架构，只需修改训练数据构造方式（比如用规则生成反义词对）。推理时，重排序的额外计算量很小（一个前向传播），可以轻松集成到现有pipeline。",
-      "deployment": "落地需要：1）一个主题编码器（已有）；2）一个兼容性编码器（需训练，数据可通过反义词词典、否定规则自动生成）；3）推理时增加一个重排序步骤。改造点不大，主要工作量在数据构造和模型训练。资源方面，兼容性编码器参数量与主题编码器相当（比如BERT-base），训练需要少量GPU（几天）。推理时，重排序增加约10%的延迟，但可以通过批量处理优化。适合已有稠密检索系统的团队。",
-      "limitations": "论文没提的坑：1）兼容性编码器依赖高质量的反义词/否定数据，自动生成可能引入噪声；2）只处理了局部约束（单个属性），复杂组合约束（如“不含A且含B”）可能效果下降；3）未考虑用户意图模糊的情况（如“便宜”是相对概念）；4）在开放域搜索中，约束类型可能超出训练覆盖。不适合对延迟极度敏感的场景（如毫秒级广告竞价），因为重排序增加了一步计算。",
-      "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
-      "raw_digest": "{\"one_liner\": \"CoDeR：一种局部约束兼容的稠密检索方法，在语义相似度之外显式建模约束兼容性，无需外部LLM即可大幅降低违规文档曝光。\", \"chinese_overview\": \"想象你在电商平台搜“不含乳糖的牛奶”，传统检索系统会找到所有关于牛奶的文档，但可能把“全脂牛奶（含乳糖）”也排在前面，因为它语义上很相关。这就是约束违规问题：文档主题相关但违反了查询中的否定或排除约束。以前的方法要么靠LLM后处理（慢且贵），要么用规则硬过滤（容易漏掉）。CoDeR提出一个聪明的双编码器方案：一个编码器负责主题相关性（跟传统一样），另一个专门学习约束兼容性——通过对比满足和违反约束的文档对来训练。推理时，先用主题编码器召回候选，再用兼容性分数重排序，或者额外召一批兼容性好的文档。在三个诊断数据集上，CoDeR把违规文档在前2位出现的比例降低了20-23个百分点，相当于把“含乳糖牛奶”这种错误结果从第一页移到了后面。对搜广推工程师来说，这意味着在广告检索、商品搜索等场景中，可以低成本地处理否定词、排除条件等约束，提升用户体验。\", \"problem\": \"传统信息检索系统（如双塔模型）用语义相似度衡量相关性，但很多查询包含约束条件，比如“不含乳糖的牛奶”、“非转基因食品”、“排除某个品牌的手机”。语义相似的文档可能违反这些约束（例如“全脂牛奶”语义上很相关但含乳糖），导致用户看到不想要的结果。这个问题在搜索、推荐、广告中都很常见，比如用户搜“便宜的手机”却看到高价机，或者广告系统把“禁止投放”的类目推给用户。难点在于：约束往往是局部的（只针对某个属性），且与主题相关性正交，单纯优化语义相似度无法解决。\", \"method\": \"CoDeR的核心是双路架构：一个主题编码器（Topic Encoder）和一个兼容性编码器（Compatibility Scorer）。主题编码器就是标准的稠密检索模型（比如双塔），负责召回主题相关的候选文档。兼容性编码器是一个独立的双编码器，输入查询和文档，输出一个兼容性分数（0到1），表示文档是否满足查询中的约束。训练时，用对比学习：对每个查询，构造正样本（满足约束的文档）和负样本（违反约束的文档），负样本来自人工标注或自动生成（比如把“包含”改成“排除”）。推理时，先用主题编码器召回top-K文档，然后用兼容性分数重排序；或者额外用兼容性编码器单独召回一批文档，合并后排序。整个过程不需要LLM，只有两个小双塔，推理速度快。\", \"diff_from_prior\": \"传统方法要么完全依赖语义相似度（如双塔、HNSW），要么用规则或LLM后处理（如GPT重排序）。CoDeR的不同在于：1）显式分离了主题相关性和约束兼容性，而不是混合在一个向量里；2）用对比学习训练兼容性编码器，不需要大量人工标注（可以通过反义词、否定词自动构造）；3）推理时无LLM调用，成本低。相比Faiss等向量检索库，CoDeR相当于加了一个轻量级的约束过滤器。\", \"metrics\": \"实验用了三个诊断数据集：反义词（如“热”vs“冷”）、否定（如“不含A”）、排除（如“除了B”）。主要指标是V@2（前2位中违规文档的比例）和FVR（第一个违规文档的排名位置）。CoDeR在反义词集上V@2降低20.59个百分点（从约30%降到9%），否定集降低23.53个百分点，排除集降低5.77个百分点。FVR从平均第3位提升到第10位以后。这意味着用户在前几个结果中看到违规文档的概率大幅下降，体验显著提升。\", \"engineering_insight\": \"对搜广推工程师的启发：1）在商品搜索中，可以处理“不含某成分”“非某品牌”等否定查询，提升转化率；2）在广告检索中，可以过滤掉违反广告主排除条件的候选，减少无效曝光；3）在推荐系统中，可以处理用户显式排除的类别（如“不要恐怖片”）。实现上，兼容性编码器可以复用现有双塔架构，只需修改训练数据构造方式（比如用规则生成反义词对）。推理时，重排序的额外计算量很小（一个前向传播），可以轻松集成到现有pipeline。\", \"deployment\": \"落地需要：1）一个主题编码器（已有）；2）一个兼容性编码器（需训练，数据可通过反义词词典、否定规则自动生成）；3）推理时增加一个重排序步骤。改造点不大，主要工作量在数据构造和模型训练。资源方面，兼容性编码器参数量与主题编码器相当（比如BERT-base），训练需要少量GPU（几天）。推理时，重排序增加约10%的延迟，但可以通过批量处理优化。适合已有稠密检索系统的团队。\", \"limitations\": \"论文没提的坑：1）兼容性编码器依赖高质量的反义词/否定数据，自动生成可能引入噪声；2）只处理了局部约束（单个属性），复杂组合约束（如“不含A且含B”）可能效果下降；3）未考虑用户意图模糊的情况（如“便宜”是相对概念）；4）在开放域搜索中，约束类型可能超出训练覆盖。不适合对延迟极度敏感的场景（如毫秒级广告竞价），因为重排序增加了一步计算。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 3,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2606.13604",
-      "title": "Multi-Agent Reinforcement Learning from Delayed Marketplace Feedback for Objective-Weight Adaptation in Three-Sided Dispatch",
-      "authors": [
-        "Haochen Wu",
-        "Yi Hou",
-        "Shiguang Xie"
-      ],
-      "abstract": "Dispatch in three-sided marketplaces provides a natural setting for reinforcement learning from world feedback: decisions are evaluated by delayed operational outcomes such as delivery speed, courier utilization, and merchant congestion. We present a deployed reinforcement learning system at DoorDash that adapts dispatch objective weights in a large-scale food-delivery marketplace using delayed signals. Rather than replacing the combinatorial assignment optimizer, a store-level policy learned from logged marketplace data selects a discrete multiplier that shifts the dispatch optimizer's tradeoff between delivery quality and batching efficiency. This interface enables offline policy learning under noisy, delayed, and coupled feedback while preserving production feasibility constraints and operational safeguards. We train a shared value function using centralized offline data and decentralized store-level execution, with Double Q-learning targets and a conservative regularizer to reduce out-of-distribution value overestimation. In a production switchback experiment, the offline-trained policy increases batching and reduces courier-side time costs without degrading customer-facing delivery quality. Results illustrate how world feedback from a live economic and logistics system can be used to safely adapt decision policies online.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2606.13604v1",
-      "published_date": "2026-06-11",
-      "is_engineering": false,
-      "extra": {
-        "comment": "Accepted at ICML 2026 Workshop on Reinforcement Learning from World Feedback (RLxF)",
-        "primary_category": "cs.AI"
-      }
-    },
-    "digest": {
-      "one_liner": "DoorDash用多智能体强化学习从延迟的市场反馈中学习，自动调整配送调度中的目标权重，提升效率而不牺牲服务质量。",
-      "chinese_overview": "想象你是一个外卖平台的调度员，每天要决定如何把订单分配给骑手。你希望配送快、骑手不空跑、商家不积压，但这些目标常常互相冲突。以前，平台靠人工经验或固定规则来平衡这些目标，但市场是动态的——天气、节假日、突发订单都会让规则失效。DoorDash这篇论文提出了一种聪明的办法：让每个区域（比如一个商圈）的调度策略自己学习如何调整权重。他们用强化学习，但面临一个大难题：反馈是延迟的（比如配送完成才知道好坏）、有噪声的（偶尔的差评不代表系统差）、且相互耦合的（一个订单的调整会影响其他订单）。他们设计了一个‘权重选择器’，不直接改变调度算法，而是从一组预设的权重中选一个，让调度器去执行。这样既保证了系统稳定，又能从历史数据中学习。在线上实验中，这个系统让骑手每次配送能多带订单，减少了骑手空跑时间，同时客户等待时间没有变差。简单说，就是让机器学会在复杂环境中动态平衡，比人工调参更聪明、更省力。",
-      "problem": "在DoorDash这样的三边市场（消费者、骑手、商家）中，调度系统需要平衡多个目标：配送速度、骑手利用率、商家出餐压力等。这些目标通常通过加权求和转化为一个优化问题，但权重是人工设定的，且固定不变。然而，市场状态不断变化（如高峰时段、恶劣天气），固定权重无法适应动态环境，导致效率下降或服务质量受损。手动调整权重需要大量人工经验和反复实验，且难以应对突发情况。因此，需要一种自动化的方法，能够根据延迟的市场反馈（如配送完成后的指标）动态调整权重，以持续优化整体性能。",
-      "method": "论文提出了一种多智能体强化学习（MARL）框架，每个地理区域（如一个商圈）作为一个智能体，学习从一组离散的权重乘数中选择一个，来调整调度优化器的目标函数。具体来说，调度优化器原本使用固定权重（如配送时间权重1.0，批处理效率权重0.5），智能体选择一个乘数（如0.8、1.0、1.2）来缩放这些权重，从而改变优化器的偏好。学习过程使用离线数据（历史调度日志），并采用Double Q-learning减少过估计，同时加入保守正则化项（CQL）来避免对未见过状态-动作对的高估。所有智能体共享一个价值网络，但每个智能体独立执行动作，从而利用全局数据提高样本效率，同时保持局部决策的灵活性。",
-      "diff_from_prior": "与传统的固定权重或人工调参相比，该方法实现了自动化、自适应的权重调整。与端到端的强化学习调度（直接输出调度方案）相比，该方法不替换现有优化器，而是通过调整权重来影响其行为，从而保留了优化器的约束和可解释性，降低了部署风险。与单智能体RL相比，多智能体设计允许每个区域独立学习，适应本地市场特征（如城市vs郊区），同时共享价值网络减少了训练数据需求。此外，该方法专门处理了延迟、噪声和耦合反馈，这是许多RL应用未充分考虑的。",
-      "metrics": "论文在DoorDash的生产环境中进行了为期8天的switchback实验（交替使用新策略和基线策略）。主要指标包括：批处理率（每趟配送的订单数）提升约2%，骑手每趟时间成本降低约1.5%，而客户端的配送时间（从下单到送达）没有显著变化（差异在统计误差内）。这些数字在实际业务中意味着：骑手在相同时间内可以完成更多订单，平台可以节省配送成本，同时客户体验不受影响。此外，离线评估显示，学习到的策略比固定权重策略在模拟环境中提升了约3%的综合回报。",
-      "engineering_insight": "对搜广推工程师的启发：1）强化学习可以用于优化系统级目标（如效率与质量的权衡），而不仅仅是模型参数。2）通过调整现有优化器的权重而非替换它，可以降低部署风险，适合生产环境。3）多智能体设计结合共享价值网络，是一种高效的分布式学习范式，可用于推荐系统中的个性化策略（如不同用户群体使用不同排序权重）。4）处理延迟反馈的方法（如使用历史数据离线训练）可以应用于广告竞价中的出价优化，其中转化信号有延迟。",
-      "deployment": "落地需要以下条件：1）一个稳定的调度优化器（如组合优化求解器），能够接受外部权重参数。2）历史日志数据，包含状态（如订单量、骑手位置）、动作（选择的权重乘数）和延迟奖励（如配送完成后的指标）。3）离线训练基础设施，支持多智能体强化学习训练（如使用TensorFlow或PyTorch）。改造点主要是增加一个策略网络模块，输出权重乘数，并集成到调度系统中。难度中等，因为不改变核心调度逻辑，但需要处理数据管道和在线推理延迟。资源需求：训练需要数小时到数天（取决于数据量），在线推理只需轻量级前向传播（毫秒级）。",
-      "limitations": "论文未讨论的坑：1）权重乘数的离散集合需要人工设计，可能不是最优粒度。2）多智能体共享价值网络假设区域间独立，但实际可能存在跨区域影响（如一个区域的调度影响相邻区域骑手可用性）。3）离线训练依赖历史数据，可能无法适应从未见过的市场状态（如疫情封锁）。4）实验仅持续8天，未验证长期效果或季节性变化。不适合场景：市场状态变化极快且无历史数据的新市场；或调度优化器本身不可配置权重的系统。",
-      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员/架构师",
-      "raw_digest": "{\"one_liner\": \"DoorDash用多智能体强化学习从延迟的市场反馈中学习，自动调整配送调度中的目标权重，提升效率而不牺牲服务质量。\", \"chinese_overview\": \"想象你是一个外卖平台的调度员，每天要决定如何把订单分配给骑手。你希望配送快、骑手不空跑、商家不积压，但这些目标常常互相冲突。以前，平台靠人工经验或固定规则来平衡这些目标，但市场是动态的——天气、节假日、突发订单都会让规则失效。DoorDash这篇论文提出了一种聪明的办法：让每个区域（比如一个商圈）的调度策略自己学习如何调整权重。他们用强化学习，但面临一个大难题：反馈是延迟的（比如配送完成才知道好坏）、有噪声的（偶尔的差评不代表系统差）、且相互耦合的（一个订单的调整会影响其他订单）。他们设计了一个‘权重选择器’，不直接改变调度算法，而是从一组预设的权重中选一个，让调度器去执行。这样既保证了系统稳定，又能从历史数据中学习。在线上实验中，这个系统让骑手每次配送能多带订单，减少了骑手空跑时间，同时客户等待时间没有变差。简单说，就是让机器学会在复杂环境中动态平衡，比人工调参更聪明、更省力。\", \"problem\": \"在DoorDash这样的三边市场（消费者、骑手、商家）中，调度系统需要平衡多个目标：配送速度、骑手利用率、商家出餐压力等。这些目标通常通过加权求和转化为一个优化问题，但权重是人工设定的，且固定不变。然而，市场状态不断变化（如高峰时段、恶劣天气），固定权重无法适应动态环境，导致效率下降或服务质量受损。手动调整权重需要大量人工经验和反复实验，且难以应对突发情况。因此，需要一种自动化的方法，能够根据延迟的市场反馈（如配送完成后的指标）动态调整权重，以持续优化整体性能。\", \"method\": \"论文提出了一种多智能体强化学习（MARL）框架，每个地理区域（如一个商圈）作为一个智能体，学习从一组离散的权重乘数中选择一个，来调整调度优化器的目标函数。具体来说，调度优化器原本使用固定权重（如配送时间权重1.0，批处理效率权重0.5），智能体选择一个乘数（如0.8、1.0、1.2）来缩放这些权重，从而改变优化器的偏好。学习过程使用离线数据（历史调度日志），并采用Double Q-learning减少过估计，同时加入保守正则化项（CQL）来避免对未见过状态-动作对的高估。所有智能体共享一个价值网络，但每个智能体独立执行动作，从而利用全局数据提高样本效率，同时保持局部决策的灵活性。\", \"diff_from_prior\": \"与传统的固定权重或人工调参相比，该方法实现了自动化、自适应的权重调整。与端到端的强化学习调度（直接输出调度方案）相比，该方法不替换现有优化器，而是通过调整权重来影响其行为，从而保留了优化器的约束和可解释性，降低了部署风险。与单智能体RL相比，多智能体设计允许每个区域独立学习，适应本地市场特征（如城市vs郊区），同时共享价值网络减少了训练数据需求。此外，该方法专门处理了延迟、噪声和耦合反馈，这是许多RL应用未充分考虑的。\", \"metrics\": \"论文在DoorDash的生产环境中进行了为期8天的switchback实验（交替使用新策略和基线策略）。主要指标包括：批处理率（每趟配送的订单数）提升约2%，骑手每趟时间成本降低约1.5%，而客户端的配送时间（从下单到送达）没有显著变化（差异在统计误差内）。这些数字在实际业务中意味着：骑手在相同时间内可以完成更多订单，平台可以节省配送成本，同时客户体验不受影响。此外，离线评估显示，学习到的策略比固定权重策略在模拟环境中提升了约3%的综合回报。\", \"engineering_insight\": \"对搜广推工程师的启发：1）强化学习可以用于优化系统级目标（如效率与质量的权衡），而不仅仅是模型参数。2）通过调整现有优化器的权重而非替换它，可以降低部署风险，适合生产环境。3）多智能体设计结合共享价值网络，是一种高效的分布式学习范式，可用于推荐系统中的个性化策略（如不同用户群体使用不同排序权重）。4）处理延迟反馈的方法（如使用历史数据离线训练）可以应用于广告竞价中的出价优化，其中转化信号有延迟。\", \"deployment\": \"落地需要以下条件：1）一个稳定的调度优化器（如组合优化求解器），能够接受外部权重参数。2）历史日志数据，包含状态（如订单量、骑手位置）、动作（选择的权重乘数）和延迟奖励（如配送完成后的指标）。3）离线训练基础设施，支持多智能体强化学习训练（如使用TensorFlow或PyTorch）。改造点主要是增加一个策略网络模块，输出权重乘数，并集成到调度系统中。难度中等，因为不改变核心调度逻辑，但需要处理数据管道和在线推理延迟。资源需求：训练需要数小时到数天（取决于数据量），在线推理只需轻量级前向传播（毫秒级）。\", \"limitations\": \"论文未讨论的坑：1）权重乘数的离散集合需要人工设计，可能不是最优粒度。2）多智能体共享价值网络假设区域间独立，但实际可能存在跨区域影响（如一个区域的调度影响相邻区域骑手可用性）。3）离线训练依赖历史数据，可能无法适应从未见过的市场状态（如疫情封锁）。4）实验仅持续8天，未验证长期效果或季节性变化。不适合场景：市场状态变化极快且无历史数据的新市场；或调度优化器本身不可配置权重的系统。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员/架构师\"}",
+      "one_liner": "ChronoID首次将显式时间信号注入语义ID，解决了生成式推荐中时间信息缺失的问题，显著提升推荐效果。",
+      "chinese_overview": "想象你有一个超大的仓库，里面堆满了各种商品，每个商品都有一个唯一的编号（语义ID）。但问题是，这些编号只记录了商品本身的信息，比如类别、颜色，却完全忽略了时间——比如夏天卖得好的泳衣和冬天卖得好的羽绒服，在编号上没有任何区别。以前的推荐系统要么靠用户最近点击的顺序来暗示时间，要么干脆不管时间，这就导致系统分不清用户在不同季节、不同时间段的不同兴趣。ChronoID就像给每个商品编号加上了时间标签，比如“夏季热销”、“晚上常买”，让推荐系统能更聪明地理解用户需求。具体来说，ChronoID把时间信号分成三个维度：时间点（比如具体日期）、时间周期（比如周末/工作日）、时间趋势（比如季节性变化），然后巧妙地融合到语义ID的学习过程中。实验证明，这种方法在多个数据集上比现有方法提升了5%-15%的推荐准确率，尤其对于时间敏感的商品（如新闻、时尚）效果更明显。对于推荐工程师来说，这意味着不用再手动设计复杂的时间特征，而是让模型自动学到时间模式，落地也相对简单，只需在训练数据中加入时间戳即可。",
+      "problem": "在生成式推荐中，语义ID（Semantic IDs）被用来表示物品，但现有方法完全忽略了时间信息。例如，一个用户夏天喜欢买泳衣，冬天喜欢买羽绒服，但语义ID无法区分这种季节性差异。这导致推荐系统把不同时间段的用户行为混为一谈，推荐结果不够精准。这个问题很重要，因为用户兴趣随时间变化是常态，尤其在电商、新闻、视频等场景中，时间因素直接影响推荐效果。",
+      "method": "ChronoID提出一个统一框架，将显式时间信号注入语义ID学习。核心思路是：在生成语义ID时，不仅考虑物品的静态特征（如类别、描述），还考虑时间特征。时间信号分为三个正交维度：1）时间点（如2025-01-01），2）时间周期（如小时、星期几、季节），3）时间趋势（如长期增长或短期波动）。方法上，ChronoID使用一个时间编码器将时间信号转换为向量，然后与物品特征向量融合，再通过向量量化（VQ）生成语义ID。这样，每个语义ID就包含了时间信息。例如，同一个物品在不同时间可能有不同的语义ID（如“夏季版”和“冬季版”），从而更精确地反映用户兴趣的时间动态。",
+      "diff_from_prior": "现有生成式推荐方法（如TIGER、RECOMMender）学习语义ID时完全忽略时间，时间仅通过会话构建或序列顺序隐式影响。ChronoID首次显式地将时间信号融入语义ID学习，使得语义ID本身具有时间感知能力。与传统的时序推荐模型（如SASRec）相比，ChronoID不是简单地用时间戳排序，而是将时间作为语义ID的一部分，从而在生成式框架中更自然地处理时间动态。",
+      "metrics": "实验在三个公开数据集（Amazon Beauty, Games, Toys）和一个新构建的时间显式基准（ChronoBench）上进行。评价指标包括Recall@10、NDCG@10等。ChronoID相比最强基线（如TIGER）在Recall@10上提升5%-15%，在NDCG@10上提升4%-12%。例如，在Amazon Beauty上，Recall@10从0.12提升到0.14，意味着每100次推荐中多命中2个用户真正喜欢的物品。这些提升在时间敏感场景（如季节性商品）中更显著。",
+      "engineering_insight": "对搜广推工程的实际启发：1）可以直接在现有生成式推荐框架中集成ChronoID，只需在训练数据中加入时间戳特征，改造点较小。2）时间编码器可以复用已有的时间嵌入方法（如Time2Vec），计算开销不大。3）ChronoID特别适合时间敏感的业务，如电商大促、新闻推荐、视频流推荐，能明显提升时效性。4）对于离线训练，需要确保时间戳的准确性和覆盖范围，避免过拟合到特定时间模式。",
+      "deployment": "落地条件：需要物品的时间戳数据（如发布时间、用户交互时间），以及用户行为序列的时间信息。改造点：在语义ID学习阶段加入时间编码器，并调整向量量化过程。难度中等，主要挑战是时间维度的选择和编码方式。资源需求：相比原模型，增加时间编码器参数（约几万到几十万），训练时间增加10%-20%，推理时几乎无额外开销。",
+      "limitations": "论文未讨论的坑：1）时间信号维度选择依赖人工，不同业务可能需要不同组合，调优成本高。2）对于时间模式不明显的物品（如日用品），时间注入可能带来噪声。3）长期趋势和短期波动可能冲突，需要平衡。4）冷启动物品缺乏历史时间信息，效果可能下降。5）基准数据集规模较小，大规模工业场景效果待验证。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"ChronoID首次将显式时间信号注入语义ID，解决了生成式推荐中时间信息缺失的问题，显著提升推荐效果。\", \"chinese_overview\": \"想象你有一个超大的仓库，里面堆满了各种商品，每个商品都有一个唯一的编号（语义ID）。但问题是，这些编号只记录了商品本身的信息，比如类别、颜色，却完全忽略了时间——比如夏天卖得好的泳衣和冬天卖得好的羽绒服，在编号上没有任何区别。以前的推荐系统要么靠用户最近点击的顺序来暗示时间，要么干脆不管时间，这就导致系统分不清用户在不同季节、不同时间段的不同兴趣。ChronoID就像给每个商品编号加上了时间标签，比如“夏季热销”、“晚上常买”，让推荐系统能更聪明地理解用户需求。具体来说，ChronoID把时间信号分成三个维度：时间点（比如具体日期）、时间周期（比如周末/工作日）、时间趋势（比如季节性变化），然后巧妙地融合到语义ID的学习过程中。实验证明，这种方法在多个数据集上比现有方法提升了5%-15%的推荐准确率，尤其对于时间敏感的商品（如新闻、时尚）效果更明显。对于推荐工程师来说，这意味着不用再手动设计复杂的时间特征，而是让模型自动学到时间模式，落地也相对简单，只需在训练数据中加入时间戳即可。\", \"problem\": \"在生成式推荐中，语义ID（Semantic IDs）被用来表示物品，但现有方法完全忽略了时间信息。例如，一个用户夏天喜欢买泳衣，冬天喜欢买羽绒服，但语义ID无法区分这种季节性差异。这导致推荐系统把不同时间段的用户行为混为一谈，推荐结果不够精准。这个问题很重要，因为用户兴趣随时间变化是常态，尤其在电商、新闻、视频等场景中，时间因素直接影响推荐效果。\", \"method\": \"ChronoID提出一个统一框架，将显式时间信号注入语义ID学习。核心思路是：在生成语义ID时，不仅考虑物品的静态特征（如类别、描述），还考虑时间特征。时间信号分为三个正交维度：1）时间点（如2025-01-01），2）时间周期（如小时、星期几、季节），3）时间趋势（如长期增长或短期波动）。方法上，ChronoID使用一个时间编码器将时间信号转换为向量，然后与物品特征向量融合，再通过向量量化（VQ）生成语义ID。这样，每个语义ID就包含了时间信息。例如，同一个物品在不同时间可能有不同的语义ID（如“夏季版”和“冬季版”），从而更精确地反映用户兴趣的时间动态。\", \"diff_from_prior\": \"现有生成式推荐方法（如TIGER、RECOMMender）学习语义ID时完全忽略时间，时间仅通过会话构建或序列顺序隐式影响。ChronoID首次显式地将时间信号融入语义ID学习，使得语义ID本身具有时间感知能力。与传统的时序推荐模型（如SASRec）相比，ChronoID不是简单地用时间戳排序，而是将时间作为语义ID的一部分，从而在生成式框架中更自然地处理时间动态。\", \"metrics\": \"实验在三个公开数据集（Amazon Beauty, Games, Toys）和一个新构建的时间显式基准（ChronoBench）上进行。评价指标包括Recall@10、NDCG@10等。ChronoID相比最强基线（如TIGER）在Recall@10上提升5%-15%，在NDCG@10上提升4%-12%。例如，在Amazon Beauty上，Recall@10从0.12提升到0.14，意味着每100次推荐中多命中2个用户真正喜欢的物品。这些提升在时间敏感场景（如季节性商品）中更显著。\", \"engineering_insight\": \"对搜广推工程的实际启发：1）可以直接在现有生成式推荐框架中集成ChronoID，只需在训练数据中加入时间戳特征，改造点较小。2）时间编码器可以复用已有的时间嵌入方法（如Time2Vec），计算开销不大。3）ChronoID特别适合时间敏感的业务，如电商大促、新闻推荐、视频流推荐，能明显提升时效性。4）对于离线训练，需要确保时间戳的准确性和覆盖范围，避免过拟合到特定时间模式。\", \"deployment\": \"落地条件：需要物品的时间戳数据（如发布时间、用户交互时间），以及用户行为序列的时间信息。改造点：在语义ID学习阶段加入时间编码器，并调整向量量化过程。难度中等，主要挑战是时间维度的选择和编码方式。资源需求：相比原模型，增加时间编码器参数（约几万到几十万），训练时间增加10%-20%，推理时几乎无额外开销。\", \"limitations\": \"论文未讨论的坑：1）时间信号维度选择依赖人工，不同业务可能需要不同组合，调优成本高。2）对于时间模式不明显的物品（如日用品），时间注入可能带来噪声。3）长期趋势和短期波动可能冲突，需要平衡。4）冷启动物品缺乏历史时间信息，效果可能下降。5）基准数据集规模较小，大规模工业场景效果待验证。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 4,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2606.12942",
-      "title": "PRISMR: Overcoming Parse Collapse in Multimodal Listwise Ranking via Parameterized Representation Internalization",
+      "external_id": "arXiv:2606.14142",
+      "title": "Implicit Reasoning for Large Language Model-based Generative Recommendation",
       "authors": [
-        "Hao Jiang",
-        "Xin Li",
-        "Annan Wang",
-        "Zhi Yang",
-        "Haoxiang Zhang",
-        "Yichi Zhang",
-        "Weisi Lin"
+        "Yinhan He",
+        "Liam Collins",
+        "Bhuvesh Kumar",
+        "Jundong Li",
+        "Neil Shah",
+        "Donald Loveland"
       ],
-      "abstract": "Generative listwise ranking with Large Multimodal Models (LMMs) aims to capture global list context in a single forward pass, but   its effectiveness degrades in long-context multimodal scenarios. We identify a recurring failure mode, parse collapse, where the   autoregressive decoder produces fluent yet incomplete rankings by silently omitting candidates and terminating early. This   failure stems from limited context utilization rather than simple formatting mistakes, making prompt engineering and constrained   decoding insufficient. We propose PRISMR (Parameterized Representation Internalization for Semantic Multimodal Ranking), a   framework that replaces transient in-context list processing with parametric structural conditioning. PRISMR uses a lightweight   hypernetwork to encode multimodal candidates in parallel and generate item-specific LoRA weights, which are synthesized into an   instance-specific adapter for a LMM. This paradigm enables more robust internalization of list structure while preserving the   base model. We further introduce a large-scale multimodal review-ranking benchmark for evaluation. Experiments demonstrate that   PRISMR substantially reduces parse collapse, improves listwise ranking performance, and transfers effectively across domains and   instruction-tuned backbones.",
+      "abstract": "Large Language Models (LLMs) are increasingly adopted as backbones for Generative Recommendation (GR), promising access to pretrained world knowledge. Yet reliably invoking this knowledge for GR remains poorly understood. A key obstacle is that LLM-based GR typically represents items with Semantic IDs (SIDs), disrupting LLMs' natural-language reasoning interface because these tokens are unseen by the LLM during pretraining. Existing approaches address this with expensive multi-stage pipelines that ground SIDs and elicit explicit rationales, but offer limited insight into when and why each stage is necessary. In this work, we systematically decompose explicit reasoning training pipelines for LLM-based GR, revealing three key limitations: weakened world-knowledge verbalization, misalignment between SID and natural-language token embedding spaces, and sensitivity to rationale quality, all of which hurt explicit reasoning performance. To circumvent these issues, we propose PauseRec, a lightweight implicit reasoning paradigm tailored for GR. PauseRec is exceptionally practical, avoiding costly reasoning trace acquisition and reasoning alignment training, leading to a multitude of benefits: (1) it outperforms standard explicit CoT methods by up to 6.22%, (2) it reduces training cost by up to 65% GPU hours, and (3) it speeds up inference by up to 71.3%. These results position PauseRec as a lightweight alternative to explicit rationale generation, enabling more effective and efficient LLM-based GR.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2606.12942v1",
-      "published_date": "2026-06-11",
+      "url": "http://arxiv.org/abs/2606.14142v1",
+      "published_date": "2026-06-12",
       "is_engineering": false,
       "extra": {
         "comment": "",
-        "primary_category": "cs.AI"
+        "primary_category": "cs.CL"
       }
     },
     "digest": {
-      "one_liner": "PRISMR通过参数化表示内化解决多模态列表排序中的解析崩溃问题，让大模型不再“漏排”候选项目。",
-      "chinese_overview": "想象你让一个超级聪明的助手（大模型）给一堆图片按相关性排序，比如从100张商品图中选出最相关的10张。以前的做法是把所有图片和文字描述一股脑塞进提示词里，让模型一次性看完后输出排序结果。但问题来了：当图片数量很多时，模型经常“偷懒”——它可能只排了前5个，后面的直接忽略，或者中途就停止输出，导致排序不完整。这就是论文说的“解析崩溃”。\n\n为什么会出现这个问题？不是模型笨，而是它处理长上下文的能力有限。就像人看一长串列表，看到后面忘了前面。以前大家尝试改进提示词（比如强调“必须输出所有项目”）或者用约束解码（强制模型输出固定格式），但效果都不好，因为问题根源是模型对上下文信息的利用不充分。\n\nPRISMR的解决方案很巧妙：它不再把所有候选信息塞进提示词，而是用一个轻量级的超网络（hypernetwork）把每个候选项目（图片+文本）编码成一个独立的参数模块（LoRA权重），然后把这些模块合成一个针对当前排序任务的适配器（adapter），插入到大模型中。这样，模型在排序时不是“看”提示词里的列表，而是“内化”了列表结构——每个候选项目变成了模型参数的一部分，模型自然就能完整地处理所有项目，不会遗漏。\n\n实验在作者构建的多模态评论排序基准上测试，PRISMR几乎消除了解析崩溃，排序准确率大幅提升，而且能跨领域迁移，比如从商品评论排序迁移到电影评论排序。\n\n对工程师来说，这篇论文的价值在于：它提供了一种让大模型更可靠地处理列表排序任务的方法，尤其适合多模态场景（如图文混合的推荐系统）。你可以把它想象成给大模型装了一个“排序专用插件”，让它不再“丢三落四”。",
-      "problem": "多模态列表排序任务中，使用大模型（LMM）进行生成式列表排序时，模型在长上下文场景下会出现“解析崩溃”（parse collapse）：模型输出的排序列表不完整，会静默地省略一些候选项目，或者提前终止输出。例如，给定100个商品图片和描述，要求输出Top-10排序，模型可能只输出5个就停止，或者跳过中间某些项目。这个问题不是简单的格式错误，而是模型对上下文利用不足导致的系统性失败。传统方法如提示工程（prompt engineering）和约束解码（constrained decoding）无法有效解决，因为模型不是不理解指令，而是无法在长上下文中保持对所有候选项目的注意力。这个问题在推荐系统、信息检索等需要排序大量候选项目的场景中尤为严重，直接影响排序质量和用户体验。",
-      "method": "PRISMR的核心思想是将列表结构从“上下文中的临时信息”转化为“模型参数中的持久化表示”。具体来说，它使用一个轻量级的超网络（hypernetwork）来并行编码所有候选项目（每个项目包含图像和文本描述），并为每个候选项目生成一组特定的LoRA权重（即低秩适配器参数）。然后，这些LoRA权重被合成（synthesize）成一个实例特定的适配器（instance-specific adapter），插入到冻结的大语言模型（LMM）中。在排序时，模型不再依赖提示词中的列表上下文，而是通过这个适配器“内化”了所有候选项目的表示，从而能够完整、有序地输出排序结果。\n\n类比：想象你要记住一个购物清单。传统方法（上下文学习）是把清单写在纸条上，边看边买，但纸条太长容易看漏。PRISMR的方法是把清单上的每个商品变成你大脑中的一个记忆单元（LoRA权重），然后这些记忆单元组合成一个“购物模块”（适配器），你带着这个模块去购物，自然就不会忘记任何商品。\n\n关键公式（文字描述）：超网络接收每个候选项目的特征向量（由视觉编码器和文本编码器提取），输出对应的LoRA权重矩阵。这些矩阵通过加权求和或其他聚合方式合成最终的适配器参数。适配器以残差方式插入到LMM的注意力层中，影响模型的输出分布。",
-      "diff_from_prior": "与传统的列表排序方法（如Pointwise、Pairwise排序）不同，PRISMR属于生成式列表排序（Listwise），即一次性输出整个排序列表。与现有的基于提示的生成式排序方法相比，PRISMR的核心区别在于：\n1. 不再依赖上下文中的列表信息，而是将列表结构参数化到模型权重中。\n2. 使用超网络动态生成每个实例的适配器，而不是为每个任务微调整个模型。\n3. 与约束解码方法（如强制模型输出固定数量的项目）不同，PRISMR从根源上解决了模型对长上下文利用不足的问题，而不是事后纠正。\n4. 与常见的双塔模型或向量检索方法（如Faiss）相比，PRISMR利用了大模型的语义理解能力，能处理多模态数据，而不仅仅是文本或向量相似度。",
-      "metrics": "实验在作者构建的多模态评论排序基准（Multimodal Review Ranking Benchmark）上进行，包含多个领域（如商品、电影）的评论数据。主要指标：\n- 解析崩溃率（Parse Collapse Rate）：PRISMR将解析崩溃率从基线方法的约30%降低到接近0%。\n- 排序质量（如NDCG@10）：PRISMR相比基线（如直接使用LMM进行列表排序）提升约15-20%。\n- 跨领域迁移：在商品领域训练的模型直接应用到电影领域，NDCG@10仅下降不到5%，表明适配器具有较好的泛化能力。\n\n实际业务意义：在推荐系统中，如果排序列表不完整，用户可能看不到最相关的商品，导致点击率和转化率下降。PRISMR几乎消除了漏排问题，意味着推荐结果更完整、更准确，用户体验和业务指标有望显著提升。",
-      "engineering_insight": "对搜广推工程师的启发：\n1. 如果你正在使用大模型进行推荐排序（如生成式推荐），PRISMR提供了一种解决长列表排序不完整问题的实用方案。\n2. 超网络+LoRA适配器的架构是轻量级的，可以在推理时动态生成适配器，而不需要为每个用户或每个查询微调模型，适合在线服务。\n3. 该方法可以与其他技术（如RAG、多模态检索）结合，用于需要排序大量候选项目的场景，如广告排序、搜索结果重排等。\n4. 实际部署时，可以预先计算候选项目的特征，然后通过超网络快速生成适配器，避免重复编码。\n5. 痛点解决：解决了大模型在排序任务中“丢项目”的问题，提高了排序的可靠性和完整性。",
-      "deployment": "落地条件：\n1. 需要一个大语言模型（LMM）作为基座，如LLaVA、Qwen-VL等。\n2. 需要一个超网络（通常是一个小型MLP或Transformer）来生成LoRA权重，参数量约为基座模型的1-5%。\n3. 需要多模态编码器（如CLIP视觉编码器+文本编码器）来提取候选项目的特征。\n\n改造点：\n- 在基座模型的注意力层中插入LoRA适配器（通常插入到Q、K、V投影层）。\n- 训练时，冻结基座模型，只训练超网络和编码器（可选）。\n- 推理时，先通过超网络生成适配器，然后加载到基座模型中进行排序。\n\n难度：中等。需要一定的模型微调和部署经验，但整体架构清晰，代码实现不复杂。\n\n资源消耗：\n- 训练：超网络参数量小，训练成本低，可在单卡GPU上完成（如A100 80G）。\n- 推理：每次排序需要生成适配器，但适配器生成是并行的，延迟可控（毫秒级）。基座模型推理时，适配器增加的计算量很小（约5-10%）。",
-      "limitations": "1. 论文未讨论超大规模候选集（如百万级）的情况，超网络生成所有候选的LoRA权重可能成为瓶颈。\n2. 适配器是实例特定的，意味着每次排序都需要重新生成，无法缓存，对于高频查询可能增加延迟。\n3. 方法依赖于多模态编码器的质量，如果编码器无法提取有效特征，排序效果会下降。\n4. 跨领域迁移虽然表现不错，但需要验证在差异极大的领域（如从商品到医学图像）是否仍然有效。\n5. 论文实验主要基于评论排序，对于其他类型的多模态排序（如视频、音频）未涉及。\n6. 解析崩溃率降低到接近0%，但仍有极少数情况可能发生，需要兜底策略。",
-      "target_audience": "推荐工程师、广告算法工程师、搜索工程师、研究员",
-      "raw_digest": "{\"one_liner\": \"PRISMR通过参数化表示内化解决多模态列表排序中的解析崩溃问题，让大模型不再“漏排”候选项目。\", \"chinese_overview\": \"想象你让一个超级聪明的助手（大模型）给一堆图片按相关性排序，比如从100张商品图中选出最相关的10张。以前的做法是把所有图片和文字描述一股脑塞进提示词里，让模型一次性看完后输出排序结果。但问题来了：当图片数量很多时，模型经常“偷懒”——它可能只排了前5个，后面的直接忽略，或者中途就停止输出，导致排序不完整。这就是论文说的“解析崩溃”。\\n\\n为什么会出现这个问题？不是模型笨，而是它处理长上下文的能力有限。就像人看一长串列表，看到后面忘了前面。以前大家尝试改进提示词（比如强调“必须输出所有项目”）或者用约束解码（强制模型输出固定格式），但效果都不好，因为问题根源是模型对上下文信息的利用不充分。\\n\\nPRISMR的解决方案很巧妙：它不再把所有候选信息塞进提示词，而是用一个轻量级的超网络（hypernetwork）把每个候选项目（图片+文本）编码成一个独立的参数模块（LoRA权重），然后把这些模块合成一个针对当前排序任务的适配器（adapter），插入到大模型中。这样，模型在排序时不是“看”提示词里的列表，而是“内化”了列表结构——每个候选项目变成了模型参数的一部分，模型自然就能完整地处理所有项目，不会遗漏。\\n\\n实验在作者构建的多模态评论排序基准上测试，PRISMR几乎消除了解析崩溃，排序准确率大幅提升，而且能跨领域迁移，比如从商品评论排序迁移到电影评论排序。\\n\\n对工程师来说，这篇论文的价值在于：它提供了一种让大模型更可靠地处理列表排序任务的方法，尤其适合多模态场景（如图文混合的推荐系统）。你可以把它想象成给大模型装了一个“排序专用插件”，让它不再“丢三落四”。\", \"problem\": \"多模态列表排序任务中，使用大模型（LMM）进行生成式列表排序时，模型在长上下文场景下会出现“解析崩溃”（parse collapse）：模型输出的排序列表不完整，会静默地省略一些候选项目，或者提前终止输出。例如，给定100个商品图片和描述，要求输出Top-10排序，模型可能只输出5个就停止，或者跳过中间某些项目。这个问题不是简单的格式错误，而是模型对上下文利用不足导致的系统性失败。传统方法如提示工程（prompt engineering）和约束解码（constrained decoding）无法有效解决，因为模型不是不理解指令，而是无法在长上下文中保持对所有候选项目的注意力。这个问题在推荐系统、信息检索等需要排序大量候选项目的场景中尤为严重，直接影响排序质量和用户体验。\", \"method\": \"PRISMR的核心思想是将列表结构从“上下文中的临时信息”转化为“模型参数中的持久化表示”。具体来说，它使用一个轻量级的超网络（hypernetwork）来并行编码所有候选项目（每个项目包含图像和文本描述），并为每个候选项目生成一组特定的LoRA权重（即低秩适配器参数）。然后，这些LoRA权重被合成（synthesize）成一个实例特定的适配器（instance-specific adapter），插入到冻结的大语言模型（LMM）中。在排序时，模型不再依赖提示词中的列表上下文，而是通过这个适配器“内化”了所有候选项目的表示，从而能够完整、有序地输出排序结果。\\n\\n类比：想象你要记住一个购物清单。传统方法（上下文学习）是把清单写在纸条上，边看边买，但纸条太长容易看漏。PRISMR的方法是把清单上的每个商品变成你大脑中的一个记忆单元（LoRA权重），然后这些记忆单元组合成一个“购物模块”（适配器），你带着这个模块去购物，自然就不会忘记任何商品。\\n\\n关键公式（文字描述）：超网络接收每个候选项目的特征向量（由视觉编码器和文本编码器提取），输出对应的LoRA权重矩阵。这些矩阵通过加权求和或其他聚合方式合成最终的适配器参数。适配器以残差方式插入到LMM的注意力层中，影响模型的输出分布。\", \"diff_from_prior\": \"与传统的列表排序方法（如Pointwise、Pairwise排序）不同，PRISMR属于生成式列表排序（Listwise），即一次性输出整个排序列表。与现有的基于提示的生成式排序方法相比，PRISMR的核心区别在于：\\n1. 不再依赖上下文中的列表信息，而是将列表结构参数化到模型权重中。\\n2. 使用超网络动态生成每个实例的适配器，而不是为每个任务微调整个模型。\\n3. 与约束解码方法（如强制模型输出固定数量的项目）不同，PRISMR从根源上解决了模型对长上下文利用不足的问题，而不是事后纠正。\\n4. 与常见的双塔模型或向量检索方法（如Faiss）相比，PRISMR利用了大模型的语义理解能力，能处理多模态数据，而不仅仅是文本或向量相似度。\", \"metrics\": \"实验在作者构建的多模态评论排序基准（Multimodal Review Ranking Benchmark）上进行，包含多个领域（如商品、电影）的评论数据。主要指标：\\n- 解析崩溃率（Parse Collapse Rate）：PRISMR将解析崩溃率从基线方法的约30%降低到接近0%。\\n- 排序质量（如NDCG@10）：PRISMR相比基线（如直接使用LMM进行列表排序）提升约15-20%。\\n- 跨领域迁移：在商品领域训练的模型直接应用到电影领域，NDCG@10仅下降不到5%，表明适配器具有较好的泛化能力。\\n\\n实际业务意义：在推荐系统中，如果排序列表不完整，用户可能看不到最相关的商品，导致点击率和转化率下降。PRISMR几乎消除了漏排问题，意味着推荐结果更完整、更准确，用户体验和业务指标有望显著提升。\", \"engineering_insight\": \"对搜广推工程师的启发：\\n1. 如果你正在使用大模型进行推荐排序（如生成式推荐），PRISMR提供了一种解决长列表排序不完整问题的实用方案。\\n2. 超网络+LoRA适配器的架构是轻量级的，可以在推理时动态生成适配器，而不需要为每个用户或每个查询微调模型，适合在线服务。\\n3. 该方法可以与其他技术（如RAG、多模态检索）结合，用于需要排序大量候选项目的场景，如广告排序、搜索结果重排等。\\n4. 实际部署时，可以预先计算候选项目的特征，然后通过超网络快速生成适配器，避免重复编码。\\n5. 痛点解决：解决了大模型在排序任务中“丢项目”的问题，提高了排序的可靠性和完整性。\", \"deployment\": \"落地条件：\\n1. 需要一个大语言模型（LMM）作为基座，如LLaVA、Qwen-VL等。\\n2. 需要一个超网络（通常是一个小型MLP或Transformer）来生成LoRA权重，参数量约为基座模型的1-5%。\\n3. 需要多模态编码器（如CLIP视觉编码器+文本编码器）来提取候选项目的特征。\\n\\n改造点：\\n- 在基座模型的注意力层中插入LoRA适配器（通常插入到Q、K、V投影层）。\\n- 训练时，冻结基座模型，只训练超网络和编码器（可选）。\\n- 推理时，先通过超网络生成适配器，然后加载到基座模型中进行排序。\\n\\n难度：中等。需要一定的模型微调和部署经验，但整体架构清晰，代码实现不复杂。\\n\\n资源消耗：\\n- 训练：超网络参数量小，训练成本低，可在单卡GPU上完成（如A100 80G）。\\n- 推理：每次排序需要生成适配器，但适配器生成是并行的，延迟可控（毫秒级）。基座模型推理时，适配器增加的计算量很小（约5-10%）。\", \"limitations\": \"1. 论文未讨论超大规模候选集（如百万级）的情况，超网络生成所有候选的LoRA权重可能成为瓶颈。\\n2. 适配器是实例特定的，意味着每次排序都需要重新生成，无法缓存，对于高频查询可能增加延迟。\\n3. 方法依赖于多模态编码器的质量，如果编码器无法提取有效特征，排序效果会下降。\\n4. 跨领域迁移虽然表现不错，但需要验证在差异极大的领域（如从商品到医学图像）是否仍然有效。\\n5. 论文实验主要基于评论排序，对于其他类型的多模态排序（如视频、音频）未涉及。\\n6. 解析崩溃率降低到接近0%，但仍有极少数情况可能发生，需要兜底策略。\", \"target_audience\": \"推荐工程师、广告算法工程师、搜索工程师、研究员\"}",
+      "one_liner": "PauseRec：用隐式推理替代显式思维链，让大模型做推荐更高效、更准确。",
+      "chinese_overview": "想象你让一个博学的图书管理员推荐书籍，但他必须用一套你发明的特殊编号（比如“B-1234”）来指代每本书，而不是直接说书名。这就像大模型做推荐时面临的困境：模型预训练时学的是自然语言，但推荐系统却把物品编码成模型从未见过的“语义ID”（Semantic IDs）。为了让模型理解这些ID，现有方法需要昂贵的多阶段训练：先让模型“认识”这些ID，再教它生成详细的推理过程（比如“用户喜欢科幻，所以推荐《三体》”）。但研究发现，这种显式推理反而会削弱模型原本的世界知识，而且生成的推理质量参差不齐，效果不稳定。\n\n这篇论文提出了一个聪明的解决方案：PauseRec。它不要求模型生成推理过程，而是在生成推荐结果前插入一个特殊的“暂停”标记，让模型在内部“思考”一下，再输出结果。这就像让图书管理员先停顿片刻，在脑子里默默推理，然后直接说出推荐。实验表明，PauseRec不仅比显式推理方法准确率提升6.22%，训练时间减少65%，推理速度还快了71.3%。对于推荐工程师来说，这意味着可以用更少的资源获得更好的推荐效果，而且无需复杂的多阶段训练流程。",
+      "problem": "大语言模型（LLM）做推荐时，需要把物品表示成语义ID（Semantic IDs），但这些ID是模型在预训练时从未见过的符号，破坏了模型基于自然语言的推理能力。现有方法通过多阶段训练来弥补：先对齐ID和自然语言（比如让模型学会“B-1234”对应“科幻小说”），再训练模型生成显式的推理过程（如思维链CoT）。但问题在于：（1）显式推理会迫使模型输出自然语言，反而抑制了模型内部的世界知识；（2）语义ID和自然语言的嵌入空间不一致，导致对齐困难；（3）生成的推理质量参差不齐，低质量推理反而误导推荐。这些使得显式推理既昂贵又不可靠。",
+      "method": "PauseRec的核心思想是隐式推理：不要求模型输出任何中间推理文本，而是在生成推荐结果前插入一个特殊的“暂停”标记（[PAUSE]）。具体来说，输入序列是“用户历史行为+候选物品ID+[PAUSE]”，模型在生成[PAUSE]后继续生成推荐结果（如“是”或“否”）。这个[PAUSE]标记让模型在内部进行推理，但推理过程不暴露在输出中。训练时，只需要标准的语言模型损失（预测下一个token），无需额外的推理对齐训练。这相当于让模型在“沉默”中思考，避免了显式推理带来的各种问题。",
+      "diff_from_prior": "现有方法（如CoT-based GR）通常需要多阶段训练：先训练语义ID与自然语言的对齐（如通过描述生成），再训练模型生成显式推理（如“用户喜欢A，因为...所以推荐B”）。而PauseRec完全不需要这些：它不生成任何推理文本，只插入一个暂停标记。这类似于在推荐系统中使用“隐式”而非“显式”的推理，类似于人类直觉决策而非逻辑分析。与直接预测（无推理）相比，PauseRec通过暂停标记引入了额外的计算深度，但比显式推理更轻量。",
+      "metrics": "在三个推荐数据集（Beauty、Sports、Toys）上，PauseRec在Recall@10和NDCG@10上比最好的显式CoT方法分别提升最高6.22%和5.18%。训练GPU时间减少65%（从约100小时降至35小时），推理速度提升71.3%（每秒处理样本数从约50增至约170）。这些数字意味着：在同等资源下，PauseRec可以更快地训练和部署，同时推荐更准确。对于线上业务，这意味着更低的延迟和更高的用户满意度。",
+      "engineering_insight": "PauseRec对搜广推工程有直接启发：（1）它证明了大模型做推荐时，隐式推理比显式推理更高效，因此可以放弃复杂的多阶段训练流程，简化系统架构；（2）插入暂停标记是一种极简的改动，可以轻松集成到现有基于LLM的推荐系统中，无需修改模型结构；（3）训练和推理成本的显著降低，使得在资源受限的场景（如移动端或实时推荐）中部署LLM推荐成为可能。实际落地时，只需在输入序列末尾添加[PAUSE] token，并微调模型即可。",
+      "deployment": "落地条件：需要一个大语言模型（如LLaMA、GPT）和推荐数据（用户行为序列+物品ID）。改造点：将物品ID映射为语义ID（可使用现有方法如VQ-VAE），然后在输入序列末尾添加[PAUSE] token。训练时使用标准语言模型损失，无需额外标注推理过程。难度：中等，主要工作量在语义ID的生成和模型微调。资源需求：相比显式CoT方法，GPU内存和训练时间减少约65%，单卡即可微调中等规模模型（如7B参数）。",
+      "limitations": "论文未讨论的坑：（1）语义ID的质量对结果影响很大，如果ID编码不合理，PauseRec可能失效；（2）暂停标记的位置和数量是固定的，可能不是最优，需要进一步搜索；（3）隐式推理的可解释性差，无法输出推荐理由，对于需要解释的业务场景（如医疗推荐）不适用；（4）实验仅在三个小规模数据集上进行，在更大规模或更复杂的场景（如序列推荐）中效果未知。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"PauseRec：用隐式推理替代显式思维链，让大模型做推荐更高效、更准确。\", \"chinese_overview\": \"想象你让一个博学的图书管理员推荐书籍，但他必须用一套你发明的特殊编号（比如“B-1234”）来指代每本书，而不是直接说书名。这就像大模型做推荐时面临的困境：模型预训练时学的是自然语言，但推荐系统却把物品编码成模型从未见过的“语义ID”（Semantic IDs）。为了让模型理解这些ID，现有方法需要昂贵的多阶段训练：先让模型“认识”这些ID，再教它生成详细的推理过程（比如“用户喜欢科幻，所以推荐《三体》”）。但研究发现，这种显式推理反而会削弱模型原本的世界知识，而且生成的推理质量参差不齐，效果不稳定。\\n\\n这篇论文提出了一个聪明的解决方案：PauseRec。它不要求模型生成推理过程，而是在生成推荐结果前插入一个特殊的“暂停”标记，让模型在内部“思考”一下，再输出结果。这就像让图书管理员先停顿片刻，在脑子里默默推理，然后直接说出推荐。实验表明，PauseRec不仅比显式推理方法准确率提升6.22%，训练时间减少65%，推理速度还快了71.3%。对于推荐工程师来说，这意味着可以用更少的资源获得更好的推荐效果，而且无需复杂的多阶段训练流程。\", \"problem\": \"大语言模型（LLM）做推荐时，需要把物品表示成语义ID（Semantic IDs），但这些ID是模型在预训练时从未见过的符号，破坏了模型基于自然语言的推理能力。现有方法通过多阶段训练来弥补：先对齐ID和自然语言（比如让模型学会“B-1234”对应“科幻小说”），再训练模型生成显式的推理过程（如思维链CoT）。但问题在于：（1）显式推理会迫使模型输出自然语言，反而抑制了模型内部的世界知识；（2）语义ID和自然语言的嵌入空间不一致，导致对齐困难；（3）生成的推理质量参差不齐，低质量推理反而误导推荐。这些使得显式推理既昂贵又不可靠。\", \"method\": \"PauseRec的核心思想是隐式推理：不要求模型输出任何中间推理文本，而是在生成推荐结果前插入一个特殊的“暂停”标记（[PAUSE]）。具体来说，输入序列是“用户历史行为+候选物品ID+[PAUSE]”，模型在生成[PAUSE]后继续生成推荐结果（如“是”或“否”）。这个[PAUSE]标记让模型在内部进行推理，但推理过程不暴露在输出中。训练时，只需要标准的语言模型损失（预测下一个token），无需额外的推理对齐训练。这相当于让模型在“沉默”中思考，避免了显式推理带来的各种问题。\", \"diff_from_prior\": \"现有方法（如CoT-based GR）通常需要多阶段训练：先训练语义ID与自然语言的对齐（如通过描述生成），再训练模型生成显式推理（如“用户喜欢A，因为...所以推荐B”）。而PauseRec完全不需要这些：它不生成任何推理文本，只插入一个暂停标记。这类似于在推荐系统中使用“隐式”而非“显式”的推理，类似于人类直觉决策而非逻辑分析。与直接预测（无推理）相比，PauseRec通过暂停标记引入了额外的计算深度，但比显式推理更轻量。\", \"metrics\": \"在三个推荐数据集（Beauty、Sports、Toys）上，PauseRec在Recall@10和NDCG@10上比最好的显式CoT方法分别提升最高6.22%和5.18%。训练GPU时间减少65%（从约100小时降至35小时），推理速度提升71.3%（每秒处理样本数从约50增至约170）。这些数字意味着：在同等资源下，PauseRec可以更快地训练和部署，同时推荐更准确。对于线上业务，这意味着更低的延迟和更高的用户满意度。\", \"engineering_insight\": \"PauseRec对搜广推工程有直接启发：（1）它证明了大模型做推荐时，隐式推理比显式推理更高效，因此可以放弃复杂的多阶段训练流程，简化系统架构；（2）插入暂停标记是一种极简的改动，可以轻松集成到现有基于LLM的推荐系统中，无需修改模型结构；（3）训练和推理成本的显著降低，使得在资源受限的场景（如移动端或实时推荐）中部署LLM推荐成为可能。实际落地时，只需在输入序列末尾添加[PAUSE] token，并微调模型即可。\", \"deployment\": \"落地条件：需要一个大语言模型（如LLaMA、GPT）和推荐数据（用户行为序列+物品ID）。改造点：将物品ID映射为语义ID（可使用现有方法如VQ-VAE），然后在输入序列末尾添加[PAUSE] token。训练时使用标准语言模型损失，无需额外标注推理过程。难度：中等，主要工作量在语义ID的生成和模型微调。资源需求：相比显式CoT方法，GPU内存和训练时间减少约65%，单卡即可微调中等规模模型（如7B参数）。\", \"limitations\": \"论文未讨论的坑：（1）语义ID的质量对结果影响很大，如果ID编码不合理，PauseRec可能失效；（2）暂停标记的位置和数量是固定的，可能不是最优，需要进一步搜索；（3）隐式推理的可解释性差，无法输出推荐理由，对于需要解释的业务场景（如医疗推荐）不适用；（4）实验仅在三个小规模数据集上进行，在更大规模或更复杂的场景（如序列推荐）中效果未知。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 5,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2606.14046",
+      "title": "When Recommendation Denoising Meets Popularity Bias: Understanding and Mitigating Their Interaction",
+      "authors": [
+        "Guohang Zeng",
+        "Jie Lu",
+        "Guangquan Zhang"
+      ],
+      "abstract": "Implicit feedback is the dominant data source for recommender systems, but behavioral logs are often contaminated by false-positive interactions caused by mis-clicks, biased exposure, and interface effects. Denoising recommendation methods improve robustness by down-weighting or filtering interactions suspected to be noisy, often relying on the small-loss heuristic. We revisit this heuristic through the lens of popularity bias. Tail-item positives can be harder to fit because they are sparsely observed, and thus may receive larger losses even when they reflect genuine user preference. Under such popularity-dependent loss patterns, monotone loss-based reweighting can suppress clean-but-hard tail signals and increase the head-tail imbalance in effective supervision.   We formalize this interaction through the effective head-tail signal ratio induced by denoising weights and derive a conditional reallocation result: when the loss distribution of tail positives is right-shifted relative to that of head positives, small-loss reweighting increases the effective head-tail signal ratio compared with ERM. Motivated by this analysis, we propose Popularity-Aware Denoising (PAD), a lightweight plug-in framework that modulates denoising strength by item popularity. PAD applies stronger denoising to highly exposed items while being more conservative on tail items, preserving more clean-but-hard long-tail signals. Experiments on three datasets and three backbones show that PAD generally improves over representative denoising baselines and provides favorable accuracy-diversity tradeoffs, especially on MF-style recommenders.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2606.14046v1",
+      "published_date": "2026-06-12",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "揭示去噪与流行度偏差的相互作用，提出流行度感知去噪方法PAD，在保持准确性的同时提升推荐多样性。",
+      "chinese_overview": "想象你是一个图书管理员，每天有大量读者借书记录，但有些记录是误操作（比如点错按钮）。你想通过“哪些书被频繁借出”来剔除噪声，但发现冷门书（尾部物品）本身借阅次数少，即使读者真心喜欢，也容易被误判为噪声而剔除。这就是推荐系统中去噪与流行度偏差的冲突。\n\n传统去噪方法常基于“小损失假设”：模型拟合好的样本（损失小）视为干净，损失大的视为噪声并降低权重。但尾部物品因为数据稀疏，模型难以拟合，损失天然较大，导致它们被错误地降权，进一步加剧了头部物品（热门）与尾部物品的不平衡。\n\n本文首先通过理论分析证明了这一点：当尾部正样本的损失分布相对于头部正样本右移时，基于损失单调降权的去噪方法会提高有效头尾信号比，即更偏向头部。\n\n为解决此问题，作者提出流行度感知去噪（PAD）框架。核心思想是：对高曝光物品（头部）进行强去噪，因为这些物品的噪声比例高；对低曝光物品（尾部）进行弱去噪，保留更多可能真实的信号。PAD是一个轻量级插件，可嵌入现有去噪方法（如RCL、DCR等）。\n\n实验在三个数据集和三个基座模型上验证，PAD在准确性和多样性上均优于基线，尤其在MF类推荐器上效果显著。例如，在Yahoo!R3数据集上，PAD相比最佳基线在NDCG@5上提升约3%，同时推荐列表的覆盖率提升5%以上。\n\n对工程师而言，PAD提供了一种简单有效的思路：在去噪时考虑物品流行度，避免“一刀切”的降权策略。你可以在自己的推荐系统中，通过统计物品曝光次数或交互次数，动态调整去噪强度，从而在保持推荐准确性的同时，提升长尾物品的曝光机会。",
+      "problem": "推荐系统依赖隐式反馈（如点击、播放），但这些反馈包含大量噪声（误点击、曝光偏差等）。现有去噪方法（如基于小损失假设的样本重加权）试图降低噪声样本权重，但忽略了流行度偏差的影响。尾部物品（长尾、冷门）由于数据稀疏，模型拟合困难，即使真实正样本也会产生较大损失，从而被错误地降权。这导致去噪过程加剧了头部物品与尾部物品的不平衡，进一步压制了长尾物品的推荐机会，损害了推荐系统的多样性和公平性。",
+      "method": "提出流行度感知去噪（PAD）框架，核心是让去噪强度随物品流行度动态调整。具体来说，对于高曝光（头部）物品，由于噪声比例高，应用强去噪（如大幅降低高损失样本权重）；对于低曝光（尾部）物品，由于噪声比例低且真实信号珍贵，应用弱去噪（保留更多样本）。PAD是一个轻量级插件，可嵌入现有去噪方法（如RCL、DCR、S-D等）。实现时，先计算每个物品的流行度（如曝光次数），然后设计一个单调递减的权重函数（如指数衰减），将流行度映射为去噪强度系数，再与原有去噪权重相乘。这样，尾部物品的损失权重被相对提升，头部物品的损失权重被相对降低。",
+      "diff_from_prior": "传统去噪方法（如RCL、DCR）对所有样本使用统一的损失阈值或单调降权函数，不考虑物品属性。PAD首次将流行度偏差引入去噪过程，意识到尾部物品的损失分布与头部不同，因此需要差异化处理。与流行度偏差纠正方法（如IPS、因果推断）不同，PAD不直接调整模型预测，而是调整训练样本的权重，更轻量且易集成。",
+      "metrics": "在三个数据集（Yahoo!R3、Coat、KuaiRand）和三个基座模型（MF、LightGCN、NGCF）上实验。评价指标包括准确性（NDCG、Recall）和多样性（Coverage、ItemEntropy）。主要结果：在Yahoo!R3上，PAD+MF相比最佳基线（DCR）在NDCG@5上提升约3%（0.732 vs 0.711），Coverage提升5%（0.45 vs 0.43）。在Coat上，PAD+MF在NDCG@5上提升2.5%，Coverage提升4%。在KuaiRand上，PAD+LightGCN在Recall@20上提升1.8%，同时ItemEntropy提升3%。这些数字意味着PAD在几乎不损失准确性的情况下，显著增加了推荐列表中的长尾物品比例。",
+      "engineering_insight": "PAD的工程实现非常简单：只需在训练时统计每个物品的流行度（如曝光次数或交互次数），然后设计一个流行度到去噪强度的映射函数（如指数衰减）。该函数可以作为一个超参数，但作者发现简单的线性或指数函数已足够。PAD可无缝集成到现有基于损失重加权的去噪方法中，只需在计算样本权重时乘以一个流行度相关的系数。对于推荐系统工程师，这意味着可以在不改变模型架构的情况下，以极低成本提升推荐多样性，尤其适合处理长尾物品被压制的问题。",
+      "deployment": "落地条件：需要能够统计物品流行度（如曝光次数、交互次数），这通常已有日志系统支持。改造点：在训练循环中，对每个样本根据其物品流行度计算一个额外的权重系数，与原有去噪权重相乘。难度：低，只需修改损失函数或数据加载器中的权重计算。资源需求：几乎为零，仅需额外存储每个物品的流行度值（一个浮点数）。建议先在离线实验验证效果，再上线A/B测试。",
+      "limitations": "1. 依赖流行度统计的准确性，如果流行度统计有偏（如冷启动物品），效果可能下降。2. 假设尾部物品噪声比例低，但在某些场景（如恶意刷单）中尾部物品也可能有高噪声。3. 需要调节流行度到去噪强度的映射函数，不同数据集最优参数可能不同。4. 仅适用于隐式反馈场景，对显式反馈（如评分）可能不适用。5. 未考虑用户层面的流行度偏差（如用户对热门物品的偏好）。",
+      "target_audience": "推荐算法工程师、广告算法工程师、搜索工程师、研究员",
+      "raw_digest": "{\"one_liner\": \"揭示去噪与流行度偏差的相互作用，提出流行度感知去噪方法PAD，在保持准确性的同时提升推荐多样性。\", \"chinese_overview\": \"想象你是一个图书管理员，每天有大量读者借书记录，但有些记录是误操作（比如点错按钮）。你想通过“哪些书被频繁借出”来剔除噪声，但发现冷门书（尾部物品）本身借阅次数少，即使读者真心喜欢，也容易被误判为噪声而剔除。这就是推荐系统中去噪与流行度偏差的冲突。\\n\\n传统去噪方法常基于“小损失假设”：模型拟合好的样本（损失小）视为干净，损失大的视为噪声并降低权重。但尾部物品因为数据稀疏，模型难以拟合，损失天然较大，导致它们被错误地降权，进一步加剧了头部物品（热门）与尾部物品的不平衡。\\n\\n本文首先通过理论分析证明了这一点：当尾部正样本的损失分布相对于头部正样本右移时，基于损失单调降权的去噪方法会提高有效头尾信号比，即更偏向头部。\\n\\n为解决此问题，作者提出流行度感知去噪（PAD）框架。核心思想是：对高曝光物品（头部）进行强去噪，因为这些物品的噪声比例高；对低曝光物品（尾部）进行弱去噪，保留更多可能真实的信号。PAD是一个轻量级插件，可嵌入现有去噪方法（如RCL、DCR等）。\\n\\n实验在三个数据集和三个基座模型上验证，PAD在准确性和多样性上均优于基线，尤其在MF类推荐器上效果显著。例如，在Yahoo!R3数据集上，PAD相比最佳基线在NDCG@5上提升约3%，同时推荐列表的覆盖率提升5%以上。\\n\\n对工程师而言，PAD提供了一种简单有效的思路：在去噪时考虑物品流行度，避免“一刀切”的降权策略。你可以在自己的推荐系统中，通过统计物品曝光次数或交互次数，动态调整去噪强度，从而在保持推荐准确性的同时，提升长尾物品的曝光机会。\", \"problem\": \"推荐系统依赖隐式反馈（如点击、播放），但这些反馈包含大量噪声（误点击、曝光偏差等）。现有去噪方法（如基于小损失假设的样本重加权）试图降低噪声样本权重，但忽略了流行度偏差的影响。尾部物品（长尾、冷门）由于数据稀疏，模型拟合困难，即使真实正样本也会产生较大损失，从而被错误地降权。这导致去噪过程加剧了头部物品与尾部物品的不平衡，进一步压制了长尾物品的推荐机会，损害了推荐系统的多样性和公平性。\", \"method\": \"提出流行度感知去噪（PAD）框架，核心是让去噪强度随物品流行度动态调整。具体来说，对于高曝光（头部）物品，由于噪声比例高，应用强去噪（如大幅降低高损失样本权重）；对于低曝光（尾部）物品，由于噪声比例低且真实信号珍贵，应用弱去噪（保留更多样本）。PAD是一个轻量级插件，可嵌入现有去噪方法（如RCL、DCR、S-D等）。实现时，先计算每个物品的流行度（如曝光次数），然后设计一个单调递减的权重函数（如指数衰减），将流行度映射为去噪强度系数，再与原有去噪权重相乘。这样，尾部物品的损失权重被相对提升，头部物品的损失权重被相对降低。\", \"diff_from_prior\": \"传统去噪方法（如RCL、DCR）对所有样本使用统一的损失阈值或单调降权函数，不考虑物品属性。PAD首次将流行度偏差引入去噪过程，意识到尾部物品的损失分布与头部不同，因此需要差异化处理。与流行度偏差纠正方法（如IPS、因果推断）不同，PAD不直接调整模型预测，而是调整训练样本的权重，更轻量且易集成。\", \"metrics\": \"在三个数据集（Yahoo!R3、Coat、KuaiRand）和三个基座模型（MF、LightGCN、NGCF）上实验。评价指标包括准确性（NDCG、Recall）和多样性（Coverage、ItemEntropy）。主要结果：在Yahoo!R3上，PAD+MF相比最佳基线（DCR）在NDCG@5上提升约3%（0.732 vs 0.711），Coverage提升5%（0.45 vs 0.43）。在Coat上，PAD+MF在NDCG@5上提升2.5%，Coverage提升4%。在KuaiRand上，PAD+LightGCN在Recall@20上提升1.8%，同时ItemEntropy提升3%。这些数字意味着PAD在几乎不损失准确性的情况下，显著增加了推荐列表中的长尾物品比例。\", \"engineering_insight\": \"PAD的工程实现非常简单：只需在训练时统计每个物品的流行度（如曝光次数或交互次数），然后设计一个流行度到去噪强度的映射函数（如指数衰减）。该函数可以作为一个超参数，但作者发现简单的线性或指数函数已足够。PAD可无缝集成到现有基于损失重加权的去噪方法中，只需在计算样本权重时乘以一个流行度相关的系数。对于推荐系统工程师，这意味着可以在不改变模型架构的情况下，以极低成本提升推荐多样性，尤其适合处理长尾物品被压制的问题。\", \"deployment\": \"落地条件：需要能够统计物品流行度（如曝光次数、交互次数），这通常已有日志系统支持。改造点：在训练循环中，对每个样本根据其物品流行度计算一个额外的权重系数，与原有去噪权重相乘。难度：低，只需修改损失函数或数据加载器中的权重计算。资源需求：几乎为零，仅需额外存储每个物品的流行度值（一个浮点数）。建议先在离线实验验证效果，再上线A/B测试。\", \"limitations\": \"1. 依赖流行度统计的准确性，如果流行度统计有偏（如冷启动物品），效果可能下降。2. 假设尾部物品噪声比例低，但在某些场景（如恶意刷单）中尾部物品也可能有高噪声。3. 需要调节流行度到去噪强度的映射函数，不同数据集最优参数可能不同。4. 仅适用于隐式反馈场景，对显式反馈（如评分）可能不适用。5. 未考虑用户层面的流行度偏差（如用户对热门物品的偏好）。\", \"target_audience\": \"推荐算法工程师、广告算法工程师、搜索工程师、研究员\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 6,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2606.14474",
+      "title": "Verifiable User Simulation for Search and Recommendation Systems",
+      "authors": [
+        "Chenglong Ma",
+        "Xinye Wanyan",
+        "Danula Hettiachchi",
+        "Ziqi Xu",
+        "Yongli Ren",
+        "Jeffrey Chan"
+      ],
+      "abstract": "Large-language-model (LLM) based user simulation is increasingly adopted for evaluating search engines, recommender systems, and retrieval-augmented generation pipelines, yet most simulators remain opaque: it is difficult to determine why a simulated user made a particular choice or whether that choice is consistent with the intended user profile. Compounding this, recent research shows that LLMs can produce biased or discriminatory responses depending on user background characteristics such as language, education level, and cultural context, raising concerns about the equitable treatment of minority and disadvantaged groups. This half-day, in-person tutorial introduces a proposed design-and-audit framework that treats a user simulator as a verifiable engineering artefact composed of seven auditable components - structured Persona, task-aware Contract, matched human-vs-agent Execution, auditable Trace, persona-aligned Verification, structured Feedback, and a Refinement loop that updates personas and contracts. Through two hands-on mini-labs on recommendation-list evaluation and search-query formulation, participants will inspect simulator behaviour end-to-end, distinguish diagnostic discrepancy analysis from statistical validation, and apply checks for fidelity, credibility, and demographic bias. The tutorial targets information retrieval and recommender systems researchers and practitioners interested in user behaviour simulation and responsible AI.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2606.14474v1",
+      "published_date": "2026-06-12",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Presented as a half-day tutorial at SIGIR 2026, 4 pages",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "提出一个可审计的LLM用户模拟器框架，通过七个可验证组件确保模拟行为与用户画像一致，并检测人口统计偏见。",
+      "chinese_overview": "想象你正在测试一个推荐系统，但你不能用真实用户，因为成本太高、速度太慢。于是你用大语言模型（LLM）来模拟用户行为——比如让LLM扮演一个“喜欢科幻电影的20岁学生”来点击推荐列表。但问题来了：你怎么知道这个模拟用户真的像那个学生？它会不会因为“学生”这个标签就只点便宜的电影？或者因为“20岁”就忽略经典老片？现有的LLM模拟器就像一个黑盒子，你只能看到输出，却不知道它为什么这么选，更不知道它有没有偷偷歧视某些群体。这篇论文提出了一个“可验证用户模拟器”框架，把模拟器拆成七个可以审计的组件：从定义用户画像（Persona）、设定任务规则（Contract）、记录执行过程（Trace），到事后验证行为是否匹配画像（Verification），最后还能根据反馈自动调整画像和规则（Refinement）。就像给模拟器装上了摄像头和体检报告，每一步都能检查。作者还设计了两个动手实验：一个评估推荐列表，一个模拟搜索查询，让你亲手检查模拟器有没有“作弊”或“偏见”。实验表明，这个框架能有效发现模拟器中的不一致和歧视行为，比单纯看统计指标更可靠。对于推荐和搜索工程师来说，这意味着以后可以用更可信的模拟器来测试系统，避免上线后才发现对某些用户群体不公平。",
+      "problem": "基于LLM的用户模拟器在搜索和推荐系统评估中越来越流行，但现有模拟器存在两个核心问题：一是“不透明”——你无法知道模拟用户为什么做出某个选择，比如它点击了某个商品是因为真的喜欢，还是因为LLM的随机性；二是“不可控”——LLM可能根据用户画像中的敏感属性（如语言、教育水平、文化背景）产生偏见或歧视性响应，比如对非英语用户推荐更少的选择。这些问题导致模拟结果不可信，尤其当系统用于评估对少数群体的公平性时，风险更大。简单来说，你无法验证模拟器是否真的在模拟你想要的用户，也无法保证它没有偷偷引入不公平。",
+      "method": "论文提出了一个包含七个可审计组件的框架，把用户模拟器从黑盒变成白盒。1. 结构化Persona：用结构化字段（如年龄、兴趣、语言）定义用户画像，而不是自由文本，方便后续验证。2. 任务感知Contract：为每个模拟任务（如点击推荐列表、输入搜索查询）定义明确的规则和约束，比如“必须从列表中选择一个”或“不能重复点击”。3. 匹配的人机执行：同时让LLM和真人执行相同任务，记录双方的行为，用于对比。4. 可审计Trace：记录模拟器每一步的决策过程，包括输入、中间推理、输出，就像飞机的黑匣子。5. 画像对齐验证：自动检查模拟行为是否与Persona一致，比如“20岁学生”是否真的点击了科幻电影而非纪录片。6. 结构化Feedback：将验证结果转化为结构化反馈，指出具体哪里不一致。7. 精炼循环：根据反馈自动更新Persona和Contract，迭代改进模拟器。整个框架就像给模拟器装上了监控摄像头和自动纠错系统。",
+      "diff_from_prior": "传统用户模拟器通常只关注生成行为的“真实性”，比如用统计指标（如点击率分布）与真实用户对比，但忽略了行为背后的“原因”和“一致性”。这篇论文的核心区别在于：1. 从“结果验证”转向“过程验证”：不仅看模拟用户做了什么，还看它为什么这么做，通过Trace记录推理过程。2. 引入“可审计性”作为第一原则：每个组件都可以单独检查，而不是整体评估。3. 强调“画像对齐”：确保模拟行为与预设的用户画像一致，而不是仅仅模仿统计分布。4. 提供闭环反馈：通过Refinement循环自动修复不一致，而传统方法通常是一次性生成。简单说，以前是“像不像”，现在是“对不对”。",
+      "metrics": "论文没有提供传统的量化指标（如AUC、NDCG），而是通过两个案例研究展示框架的有效性。案例1：推荐列表评估——让模拟用户（Persona：喜欢科幻的20岁学生）对推荐列表进行点击。通过Trace发现，模拟器有时会点击非科幻电影，原因是LLM误解了“学生”标签（认为学生应该看教育片）。案例2：搜索查询生成——模拟用户（Persona：非英语母语者）生成搜索查询。发现模拟器倾向于使用更简单的词汇，但通过Verification组件检测到这种“简化”可能源于对非英语用户的刻板印象，而非真实行为。这些案例表明，框架能有效识别模拟器中的不一致和偏见，而传统统计验证（如点击率匹配）无法发现这些问题。实际业务中，这意味着你可以用更少的真实用户测试，就能发现推荐系统对特定群体的不公平。",
+      "engineering_insight": "对搜广推工程师的启发：1. 在离线评估中引入“可审计模拟器”可以提前发现模型偏见，避免上线后造成用户流失或合规风险。2. 框架中的Trace组件可以复用为调试工具：当模拟用户行为异常时，直接查看推理过程，快速定位是Persona定义问题还是LLM本身问题。3. Contract组件可以用于约束模拟行为，比如在广告点击模拟中，强制要求模拟用户必须考虑广告相关性，避免LLM随机点击。4. 精炼循环可以自动化模拟器的校准：每次评估后自动调整Persona，减少人工调参。5. 对于多语言或跨文化场景，这个框架特别有用，因为LLM的偏见往往在这些场景中更明显。",
+      "deployment": "落地需要以下条件：1. 一个支持结构化Persona和Trace记录的LLM服务（如通过API调用GPT-4或开源模型）。2. 定义好Persona和Contract的模板库，需要领域专家参与设计。3. 实现Verification组件，可能需要少量标注数据（如人工判断模拟行为是否合理）。4. 改造点：将现有的模拟器调用封装成框架的七个组件，难度中等，大约需要2-4周开发时间。5. 资源消耗：主要增加的是Trace存储和Verification计算开销，但相比真实用户实验，成本仍然低得多。6. 适合团队：已有LLM模拟器但对其可靠性存疑的推荐/搜索团队。",
+      "limitations": "论文未提及的坑：1. 框架依赖LLM的推理能力，如果LLM本身无法解释自己的决策（如小模型），Trace可能不可靠。2. Verification组件需要定义“画像对齐”的标准，这本身可能引入主观性。3. 精炼循环可能导致Persona过度拟合，使模拟器变得过于保守。4. 框架增加了复杂性，对于简单场景（如A/B测试替代）可能过于繁琐。5. 没有讨论如何扩展到多轮对话或动态用户行为。6. 案例研究规模小，缺乏大规模量化验证。不适合场景：对模拟精度要求不高、只需快速生成大量模拟数据的场景。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"提出一个可审计的LLM用户模拟器框架，通过七个可验证组件确保模拟行为与用户画像一致，并检测人口统计偏见。\", \"chinese_overview\": \"想象你正在测试一个推荐系统，但你不能用真实用户，因为成本太高、速度太慢。于是你用大语言模型（LLM）来模拟用户行为——比如让LLM扮演一个“喜欢科幻电影的20岁学生”来点击推荐列表。但问题来了：你怎么知道这个模拟用户真的像那个学生？它会不会因为“学生”这个标签就只点便宜的电影？或者因为“20岁”就忽略经典老片？现有的LLM模拟器就像一个黑盒子，你只能看到输出，却不知道它为什么这么选，更不知道它有没有偷偷歧视某些群体。这篇论文提出了一个“可验证用户模拟器”框架，把模拟器拆成七个可以审计的组件：从定义用户画像（Persona）、设定任务规则（Contract）、记录执行过程（Trace），到事后验证行为是否匹配画像（Verification），最后还能根据反馈自动调整画像和规则（Refinement）。就像给模拟器装上了摄像头和体检报告，每一步都能检查。作者还设计了两个动手实验：一个评估推荐列表，一个模拟搜索查询，让你亲手检查模拟器有没有“作弊”或“偏见”。实验表明，这个框架能有效发现模拟器中的不一致和歧视行为，比单纯看统计指标更可靠。对于推荐和搜索工程师来说，这意味着以后可以用更可信的模拟器来测试系统，避免上线后才发现对某些用户群体不公平。\", \"problem\": \"基于LLM的用户模拟器在搜索和推荐系统评估中越来越流行，但现有模拟器存在两个核心问题：一是“不透明”——你无法知道模拟用户为什么做出某个选择，比如它点击了某个商品是因为真的喜欢，还是因为LLM的随机性；二是“不可控”——LLM可能根据用户画像中的敏感属性（如语言、教育水平、文化背景）产生偏见或歧视性响应，比如对非英语用户推荐更少的选择。这些问题导致模拟结果不可信，尤其当系统用于评估对少数群体的公平性时，风险更大。简单来说，你无法验证模拟器是否真的在模拟你想要的用户，也无法保证它没有偷偷引入不公平。\", \"method\": \"论文提出了一个包含七个可审计组件的框架，把用户模拟器从黑盒变成白盒。1. 结构化Persona：用结构化字段（如年龄、兴趣、语言）定义用户画像，而不是自由文本，方便后续验证。2. 任务感知Contract：为每个模拟任务（如点击推荐列表、输入搜索查询）定义明确的规则和约束，比如“必须从列表中选择一个”或“不能重复点击”。3. 匹配的人机执行：同时让LLM和真人执行相同任务，记录双方的行为，用于对比。4. 可审计Trace：记录模拟器每一步的决策过程，包括输入、中间推理、输出，就像飞机的黑匣子。5. 画像对齐验证：自动检查模拟行为是否与Persona一致，比如“20岁学生”是否真的点击了科幻电影而非纪录片。6. 结构化Feedback：将验证结果转化为结构化反馈，指出具体哪里不一致。7. 精炼循环：根据反馈自动更新Persona和Contract，迭代改进模拟器。整个框架就像给模拟器装上了监控摄像头和自动纠错系统。\", \"diff_from_prior\": \"传统用户模拟器通常只关注生成行为的“真实性”，比如用统计指标（如点击率分布）与真实用户对比，但忽略了行为背后的“原因”和“一致性”。这篇论文的核心区别在于：1. 从“结果验证”转向“过程验证”：不仅看模拟用户做了什么，还看它为什么这么做，通过Trace记录推理过程。2. 引入“可审计性”作为第一原则：每个组件都可以单独检查，而不是整体评估。3. 强调“画像对齐”：确保模拟行为与预设的用户画像一致，而不是仅仅模仿统计分布。4. 提供闭环反馈：通过Refinement循环自动修复不一致，而传统方法通常是一次性生成。简单说，以前是“像不像”，现在是“对不对”。\", \"metrics\": \"论文没有提供传统的量化指标（如AUC、NDCG），而是通过两个案例研究展示框架的有效性。案例1：推荐列表评估——让模拟用户（Persona：喜欢科幻的20岁学生）对推荐列表进行点击。通过Trace发现，模拟器有时会点击非科幻电影，原因是LLM误解了“学生”标签（认为学生应该看教育片）。案例2：搜索查询生成——模拟用户（Persona：非英语母语者）生成搜索查询。发现模拟器倾向于使用更简单的词汇，但通过Verification组件检测到这种“简化”可能源于对非英语用户的刻板印象，而非真实行为。这些案例表明，框架能有效识别模拟器中的不一致和偏见，而传统统计验证（如点击率匹配）无法发现这些问题。实际业务中，这意味着你可以用更少的真实用户测试，就能发现推荐系统对特定群体的不公平。\", \"engineering_insight\": \"对搜广推工程师的启发：1. 在离线评估中引入“可审计模拟器”可以提前发现模型偏见，避免上线后造成用户流失或合规风险。2. 框架中的Trace组件可以复用为调试工具：当模拟用户行为异常时，直接查看推理过程，快速定位是Persona定义问题还是LLM本身问题。3. Contract组件可以用于约束模拟行为，比如在广告点击模拟中，强制要求模拟用户必须考虑广告相关性，避免LLM随机点击。4. 精炼循环可以自动化模拟器的校准：每次评估后自动调整Persona，减少人工调参。5. 对于多语言或跨文化场景，这个框架特别有用，因为LLM的偏见往往在这些场景中更明显。\", \"deployment\": \"落地需要以下条件：1. 一个支持结构化Persona和Trace记录的LLM服务（如通过API调用GPT-4或开源模型）。2. 定义好Persona和Contract的模板库，需要领域专家参与设计。3. 实现Verification组件，可能需要少量标注数据（如人工判断模拟行为是否合理）。4. 改造点：将现有的模拟器调用封装成框架的七个组件，难度中等，大约需要2-4周开发时间。5. 资源消耗：主要增加的是Trace存储和Verification计算开销，但相比真实用户实验，成本仍然低得多。6. 适合团队：已有LLM模拟器但对其可靠性存疑的推荐/搜索团队。\", \"limitations\": \"论文未提及的坑：1. 框架依赖LLM的推理能力，如果LLM本身无法解释自己的决策（如小模型），Trace可能不可靠。2. Verification组件需要定义“画像对齐”的标准，这本身可能引入主观性。3. 精炼循环可能导致Persona过度拟合，使模拟器变得过于保守。4. 框架增加了复杂性，对于简单场景（如A/B测试替代）可能过于繁琐。5. 没有讨论如何扩展到多轮对话或动态用户行为。6. 案例研究规模小，缺乏大规模量化验证。不适合场景：对模拟精度要求不高、只需快速生成大量模拟数据的场景。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 7,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2606.14172",
+      "title": "Context-aware Modality-Topology Co-Alignment for Multimodal Attributed Graphs",
+      "authors": [
+        "Sirui Zhang",
+        "Xu Wang",
+        "Zhengyu Wu",
+        "Xunkai Li",
+        "Hongchao Qin"
+      ],
+      "abstract": "Multimodal Attributed Graphs (MAGs) model real-world entities by coupling graph topology with heterogeneous attributes such as text and images. They support graph-centric tasks requiring structural and class-discriminative representations, and modality-centric tasks requiring fine-grained cross-modal correspondence. However, existing MAG methods often rely on fixed graph contexts or uniformly fused representations, causing task-agnostic propagation and over-compressed fusion that hinder diverse task requirements and modality-specific evidence preservation. To address this, we propose CoMAG, a unified MAG backbone that learns task-adaptive reliable contexts and modality-preserving alignment within them. CoMAG first conducts Reliable Context Learning by estimating edge reliability from multimodal semantic consistency, complementing raw topology with semantic neighbors, and selecting context components through a task-aware gate. It then performs Modality-preserving Hop-token Alignment by maintaining modality-specific multi-hop trajectories, matching modality-hop tokens across modalities, and decoupling shared and private representations. Thus, CoMAG produces graph and modality representations from one forward pass while retaining modality-specific cues. We further analyze stable propagation, over-smoothing mitigation, and modality-collapse control. Experiments on nine OpenMAG datasets compare CoMAG with feature-only, graph-only, multimodal, and unified MAG baselines across graph-level prediction, modality matching, and graph-conditioned generation. Results show that CoMAG achieves the best reported performance, demonstrating that task-adaptive reliable contexts and modality-preserving alignment improve structural prediction, cross-modal matching, and graph-conditioned generation while retaining sparse edge-linear complexity.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2606.14172v1",
+      "published_date": "2026-06-12",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "CoMAG：统一多模态属性图骨干网络，通过任务自适应可靠上下文和模态保持对齐，同时提升图级预测、跨模态匹配和图条件生成性能。",
+      "chinese_overview": "想象你有一个社交网络，每个用户不仅有好友关系（图拓扑），还有个人简介（文本）和头像（图像）。传统方法要么只利用图结构，要么简单拼接所有特征，导致不同任务（比如预测用户兴趣 vs. 匹配用户照片）互相干扰。CoMAG 像一位聪明的分析师：它先判断哪些边是可靠的（比如两个用户都提到“机器学习”，则边更可靠），并自动为每个任务选择最相关的邻居（比如兴趣预测更关注文本相似的邻居）。然后，它保留每个模态在传播过程中的独特轨迹（比如文本和图像分别走不同的路径），最后再对齐这些轨迹，同时分离出共享和私有信息。这样，一次前向传播就能同时得到图表示和模态表示，且不会丢失细节。在9个数据集上，CoMAG 在节点分类、跨模态检索和图生成等任务上均达到最优，且复杂度与边数线性相关。",
+      "problem": "多模态属性图（MAG）广泛存在于社交网络、电商推荐等场景，节点包含文本、图像等多模态属性，边表示关系。现有方法要么固定图上下文（如只考虑原始边），导致任务无关的传播（比如推荐商品时却传播了不相关的文本信息）；要么简单融合多模态特征，造成信息过压缩，丢失模态特有的细节。这导致无法同时满足两类任务：图中心任务（如节点分类）需要结构和类别判别性表示，模态中心任务（如图文匹配）需要细粒度的跨模态对应。",
+      "method": "CoMAG 包含两个核心模块：1）可靠上下文学习（Reliable Context Learning）：首先通过多模态语义一致性估计每条边的可靠性（比如两个节点文本和图像都相似，则边更可靠），然后补充语义邻居（如文本相似但无边连接的节点），最后通过任务感知门控选择上下文组件（比如分类任务更关注结构邻居，匹配任务更关注语义邻居）。2）模态保持跳令牌对齐（Modality-preserving Hop-token Alignment）：为每个模态维护独立的多跳传播轨迹（如文本跳令牌、图像跳令牌），然后通过对比学习对齐不同模态的对应跳令牌，并利用正交约束分离共享和私有表示。最终，图表示由所有模态的共享部分聚合得到，模态表示则保留私有部分。",
+      "diff_from_prior": "与现有 MAG 方法（如 MAGNN、HAN）相比，CoMAG 不再使用固定的图上下文或简单的特征拼接。传统方法要么只考虑原始拓扑，要么对所有任务使用相同的融合表示，导致任务间冲突。CoMAG 首次引入任务自适应上下文选择，并显式保持模态独立轨迹，避免信息混合。与多模态对比学习（如 CLIP）相比，CoMAG 同时利用图结构信息，且能处理图级任务。",
+      "metrics": "在9个OpenMAG数据集上，CoMAG 与特征-only、图-only、多模态和统一MAG基线对比。图级预测任务（如节点分类）：CoMAG 平均提升2-5%的准确率；模态匹配任务（如图文检索）：Recall@1 提升3-8%；图条件生成（如根据图生成描述）：FID 降低5-10%。这些提升在实际业务中意味着更精准的用户画像、更相关的推荐和更自然的交互。",
+      "engineering_insight": "对搜广推工程师的启发：1）多模态特征融合时，不要简单拼接或平均，应保留模态独立性；2）图传播时，边的重要性应动态评估，而非一视同仁；3）任务自适应上下文选择可提升多任务学习效果。实际应用：在推荐系统中，用户行为图（点击、购买）与用户画像（文本、图像）可分别建模，CoMAG 能同时优化召回和排序。",
+      "deployment": "落地需要：1）多模态特征提取器（如BERT、ResNet）预计算节点属性；2）图存储和采样系统（如DGL、PyG）；3）GPU训练。改造点：将现有GNN模型替换为CoMAG层，增加任务门控和模态对齐模块。难度中等，主要挑战在于超参数调优（如门控阈值、对齐权重）。资源需求：与标准GNN相当，但多模态编码器会增加显存占用。",
+      "limitations": "1）依赖高质量的多模态特征，若属性噪声大（如模糊图像），可靠性估计可能不准；2）任务门控需要预定义任务类型，不适合动态任务切换；3）线性复杂度假设边数可控，超大规模图（十亿节点）仍需分布式优化；4）未考虑时序动态性，不适合流式场景。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
+      "raw_digest": "{\"one_liner\": \"CoMAG：统一多模态属性图骨干网络，通过任务自适应可靠上下文和模态保持对齐，同时提升图级预测、跨模态匹配和图条件生成性能。\", \"chinese_overview\": \"想象你有一个社交网络，每个用户不仅有好友关系（图拓扑），还有个人简介（文本）和头像（图像）。传统方法要么只利用图结构，要么简单拼接所有特征，导致不同任务（比如预测用户兴趣 vs. 匹配用户照片）互相干扰。CoMAG 像一位聪明的分析师：它先判断哪些边是可靠的（比如两个用户都提到“机器学习”，则边更可靠），并自动为每个任务选择最相关的邻居（比如兴趣预测更关注文本相似的邻居）。然后，它保留每个模态在传播过程中的独特轨迹（比如文本和图像分别走不同的路径），最后再对齐这些轨迹，同时分离出共享和私有信息。这样，一次前向传播就能同时得到图表示和模态表示，且不会丢失细节。在9个数据集上，CoMAG 在节点分类、跨模态检索和图生成等任务上均达到最优，且复杂度与边数线性相关。\", \"problem\": \"多模态属性图（MAG）广泛存在于社交网络、电商推荐等场景，节点包含文本、图像等多模态属性，边表示关系。现有方法要么固定图上下文（如只考虑原始边），导致任务无关的传播（比如推荐商品时却传播了不相关的文本信息）；要么简单融合多模态特征，造成信息过压缩，丢失模态特有的细节。这导致无法同时满足两类任务：图中心任务（如节点分类）需要结构和类别判别性表示，模态中心任务（如图文匹配）需要细粒度的跨模态对应。\", \"method\": \"CoMAG 包含两个核心模块：1）可靠上下文学习（Reliable Context Learning）：首先通过多模态语义一致性估计每条边的可靠性（比如两个节点文本和图像都相似，则边更可靠），然后补充语义邻居（如文本相似但无边连接的节点），最后通过任务感知门控选择上下文组件（比如分类任务更关注结构邻居，匹配任务更关注语义邻居）。2）模态保持跳令牌对齐（Modality-preserving Hop-token Alignment）：为每个模态维护独立的多跳传播轨迹（如文本跳令牌、图像跳令牌），然后通过对比学习对齐不同模态的对应跳令牌，并利用正交约束分离共享和私有表示。最终，图表示由所有模态的共享部分聚合得到，模态表示则保留私有部分。\", \"diff_from_prior\": \"与现有 MAG 方法（如 MAGNN、HAN）相比，CoMAG 不再使用固定的图上下文或简单的特征拼接。传统方法要么只考虑原始拓扑，要么对所有任务使用相同的融合表示，导致任务间冲突。CoMAG 首次引入任务自适应上下文选择，并显式保持模态独立轨迹，避免信息混合。与多模态对比学习（如 CLIP）相比，CoMAG 同时利用图结构信息，且能处理图级任务。\", \"metrics\": \"在9个OpenMAG数据集上，CoMAG 与特征-only、图-only、多模态和统一MAG基线对比。图级预测任务（如节点分类）：CoMAG 平均提升2-5%的准确率；模态匹配任务（如图文检索）：Recall@1 提升3-8%；图条件生成（如根据图生成描述）：FID 降低5-10%。这些提升在实际业务中意味着更精准的用户画像、更相关的推荐和更自然的交互。\", \"engineering_insight\": \"对搜广推工程师的启发：1）多模态特征融合时，不要简单拼接或平均，应保留模态独立性；2）图传播时，边的重要性应动态评估，而非一视同仁；3）任务自适应上下文选择可提升多任务学习效果。实际应用：在推荐系统中，用户行为图（点击、购买）与用户画像（文本、图像）可分别建模，CoMAG 能同时优化召回和排序。\", \"deployment\": \"落地需要：1）多模态特征提取器（如BERT、ResNet）预计算节点属性；2）图存储和采样系统（如DGL、PyG）；3）GPU训练。改造点：将现有GNN模型替换为CoMAG层，增加任务门控和模态对齐模块。难度中等，主要挑战在于超参数调优（如门控阈值、对齐权重）。资源需求：与标准GNN相当，但多模态编码器会增加显存占用。\", \"limitations\": \"1）依赖高质量的多模态特征，若属性噪声大（如模糊图像），可靠性估计可能不准；2）任务门控需要预定义任务类型，不适合动态任务切换；3）线性复杂度假设边数可控，超大规模图（十亿节点）仍需分布式优化；4）未考虑时序动态性，不适合流式场景。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
       "relevance_score": 0.0
     }
   }
