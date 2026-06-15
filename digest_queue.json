@@ -169,7 +169,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.14046",
       "title": "When Recommendation Denoising Meets Popularity Bias: Understanding and Mitigating Their Interaction",
