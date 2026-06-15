@@ -42,7 +42,7 @@ sources:
       - cs.LG
       - cs.AI
       - stat.ML
-    lookback_hours: 48     # 抓取过去 N 小时内的论文
+    lookback_hours: 72     # 抓取过去 N 小时内的论文（放宽窗口避免遗漏）
     max_results: 200
   semantic_scholar:
     enabled: true
