@@ -130,7 +130,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.14142",
       "title": "Implicit Reasoning for Large Language Model-based Generative Recommendation",
