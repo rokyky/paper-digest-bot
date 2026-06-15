@@ -1,7 +1,7 @@
 [
   {
     "position": 1,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.14192",
       "title": "DRIVE: Distributional and Retrieval-Augmented Bidding with Value Evaluation",
