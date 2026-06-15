@@ -205,7 +205,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.14474",
       "title": "Verifiable User Simulation for Search and Recommendation Systems",
