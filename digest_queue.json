@@ -90,7 +90,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.14260",
       "title": "ChronoID: Infusing Explicit Temporal Signals into Semantic IDs for Generative Recommendation",
