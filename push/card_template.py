@@ -145,7 +145,7 @@ def build_digest_card(
         "tag": "div",
         "text": {
             "tag": "lark_md",
-            "content": f"从 **{total_candidates}** 篇候选中精选今日第 **{daily_seq_start}** 篇 📖",
+            "content": f"📖 今日第 **{daily_seq_start}** 篇深度解读",
         },
     }
     elements.append(summary_line)
