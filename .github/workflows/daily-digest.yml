@@ -17,7 +17,7 @@ on:
       mode:
         description: '运行模式'
         type: choice
-        options: [auto, collect, push]
+        options: [auto, collect, push, classics]
         default: auto
   repository_dispatch:
     types: [trigger-digest]
