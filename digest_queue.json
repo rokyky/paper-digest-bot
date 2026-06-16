@@ -186,7 +186,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:1603.04259",
       "title": "Item2Vec: Neural Item Embedding for Collaborative Filtering",
