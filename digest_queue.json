@@ -221,7 +221,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:1811.01909",
       "title": "Optimal Local Thresholds for Distributed Detection in Energy Harvesting Wireless Sensor Networks",
