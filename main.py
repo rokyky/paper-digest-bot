@@ -120,12 +120,21 @@ class Pipeline:
         if mode == "auto":
             hour = datetime.now().hour
             if hour == 8:
-                self.logger.info("Auto 模式: hour=%d → collect + push", hour)
-                self._run_collect()
-                if self.dry_run:
-                    self.logger.info("Dry-run 模式：跳过 collect 后的实际 push")
-                else:
+                # 检查队列是否有未推送内容（经典论文优先）
+                import json as _json
+                _qf = ROOT_DIR / "digest_queue.json"
+                _has_unpushed = False
+                if _qf.exists():
+                    _data = _json.loads(_qf.read_text(encoding="utf-8"))
+                    _has_unpushed = any(not e["pushed"] for e in _data)
+                if _has_unpushed:
+                    self.logger.info("队列有未推送内容，跳过 collect 直接 push")
                     self._run_push()
+                else:
+                    self.logger.info("Auto 模式: hour=%d → collect + push", hour)
+                    self._run_collect()
+                    if not self.dry_run:
+                        self._run_push()
                 return
 
             mode = "push"
