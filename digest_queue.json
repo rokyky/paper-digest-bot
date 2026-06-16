@@ -151,7 +151,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2006.16366",
       "title": "Optimal measurement preserving qubit channels",
