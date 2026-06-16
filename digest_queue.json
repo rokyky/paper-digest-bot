@@ -257,7 +257,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2104.04843",
       "title": "Error Propagation in Satellite Multi-image Geometry",
