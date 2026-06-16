@@ -1,0 +1,59 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "1603.04259",
+      "title": "Item2Vec: Neural Item Embedding for Collaborative Filtering",
+      "why_classic": "推荐系统 Embedding 思路的起点，'万物皆可向量化'"
+    },
+    {
+      "arxiv_id": "1703.04247",
+      "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+      "why_classic": "CTR 预估的基线模型，FM + DNN 的教科书级实现"
+    },
+    {
+      "arxiv_id": "1706.06978",
+      "title": "Deep Interest Network for Click-Through Rate Prediction (DIN)",
+      "why_classic": "Attention 引入推荐系统的开山之作，用户兴趣建模的起点"
+    },
+    {
+      "arxiv_id": "1811.01909",
+      "title": "Session-based Recommendation with Graph Neural Networks (SR-GNN)",
+      "why_classic": "图神经网络用于序列推荐的代表作"
+    },
+    {
+      "arxiv_id": "1803.02317",
+      "title": "Self-Attentive Sequential Recommendation (SASRec)",
+      "why_classic": "Transformer 用于序列推荐的经典，工业级 baseline"
+    },
+    {
+      "arxiv_id": "2004.12832",
+      "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+      "why_classic": "稠密检索 + 交互式排序的平衡方案，搜索必读"
+    },
+    {
+      "arxiv_id": "2008.13556",
+      "title": "DCN V2: Improved Deep & Cross Network and Practical Lessons for Web-scale Learning to Rank Systems",
+      "why_classic": "特征交叉的自动化，推荐/广告工程师必读"
+    },
+    {
+      "arxiv_id": "2104.04843",
+      "title": "Progressive Layered Extraction (PLE): A Novel Multi-Task Learning Model for Personalized Recommendations",
+      "why_classic": "多任务学习（CTR+CVR联合建模）的工业级方案"
+    },
+    {
+      "arxiv_id": "2205.13727",
+      "title": "P5: Plug-and-Play Persona Personalization for Recommender Systems",
+      "why_classic": "LLM for Recommendation 的代表作，理解大模型如何做推荐"
+    },
+    {
+      "arxiv_id": "2006.16366",
+      "title": "DLRM: An advanced, open source deep learning recommendation model",
+      "why_classic": "Meta 的推荐模型标准架构，工业级特征处理 + 交互"
+    },
+    {
+      "arxiv_id": "2205.13727",
+      "title": "Recommendation as Language Processing (RLP): A Unified Pretrain, Personalized Prompt & Predict Paradigm (P5)",
+      "why_classic": "用 T5 统一推荐任务，LLM for Rec 的里程碑"
+    }
+  ]
+}

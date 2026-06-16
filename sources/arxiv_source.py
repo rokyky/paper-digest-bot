@@ -67,8 +67,6 @@ class ArxivSource:
                 sort_order=arxiv.SortOrder.Descending,
             )
 
-            cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=self.lookback_hours)
-
             for result in client.results(search):
                 paper = self._parse_arxiv_result(result)
                 if paper:

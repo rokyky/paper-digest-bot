@@ -131,10 +131,45 @@ class Pipeline:
             mode = "push"
             self.logger.info("Auto 模式: hour=%d → mode=%s", hour, mode)
 
-        if mode == "collect":
+        if mode == "classics":
+            self._run_classics()
+        elif mode == "collect":
             self._run_collect()
         else:
             self._run_push()
+
+    def _run_classics(self):
+        """Classics 模式：经典论文抓取→解读→入队列"""
+        self.logger.info("=" * 60)
+        self.logger.info("📚 Classics 模式：经典必读论文生成")
+        self.logger.info("=" * 60)
+        start_time = datetime.now()
+
+        from sources.classic_source import ClassicPaperSource
+        src = ClassicPaperSource({})
+        papers = src.fetch()
+        self.stats["total_fetched"] = len(papers)
+        if not papers:
+            self.logger.warning("没有获取到经典论文")
+            return
+
+        new_papers = self._stage_dedup(papers)
+        self.stats["after_dedup"] = len(new_papers)
+        if not new_papers:
+            self.logger.warning("所有经典论文都已推送过")
+            return
+
+        selected = new_papers
+        self.stats["selected"] = len(selected)
+        self.config.setdefault("topic", {})["max_items"] = len(selected)
+        digests = self._stage_summarize(selected)
+        self.stats["digested"] = len(digests)
+        if not digests:
+            return
+
+        if not self.dry_run:
+            self._stage_enqueue(digests)
+        self._print_summary(start_time)
 
     def _run_collect(self):
         """Collect 模式：抓取→筛选→解读→入库队列"""
@@ -610,8 +645,8 @@ def parse_args():
         "--mode",
         type=str,
         default="auto",
-        choices=["auto", "collect", "push"],
-        help="运行模式: auto(8点搜集并推送首篇/其他时间推送), collect(批量生成入队), push(从队列取一篇推送)",
+        choices=["auto", "collect", "push", "classics"],
+        help="运行模式: auto/collect/push/classics(经典必读论文)",
     )
     parser.add_argument(
         "--config",
