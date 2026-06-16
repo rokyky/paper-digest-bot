@@ -73,7 +73,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:1706.06978",
       "title": "Deep Interest Network for Click-Through Rate Prediction",
