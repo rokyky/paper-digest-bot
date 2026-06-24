@@ -58,20 +58,7 @@ sources:
       - "NeurIPS.cc/2025/Conference"
       - "ICML.cc/2025/Conference"
   engineering_blog:
-    enabled: true
-    blogs:
-      - name: "Google Research"
-        url: "https://blog.research.google/feeds/posts/default"
-      - name: "Netflix TechBlog"
-        url: "https://netflixtechblog.com/feed"
-      - name: "Pinterest Engineering"
-        url: "https://medium.com/feed/@Pinterest_Engineering"
-      - name: "Meta Engineering"
-        url: "https://engineering.fb.com/feed/"
-      - name: "美团技术"
-        url: "https://tech.meituan.com/feed/"
-      - name: "阿里妈妈技术"
-        url: "https://zhuanlan.zhihu.com/columns/152293110?feed=1"
+    enabled: false          # 关掉工程博客，专注算法/模型类论文
 
 # LLM 配置
 llm:
