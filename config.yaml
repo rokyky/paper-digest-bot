@@ -45,7 +45,7 @@ sources:
     lookback_hours: 72     # 抓取过去 N 小时内的论文（放宽窗口避免遗漏）
     max_results: 200
   semantic_scholar:
-    enabled: true
+    enabled: false          # SSL 证书过期，暂时关闭
     seed_paper_ids:        # 以这些论文为种子找相似论文
       - "arXiv:2006.16366"  # DLRM
       - "arXiv:2205.13727"  # P5
@@ -59,6 +59,23 @@ sources:
       - "ICML.cc/2025/Conference"
   engineering_blog:
     enabled: false          # 关掉工程博客，专注算法/模型类论文
+
+  dblp:
+    enabled: true
+    max_results: 50
+    venues:
+      - "KDD 2025"
+      - "KDD 2024"
+      - "RecSys 2025"
+      - "RecSys 2024"
+      - "WWW 2025"
+      - "WWW 2024"
+      - "CIKM 2025"
+      - "CIKM 2024"
+      - "SIGIR 2025"
+      - "SIGIR 2024"
+      - "WSDM 2025"
+      - "WSDM 2024"
 
 # LLM 配置
 llm:

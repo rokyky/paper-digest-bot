@@ -9,6 +9,7 @@ from sources.arxiv_source import ArxivSource
 from sources.semantic_scholar_source import SemanticScholarSource
 from sources.openreview_source import OpenReviewSource
 from sources.engineering_blog_source import EngineeringBlogSource
+from sources.dblp_source import DBLPSource
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,10 @@ def fetch_all(config: dict) -> list[Paper]:
     if sources_config.get("engineering_blog", {}).get("enabled", True):
         src = EngineeringBlogSource(sources_config["engineering_blog"])
         fetchers.append(("engineering_blogs", src.fetch))
+
+    if sources_config.get("dblp", {}).get("enabled", True):
+        src = DBLPSource(sources_config["dblp"])
+        fetchers.append(("dblp", src.fetch))
 
     if not fetchers:
         logger.warning("No sources enabled in config")
