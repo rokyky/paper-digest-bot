@@ -271,7 +271,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:RankTower:_A_Synergistic_Framework_for_E",
       "title": "RankTower: A Synergistic Framework for Enhancing Two-Tower Pre-Ranking Model.",
