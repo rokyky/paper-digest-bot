@@ -236,7 +236,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:SERP_Interference_Network_and_Its_Applic",
       "title": "SERP Interference Network and Its Applications in Search Advertising.",
