@@ -127,7 +127,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:Leveraging_Instrumental_Variables_in_Onl",
       "title": "Leveraging Instrumental Variables in Online Advertising Auctions : Robust Click-Through-Rate Prediction.",
