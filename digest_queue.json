@@ -41,7 +41,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:Beyond_Advertising:_Mechanism_Design_for",
       "title": "Beyond Advertising: Mechanism Design for Platform-Wide Marketing Service &quot;QuanZhanTui&quot;.",
