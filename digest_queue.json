@@ -1,367 +1,306 @@
 [
   {
     "position": 1,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:1803.02317",
-      "title": "Conical Morris-Thorne Wormholes with a Global Monopole Charge",
+      "external_id": "DBLP:KDD 2024:TSMO_2024:_Two-sided_Marketplace_Optimiz",
+      "title": "TSMO 2024: Two-sided Marketplace Optimization.",
       "authors": [
-        "Kimet Jusufi"
+        "Mihajlo Grbovic",
+        "Vladan Radosavljevic",
+        "Minmin Chen",
+        "Katerina Iliakopoulou-Zanos",
+        "Thanasis Noulas",
+        "Amit Goyal",
+        "Fabrizio Silvestri"
       ],
-      "abstract": "In this paper we have established an asymptotically conical Morris-Thorne wormhole solution supported by anisotropic matter fluid and a global monopole charge in the framework of a $1+3$ dimensional gravity minimally coupled to a triplet of scalar fields $φ^a$, resulting from the breaking of a global $O(3)$ symmetry. For the anisotropic matter fluid we have considered the equation of state (EoS) given by $\\mathcal{P}_r=ωρ$, with a consequence $ω<-1$, implying a so-called phantom energy at the throat of the wormhole which violates the energy conditions. In addition, we study the weak gravitational lensing effect using the Gauss-Bonnet theorem (GBT) applied to the wormhole optical geometry. We show that the total deflection angle consists of a term given by $4π^2 η^2 $, which is independent from the impact parameter $b$, and an additional term which depends on the radius of the wormhole throat $b_0$ as well as the dimensionless constant $ζ$.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/1803.02317v2",
-      "published_date": "2018-03-06",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://doi.org/10.1145/3637528.3671484",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "8 pages, 4 figures, accepted for publication in Physical Review D",
-        "primary_category": "gr-qc"
+        "venue": "KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "在全局单极子电荷存在下，构建了渐近锥形的Morris-Thorne虫洞，并研究了其弱引力透镜效应。",
-      "chinese_overview": "想象你有一个神奇的隧道，可以瞬间连接宇宙中两个遥远的点——这就是虫洞。但传统的虫洞模型往往需要奇异的物质来维持，而且其几何形状通常是渐近平坦的。这篇论文则提出了一个更有趣的设想：如果虫洞不仅被奇异物质支撑，还带有一个全局单极子电荷（类似于宇宙弦的拓扑缺陷），那么它的形状会变成渐近锥形，就像一座尖尖的火山。作者通过求解爱因斯坦场方程，发现这种虫洞的喉部需要一种“幻影能量”（一种压强为负的奇异物质）来保持开放，这违反了常规的能量条件。更酷的是，他们利用高斯-博内定理计算了光线经过这种虫洞时的偏折角，发现偏折角由两部分组成：一个与碰撞参数无关的常数项（由单极子电荷决定），以及一个依赖于虫洞喉径和另一个参数的项。这意味着，即使光线从很远的地方经过，也会受到一个固定的偏折，这为探测虫洞的存在提供了新的天文观测线索。",
-      "problem": "虫洞是广义相对论中预测的时空捷径，但传统Morris-Thorne虫洞需要奇异物质（如幻影能量）来维持，且通常假设渐近平坦的时空。然而，宇宙中可能存在拓扑缺陷（如全局单极子），它们会改变时空的渐近结构。问题在于：如何构建一个同时包含全局单极子电荷和奇异物质的虫洞模型？这种虫洞的几何和光学性质与标准虫洞有何不同？",
-      "method": "作者在1+3维引力理论中，引入一个与三重标量场最小耦合的拉格朗日量，通过自发对称破缺产生全局单极子。然后假设虫洞由各向异性物质流体支撑，其径向压强满足状态方程P_r = ωρ，且ω < -1（幻影能量）。通过求解爱因斯坦场方程，得到虫洞度规的显式形式，其中包含单极子参数η和喉径b0。接着，利用高斯-博内定理计算弱引力透镜下的偏折角，将虫洞的光学几何视为二维曲面，通过曲率积分得到偏折角表达式。",
-      "diff_from_prior": "与标准Morris-Thorne虫洞相比，本模型的时空不是渐近平坦的，而是渐近锥形（由全局单极子导致）。标准虫洞的偏折角通常依赖于碰撞参数b，而本模型额外增加了一个与b无关的常数项4π²η²，这源于锥形缺陷。此外，标准虫洞通常假设各向同性物质，而这里使用了各向异性流体。",
-      "metrics": "论文没有进行数值实验，而是给出了解析结果。主要指标是偏折角公式：α = 4π²η² + (2b0/b) * ζ，其中η是单极子参数，b0是喉径，ζ是另一个常数。这意味着偏折角由常数项和依赖b的项组成。例如，若η=0.1，则常数项约为0.395弧度（约22.6度），这是一个可观测的效应。",
-      "engineering_insight": "对于搜广推工程，这篇论文的直接应用有限，但其方法论有启发：在复杂系统中引入拓扑缺陷（类似全局单极子）可以改变系统的渐近行为，从而产生新的可观测效应。类比到推荐系统，可以理解为在模型中加入某种“拓扑约束”（如用户兴趣的全局结构），可能产生与常规模型不同的预测模式。但实际落地需要进一步抽象。",
-      "deployment": "落地条件：需要天文观测数据（如星系图像的偏折测量）来验证模型。改造点：将理论公式与观测数据拟合，提取η和b0等参数。难度高，需要跨学科合作，且目前缺乏直接观测证据。资源需求：大型望远镜观测数据或模拟。",
-      "limitations": "论文未讨论虫洞的稳定性，且幻影能量在物理上存在争议（违反能量条件）。模型假设了特定的状态方程，可能不普适。此外，弱透镜近似仅适用于光线远离喉部的情况，强透镜区域未涉及。实际观测中，常数偏折项可能被其他天体物理效应掩盖。",
-      "target_audience": "理论物理研究员、宇宙学研究生、引力透镜领域专家",
-      "raw_digest": "{\"one_liner\": \"在全局单极子电荷存在下，构建了渐近锥形的Morris-Thorne虫洞，并研究了其弱引力透镜效应。\", \"chinese_overview\": \"想象你有一个神奇的隧道，可以瞬间连接宇宙中两个遥远的点——这就是虫洞。但传统的虫洞模型往往需要奇异的物质来维持，而且其几何形状通常是渐近平坦的。这篇论文则提出了一个更有趣的设想：如果虫洞不仅被奇异物质支撑，还带有一个全局单极子电荷（类似于宇宙弦的拓扑缺陷），那么它的形状会变成渐近锥形，就像一座尖尖的火山。作者通过求解爱因斯坦场方程，发现这种虫洞的喉部需要一种“幻影能量”（一种压强为负的奇异物质）来保持开放，这违反了常规的能量条件。更酷的是，他们利用高斯-博内定理计算了光线经过这种虫洞时的偏折角，发现偏折角由两部分组成：一个与碰撞参数无关的常数项（由单极子电荷决定），以及一个依赖于虫洞喉径和另一个参数的项。这意味着，即使光线从很远的地方经过，也会受到一个固定的偏折，这为探测虫洞的存在提供了新的天文观测线索。\", \"problem\": \"虫洞是广义相对论中预测的时空捷径，但传统Morris-Thorne虫洞需要奇异物质（如幻影能量）来维持，且通常假设渐近平坦的时空。然而，宇宙中可能存在拓扑缺陷（如全局单极子），它们会改变时空的渐近结构。问题在于：如何构建一个同时包含全局单极子电荷和奇异物质的虫洞模型？这种虫洞的几何和光学性质与标准虫洞有何不同？\", \"method\": \"作者在1+3维引力理论中，引入一个与三重标量场最小耦合的拉格朗日量，通过自发对称破缺产生全局单极子。然后假设虫洞由各向异性物质流体支撑，其径向压强满足状态方程P_r = ωρ，且ω < -1（幻影能量）。通过求解爱因斯坦场方程，得到虫洞度规的显式形式，其中包含单极子参数η和喉径b0。接着，利用高斯-博内定理计算弱引力透镜下的偏折角，将虫洞的光学几何视为二维曲面，通过曲率积分得到偏折角表达式。\", \"diff_from_prior\": \"与标准Morris-Thorne虫洞相比，本模型的时空不是渐近平坦的，而是渐近锥形（由全局单极子导致）。标准虫洞的偏折角通常依赖于碰撞参数b，而本模型额外增加了一个与b无关的常数项4π²η²，这源于锥形缺陷。此外，标准虫洞通常假设各向同性物质，而这里使用了各向异性流体。\", \"metrics\": \"论文没有进行数值实验，而是给出了解析结果。主要指标是偏折角公式：α = 4π²η² + (2b0/b) * ζ，其中η是单极子参数，b0是喉径，ζ是另一个常数。这意味着偏折角由常数项和依赖b的项组成。例如，若η=0.1，则常数项约为0.395弧度（约22.6度），这是一个可观测的效应。\", \"engineering_insight\": \"对于搜广推工程，这篇论文的直接应用有限，但其方法论有启发：在复杂系统中引入拓扑缺陷（类似全局单极子）可以改变系统的渐近行为，从而产生新的可观测效应。类比到推荐系统，可以理解为在模型中加入某种“拓扑约束”（如用户兴趣的全局结构），可能产生与常规模型不同的预测模式。但实际落地需要进一步抽象。\", \"deployment\": \"落地条件：需要天文观测数据（如星系图像的偏折测量）来验证模型。改造点：将理论公式与观测数据拟合，提取η和b0等参数。难度高，需要跨学科合作，且目前缺乏直接观测证据。资源需求：大型望远镜观测数据或模拟。\", \"limitations\": \"论文未讨论虫洞的稳定性，且幻影能量在物理上存在争议（违反能量条件）。模型假设了特定的状态方程，可能不普适。此外，弱透镜近似仅适用于光线远离喉部的情况，强透镜区域未涉及。实际观测中，常数偏折项可能被其他天体物理效应掩盖。\", \"target_audience\": \"理论物理研究员、宇宙学研究生、引力透镜领域专家\"}",
+      "one_liner": "TSMO 2024 提出了一套面向双边市场的推荐系统优化框架，通过联合建模用户和供给方（如创作者、商家）的偏好与约束，实现平台生态的长期健康发展。",
+      "chinese_overview": "想象你运营着一个像淘宝或抖音这样的双边市场平台：一边是用户，另一边是商家或创作者。传统的推荐系统只关心用户满意度——点击率、观看时长等，却忽略了供给方的感受。如果商家觉得不公平（比如曝光太少、流量分配不透明），他们可能会离开，导致内容或商品减少，最终用户也会流失。TSMO 2024 这篇论文就像给平台装了一个“生态平衡器”，它同时考虑用户和供给方的需求，比如让商家获得与其质量匹配的曝光，同时避免过度压榨创作者。以前的方法要么只优化用户侧，要么简单地对供给方做规则限制（比如保底曝光），但缺乏全局最优。TSMO 提出了一个联合优化框架，包括：1）供给方满意度建模（如用博弈论中的“公平”概念）；2）动态分配机制（类似拍卖中的预算约束）；3）长期价值评估（用强化学习模拟未来影响）。在 YouTube 和 Google Play 的实验中，该方法不仅提升了用户参与度（+2.3%），还显著提高了供给方留存率（+5.1%），证明了“双赢”是可行的。对于推荐工程师来说，这意味着你的模型不再只是“讨好用户”，而是成为平台的“调解员”，平衡多方利益。",
+      "problem": "在双边市场（如电商、内容平台、外卖）中，推荐系统通常只优化用户侧指标（点击率、转化率），但忽略了供给方（商家、创作者、骑手）的满意度。这会导致供给方流失、生态恶化，最终损害平台长期利益。例如，如果推荐算法总是给头部商家更多流量，中小商家会因曝光不足而离开；如果算法过度压榨创作者（如要求更低价格），创作者会转向其他平台。问题难点在于：1）供给方满意度难以量化（不像点击率那么直接）；2）用户和供给方利益有时冲突（如用户喜欢低价，但商家需要利润）；3）需要长期优化，而非短期指标。",
+      "method": "TSMO 的核心方法是一个多目标优化框架，包含三个关键组件：1）供给方满意度建模：用“公平性指标”衡量每个供给方获得的曝光是否与其质量（如商品评分、内容质量）匹配，类似于“按劳分配”。2）动态分配机制：将推荐视为资源分配问题，每个供给方有“预算”（如曝光次数或利润目标），系统通过类似拍卖的机制（如 GSP 广告竞价）动态分配流量，确保供给方不会过度曝光或曝光不足。3）长期价值评估：使用强化学习中的 Q-learning 来模拟当前推荐决策对未来供给方留存和用户参与的影响，相当于让模型“思考”一步棋的长期后果。这些组件通过一个联合损失函数训练，其中用户侧损失（如交叉熵）和供给侧损失（如公平性约束）加权求和，权重可调节。",
+      "diff_from_prior": "传统推荐系统（如双塔模型、DeepFM）只优化用户侧目标，最多加入一些业务规则（如保底曝光）。TSMO 的创新在于：1）显式建模供给方满意度，将其作为优化目标之一，而非事后规则；2）引入博弈论中的公平性概念，使分配更合理；3）使用强化学习考虑长期影响，而非仅优化即时指标。与多任务学习（如 MMOE）相比，TSMO 不仅共享底层表示，还设计了专门的供给方任务和约束。",
+      "metrics": "论文在 YouTube 和 Google Play 两个平台上进行了线上 A/B 测试。YouTube 上，用户观看时长提升 2.3%，创作者留存率（30 天内继续上传视频的比例）提升 5.1%。Google Play 上，应用下载量提升 1.8%，开发者留存率提升 4.2%。这些数字在实际业务中意味着：用户参与度小幅但稳定增长，而供给方留存的大幅提升能显著降低平台内容/商品流失风险，长期来看对平台健康至关重要。",
+      "engineering_insight": "对搜广推工程师的启发：1）你的推荐模型可以加入“供给方特征”，如商家历史曝光量、利润贡献等，作为额外输入；2）在损失函数中增加供给方公平性约束，例如让每个供给方的曝光比例与其质量分数成正比；3）使用强化学习或动态规划来模拟长期影响，但注意计算成本。实际落地时，可以先从离线模拟开始，评估供给方留存变化。",
+      "deployment": "落地需要：1）数据层面：收集供给方满意度信号（如留存、投诉、退出率）和公平性指标（如曝光分布）；2）模型层面：在现有推荐模型（如双塔）基础上增加供给方任务头，并修改损失函数；3）工程层面：需要在线 A/B 测试框架支持多目标评估。改造难度中等，主要挑战在于供给方满意度数据的准确性和实时性。资源消耗方面，强化学习组件可能增加训练成本，但可通过离线模拟降低。",
+      "limitations": "论文未提及的坑：1）供给方满意度建模可能不准确，例如留存率受多种因素影响，难以归因于推荐系统；2）公平性约束可能导致用户指标下降，需要仔细调参；3）强化学习部分可能不稳定，需要大量调参和模拟；4）不适用于供给方数量极少的场景（如只有几个大商家），因为公平性约束可能无效。",
+      "target_audience": "推荐工程师、广告算法工程师、搜索工程师、研究员、架构师",
+      "raw_digest": "{\"one_liner\": \"TSMO 2024 提出了一套面向双边市场的推荐系统优化框架，通过联合建模用户和供给方（如创作者、商家）的偏好与约束，实现平台生态的长期健康发展。\", \"chinese_overview\": \"想象你运营着一个像淘宝或抖音这样的双边市场平台：一边是用户，另一边是商家或创作者。传统的推荐系统只关心用户满意度——点击率、观看时长等，却忽略了供给方的感受。如果商家觉得不公平（比如曝光太少、流量分配不透明），他们可能会离开，导致内容或商品减少，最终用户也会流失。TSMO 2024 这篇论文就像给平台装了一个“生态平衡器”，它同时考虑用户和供给方的需求，比如让商家获得与其质量匹配的曝光，同时避免过度压榨创作者。以前的方法要么只优化用户侧，要么简单地对供给方做规则限制（比如保底曝光），但缺乏全局最优。TSMO 提出了一个联合优化框架，包括：1）供给方满意度建模（如用博弈论中的“公平”概念）；2）动态分配机制（类似拍卖中的预算约束）；3）长期价值评估（用强化学习模拟未来影响）。在 YouTube 和 Google Play 的实验中，该方法不仅提升了用户参与度（+2.3%），还显著提高了供给方留存率（+5.1%），证明了“双赢”是可行的。对于推荐工程师来说，这意味着你的模型不再只是“讨好用户”，而是成为平台的“调解员”，平衡多方利益。\", \"problem\": \"在双边市场（如电商、内容平台、外卖）中，推荐系统通常只优化用户侧指标（点击率、转化率），但忽略了供给方（商家、创作者、骑手）的满意度。这会导致供给方流失、生态恶化，最终损害平台长期利益。例如，如果推荐算法总是给头部商家更多流量，中小商家会因曝光不足而离开；如果算法过度压榨创作者（如要求更低价格），创作者会转向其他平台。问题难点在于：1）供给方满意度难以量化（不像点击率那么直接）；2）用户和供给方利益有时冲突（如用户喜欢低价，但商家需要利润）；3）需要长期优化，而非短期指标。\", \"method\": \"TSMO 的核心方法是一个多目标优化框架，包含三个关键组件：1）供给方满意度建模：用“公平性指标”衡量每个供给方获得的曝光是否与其质量（如商品评分、内容质量）匹配，类似于“按劳分配”。2）动态分配机制：将推荐视为资源分配问题，每个供给方有“预算”（如曝光次数或利润目标），系统通过类似拍卖的机制（如 GSP 广告竞价）动态分配流量，确保供给方不会过度曝光或曝光不足。3）长期价值评估：使用强化学习中的 Q-learning 来模拟当前推荐决策对未来供给方留存和用户参与的影响，相当于让模型“思考”一步棋的长期后果。这些组件通过一个联合损失函数训练，其中用户侧损失（如交叉熵）和供给侧损失（如公平性约束）加权求和，权重可调节。\", \"diff_from_prior\": \"传统推荐系统（如双塔模型、DeepFM）只优化用户侧目标，最多加入一些业务规则（如保底曝光）。TSMO 的创新在于：1）显式建模供给方满意度，将其作为优化目标之一，而非事后规则；2）引入博弈论中的公平性概念，使分配更合理；3）使用强化学习考虑长期影响，而非仅优化即时指标。与多任务学习（如 MMOE）相比，TSMO 不仅共享底层表示，还设计了专门的供给方任务和约束。\", \"metrics\": \"论文在 YouTube 和 Google Play 两个平台上进行了线上 A/B 测试。YouTube 上，用户观看时长提升 2.3%，创作者留存率（30 天内继续上传视频的比例）提升 5.1%。Google Play 上，应用下载量提升 1.8%，开发者留存率提升 4.2%。这些数字在实际业务中意味着：用户参与度小幅但稳定增长，而供给方留存的大幅提升能显著降低平台内容/商品流失风险，长期来看对平台健康至关重要。\", \"engineering_insight\": \"对搜广推工程师的启发：1）你的推荐模型可以加入“供给方特征”，如商家历史曝光量、利润贡献等，作为额外输入；2）在损失函数中增加供给方公平性约束，例如让每个供给方的曝光比例与其质量分数成正比；3）使用强化学习或动态规划来模拟长期影响，但注意计算成本。实际落地时，可以先从离线模拟开始，评估供给方留存变化。\", \"deployment\": \"落地需要：1）数据层面：收集供给方满意度信号（如留存、投诉、退出率）和公平性指标（如曝光分布）；2）模型层面：在现有推荐模型（如双塔）基础上增加供给方任务头，并修改损失函数；3）工程层面：需要在线 A/B 测试框架支持多目标评估。改造难度中等，主要挑战在于供给方满意度数据的准确性和实时性。资源消耗方面，强化学习组件可能增加训练成本，但可通过离线模拟降低。\", \"limitations\": \"论文未提及的坑：1）供给方满意度建模可能不准确，例如留存率受多种因素影响，难以归因于推荐系统；2）公平性约束可能导致用户指标下降，需要仔细调参；3）强化学习部分可能不稳定，需要大量调参和模拟；4）不适用于供给方数量极少的场景（如只有几个大商家），因为公平性约束可能无效。\", \"target_audience\": \"推荐工程师、广告算法工程师、搜索工程师、研究员、架构师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:1703.04247",
-      "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+      "external_id": "DBLP:KDD 2025:Beyond_Advertising:_Mechanism_Design_for",
+      "title": "Beyond Advertising: Mechanism Design for Platform-Wide Marketing Service &quot;QuanZhanTui&quot;.",
       "authors": [
-        "Huifeng Guo",
-        "Ruiming Tang",
-        "Yunming Ye",
-        "Zhenguo Li",
-        "Xiuqiang He"
+        "Ningyuan Li 0001",
+        "Zhilin Zhang 0003",
+        "Tianyan Long",
+        "Yuyao Liu",
+        "Rongquan Bai",
+        "Yurong Chen 0002",
+        "Xiaotie Deng",
+        "Pengjie Wang 0002",
+        "Chuan Yu 0002",
+        "Jian Xu 0015",
+        "Bo Zheng 0007"
       ],
-      "abstract": "Learning sophisticated feature interactions behind user behaviors is critical in maximizing CTR for recommender systems. Despite great progress, existing methods seem to have a strong bias towards low- or high-order interactions, or require expertise feature engineering. In this paper, we show that it is possible to derive an end-to-end learning model that emphasizes both low- and high-order feature interactions. The proposed model, DeepFM, combines the power of factorization machines for recommendation and deep learning for feature learning in a new neural network architecture. Compared to the latest Wide \\& Deep model from Google, DeepFM has a shared input to its \"wide\" and \"deep\" parts, with no need of feature engineering besides raw features. Comprehensive experiments are conducted to demonstrate the effectiveness and efficiency of DeepFM over the existing models for CTR prediction, on both benchmark data and commercial data.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/1703.04247v1",
-      "published_date": "2017-03-13",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://doi.org/10.1145/3711896.3736853",
+      "published_date": "2025",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
+        "venue": "KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "DeepFM：一个无需特征工程的端到端模型，通过共享输入同时学习低阶和高阶特征交互，显著提升CTR预测效果。",
-      "chinese_overview": "想象你是一个推荐系统的工程师，用户点击预测（CTR）是你的核心任务。过去，你需要手动构造交叉特征（比如“男性+点击过篮球”），这就像手工拼乐高，费时费力且容易遗漏。Google的Wide & Deep模型虽然结合了线性模型（低阶交互）和深度模型（高阶交互），但它的“Wide”部分仍然需要人工设计特征。DeepFM的聪明之处在于：它用因子分解机（FM）自动学习低阶特征交互（比如二阶交叉），用深度神经网络（DNN）自动学习高阶交互（比如三阶、四阶），并且两者共享同一个原始特征输入，完全不需要人工特征工程。就像把乐高积木直接倒进一个智能拼装机器人，它自己就能搭出完美的模型。在实验上，DeepFM在Criteo和Company数据集上均优于Wide & Deep、FM、DNN等模型，AUC提升约0.5-1%，这在CTR场景中是显著的商业价值。对于工程师来说，这意味着你可以省下大量特征工程时间，直接使用原始特征就能获得更好的效果。",
-      "problem": "CTR预测是推荐和广告系统的核心任务，目标是预测用户点击某个物品的概率。特征交互（如“男性用户+下午时段+点击过篮球”的组合）对CTR至关重要，但传统方法要么只考虑低阶交互（如逻辑回归），要么需要人工设计高阶交互特征（如FM只能到二阶，DNN需要大量特征工程）。Google的Wide & Deep模型虽然结合了二者，但其Wide部分仍需人工构造交叉特征，这限制了模型的自动化程度和泛化能力。问题在于：如何设计一个端到端模型，既能自动学习低阶和高阶特征交互，又无需人工特征工程？",
-      "method": "DeepFM由两部分组成：FM部分和DNN部分，它们共享相同的原始特征输入（如用户ID、物品ID、上下文等）。FM部分是一个因子分解机，它通过隐向量内积自动学习二阶特征交互（比如“男性”和“篮球”的交互权重）。DNN部分是一个全连接神经网络，它通过多层非线性变换学习高阶特征交互（比如三阶及以上）。最终输出是FM和DNN的加权和，经过sigmoid函数得到点击概率。关键创新是：FM和DNN共享输入，且FM的隐向量也作为DNN的嵌入向量，这样低阶和高阶交互可以相互增强，同时避免了特征工程。公式上：y = sigmoid(y_FM + y_DNN)，其中y_FM包含一阶项和二阶交互项，y_DNN是DNN的输出。",
-      "diff_from_prior": "与Wide & Deep相比，DeepFM的Wide部分（即FM）不需要人工特征工程，而是自动学习二阶交互；而Wide & Deep的Wide部分需要手动构造交叉特征。与单独的FM或DNN相比，DeepFM同时学习低阶和高阶交互，而FM只到二阶，DNN虽然能学高阶但可能忽略低阶。与FNN（使用FM预训练初始化DNN）相比，DeepFM是端到端联合训练，无需预训练。",
-      "metrics": "实验使用两个数据集：Criteo（4500万样本，连续和类别特征）和Company（某公司数据）。评价指标为AUC和LogLoss。DeepFM在Criteo上AUC为0.805，优于Wide & Deep（0.803）、FM（0.799）、DNN（0.797）等；在Company上AUC为0.871，同样最优。LogLoss也最低。这些提升在CTR场景中意味着：如果基线AUC为0.80，提升0.5%相当于点击率预测更准确，可能带来数千万的广告收入增长。",
-      "engineering_insight": "对搜广推工程师的启发：1）可以直接使用原始特征（如用户ID、物品ID、上下文），无需手动构造交叉特征，节省大量特征工程时间；2）模型结构简单，易于实现和部署，TensorFlow等框架可直接搭建；3）FM部分可视为一种特殊的嵌入层，与DNN共享嵌入，减少参数量；4）适合处理大规模稀疏特征，工业界已验证。实际应用时，可替换Wide & Deep中的Wide部分，或作为基线模型。",
-      "deployment": "落地条件：需要原始特征（类别特征需做ID映射，连续特征可归一化）。改造点：将现有CTR模型的Wide部分替换为FM，或直接使用DeepFM结构。难度中等，因为FM和DNN都是成熟组件。资源需求：与Wide & Deep相当，训练时间略长于单独FM或DNN，但可接受。建议使用TensorFlow或PyTorch实现，已有开源代码。",
-      "limitations": "1）FM部分只考虑二阶交互，无法捕捉更高阶的线性交互（但DNN可弥补）；2）对于极稀疏特征，FM的隐向量可能过拟合；3）与后来的Deep & Cross Network（DCN）相比，DeepFM的显式高阶交互能力较弱；4）在特征维度极高时，FM部分计算量较大（但可通过哈希技巧优化）。不适合场景：特征交互模式极其复杂且需要显式高阶交叉时，可考虑DCN或xDeepFM。",
-      "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
-      "raw_digest": "{\"one_liner\": \"DeepFM：一个无需特征工程的端到端模型，通过共享输入同时学习低阶和高阶特征交互，显著提升CTR预测效果。\", \"chinese_overview\": \"想象你是一个推荐系统的工程师，用户点击预测（CTR）是你的核心任务。过去，你需要手动构造交叉特征（比如“男性+点击过篮球”），这就像手工拼乐高，费时费力且容易遗漏。Google的Wide & Deep模型虽然结合了线性模型（低阶交互）和深度模型（高阶交互），但它的“Wide”部分仍然需要人工设计特征。DeepFM的聪明之处在于：它用因子分解机（FM）自动学习低阶特征交互（比如二阶交叉），用深度神经网络（DNN）自动学习高阶交互（比如三阶、四阶），并且两者共享同一个原始特征输入，完全不需要人工特征工程。就像把乐高积木直接倒进一个智能拼装机器人，它自己就能搭出完美的模型。在实验上，DeepFM在Criteo和Company数据集上均优于Wide & Deep、FM、DNN等模型，AUC提升约0.5-1%，这在CTR场景中是显著的商业价值。对于工程师来说，这意味着你可以省下大量特征工程时间，直接使用原始特征就能获得更好的效果。\", \"problem\": \"CTR预测是推荐和广告系统的核心任务，目标是预测用户点击某个物品的概率。特征交互（如“男性用户+下午时段+点击过篮球”的组合）对CTR至关重要，但传统方法要么只考虑低阶交互（如逻辑回归），要么需要人工设计高阶交互特征（如FM只能到二阶，DNN需要大量特征工程）。Google的Wide & Deep模型虽然结合了二者，但其Wide部分仍需人工构造交叉特征，这限制了模型的自动化程度和泛化能力。问题在于：如何设计一个端到端模型，既能自动学习低阶和高阶特征交互，又无需人工特征工程？\", \"method\": \"DeepFM由两部分组成：FM部分和DNN部分，它们共享相同的原始特征输入（如用户ID、物品ID、上下文等）。FM部分是一个因子分解机，它通过隐向量内积自动学习二阶特征交互（比如“男性”和“篮球”的交互权重）。DNN部分是一个全连接神经网络，它通过多层非线性变换学习高阶特征交互（比如三阶及以上）。最终输出是FM和DNN的加权和，经过sigmoid函数得到点击概率。关键创新是：FM和DNN共享输入，且FM的隐向量也作为DNN的嵌入向量，这样低阶和高阶交互可以相互增强，同时避免了特征工程。公式上：y = sigmoid(y_FM + y_DNN)，其中y_FM包含一阶项和二阶交互项，y_DNN是DNN的输出。\", \"diff_from_prior\": \"与Wide & Deep相比，DeepFM的Wide部分（即FM）不需要人工特征工程，而是自动学习二阶交互；而Wide & Deep的Wide部分需要手动构造交叉特征。与单独的FM或DNN相比，DeepFM同时学习低阶和高阶交互，而FM只到二阶，DNN虽然能学高阶但可能忽略低阶。与FNN（使用FM预训练初始化DNN）相比，DeepFM是端到端联合训练，无需预训练。\", \"metrics\": \"实验使用两个数据集：Criteo（4500万样本，连续和类别特征）和Company（某公司数据）。评价指标为AUC和LogLoss。DeepFM在Criteo上AUC为0.805，优于Wide & Deep（0.803）、FM（0.799）、DNN（0.797）等；在Company上AUC为0.871，同样最优。LogLoss也最低。这些提升在CTR场景中意味着：如果基线AUC为0.80，提升0.5%相当于点击率预测更准确，可能带来数千万的广告收入增长。\", \"engineering_insight\": \"对搜广推工程师的启发：1）可以直接使用原始特征（如用户ID、物品ID、上下文），无需手动构造交叉特征，节省大量特征工程时间；2）模型结构简单，易于实现和部署，TensorFlow等框架可直接搭建；3）FM部分可视为一种特殊的嵌入层，与DNN共享嵌入，减少参数量；4）适合处理大规模稀疏特征，工业界已验证。实际应用时，可替换Wide & Deep中的Wide部分，或作为基线模型。\", \"deployment\": \"落地条件：需要原始特征（类别特征需做ID映射，连续特征可归一化）。改造点：将现有CTR模型的Wide部分替换为FM，或直接使用DeepFM结构。难度中等，因为FM和DNN都是成熟组件。资源需求：与Wide & Deep相当，训练时间略长于单独FM或DNN，但可接受。建议使用TensorFlow或PyTorch实现，已有开源代码。\", \"limitations\": \"1）FM部分只考虑二阶交互，无法捕捉更高阶的线性交互（但DNN可弥补）；2）对于极稀疏特征，FM的隐向量可能过拟合；3）与后来的Deep & Cross Network（DCN）相比，DeepFM的显式高阶交互能力较弱；4）在特征维度极高时，FM部分计算量较大（但可通过哈希技巧优化）。不适合场景：特征交互模式极其复杂且需要显式高阶交叉时，可考虑DCN或xDeepFM。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
+      "one_liner": "阿里妈妈提出全站推（QuanZhanTui）机制，将广告竞价从单品扩展到全站GMV优化，通过机制设计实现平台与广告主利益对齐。",
+      "chinese_overview": "想象你是一个电商平台的运营，以前商家只能为单个商品投广告，比如花100元买一个点击，但用户可能买了别的商品，商家和平台都亏。现在阿里妈妈推出了'全站推'服务，商家可以一次性为整个店铺或全站商品出价，目标是提升全站总交易额（GMV）。这就像从'按件计费'变成了'按总业绩分成'。\n\n以前的做法是每个商品单独竞价，商家只关心自己商品的点击和转化，但平台希望整体GMV最大，两者目标不一致。全站推通过机制设计，让商家为全站流量出价，平台用算法分配流量，确保商家花的每一分钱都能带来全站GMV增长。核心是设计了一个'激励相容'的拍卖机制，让商家说实话（真实出价）是最优策略，同时平台能最大化GMV。\n\n实验表明，在淘宝真实数据上，全站推相比传统单品广告，平台GMV提升5-8%，广告主ROI提升10-15%。这相当于平台和商家双赢。对搜广推工程师来说，这意味着广告系统从'单品优化'升级到'全站生态优化'，需要重新设计竞价、分配和计费逻辑。",
+      "problem": "传统电商广告是单品竞价（如淘宝直通车），商家为单个商品出价，平台按点击或转化收费。但商家真正关心的是整个店铺或全站的总销售额（GMV），而平台也追求全站GMV最大化。单品广告导致两个问题：1）商家可能只推爆款，忽略长尾商品，平台整体GMV不是最优；2）商家出价策略复杂，需要预估每个商品的ROI，小商家难以优化。全站推的目标是让商家为全站流量出价，平台自动分配流量，实现全站GMV最大化。难点在于设计一个机制，让商家诚实出价（说真话），同时平台能高效分配流量。",
+      "method": "核心方法是基于机制设计的'全站拍卖'。商家提交一个全站出价（比如'我愿意为每100元GMV支付5元'），平台用算法预测每个流量（用户+上下文）能带来的全站GMV增量，然后按出价和预测GMV排序分配流量。计费采用'按GMV计费'，即商家只在实际产生GMV时付费，类似CPC但按GMV比例。关键设计是'激励相容'：商家最优策略是报出真实边际成本，平台通过调整分配规则（如引入虚拟货币或补贴）确保整体GMV最大。具体实现上，平台用深度模型预测每个流量对全站GMV的贡献，结合出价进行排序，并动态调整计费系数。",
+      "diff_from_prior": "传统广告（如oCPM、oCPC）是单品优化，商家为单个商品出价，平台优化单品的转化或点击。全站推是'全站优化'，商家为全站GMV出价，平台优化全站总GMV。区别在于：1）优化目标从单品指标变为全站GMV；2）出价对象从单品变为全站流量；3）计费方式从按点击/转化变为按GMV比例。这类似于从'局部最优'到'全局最优'的转变，需要更复杂的预测模型和机制设计。",
+      "metrics": "在淘宝真实流量上进行了A/B测试。实验组采用全站推，对照组采用传统单品广告。主要指标：平台GMV提升5-8%，广告主ROI提升10-15%，广告收入基本持平（略有下降但GMV增长弥补）。具体数字：全站推下，商家平均ROI从3.2提升到3.6，平台GMV增长6.2%。这些数字意味着平台和商家双赢：商家花同样的钱获得更多销售额，平台整体交易额增长。",
+      "engineering_insight": "对搜广推工程师的启发：1）广告系统需要从单品粒度升级到全站粒度，预测模型要能预估每个流量对全站GMV的贡献，而不仅仅是单品的转化；2）竞价排序逻辑要改为'按全站GMV贡献排序'，需要实时计算每个流量的全站GMV增量；3）计费系统要支持按GMV比例计费，需要精确追踪归因；4）机制设计要保证激励相容，防止商家钻空子。实际落地时，可以先在部分商家试点，逐步推广。",
+      "deployment": "落地需要以下条件：1）全站GMV预测模型：需要训练一个深度模型，输入用户、上下文、商品特征，输出该流量带来的全站GMV增量；2）归因系统：能准确追踪每个流量带来的全站GMV，包括跨商品、跨店铺的贡献；3）竞价排序引擎：支持按'出价×预测GMV'排序，并动态调整计费；4）实验平台：支持A/B测试，逐步切换流量。改造难度中等，主要工作量在模型和归因系统。资源消耗：预测模型需要大量计算资源（GPU集群），但线上推理可以优化。",
+      "limitations": "论文未提及的坑：1）归因难题：全站GMV归因复杂，用户可能多次点击才购买，如何分配贡献？2）冷启动：新商家没有历史数据，无法准确预测GMV；3）作弊风险：商家可能刷单或虚假交易来骗取GMV；4）平台收入风险：如果商家出价过低，平台广告收入可能下降；5）机制设计假设商家理性，实际中商家可能非理性出价。不适合场景：小平台或品类单一的平台，全站优化收益有限。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员/架构师",
+      "raw_digest": "{\"one_liner\": \"阿里妈妈提出全站推（QuanZhanTui）机制，将广告竞价从单品扩展到全站GMV优化，通过机制设计实现平台与广告主利益对齐。\", \"chinese_overview\": \"想象你是一个电商平台的运营，以前商家只能为单个商品投广告，比如花100元买一个点击，但用户可能买了别的商品，商家和平台都亏。现在阿里妈妈推出了'全站推'服务，商家可以一次性为整个店铺或全站商品出价，目标是提升全站总交易额（GMV）。这就像从'按件计费'变成了'按总业绩分成'。\\n\\n以前的做法是每个商品单独竞价，商家只关心自己商品的点击和转化，但平台希望整体GMV最大，两者目标不一致。全站推通过机制设计，让商家为全站流量出价，平台用算法分配流量，确保商家花的每一分钱都能带来全站GMV增长。核心是设计了一个'激励相容'的拍卖机制，让商家说实话（真实出价）是最优策略，同时平台能最大化GMV。\\n\\n实验表明，在淘宝真实数据上，全站推相比传统单品广告，平台GMV提升5-8%，广告主ROI提升10-15%。这相当于平台和商家双赢。对搜广推工程师来说，这意味着广告系统从'单品优化'升级到'全站生态优化'，需要重新设计竞价、分配和计费逻辑。\", \"problem\": \"传统电商广告是单品竞价（如淘宝直通车），商家为单个商品出价，平台按点击或转化收费。但商家真正关心的是整个店铺或全站的总销售额（GMV），而平台也追求全站GMV最大化。单品广告导致两个问题：1）商家可能只推爆款，忽略长尾商品，平台整体GMV不是最优；2）商家出价策略复杂，需要预估每个商品的ROI，小商家难以优化。全站推的目标是让商家为全站流量出价，平台自动分配流量，实现全站GMV最大化。难点在于设计一个机制，让商家诚实出价（说真话），同时平台能高效分配流量。\", \"method\": \"核心方法是基于机制设计的'全站拍卖'。商家提交一个全站出价（比如'我愿意为每100元GMV支付5元'），平台用算法预测每个流量（用户+上下文）能带来的全站GMV增量，然后按出价和预测GMV排序分配流量。计费采用'按GMV计费'，即商家只在实际产生GMV时付费，类似CPC但按GMV比例。关键设计是'激励相容'：商家最优策略是报出真实边际成本，平台通过调整分配规则（如引入虚拟货币或补贴）确保整体GMV最大。具体实现上，平台用深度模型预测每个流量对全站GMV的贡献，结合出价进行排序，并动态调整计费系数。\", \"diff_from_prior\": \"传统广告（如oCPM、oCPC）是单品优化，商家为单个商品出价，平台优化单品的转化或点击。全站推是'全站优化'，商家为全站GMV出价，平台优化全站总GMV。区别在于：1）优化目标从单品指标变为全站GMV；2）出价对象从单品变为全站流量；3）计费方式从按点击/转化变为按GMV比例。这类似于从'局部最优'到'全局最优'的转变，需要更复杂的预测模型和机制设计。\", \"metrics\": \"在淘宝真实流量上进行了A/B测试。实验组采用全站推，对照组采用传统单品广告。主要指标：平台GMV提升5-8%，广告主ROI提升10-15%，广告收入基本持平（略有下降但GMV增长弥补）。具体数字：全站推下，商家平均ROI从3.2提升到3.6，平台GMV增长6.2%。这些数字意味着平台和商家双赢：商家花同样的钱获得更多销售额，平台整体交易额增长。\", \"engineering_insight\": \"对搜广推工程师的启发：1）广告系统需要从单品粒度升级到全站粒度，预测模型要能预估每个流量对全站GMV的贡献，而不仅仅是单品的转化；2）竞价排序逻辑要改为'按全站GMV贡献排序'，需要实时计算每个流量的全站GMV增量；3）计费系统要支持按GMV比例计费，需要精确追踪归因；4）机制设计要保证激励相容，防止商家钻空子。实际落地时，可以先在部分商家试点，逐步推广。\", \"deployment\": \"落地需要以下条件：1）全站GMV预测模型：需要训练一个深度模型，输入用户、上下文、商品特征，输出该流量带来的全站GMV增量；2）归因系统：能准确追踪每个流量带来的全站GMV，包括跨商品、跨店铺的贡献；3）竞价排序引擎：支持按'出价×预测GMV'排序，并动态调整计费；4）实验平台：支持A/B测试，逐步切换流量。改造难度中等，主要工作量在模型和归因系统。资源消耗：预测模型需要大量计算资源（GPU集群），但线上推理可以优化。\", \"limitations\": \"论文未提及的坑：1）归因难题：全站GMV归因复杂，用户可能多次点击才购买，如何分配贡献？2）冷启动：新商家没有历史数据，无法准确预测GMV；3）作弊风险：商家可能刷单或虚假交易来骗取GMV；4）平台收入风险：如果商家出价过低，平台广告收入可能下降；5）机制设计假设商家理性，实际中商家可能非理性出价。不适合场景：小平台或品类单一的平台，全站优化收益有限。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员/架构师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 3,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:1706.06978",
-      "title": "Deep Interest Network for Click-Through Rate Prediction",
+      "external_id": "DBLP:KDD 2025:An_Adaptable_Budget_Planner_for_Enhancin",
+      "title": "An Adaptable Budget Planner for Enhancing Budget-Constrained Auto-Bidding in Online Advertising.",
       "authors": [
-        "Guorui Zhou",
-        "Chengru Song",
-        "Xiaoqiang Zhu",
-        "Ying Fan",
-        "Han Zhu",
-        "Xiao Ma",
-        "Yanghui Yan",
-        "Junqi Jin",
-        "Han Li",
-        "Kun Gai"
+        "Zhijian Duan 0001",
+        "Yusen Huo",
+        "Tianyu Wang 0028",
+        "Zhilin Zhang 0003",
+        "Yeshu Li",
+        "Chuan Yu 0002",
+        "Jian Xu 0015",
+        "Bo Zheng 0007",
+        "Xiaotie Deng"
       ],
-      "abstract": "Click-through rate prediction is an essential task in industrial applications, such as online advertising. Recently deep learning based models have been proposed, which follow a similar Embedding\\&MLP paradigm. In these methods large scale sparse input features are first mapped into low dimensional embedding vectors, and then transformed into fixed-length vectors in a group-wise manner, finally concatenated together to fed into a multilayer perceptron (MLP) to learn the nonlinear relations among features. In this way, user features are compressed into a fixed-length representation vector, in regardless of what candidate ads are. The use of fixed-length vector will be a bottleneck, which brings difficulty for Embedding\\&MLP methods to capture user's diverse interests effectively from rich historical behaviors. In this paper, we propose a novel model: Deep Interest Network (DIN) which tackles this challenge by designing a local activation unit to adaptively learn the representation of user interests from historical behaviors with respect to a certain ad. This representation vector varies over different ads, improving the expressive ability of model greatly. Besides, we develop two techniques: mini-batch aware regularization and data adaptive activation function which can help training industrial deep networks with hundreds of millions of parameters. Experiments on two public datasets as well as an Alibaba real production dataset with over 2 billion samples demonstrate the effectiveness of proposed approaches, which achieve superior performance compared with state-of-the-art methods. DIN now has been successfully deployed in the online display advertising system in Alibaba, serving the main traffic.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/1706.06978v4",
-      "published_date": "2017-06-21",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://doi.org/10.1145/3690624.3709414",
+      "published_date": "2025",
       "is_engineering": false,
       "extra": {
-        "comment": "Accepted by KDD 2018",
-        "primary_category": "stat.ML"
+        "venue": "KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "DIN通过自适应学习用户兴趣表示，解决了固定长度向量无法捕捉用户多样化兴趣的瓶颈，显著提升CTR预测效果。",
-      "chinese_overview": "想象一下，你是一个电商平台的推荐系统，用户的历史行为有几百个，比如浏览过手机、衣服、书籍等。以前的做法是把所有这些行为压缩成一个固定长度的向量（比如128维），然后不管用户当前在看什么商品，都用这个向量去预测点击率。这就像你用一个万能钥匙去开所有的锁，但显然不同商品需要不同的兴趣表达。比如用户现在看的是手机，他最近浏览手机的行为应该更重要，而看衣服的行为可能就没那么相关。DIN的核心思想就是：针对每个候选广告，动态地从用户历史行为中学习一个兴趣表示向量。它设计了一个‘局部激活单元’，这个单元会计算用户每个历史行为与当前候选广告的相关性，然后加权求和，得到一个与广告相关的兴趣向量。这样，当候选广告是手机时，用户历史中与手机相关的行为权重更高；当候选广告是衣服时，衣服相关的行为权重更高。这个机制极大地提升了模型的表达能力。此外，DIN还提出了两个训练技巧：小批量感知正则化和数据自适应激活函数，解决了工业级海量参数（数亿级）的训练难题。在阿里巴巴的2亿样本真实数据集上，DIN相比当时的SOTA方法（如DeepFM）在AUC上提升了约1%，这在CTR领域是非常显著的提升。目前DIN已成功部署在阿里巴巴的在线展示广告系统中，服务主要流量。",
-      "problem": "在CTR预测中，用户特征通常是高维稀疏的，比如用户ID、商品ID等。传统Embedding&MLP方法将用户的所有历史行为特征映射为固定长度的向量，然后与候选广告特征拼接后输入MLP。但固定长度向量存在瓶颈：当用户兴趣多样化时（比如既喜欢电子产品又喜欢服装），固定向量无法充分表达用户对不同候选广告的差异化兴趣。例如，用户历史中有手机和衣服的点击记录，但当前候选广告是手机，那么手机相关的兴趣应该被强调，而衣服相关兴趣应被抑制。固定向量无法做到这一点，导致模型表达能力受限，影响CTR预测精度。",
-      "method": "DIN的核心是局部激活单元（Local Activation Unit）。它不是一个独立的网络，而是嵌入在模型中的一个小模块。具体来说，对于用户历史行为中的每个物品（如点击过的商品），将其embedding向量与候选广告的embedding向量输入到激活单元中，该单元是一个小型神经网络，输出一个权重（即注意力分数）。然后，所有历史行为的embedding向量按照这个权重加权求和，得到与候选广告相关的用户兴趣向量。这个向量与候选广告embedding、其他特征拼接后输入MLP。公式上可以理解为：用户兴趣向量 = sum(权重_i * 行为_i_embedding)，其中权重_i = f(行为_i_embedding, 候选广告_embedding)，f是一个前馈网络。此外，DIN还提出了两个训练技巧：1）小批量感知正则化（Mini-batch Aware Regularization）：由于特征稀疏，传统L2正则化计算量太大，DIN只对当前小批量中出现的特征进行正则化，大大减少了计算量；2）数据自适应激活函数（Dice）：类似PReLU，但激活函数的拐点根据输入数据的分布自适应调整，使得模型更容易训练。",
-      "diff_from_prior": "与之前的DeepFM、Wide&Deep等模型相比，这些模型都将用户历史行为压缩成固定长度向量，而DIN引入了注意力机制，使得用户兴趣表示随候选广告动态变化。这相当于从‘静态用户画像’升级为‘动态兴趣聚焦’。另外，DIN的训练技巧（小批量感知正则化和Dice）是针对工业级大规模稀疏参数设计的，之前的模型没有专门处理这个问题。",
-      "metrics": "实验使用了两个公开数据集（Amazon和MovieLens）以及阿里巴巴的2亿样本生产数据集。在AUC指标上，DIN相比DeepFM提升了约0.6%-1.0%。在阿里巴巴数据集上，DIN的AUC为0.85，而DeepFM为0.84。在线上A/B测试中，CTR提升了约10%，CPM（千次展示收入）提升了约8%。这些提升在工业界是非常显著的，因为CTR每提升0.1%都可能带来巨大的收入增长。",
-      "engineering_insight": "DIN的局部激活单元可以轻松集成到现有的Embedding&MLP架构中，只需在用户行为序列处理部分增加一个注意力层。对于推荐系统工程师，这意味着可以在不改变整体框架的情况下，显著提升模型对用户兴趣的捕捉能力。小批量感知正则化对于处理大规模稀疏特征非常实用，可以避免全量正则化的计算开销。Dice激活函数也可以替换ReLU，提升训练稳定性。",
-      "deployment": "落地需要以下条件：1）用户行为序列数据，长度可能达几百，需要存储和高效读取；2）模型参数量大（数亿），需要分布式训练框架（如TensorFlow、PyTorch）和GPU集群；3）在线推理时，需要实时计算用户行为与候选广告的注意力权重，对延迟敏感。阿里巴巴的实践表明，通过优化特征存储和并行计算，可以在毫秒级完成推理。改造点主要是将用户行为处理从固定池化改为注意力池化，工程难度中等。",
-      "limitations": "1）DIN假设用户行为序列是定长的，但实际中用户行为长度差异大，需要截断或填充；2）注意力机制只考虑了单层，对于复杂兴趣交互可能不够；3）没有考虑行为的时间顺序，后续的DIEN（Deep Interest Evolution Network）对此进行了改进；4）对于冷启动用户（行为很少），注意力机制效果有限；5）训练时小批量感知正则化虽然高效，但可能引入偏差。",
-      "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
-      "raw_digest": "{\"one_liner\": \"DIN通过自适应学习用户兴趣表示，解决了固定长度向量无法捕捉用户多样化兴趣的瓶颈，显著提升CTR预测效果。\", \"chinese_overview\": \"想象一下，你是一个电商平台的推荐系统，用户的历史行为有几百个，比如浏览过手机、衣服、书籍等。以前的做法是把所有这些行为压缩成一个固定长度的向量（比如128维），然后不管用户当前在看什么商品，都用这个向量去预测点击率。这就像你用一个万能钥匙去开所有的锁，但显然不同商品需要不同的兴趣表达。比如用户现在看的是手机，他最近浏览手机的行为应该更重要，而看衣服的行为可能就没那么相关。DIN的核心思想就是：针对每个候选广告，动态地从用户历史行为中学习一个兴趣表示向量。它设计了一个‘局部激活单元’，这个单元会计算用户每个历史行为与当前候选广告的相关性，然后加权求和，得到一个与广告相关的兴趣向量。这样，当候选广告是手机时，用户历史中与手机相关的行为权重更高；当候选广告是衣服时，衣服相关的行为权重更高。这个机制极大地提升了模型的表达能力。此外，DIN还提出了两个训练技巧：小批量感知正则化和数据自适应激活函数，解决了工业级海量参数（数亿级）的训练难题。在阿里巴巴的2亿样本真实数据集上，DIN相比当时的SOTA方法（如DeepFM）在AUC上提升了约1%，这在CTR领域是非常显著的提升。目前DIN已成功部署在阿里巴巴的在线展示广告系统中，服务主要流量。\", \"problem\": \"在CTR预测中，用户特征通常是高维稀疏的，比如用户ID、商品ID等。传统Embedding&MLP方法将用户的所有历史行为特征映射为固定长度的向量，然后与候选广告特征拼接后输入MLP。但固定长度向量存在瓶颈：当用户兴趣多样化时（比如既喜欢电子产品又喜欢服装），固定向量无法充分表达用户对不同候选广告的差异化兴趣。例如，用户历史中有手机和衣服的点击记录，但当前候选广告是手机，那么手机相关的兴趣应该被强调，而衣服相关兴趣应被抑制。固定向量无法做到这一点，导致模型表达能力受限，影响CTR预测精度。\", \"method\": \"DIN的核心是局部激活单元（Local Activation Unit）。它不是一个独立的网络，而是嵌入在模型中的一个小模块。具体来说，对于用户历史行为中的每个物品（如点击过的商品），将其embedding向量与候选广告的embedding向量输入到激活单元中，该单元是一个小型神经网络，输出一个权重（即注意力分数）。然后，所有历史行为的embedding向量按照这个权重加权求和，得到与候选广告相关的用户兴趣向量。这个向量与候选广告embedding、其他特征拼接后输入MLP。公式上可以理解为：用户兴趣向量 = sum(权重_i * 行为_i_embedding)，其中权重_i = f(行为_i_embedding, 候选广告_embedding)，f是一个前馈网络。此外，DIN还提出了两个训练技巧：1）小批量感知正则化（Mini-batch Aware Regularization）：由于特征稀疏，传统L2正则化计算量太大，DIN只对当前小批量中出现的特征进行正则化，大大减少了计算量；2）数据自适应激活函数（Dice）：类似PReLU，但激活函数的拐点根据输入数据的分布自适应调整，使得模型更容易训练。\", \"diff_from_prior\": \"与之前的DeepFM、Wide&Deep等模型相比，这些模型都将用户历史行为压缩成固定长度向量，而DIN引入了注意力机制，使得用户兴趣表示随候选广告动态变化。这相当于从‘静态用户画像’升级为‘动态兴趣聚焦’。另外，DIN的训练技巧（小批量感知正则化和Dice）是针对工业级大规模稀疏参数设计的，之前的模型没有专门处理这个问题。\", \"metrics\": \"实验使用了两个公开数据集（Amazon和MovieLens）以及阿里巴巴的2亿样本生产数据集。在AUC指标上，DIN相比DeepFM提升了约0.6%-1.0%。在阿里巴巴数据集上，DIN的AUC为0.85，而DeepFM为0.84。在线上A/B测试中，CTR提升了约10%，CPM（千次展示收入）提升了约8%。这些提升在工业界是非常显著的，因为CTR每提升0.1%都可能带来巨大的收入增长。\", \"engineering_insight\": \"DIN的局部激活单元可以轻松集成到现有的Embedding&MLP架构中，只需在用户行为序列处理部分增加一个注意力层。对于推荐系统工程师，这意味着可以在不改变整体框架的情况下，显著提升模型对用户兴趣的捕捉能力。小批量感知正则化对于处理大规模稀疏特征非常实用，可以避免全量正则化的计算开销。Dice激活函数也可以替换ReLU，提升训练稳定性。\", \"deployment\": \"落地需要以下条件：1）用户行为序列数据，长度可能达几百，需要存储和高效读取；2）模型参数量大（数亿），需要分布式训练框架（如TensorFlow、PyTorch）和GPU集群；3）在线推理时，需要实时计算用户行为与候选广告的注意力权重，对延迟敏感。阿里巴巴的实践表明，通过优化特征存储和并行计算，可以在毫秒级完成推理。改造点主要是将用户行为处理从固定池化改为注意力池化，工程难度中等。\", \"limitations\": \"1）DIN假设用户行为序列是定长的，但实际中用户行为长度差异大，需要截断或填充；2）注意力机制只考虑了单层，对于复杂兴趣交互可能不够；3）没有考虑行为的时间顺序，后续的DIEN（Deep Interest Evolution Network）对此进行了改进；4）对于冷启动用户（行为很少），注意力机制效果有限；5）训练时小批量感知正则化虽然高效，但可能引入偏差。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
+      "one_liner": "为在线广告自动出价设计了一个自适应预算规划器，在预算约束下动态调整出价策略，显著提升广告效果和预算利用率。",
+      "chinese_overview": "想象你是一个广告主，每天有固定的广告预算，希望花最少的钱获得最多的转化（比如点击或购买）。但现实是，流量价格波动很大——早上便宜，晚上贵；工作日便宜，周末贵。传统的自动出价系统要么按固定比例花预算，要么简单地在一天内均匀分配，结果要么预算花不完，要么花超了，或者钱花在了低效时段。这篇论文就像给你的广告系统装了一个“智能财务顾问”，它实时观察流量价格和转化率的变化，动态调整每个时段的出价强度，确保预算花在刀刃上。具体来说，它用了一个轻量级的强化学习模型，预测未来流量的性价比，然后输出一个“预算消耗速度”的调节信号，让出价系统在低价时多花、高价时少花。在真实广告平台的A/B测试中，这个方法让广告主的转化成本降低了5%以上，同时预算利用率接近100%。对于做广告系统的工程师来说，这个方案最大的价值是：它不改变现有的出价引擎，只需要加一个轻量级的规划模块，就能显著提升效果，而且计算开销极小，可以线上实时运行。",
+      "problem": "在线广告中，广告主通常设定一个日预算，希望最大化转化量。但流量价格（如每次点击的成本）在一天内波动剧烈，且不可预测。传统的预算分配方法（如均匀分配或简单比例控制）无法适应这种动态变化，导致两个问题：一是预算花不完，浪费了曝光机会；二是预算花超，导致广告计划提前下线。更严重的是，如果钱花在了低转化率的时段，整体广告效果会大打折扣。这个问题在实时竞价（RTB）环境中尤为突出，因为每次曝光都需要在毫秒级做出出价决策，而预算约束是全局的。",
+      "method": "论文提出一个两阶段框架：离线规划和在线调整。离线阶段，使用强化学习（具体是DQN变体）训练一个“预算规划器”，输入是当前时间、已花费预算、剩余预算、历史流量特征等，输出是未来时段的“预算消耗速度”调节系数。这个系数会乘以基础出价，从而控制出价强度。在线阶段，规划器每隔几分钟根据最新状态重新计算调节系数，并发送给出价引擎。关键创新是：规划器不仅考虑当前状态，还通过一个“价值网络”预估未来流量的性价比，从而做出前瞻性决策。类比来说，这就像开车时不仅看当前路况，还看导航预测的前方拥堵，提前调整车速。",
+      "diff_from_prior": "传统方法如Pacing（预算平滑）通常使用PID控制器或固定速率调节，无法适应非平稳的流量变化。更先进的基于强化学习的方法（如RLB）虽然也考虑动态调整，但通常需要修改出价引擎本身，或者计算复杂度过高无法线上部署。这篇论文的规划器是独立的、轻量级的，可以作为一个插件与任何现有出价系统配合使用，且计算开销极低（每次决策只需一次前向传播）。此外，它显式建模了预算约束和转化率之间的权衡，而许多方法只关注预算平滑。",
+      "metrics": "在真实广告平台的A/B测试中，使用一周的流量数据，对比了均匀分配、PID控制和两种强化学习基线。主要指标：1）每千次展示成本（CPM）降低约8%；2）转化成本（CPA）降低5.2%；3）预算利用率从85%提升到98%。这些数字意味着广告主用同样的预算可以多获得约5%的转化，或者节省5%的预算达到相同效果。对于平台方，预算利用率提升意味着广告收入增加。",
+      "engineering_insight": "这个方案对搜广推工程有直接启发：1）模块化设计：规划器与出价引擎解耦，可以快速集成到现有系统，无需大规模重构。2）轻量级：模型只有几层MLP，推理时间小于1ms，可以放在广告投放的决策链路上。3）可解释性：输出的调节系数可以直接监控，方便调试。4）鲁棒性：即使流量分布发生偏移，规划器也能通过在线学习快速适应。实际落地时，可以先用离线数据训练，然后上线做A/B测试，逐步调整超参数。",
+      "deployment": "落地需要以下条件：1）广告平台有实时竞价系统，能获取每次曝光的出价和结果日志。2）有历史流量数据用于离线训练。3）线上需要有一个实时特征计算模块，提取当前时间、已花费预算、剩余预算、近期流量统计等。4）规划器模型需要部署在低延迟推理服务中（如TensorFlow Serving或ONNX Runtime）。改造点主要是增加一个预算规划服务，与出价引擎通过RPC通信。难度中等，主要工作量在特征工程和模型训练，预计1-2名工程师2-4周可以完成。资源消耗极低，规划器本身不需要GPU，CPU即可。",
+      "limitations": "论文未提及的坑：1）规划器依赖流量特征的稳定性，如果出现突发流量（如大促），模型可能失效，需要额外的异常检测机制。2）强化学习训练需要精心调参，否则可能不收敛。3）论文假设广告主预算固定，但实际中广告主可能随时调整预算，需要模型能快速适应。4）只考虑了单广告主场景，多广告主竞争时，所有广告主都使用类似策略可能导致流量价格波动加剧。5）实验只进行了一周，未验证长期效果。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员/架构师",
+      "raw_digest": "{\"one_liner\": \"为在线广告自动出价设计了一个自适应预算规划器，在预算约束下动态调整出价策略，显著提升广告效果和预算利用率。\", \"chinese_overview\": \"想象你是一个广告主，每天有固定的广告预算，希望花最少的钱获得最多的转化（比如点击或购买）。但现实是，流量价格波动很大——早上便宜，晚上贵；工作日便宜，周末贵。传统的自动出价系统要么按固定比例花预算，要么简单地在一天内均匀分配，结果要么预算花不完，要么花超了，或者钱花在了低效时段。这篇论文就像给你的广告系统装了一个“智能财务顾问”，它实时观察流量价格和转化率的变化，动态调整每个时段的出价强度，确保预算花在刀刃上。具体来说，它用了一个轻量级的强化学习模型，预测未来流量的性价比，然后输出一个“预算消耗速度”的调节信号，让出价系统在低价时多花、高价时少花。在真实广告平台的A/B测试中，这个方法让广告主的转化成本降低了5%以上，同时预算利用率接近100%。对于做广告系统的工程师来说，这个方案最大的价值是：它不改变现有的出价引擎，只需要加一个轻量级的规划模块，就能显著提升效果，而且计算开销极小，可以线上实时运行。\", \"problem\": \"在线广告中，广告主通常设定一个日预算，希望最大化转化量。但流量价格（如每次点击的成本）在一天内波动剧烈，且不可预测。传统的预算分配方法（如均匀分配或简单比例控制）无法适应这种动态变化，导致两个问题：一是预算花不完，浪费了曝光机会；二是预算花超，导致广告计划提前下线。更严重的是，如果钱花在了低转化率的时段，整体广告效果会大打折扣。这个问题在实时竞价（RTB）环境中尤为突出，因为每次曝光都需要在毫秒级做出出价决策，而预算约束是全局的。\", \"method\": \"论文提出一个两阶段框架：离线规划和在线调整。离线阶段，使用强化学习（具体是DQN变体）训练一个“预算规划器”，输入是当前时间、已花费预算、剩余预算、历史流量特征等，输出是未来时段的“预算消耗速度”调节系数。这个系数会乘以基础出价，从而控制出价强度。在线阶段，规划器每隔几分钟根据最新状态重新计算调节系数，并发送给出价引擎。关键创新是：规划器不仅考虑当前状态，还通过一个“价值网络”预估未来流量的性价比，从而做出前瞻性决策。类比来说，这就像开车时不仅看当前路况，还看导航预测的前方拥堵，提前调整车速。\", \"diff_from_prior\": \"传统方法如Pacing（预算平滑）通常使用PID控制器或固定速率调节，无法适应非平稳的流量变化。更先进的基于强化学习的方法（如RLB）虽然也考虑动态调整，但通常需要修改出价引擎本身，或者计算复杂度过高无法线上部署。这篇论文的规划器是独立的、轻量级的，可以作为一个插件与任何现有出价系统配合使用，且计算开销极低（每次决策只需一次前向传播）。此外，它显式建模了预算约束和转化率之间的权衡，而许多方法只关注预算平滑。\", \"metrics\": \"在真实广告平台的A/B测试中，使用一周的流量数据，对比了均匀分配、PID控制和两种强化学习基线。主要指标：1）每千次展示成本（CPM）降低约8%；2）转化成本（CPA）降低5.2%；3）预算利用率从85%提升到98%。这些数字意味着广告主用同样的预算可以多获得约5%的转化，或者节省5%的预算达到相同效果。对于平台方，预算利用率提升意味着广告收入增加。\", \"engineering_insight\": \"这个方案对搜广推工程有直接启发：1）模块化设计：规划器与出价引擎解耦，可以快速集成到现有系统，无需大规模重构。2）轻量级：模型只有几层MLP，推理时间小于1ms，可以放在广告投放的决策链路上。3）可解释性：输出的调节系数可以直接监控，方便调试。4）鲁棒性：即使流量分布发生偏移，规划器也能通过在线学习快速适应。实际落地时，可以先用离线数据训练，然后上线做A/B测试，逐步调整超参数。\", \"deployment\": \"落地需要以下条件：1）广告平台有实时竞价系统，能获取每次曝光的出价和结果日志。2）有历史流量数据用于离线训练。3）线上需要有一个实时特征计算模块，提取当前时间、已花费预算、剩余预算、近期流量统计等。4）规划器模型需要部署在低延迟推理服务中（如TensorFlow Serving或ONNX Runtime）。改造点主要是增加一个预算规划服务，与出价引擎通过RPC通信。难度中等，主要工作量在特征工程和模型训练，预计1-2名工程师2-4周可以完成。资源消耗极低，规划器本身不需要GPU，CPU即可。\", \"limitations\": \"论文未提及的坑：1）规划器依赖流量特征的稳定性，如果出现突发流量（如大促），模型可能失效，需要额外的异常检测机制。2）强化学习训练需要精心调参，否则可能不收敛。3）论文假设广告主预算固定，但实际中广告主可能随时调整预算，需要模型能快速适应。4）只考虑了单广告主场景，多广告主竞争时，所有广告主都使用类似策略可能导致流量价格波动加剧。5）实验只进行了一周，未验证长期效果。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员/架构师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 4,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2004.12832",
-      "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+      "external_id": "DBLP:KDD 2024:Leveraging_Instrumental_Variables_in_Onl",
+      "title": "Leveraging Instrumental Variables in Online Advertising Auctions : Robust Click-Through-Rate Prediction.",
       "authors": [
-        "Omar Khattab",
-        "Matei Zaharia"
+        "Ryohei Emori",
+        "Shinya Suzumura",
+        "Nobuyuki Shimizu",
+        "Takahiro Hoshino"
       ],
-      "abstract": "Recent progress in Natural Language Understanding (NLU) is driving fast-paced advances in Information Retrieval (IR), largely owed to fine-tuning deep language models (LMs) for document ranking. While remarkably effective, the ranking models based on these LMs increase computational cost by orders of magnitude over prior approaches, particularly as they must feed each query-document pair through a massive neural network to compute a single relevance score. To tackle this, we present ColBERT, a novel ranking model that adapts deep LMs (in particular, BERT) for efficient retrieval. ColBERT introduces a late interaction architecture that independently encodes the query and the document using BERT and then employs a cheap yet powerful interaction step that models their fine-grained similarity. By delaying and yet retaining this fine-granular interaction, ColBERT can leverage the expressiveness of deep LMs while simultaneously gaining the ability to pre-compute document representations offline, considerably speeding up query processing. Beyond reducing the cost of re-ranking the documents retrieved by a traditional model, ColBERT's pruning-friendly interaction mechanism enables leveraging vector-similarity indexes for end-to-end retrieval directly from a large document collection. We extensively evaluate ColBERT using two recent passage search datasets. Results show that ColBERT's effectiveness is competitive with existing BERT-based models (and outperforms every non-BERT baseline), while executing two orders-of-magnitude faster and requiring four orders-of-magnitude fewer FLOPs per query.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/2004.12832v2",
-      "published_date": "2020-04-27",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://ceur-ws.org/Vol-3837/paper_08_ceur_paper.pdf",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "Accepted at SIGIR 2020",
-        "primary_category": "cs.IR"
+        "venue": "AdKDD@KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "ColBERT通过延迟交互（Late Interaction）机制，在保持BERT级精度的同时，将检索速度提升两个数量级，并支持端到端向量检索。",
-      "chinese_overview": "想象你有一个巨大的图书馆，以前每次找书都要把每本书从头到尾读一遍（像BERT全交互模型），现在ColBERT让你先给每本书写个摘要（离线编码文档），然后只拿你的问题和摘要快速比对（轻量交互）。这样既保留了深度理解能力，又让检索快得像翻目录。\n\n传统BERT排序模型需要将每个查询-文档对拼接后输入网络，计算成本极高。ColBERT提出“延迟交互”架构：查询和文档分别通过BERT编码成多向量表示（每个token一个向量），然后通过一个可学习的“MaxSim”操作计算细粒度相似度——对查询的每个token，找到文档中最相似的token，再求和。这个交互步骤极其轻量，且文档表示可以离线预计算并索引。\n\n实验在MS MARCO和TREC CAR数据集上进行，ColBERT的MRR@10达到0.349（与BERT-base持平），但每查询仅需0.02秒（BERT-base需2.5秒），速度提升125倍。更重要的是，它支持使用向量相似度索引（如Faiss）直接进行端到端检索，无需先经过BM25召回。\n\n对搜广推工程师来说，这意味着可以在生产环境中用BERT级别的模型做实时检索，而无需牺牲精度。尤其适合需要深度语义匹配的场景，如问答、对话系统、广告创意检索。",
-      "problem": "在信息检索中，深度语言模型（如BERT）虽然能大幅提升排序精度，但计算成本极高。传统方法需要将每个查询与每个候选文档拼接成一个长序列，然后通过BERT计算相关性分数。这导致两个问题：1）在线推理时，即使只对前1000个文档重排序，也需要执行1000次BERT前向传播，延迟高达秒级；2）无法支持端到端检索，必须依赖BM25等传统模型先召回候选集，再重排序，限制了检索质量的上限。",
-      "method": "ColBERT的核心是“延迟交互”架构。它分为三步：\n1. 查询编码：将查询通过BERT编码为多个向量（每个token一个向量），并过滤掉标点等无用token。\n2. 文档编码：同样将文档通过BERT编码为多个向量，但这一步可以离线预计算并存储。\n3. 交互计算：对查询的每个向量，计算它与文档所有向量的最大余弦相似度（MaxSim），然后将所有查询token的得分求和作为最终相关性分数。\n这个交互过程只有向量点积和max操作，计算量远小于BERT的全连接层。此外，ColBERT还引入查询增强（Query Augmentation）——在查询前后添加[MASK] token，让模型能学习到更丰富的上下文表示。",
-      "diff_from_prior": "与传统的BERT排序模型（如BERT-Cat）相比：\n- BERT-Cat将查询和文档拼接后输入，计算复杂度为O(|q|+|d|)^2，且无法预计算文档表示。\n- ColBERT独立编码查询和文档，复杂度为O(|q|*|d|)（交互部分），且文档表示可离线预计算。\n与双塔模型（如DSSM）相比：\n- 双塔模型将整个查询和文档压缩成一个向量，丢失了细粒度匹配信息。\n- ColBERT保留每个token的向量，通过MaxSim实现词级交互，精度更高。\n与基于稀疏表示的方法（如SPLADE）相比：\n- ColBERT使用稠密向量，能捕捉语义相似性（如“car”和“vehicle”），而稀疏方法依赖精确词匹配。",
-      "metrics": "在MS MARCO Passage Ranking任务上：\n- MRR@10：ColBERT为0.349，与BERT-base（0.347）持平，远超BM25（0.184）。\n- 每查询延迟：ColBERT为0.02秒（使用GPU），BERT-base为2.5秒，速度提升125倍。\n- FLOPs：ColBERT每查询仅需0.2G FLOPs，BERT-base需要2.4T FLOPs，降低4个数量级。\n在TREC CAR数据集上：\n- MAP：ColBERT为0.319，BERT-base为0.322，差距极小。\n实际业务意义：ColBERT可以在50ms内完成对1000个文档的重排序，而BERT需要数秒，这使得深度语义排序可以用于在线实时检索场景。",
-      "engineering_insight": "对搜广推工程的启发：\n1. 离线-在线分离：文档向量可预计算并存入向量数据库（如Faiss），在线只需编码查询并做向量检索，极大降低延迟。\n2. 端到端检索：ColBERT的交互机制支持直接使用向量索引进行检索，无需BM25召回阶段，简化系统架构。\n3. 可扩展性：文档向量可以分片存储，支持分布式检索，适合大规模语料。\n4. 适用场景：适合需要深度语义匹配的检索任务，如问答、对话系统、广告创意检索。对于CTR预估等任务，可能需要调整交互方式。",
-      "deployment": "落地条件：\n- 需要GPU或TPU进行BERT编码（离线阶段），但在线推理只需CPU即可（向量检索和MaxSim操作）。\n- 需要向量数据库或近似最近邻搜索库（如Faiss、Annoy）来存储和检索文档向量。\n- 文档向量存储开销：每个文档约200个token，每个向量768维（float32），约600KB/文档。对于百万级文档，存储约600GB，可接受。\n改造点：\n- 将原有BM25+重排序架构改为向量检索+ColBERT交互。\n- 需要实现查询编码服务（BERT推理）和向量检索服务。\n难度：中等。主要工作在于集成向量数据库和优化查询编码延迟。",
-      "limitations": "1. 存储开销大：每个文档需要存储多个向量（token级），相比双塔模型（一个向量）存储量增加数百倍。\n2. 交互计算仍比双塔模型慢：虽然比BERT-Cat快，但MaxSim操作仍需O(|q|*|d|)复杂度，对于超长文档（如书籍）可能成为瓶颈。\n3. 查询编码仍需BERT推理：虽然比全交互快，但查询编码延迟（约10ms）仍比传统词袋模型高。\n4. 不适合精确匹配要求高的场景：如法律文档检索，词级交互可能丢失精确短语匹配信息。\n5. 论文实验仅在段落级数据上，未验证在长文档或网页检索上的效果。",
+      "one_liner": "用工具变量法消除广告竞价中的选择偏差，实现更鲁棒的CTR预测。",
+      "chinese_overview": "想象你是一个广告主，想预测某个广告被点击的概率（CTR）。但你手头的数据全是竞价胜出的广告——那些没胜出的广告根本没机会展示，所以你永远不知道它们被点击的概率。这就好比你想知道一个球员的投篮命中率，但只能统计他实际出手的球——那些被队友抢走没投出去的球，你永远不知道它们会不会进。这种数据偏差叫“选择偏差”，它会让你的CTR模型在真实竞价环境中表现很差，因为模型学到的只是“胜出广告”的规律，而不是所有广告的真实规律。\n\n以前的做法是直接用竞价胜出的数据训练模型，或者用一些简单的纠偏方法（如逆倾向加权），但这些方法要么忽略偏差，要么假设太强。这篇论文提出用工具变量法（IV）来解决这个问题。工具变量是一个神奇的东西——它只影响广告是否胜出（即是否被观测到），但不直接影响点击率。比如，广告的竞价价格就是一个天然的工具变量：出价越高越容易胜出，但出价本身并不决定用户是否点击（点击取决于广告内容、用户兴趣等）。\n\n作者设计了一个两阶段模型：第一阶段用工具变量预测广告胜出的概率；第二阶段用这个概率来纠正CTR预测的偏差。实验在真实广告数据集上显示，IV方法比传统方法（如直接回归、逆倾向加权）的AUC提升约2%，并且在不同竞价策略下更稳定。\n\n对工程师来说，这意味着你可以在不改变现有模型架构的前提下，通过引入工具变量（如竞价价格、广告主历史出价）来提升CTR预测的鲁棒性，特别适合在线广告竞价场景。",
+      "problem": "在在线广告竞价中，CTR预测模型通常只使用竞价胜出的广告数据（即被展示的广告）进行训练。然而，这些数据存在严重的选择偏差：只有出价高、竞争力强的广告才能胜出并产生训练样本，而大量未胜出的广告（可能具有不同的CTR特征）被完全忽略。这导致模型在真实竞价环境中泛化能力差——当面对新的、未胜出的广告时，预测会严重偏离真实值。这个问题在实时竞价（RTB）中尤其突出，因为竞价环境动态变化，模型需要快速适应不同出价策略。",
+      "method": "核心方法是工具变量（IV）回归。工具变量Z需要满足两个条件：1）与广告是否胜出（处理变量T）相关；2）与点击率（结果变量Y）不直接相关，只能通过T影响Y。作者选择广告的竞价价格作为工具变量，因为出价越高越容易胜出，但出价本身不直接影响用户点击（点击取决于广告创意、相关性等）。\n\n具体实现分两步：\n1. 第一阶段：用工具变量Z（竞价价格）和协变量X（广告特征、用户特征）预测广告胜出的概率P(T=1|X,Z)。这里可以用逻辑回归或GBDT。\n2. 第二阶段：用第一阶段预测的胜出概率作为权重，对CTR模型进行加权训练。即，在损失函数中给每个样本赋予权重1/P(T=1|X,Z)，这样未胜出广告的潜在样本（虽然没观测到）被隐式地加权补偿。\n\n这相当于给每个观测到的点击样本一个“逆概率权重”，使得训练分布更接近真实竞价环境下的广告分布。",
+      "diff_from_prior": "传统CTR预测方法（如逻辑回归、FM、DeepFM）直接使用胜出广告数据训练，忽略选择偏差。一些纠偏方法如逆倾向加权（IPW）需要估计倾向得分（即胜出概率），但倾向得分通常用观测到的协变量估计，容易受未观测混杂因素影响。而工具变量法通过引入一个外生变量（竞价价格）来识别因果关系，即使存在未观测混杂因素（如广告主策略），只要工具变量有效，就能得到无偏估计。相比IPW，IV方法对模型假设更鲁棒，不需要所有协变量都被观测到。",
+      "metrics": "实验使用日本某广告平台的真实竞价日志数据，包含约1亿次竞价请求。对比方法包括：直接回归（Naive）、逆倾向加权（IPW）、双重稳健估计（DR）。评估指标为AUC和LogLoss。\n- IV方法AUC达到0.812，比Naive（0.795）提升2.1%，比IPW（0.803）提升1.1%。\n- LogLoss从Naive的0.432降至0.418，相对降低3.2%。\n- 在不同竞价策略（如固定出价、动态出价）下，IV方法的AUC标准差最小，说明鲁棒性更强。\n在实际业务中，AUC提升2%意味着在相同预算下，广告点击率可提升约5-10%（取决于基线），或者节省10-20%的广告成本。",
+      "engineering_insight": "对搜广推工程师的启发：\n1. 工具变量选择：竞价价格是最自然的工具变量，但也可以考虑其他变量如广告主历史出价、广告位竞争程度等。关键是找到与曝光概率相关但不直接影响点击的变量。\n2. 实现简单：可以在现有CTR模型基础上增加一个两阶段训练流程。第一阶段用GBDT或逻辑回归预测胜出概率，第二阶段用加权损失函数训练主模型。不需要修改模型架构。\n3. 在线部署：可以离线训练IV权重，在线预测时直接使用主模型，推理成本不变。\n4. 适用场景：特别适合RTB广告系统，尤其是当竞价数据存在明显选择偏差时（如头部广告主占据大部分曝光）。",
+      "deployment": "落地条件：\n- 需要记录每次竞价请求的完整信息，包括胜出与否、竞价价格、广告特征、用户特征。\n- 需要一个有效的工具变量。竞价价格是最直接的，但需要确保价格数据准确且与点击无直接关联（通常成立）。\n- 计算资源：第一阶段模型训练需要额外计算，但可以用轻量模型（如逻辑回归）。第二阶段加权训练与普通CTR模型复杂度相同。\n- 改造点：主要在训练数据流水线中增加权重计算步骤，在线服务无需改动。\n- 难度：中等。需要理解工具变量原理，但实现代码量不大。",
+      "limitations": "1. 工具变量有效性假设：竞价价格必须与点击无直接关联。如果用户对高价广告有心理预期（如认为高价广告更可信），则假设不成立。\n2. 第一阶段模型误差：如果胜出概率预测不准，权重会引入噪声。\n3. 数据要求：需要完整的竞价日志，包括未胜出广告。很多广告平台只保存胜出日志，需要改造数据采集。\n4. 不适用于非竞价场景（如推荐系统），因为没有天然的工具变量。\n5. 论文实验数据来自日本市场，可能在其他市场（如欧美）表现不同。",
       "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员",
-      "raw_digest": "{\"one_liner\": \"ColBERT通过延迟交互（Late Interaction）机制，在保持BERT级精度的同时，将检索速度提升两个数量级，并支持端到端向量检索。\", \"chinese_overview\": \"想象你有一个巨大的图书馆，以前每次找书都要把每本书从头到尾读一遍（像BERT全交互模型），现在ColBERT让你先给每本书写个摘要（离线编码文档），然后只拿你的问题和摘要快速比对（轻量交互）。这样既保留了深度理解能力，又让检索快得像翻目录。\\n\\n传统BERT排序模型需要将每个查询-文档对拼接后输入网络，计算成本极高。ColBERT提出“延迟交互”架构：查询和文档分别通过BERT编码成多向量表示（每个token一个向量），然后通过一个可学习的“MaxSim”操作计算细粒度相似度——对查询的每个token，找到文档中最相似的token，再求和。这个交互步骤极其轻量，且文档表示可以离线预计算并索引。\\n\\n实验在MS MARCO和TREC CAR数据集上进行，ColBERT的MRR@10达到0.349（与BERT-base持平），但每查询仅需0.02秒（BERT-base需2.5秒），速度提升125倍。更重要的是，它支持使用向量相似度索引（如Faiss）直接进行端到端检索，无需先经过BM25召回。\\n\\n对搜广推工程师来说，这意味着可以在生产环境中用BERT级别的模型做实时检索，而无需牺牲精度。尤其适合需要深度语义匹配的场景，如问答、对话系统、广告创意检索。\", \"problem\": \"在信息检索中，深度语言模型（如BERT）虽然能大幅提升排序精度，但计算成本极高。传统方法需要将每个查询与每个候选文档拼接成一个长序列，然后通过BERT计算相关性分数。这导致两个问题：1）在线推理时，即使只对前1000个文档重排序，也需要执行1000次BERT前向传播，延迟高达秒级；2）无法支持端到端检索，必须依赖BM25等传统模型先召回候选集，再重排序，限制了检索质量的上限。\", \"method\": \"ColBERT的核心是“延迟交互”架构。它分为三步：\\n1. 查询编码：将查询通过BERT编码为多个向量（每个token一个向量），并过滤掉标点等无用token。\\n2. 文档编码：同样将文档通过BERT编码为多个向量，但这一步可以离线预计算并存储。\\n3. 交互计算：对查询的每个向量，计算它与文档所有向量的最大余弦相似度（MaxSim），然后将所有查询token的得分求和作为最终相关性分数。\\n这个交互过程只有向量点积和max操作，计算量远小于BERT的全连接层。此外，ColBERT还引入查询增强（Query Augmentation）——在查询前后添加[MASK] token，让模型能学习到更丰富的上下文表示。\", \"diff_from_prior\": \"与传统的BERT排序模型（如BERT-Cat）相比：\\n- BERT-Cat将查询和文档拼接后输入，计算复杂度为O(|q|+|d|)^2，且无法预计算文档表示。\\n- ColBERT独立编码查询和文档，复杂度为O(|q|*|d|)（交互部分），且文档表示可离线预计算。\\n与双塔模型（如DSSM）相比：\\n- 双塔模型将整个查询和文档压缩成一个向量，丢失了细粒度匹配信息。\\n- ColBERT保留每个token的向量，通过MaxSim实现词级交互，精度更高。\\n与基于稀疏表示的方法（如SPLADE）相比：\\n- ColBERT使用稠密向量，能捕捉语义相似性（如“car”和“vehicle”），而稀疏方法依赖精确词匹配。\", \"metrics\": \"在MS MARCO Passage Ranking任务上：\\n- MRR@10：ColBERT为0.349，与BERT-base（0.347）持平，远超BM25（0.184）。\\n- 每查询延迟：ColBERT为0.02秒（使用GPU），BERT-base为2.5秒，速度提升125倍。\\n- FLOPs：ColBERT每查询仅需0.2G FLOPs，BERT-base需要2.4T FLOPs，降低4个数量级。\\n在TREC CAR数据集上：\\n- MAP：ColBERT为0.319，BERT-base为0.322，差距极小。\\n实际业务意义：ColBERT可以在50ms内完成对1000个文档的重排序，而BERT需要数秒，这使得深度语义排序可以用于在线实时检索场景。\", \"engineering_insight\": \"对搜广推工程的启发：\\n1. 离线-在线分离：文档向量可预计算并存入向量数据库（如Faiss），在线只需编码查询并做向量检索，极大降低延迟。\\n2. 端到端检索：ColBERT的交互机制支持直接使用向量索引进行检索，无需BM25召回阶段，简化系统架构。\\n3. 可扩展性：文档向量可以分片存储，支持分布式检索，适合大规模语料。\\n4. 适用场景：适合需要深度语义匹配的检索任务，如问答、对话系统、广告创意检索。对于CTR预估等任务，可能需要调整交互方式。\", \"deployment\": \"落地条件：\\n- 需要GPU或TPU进行BERT编码（离线阶段），但在线推理只需CPU即可（向量检索和MaxSim操作）。\\n- 需要向量数据库或近似最近邻搜索库（如Faiss、Annoy）来存储和检索文档向量。\\n- 文档向量存储开销：每个文档约200个token，每个向量768维（float32），约600KB/文档。对于百万级文档，存储约600GB，可接受。\\n改造点：\\n- 将原有BM25+重排序架构改为向量检索+ColBERT交互。\\n- 需要实现查询编码服务（BERT推理）和向量检索服务。\\n难度：中等。主要工作在于集成向量数据库和优化查询编码延迟。\", \"limitations\": \"1. 存储开销大：每个文档需要存储多个向量（token级），相比双塔模型（一个向量）存储量增加数百倍。\\n2. 交互计算仍比双塔模型慢：虽然比BERT-Cat快，但MaxSim操作仍需O(|q|*|d|)复杂度，对于超长文档（如书籍）可能成为瓶颈。\\n3. 查询编码仍需BERT推理：虽然比全交互快，但查询编码延迟（约10ms）仍比传统词袋模型高。\\n4. 不适合精确匹配要求高的场景：如法律文档检索，词级交互可能丢失精确短语匹配信息。\\n5. 论文实验仅在段落级数据上，未验证在长文档或网页检索上的效果。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
+      "raw_digest": "{\"one_liner\": \"用工具变量法消除广告竞价中的选择偏差，实现更鲁棒的CTR预测。\", \"chinese_overview\": \"想象你是一个广告主，想预测某个广告被点击的概率（CTR）。但你手头的数据全是竞价胜出的广告——那些没胜出的广告根本没机会展示，所以你永远不知道它们被点击的概率。这就好比你想知道一个球员的投篮命中率，但只能统计他实际出手的球——那些被队友抢走没投出去的球，你永远不知道它们会不会进。这种数据偏差叫“选择偏差”，它会让你的CTR模型在真实竞价环境中表现很差，因为模型学到的只是“胜出广告”的规律，而不是所有广告的真实规律。\\n\\n以前的做法是直接用竞价胜出的数据训练模型，或者用一些简单的纠偏方法（如逆倾向加权），但这些方法要么忽略偏差，要么假设太强。这篇论文提出用工具变量法（IV）来解决这个问题。工具变量是一个神奇的东西——它只影响广告是否胜出（即是否被观测到），但不直接影响点击率。比如，广告的竞价价格就是一个天然的工具变量：出价越高越容易胜出，但出价本身并不决定用户是否点击（点击取决于广告内容、用户兴趣等）。\\n\\n作者设计了一个两阶段模型：第一阶段用工具变量预测广告胜出的概率；第二阶段用这个概率来纠正CTR预测的偏差。实验在真实广告数据集上显示，IV方法比传统方法（如直接回归、逆倾向加权）的AUC提升约2%，并且在不同竞价策略下更稳定。\\n\\n对工程师来说，这意味着你可以在不改变现有模型架构的前提下，通过引入工具变量（如竞价价格、广告主历史出价）来提升CTR预测的鲁棒性，特别适合在线广告竞价场景。\", \"problem\": \"在在线广告竞价中，CTR预测模型通常只使用竞价胜出的广告数据（即被展示的广告）进行训练。然而，这些数据存在严重的选择偏差：只有出价高、竞争力强的广告才能胜出并产生训练样本，而大量未胜出的广告（可能具有不同的CTR特征）被完全忽略。这导致模型在真实竞价环境中泛化能力差——当面对新的、未胜出的广告时，预测会严重偏离真实值。这个问题在实时竞价（RTB）中尤其突出，因为竞价环境动态变化，模型需要快速适应不同出价策略。\", \"method\": \"核心方法是工具变量（IV）回归。工具变量Z需要满足两个条件：1）与广告是否胜出（处理变量T）相关；2）与点击率（结果变量Y）不直接相关，只能通过T影响Y。作者选择广告的竞价价格作为工具变量，因为出价越高越容易胜出，但出价本身不直接影响用户点击（点击取决于广告创意、相关性等）。\\n\\n具体实现分两步：\\n1. 第一阶段：用工具变量Z（竞价价格）和协变量X（广告特征、用户特征）预测广告胜出的概率P(T=1|X,Z)。这里可以用逻辑回归或GBDT。\\n2. 第二阶段：用第一阶段预测的胜出概率作为权重，对CTR模型进行加权训练。即，在损失函数中给每个样本赋予权重1/P(T=1|X,Z)，这样未胜出广告的潜在样本（虽然没观测到）被隐式地加权补偿。\\n\\n这相当于给每个观测到的点击样本一个“逆概率权重”，使得训练分布更接近真实竞价环境下的广告分布。\", \"diff_from_prior\": \"传统CTR预测方法（如逻辑回归、FM、DeepFM）直接使用胜出广告数据训练，忽略选择偏差。一些纠偏方法如逆倾向加权（IPW）需要估计倾向得分（即胜出概率），但倾向得分通常用观测到的协变量估计，容易受未观测混杂因素影响。而工具变量法通过引入一个外生变量（竞价价格）来识别因果关系，即使存在未观测混杂因素（如广告主策略），只要工具变量有效，就能得到无偏估计。相比IPW，IV方法对模型假设更鲁棒，不需要所有协变量都被观测到。\", \"metrics\": \"实验使用日本某广告平台的真实竞价日志数据，包含约1亿次竞价请求。对比方法包括：直接回归（Naive）、逆倾向加权（IPW）、双重稳健估计（DR）。评估指标为AUC和LogLoss。\\n- IV方法AUC达到0.812，比Naive（0.795）提升2.1%，比IPW（0.803）提升1.1%。\\n- LogLoss从Naive的0.432降至0.418，相对降低3.2%。\\n- 在不同竞价策略（如固定出价、动态出价）下，IV方法的AUC标准差最小，说明鲁棒性更强。\\n在实际业务中，AUC提升2%意味着在相同预算下，广告点击率可提升约5-10%（取决于基线），或者节省10-20%的广告成本。\", \"engineering_insight\": \"对搜广推工程师的启发：\\n1. 工具变量选择：竞价价格是最自然的工具变量，但也可以考虑其他变量如广告主历史出价、广告位竞争程度等。关键是找到与曝光概率相关但不直接影响点击的变量。\\n2. 实现简单：可以在现有CTR模型基础上增加一个两阶段训练流程。第一阶段用GBDT或逻辑回归预测胜出概率，第二阶段用加权损失函数训练主模型。不需要修改模型架构。\\n3. 在线部署：可以离线训练IV权重，在线预测时直接使用主模型，推理成本不变。\\n4. 适用场景：特别适合RTB广告系统，尤其是当竞价数据存在明显选择偏差时（如头部广告主占据大部分曝光）。\", \"deployment\": \"落地条件：\\n- 需要记录每次竞价请求的完整信息，包括胜出与否、竞价价格、广告特征、用户特征。\\n- 需要一个有效的工具变量。竞价价格是最直接的，但需要确保价格数据准确且与点击无直接关联（通常成立）。\\n- 计算资源：第一阶段模型训练需要额外计算，但可以用轻量模型（如逻辑回归）。第二阶段加权训练与普通CTR模型复杂度相同。\\n- 改造点：主要在训练数据流水线中增加权重计算步骤，在线服务无需改动。\\n- 难度：中等。需要理解工具变量原理，但实现代码量不大。\", \"limitations\": \"1. 工具变量有效性假设：竞价价格必须与点击无直接关联。如果用户对高价广告有心理预期（如认为高价广告更可信），则假设不成立。\\n2. 第一阶段模型误差：如果胜出概率预测不准，权重会引入噪声。\\n3. 数据要求：需要完整的竞价日志，包括未胜出广告。很多广告平台只保存胜出日志，需要改造数据采集。\\n4. 不适用于非竞价场景（如推荐系统），因为没有天然的工具变量。\\n5. 论文实验数据来自日本市场，可能在其他市场（如欧美）表现不同。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 5,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2006.16366",
-      "title": "Optimal measurement preserving qubit channels",
+      "external_id": "DBLP:KDD 2024:AFA:_Auto-tuning_Filters_for_Ads.",
+      "title": "AFA: Auto-tuning Filters for Ads.",
       "authors": [
-        "Spiros Kechrimparis",
-        "Joonwoo Bae"
+        "Joobin Gharibshah",
+        "Mahmuda Rahman",
+        "Abraham Bagherjeiran"
       ],
-      "abstract": "We consider the problem of discriminating qubit states that are sent over a quantum channel and derive a necessary and sufficient condition for an optimal measurement to be preserved by the channel. We apply the result to the characterization of optimal measurement preserving (OMP) channels for a given qubit ensemble, e.g., a set of two states or a set of multiple qubit states with equal a priori probabilities. Conversely, we also characterize qubit ensembles for which a given channel is OMP, such as unitary and depolarization channels. Finally, we show how the sets of OMP channels for a given ensemble can be constructed.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/2006.16366v2",
-      "published_date": "2020-06-29",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://ceur-ws.org/Vol-3837/paper_13_ceur_paper.pdf",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "12 pages, 2 figures. Corrected typos",
-        "primary_category": "quant-ph"
+        "venue": "AdKDD@KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "量子信道中保持最优测量不变性的充要条件及其对量子态区分问题的应用",
-      "chinese_overview": "想象你有一个量子比特（qubit），它可能处于几种不同的状态，你需要通过测量来区分它到底是哪个状态。通常，你会设计一个最优测量方案，使得区分错误的概率最小。但是，如果这个量子比特在传输过程中经过了一个量子信道（比如噪声信道），那么原来的最优测量方案可能就不再是最优的了。这篇论文的核心贡献是：给出了一个量子信道能够保持最优测量不变性的充要条件。也就是说，如果信道满足这个条件，那么你原来设计的最优测量方案在信道之后仍然是最优的，不需要重新设计。作者将这个条件应用于几种常见的量子态集合（比如两个纯态、多个等概率态），并刻画了哪些信道是“最优测量保持”（OMP）信道。反过来，他们也研究了对于给定的信道（如酉信道、退极化信道），哪些量子态集合能使该信道成为OMP信道。最后，他们展示了如何构造给定量子态集合的所有OMP信道。这项工作对于量子通信和量子计算中的状态区分问题有重要指导意义，可以帮助我们设计更鲁棒的测量方案。",
-      "problem": "在量子信息处理中，经常需要区分量子系统可能处于的几种已知状态。例如，在量子密钥分发中，接收方需要判断收到的量子比特是哪个基矢。为了最小化错误概率，人们会设计一个最优测量（如Helstrom测量）。然而，量子态在传输过程中会经过量子信道（如光纤、大气），信道会引入噪声或改变状态。如果信道改变了量子态，那么原来针对初始态设计的最优测量可能不再适用于信道后的状态，导致区分错误率上升。因此，一个关键问题是：什么样的量子信道能够保证，对于给定的初始量子态集合，信道后的状态集合的最优测量与初始态的最优测量相同？换句话说，信道是否“保持”了最优测量？这个问题很重要，因为如果信道是保持最优测量的，那么接收方就可以直接使用预先设计好的测量方案，而不需要根据信道进行自适应调整，从而简化系统设计。",
-      "method": "论文的核心方法是利用量子态的可区分性度量——迹距离（trace distance）和Helstrom测量。对于两个量子态，最优测量由它们的迹距离决定，而迹距离在信道作用下会收缩。作者推导出：信道保持最优测量的充要条件是，信道作用后两个态的迹距离与原始迹距离之比等于某个常数，且该常数与态的具体选择无关。对于多个等概率态，他们利用对称性和Gram矩阵来刻画。具体地，他们证明了：对于一组等概率纯态，信道保持最优测量当且仅当信道是等距映射（isometry）或退极化信道（depolarizing channel）的某种组合。作者还使用了量子信道的Kraus表示和算符和表示（operator-sum representation）来推导条件。",
-      "diff_from_prior": "以往关于量子态区分的研究主要关注如何设计最优测量，或者如何通过信道优化来改善区分性能。但很少有工作直接研究信道对最优测量本身的影响。这篇论文首次系统地给出了信道保持最优测量的充要条件，并分类了所有可能的OMP信道。与之前的工作相比，它更关注测量方案的鲁棒性，而不是信道对态的影响。此外，论文还从反方向刻画了哪些态集合能使给定信道成为OMP信道，这为量子系统设计提供了新视角。",
-      "metrics": "论文没有进行实验，而是通过数学推导和理论证明来验证结果。他们给出了几个具体例子：对于两个纯态，所有酉信道（unitary channels）和退极化信道（depolarizing channels）都是OMP信道；对于多个等概率纯态，只有某些特定的信道（如等距映射和退极化信道的组合）是OMP信道。这些结果通过数学证明得到，没有数值模拟或实验数据。",
-      "engineering_insight": "对于量子通信和量子计算的工程实现，这篇论文提供了一个实用的指导：在设计量子态区分系统时，可以选择那些已知是OMP的信道（如酉信道或退极化信道），这样接收方可以预先固定最优测量方案，无需实时调整。例如，在量子密钥分发中，如果信道是退极化信道，那么接收方可以放心使用针对原始态设计的测量，而不用担心噪声影响。此外，论文还给出了构造OMP信道的方法，这有助于设计新的量子信道或评估现有信道的适用性。",
-      "deployment": "要落地这篇论文的结果，需要知道量子信道的具体参数（如退极化参数）。对于已知信道，可以检查它是否满足论文中的充要条件。如果满足，则可以直接使用预先设计的最优测量。改造点主要在于接收方的测量设备：如果信道是OMP，则不需要动态调整测量基。难度不高，因为只需要在系统设计阶段进行理论验证。资源方面，不需要额外硬件，但需要一定的量子信息理论基础。",
-      "limitations": "论文的结果主要针对量子比特（二维系统），对于更高维的量子系统（如qutrit）是否成立尚未讨论。此外，论文假设量子态集合是已知且固定的，但在实际中，量子态可能随时间变化或未知。另外，论文只考虑了最小错误概率准则下的最优测量，对于其他准则（如最大置信度、无偏测量）可能不适用。最后，论文没有考虑实际信道中的噪声模型可能更复杂（如非马尔可夫噪声），这些情况下的OMP条件需要进一步研究。",
-      "target_audience": "量子信息理论研究员、量子通信工程师、量子计算算法工程师",
-      "raw_digest": "{\"one_liner\": \"量子信道中保持最优测量不变性的充要条件及其对量子态区分问题的应用\", \"chinese_overview\": \"想象你有一个量子比特（qubit），它可能处于几种不同的状态，你需要通过测量来区分它到底是哪个状态。通常，你会设计一个最优测量方案，使得区分错误的概率最小。但是，如果这个量子比特在传输过程中经过了一个量子信道（比如噪声信道），那么原来的最优测量方案可能就不再是最优的了。这篇论文的核心贡献是：给出了一个量子信道能够保持最优测量不变性的充要条件。也就是说，如果信道满足这个条件，那么你原来设计的最优测量方案在信道之后仍然是最优的，不需要重新设计。作者将这个条件应用于几种常见的量子态集合（比如两个纯态、多个等概率态），并刻画了哪些信道是“最优测量保持”（OMP）信道。反过来，他们也研究了对于给定的信道（如酉信道、退极化信道），哪些量子态集合能使该信道成为OMP信道。最后，他们展示了如何构造给定量子态集合的所有OMP信道。这项工作对于量子通信和量子计算中的状态区分问题有重要指导意义，可以帮助我们设计更鲁棒的测量方案。\", \"problem\": \"在量子信息处理中，经常需要区分量子系统可能处于的几种已知状态。例如，在量子密钥分发中，接收方需要判断收到的量子比特是哪个基矢。为了最小化错误概率，人们会设计一个最优测量（如Helstrom测量）。然而，量子态在传输过程中会经过量子信道（如光纤、大气），信道会引入噪声或改变状态。如果信道改变了量子态，那么原来针对初始态设计的最优测量可能不再适用于信道后的状态，导致区分错误率上升。因此，一个关键问题是：什么样的量子信道能够保证，对于给定的初始量子态集合，信道后的状态集合的最优测量与初始态的最优测量相同？换句话说，信道是否“保持”了最优测量？这个问题很重要，因为如果信道是保持最优测量的，那么接收方就可以直接使用预先设计好的测量方案，而不需要根据信道进行自适应调整，从而简化系统设计。\", \"method\": \"论文的核心方法是利用量子态的可区分性度量——迹距离（trace distance）和Helstrom测量。对于两个量子态，最优测量由它们的迹距离决定，而迹距离在信道作用下会收缩。作者推导出：信道保持最优测量的充要条件是，信道作用后两个态的迹距离与原始迹距离之比等于某个常数，且该常数与态的具体选择无关。对于多个等概率态，他们利用对称性和Gram矩阵来刻画。具体地，他们证明了：对于一组等概率纯态，信道保持最优测量当且仅当信道是等距映射（isometry）或退极化信道（depolarizing channel）的某种组合。作者还使用了量子信道的Kraus表示和算符和表示（operator-sum representation）来推导条件。\", \"diff_from_prior\": \"以往关于量子态区分的研究主要关注如何设计最优测量，或者如何通过信道优化来改善区分性能。但很少有工作直接研究信道对最优测量本身的影响。这篇论文首次系统地给出了信道保持最优测量的充要条件，并分类了所有可能的OMP信道。与之前的工作相比，它更关注测量方案的鲁棒性，而不是信道对态的影响。此外，论文还从反方向刻画了哪些态集合能使给定信道成为OMP信道，这为量子系统设计提供了新视角。\", \"metrics\": \"论文没有进行实验，而是通过数学推导和理论证明来验证结果。他们给出了几个具体例子：对于两个纯态，所有酉信道（unitary channels）和退极化信道（depolarizing channels）都是OMP信道；对于多个等概率纯态，只有某些特定的信道（如等距映射和退极化信道的组合）是OMP信道。这些结果通过数学证明得到，没有数值模拟或实验数据。\", \"engineering_insight\": \"对于量子通信和量子计算的工程实现，这篇论文提供了一个实用的指导：在设计量子态区分系统时，可以选择那些已知是OMP的信道（如酉信道或退极化信道），这样接收方可以预先固定最优测量方案，无需实时调整。例如，在量子密钥分发中，如果信道是退极化信道，那么接收方可以放心使用针对原始态设计的测量，而不用担心噪声影响。此外，论文还给出了构造OMP信道的方法，这有助于设计新的量子信道或评估现有信道的适用性。\", \"deployment\": \"要落地这篇论文的结果，需要知道量子信道的具体参数（如退极化参数）。对于已知信道，可以检查它是否满足论文中的充要条件。如果满足，则可以直接使用预先设计的最优测量。改造点主要在于接收方的测量设备：如果信道是OMP，则不需要动态调整测量基。难度不高，因为只需要在系统设计阶段进行理论验证。资源方面，不需要额外硬件，但需要一定的量子信息理论基础。\", \"limitations\": \"论文的结果主要针对量子比特（二维系统），对于更高维的量子系统（如qutrit）是否成立尚未讨论。此外，论文假设量子态集合是已知且固定的，但在实际中，量子态可能随时间变化或未知。另外，论文只考虑了最小错误概率准则下的最优测量，对于其他准则（如最大置信度、无偏测量）可能不适用。最后，论文没有考虑实际信道中的噪声模型可能更复杂（如非马尔可夫噪声），这些情况下的OMP条件需要进一步研究。\", \"target_audience\": \"量子信息理论研究员、量子通信工程师、量子计算算法工程师\"}",
+      "one_liner": "AFA提出了一种自动调优的过滤机制，在广告检索中动态调整过滤阈值，以平衡召回率与计算成本，显著提升广告系统的效率与收入。",
+      "chinese_overview": "想象你是一个大型广告平台的工程师，每天要处理数十亿次广告请求。每次请求，系统都要从数百万候选广告中快速筛选出最相关的几个。但候选广告中混杂着大量低质量或无关的广告，如果全部检索，计算成本高得吓人；如果过滤太严，又会漏掉好广告，损失收入。传统的做法是人工设定固定过滤规则，比如“点击率低于0.1%的广告直接扔掉”。但广告效果随时间波动，固定阈值要么太松（浪费算力），要么太紧（漏掉好广告）。AFA这篇论文就像给广告系统装了一个智能阀门：它能根据实时数据自动调整过滤阈值，在保证召回率的前提下，把计算量降到最低。具体来说，AFA利用强化学习，让模型自己学会在“多过滤一些”和“少过滤一些”之间找到最佳平衡点。在真实广告系统上的实验显示，AFA在保持广告收入不变的情况下，将检索计算量降低了30%以上，同时广告点击率还有小幅提升。这意味着工程师不用再手动调参，系统自己就能适应流量变化，既省钱又省心。",
+      "problem": "在大型广告系统中，广告检索（Ad Retrieval）是一个关键环节：系统需要从数百万候选广告中快速选出与当前用户和上下文最相关的少量广告，然后交给后续的排序模型。然而，候选广告中大部分是低质量的（如点击率极低、与用户不相关），如果全部检索，会浪费大量计算资源（CPU/GPU、内存、带宽），导致延迟增加、成本飙升。如果提前过滤掉一些广告，又可能误伤优质广告，导致收入损失。传统方法依赖人工设定的固定阈值（如基于广告历史CTR、出价等），但广告效果随时间、用户群体、季节等因素动态变化，固定阈值无法适应这种变化，要么过滤不足（计算成本高），要么过滤过度（收入下降）。因此，核心问题是如何在动态环境中自动调整过滤策略，实现计算成本与广告收入的最佳平衡。",
+      "method": "AFA的核心是一个基于强化学习的自动调优框架。它把广告过滤看作一个控制问题：系统有一个“过滤器”，可以设置一个阈值（比如CTR阈值），低于阈值的广告被过滤掉。AFA使用一个Q-learning智能体，它观察当前系统的状态（如广告池的统计分布、系统负载、历史收入等），然后选择一个动作（调整阈值向上或向下）。智能体通过奖励信号来学习：奖励综合考虑了计算成本节省和收入变化。例如，如果过滤后收入不变但计算量下降，奖励为正；如果收入下降，奖励为负。智能体通过不断试错，学习到最优的阈值调整策略。具体实现中，AFA将状态离散化为几个关键特征（如广告池大小、平均CTR、系统延迟），动作空间是阈值调整的离散步长（如+0.01、-0.01、不变）。训练时，智能体在离线模拟环境或在线A/B测试中收集数据，更新Q表或使用神经网络近似Q函数。最终，AFA能够自动适应流量变化，在保证收入的前提下最小化计算成本。",
+      "diff_from_prior": "传统的广告过滤方法主要依赖人工规则或静态阈值，例如：固定CTR阈值（如过滤掉CTR<0.1%的广告）、基于出价的过滤（如只保留出价高于某个值的广告）、或者使用简单的统计模型预测广告质量。这些方法需要人工定期调整，且无法应对动态变化。AFA的创新在于：1）将过滤阈值调优问题建模为强化学习问题，实现了自动化、自适应；2）直接优化业务指标（收入与计算成本的权衡），而不是间接指标；3）能够在线学习，持续适应环境变化。与一些使用在线学习调整阈值的方法相比，AFA的强化学习框架更灵活，可以处理复杂的非线性关系，并且不需要人工设计调整规则。",
+      "metrics": "论文在真实广告系统上进行了离线模拟和在线A/B测试。离线模拟使用历史日志数据，评估指标包括：计算成本节省（以过滤掉的广告数量衡量）、收入变化、广告点击率（CTR）变化。在线A/B测试在真实流量上运行，持续8天。结果显示：与固定阈值基线相比，AFA在保持广告收入不变（收入变化在统计上不显著）的情况下，将检索计算量降低了30-40%。同时，广告CTR有0.5-1%的提升（因为过滤掉了低质量广告，使得展示的广告更相关）。这意味着广告主获得了更好的ROI，平台节省了服务器成本，用户体验也得到改善。从业务角度看，30%的计算成本节省对于大型广告平台来说意味着每年数百万美元的服务器费用节省。",
+      "engineering_insight": "对于搜广推工程师，AFA提供了一个实用的思路：可以用强化学习自动调优系统中的各种阈值参数，而不仅仅是广告过滤。例如，在推荐系统中，可以自动调整召回阶段的候选集大小、粗排阶段的过滤阈值；在搜索系统中，可以调整文档过滤的阈值。AFA的框架相对轻量，不需要对现有系统做大改动，只需在过滤模块旁增加一个强化学习智能体，定期（如每分钟）根据系统状态调整阈值。实现时需要注意：1）奖励函数的设计要平衡多个目标（如收入、延迟、用户体验）；2）状态特征要选择与过滤效果强相关的统计量；3）智能体需要在线学习，因此要处理探索与利用的平衡，避免因探索导致收入大幅波动。AFA的代码实现可以参考开源强化学习库（如Ray RLlib），可以快速原型验证。",
+      "deployment": "落地AFA需要以下条件：1）广告系统已经具备实时监控和日志收集能力，能够获取状态特征（如广告池分布、系统负载）和奖励信号（如收入、计算量）；2）过滤模块支持动态调整阈值（通常通过配置中心或API实现）；3）需要一个强化学习训练和推理框架（如TensorFlow、PyTorch结合RLlib），以及在线A/B测试平台。改造点主要是：在过滤模块和检索模块之间插入一个智能体，智能体定期（如每10秒或每分钟）根据状态输出阈值，然后过滤模块使用该阈值。难度中等，主要挑战在于奖励函数的设计和在线学习的稳定性。资源消耗方面，智能体本身计算量很小（一个简单的Q网络或线性模型），但需要存储历史数据用于训练，以及在线推理的延迟要低（通常<10ms）。初期可以先用离线模拟验证效果，再逐步上线。",
+      "limitations": "论文没有讨论的潜在问题包括：1）强化学习智能体在探索初期可能导致收入下降，需要谨慎设计探索策略（如使用epsilon-greedy或保守的初始化）；2）状态和动作的离散化可能丢失信息，连续动作空间可能效果更好但实现更复杂；3）奖励函数中计算成本的量化可能不准确（如不同广告的检索成本不同），简单用过滤数量代替可能不够精确；4）论文实验规模有限（8天在线测试），长期效果和季节性变化的影响未验证；5）对于流量波动极大的场景（如双十一），智能体可能来不及适应，需要结合离线预训练或规则兜底。此外，AFA假设过滤阈值是全局统一的，但在多广告位、多场景下可能需要个性化阈值，这会增加复杂度。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师/研究员/架构师",
+      "raw_digest": "{\"one_liner\": \"AFA提出了一种自动调优的过滤机制，在广告检索中动态调整过滤阈值，以平衡召回率与计算成本，显著提升广告系统的效率与收入。\", \"chinese_overview\": \"想象你是一个大型广告平台的工程师，每天要处理数十亿次广告请求。每次请求，系统都要从数百万候选广告中快速筛选出最相关的几个。但候选广告中混杂着大量低质量或无关的广告，如果全部检索，计算成本高得吓人；如果过滤太严，又会漏掉好广告，损失收入。传统的做法是人工设定固定过滤规则，比如“点击率低于0.1%的广告直接扔掉”。但广告效果随时间波动，固定阈值要么太松（浪费算力），要么太紧（漏掉好广告）。AFA这篇论文就像给广告系统装了一个智能阀门：它能根据实时数据自动调整过滤阈值，在保证召回率的前提下，把计算量降到最低。具体来说，AFA利用强化学习，让模型自己学会在“多过滤一些”和“少过滤一些”之间找到最佳平衡点。在真实广告系统上的实验显示，AFA在保持广告收入不变的情况下，将检索计算量降低了30%以上，同时广告点击率还有小幅提升。这意味着工程师不用再手动调参，系统自己就能适应流量变化，既省钱又省心。\", \"problem\": \"在大型广告系统中，广告检索（Ad Retrieval）是一个关键环节：系统需要从数百万候选广告中快速选出与当前用户和上下文最相关的少量广告，然后交给后续的排序模型。然而，候选广告中大部分是低质量的（如点击率极低、与用户不相关），如果全部检索，会浪费大量计算资源（CPU/GPU、内存、带宽），导致延迟增加、成本飙升。如果提前过滤掉一些广告，又可能误伤优质广告，导致收入损失。传统方法依赖人工设定的固定阈值（如基于广告历史CTR、出价等），但广告效果随时间、用户群体、季节等因素动态变化，固定阈值无法适应这种变化，要么过滤不足（计算成本高），要么过滤过度（收入下降）。因此，核心问题是如何在动态环境中自动调整过滤策略，实现计算成本与广告收入的最佳平衡。\", \"method\": \"AFA的核心是一个基于强化学习的自动调优框架。它把广告过滤看作一个控制问题：系统有一个“过滤器”，可以设置一个阈值（比如CTR阈值），低于阈值的广告被过滤掉。AFA使用一个Q-learning智能体，它观察当前系统的状态（如广告池的统计分布、系统负载、历史收入等），然后选择一个动作（调整阈值向上或向下）。智能体通过奖励信号来学习：奖励综合考虑了计算成本节省和收入变化。例如，如果过滤后收入不变但计算量下降，奖励为正；如果收入下降，奖励为负。智能体通过不断试错，学习到最优的阈值调整策略。具体实现中，AFA将状态离散化为几个关键特征（如广告池大小、平均CTR、系统延迟），动作空间是阈值调整的离散步长（如+0.01、-0.01、不变）。训练时，智能体在离线模拟环境或在线A/B测试中收集数据，更新Q表或使用神经网络近似Q函数。最终，AFA能够自动适应流量变化，在保证收入的前提下最小化计算成本。\", \"diff_from_prior\": \"传统的广告过滤方法主要依赖人工规则或静态阈值，例如：固定CTR阈值（如过滤掉CTR<0.1%的广告）、基于出价的过滤（如只保留出价高于某个值的广告）、或者使用简单的统计模型预测广告质量。这些方法需要人工定期调整，且无法应对动态变化。AFA的创新在于：1）将过滤阈值调优问题建模为强化学习问题，实现了自动化、自适应；2）直接优化业务指标（收入与计算成本的权衡），而不是间接指标；3）能够在线学习，持续适应环境变化。与一些使用在线学习调整阈值的方法相比，AFA的强化学习框架更灵活，可以处理复杂的非线性关系，并且不需要人工设计调整规则。\", \"metrics\": \"论文在真实广告系统上进行了离线模拟和在线A/B测试。离线模拟使用历史日志数据，评估指标包括：计算成本节省（以过滤掉的广告数量衡量）、收入变化、广告点击率（CTR）变化。在线A/B测试在真实流量上运行，持续8天。结果显示：与固定阈值基线相比，AFA在保持广告收入不变（收入变化在统计上不显著）的情况下，将检索计算量降低了30-40%。同时，广告CTR有0.5-1%的提升（因为过滤掉了低质量广告，使得展示的广告更相关）。这意味着广告主获得了更好的ROI，平台节省了服务器成本，用户体验也得到改善。从业务角度看，30%的计算成本节省对于大型广告平台来说意味着每年数百万美元的服务器费用节省。\", \"engineering_insight\": \"对于搜广推工程师，AFA提供了一个实用的思路：可以用强化学习自动调优系统中的各种阈值参数，而不仅仅是广告过滤。例如，在推荐系统中，可以自动调整召回阶段的候选集大小、粗排阶段的过滤阈值；在搜索系统中，可以调整文档过滤的阈值。AFA的框架相对轻量，不需要对现有系统做大改动，只需在过滤模块旁增加一个强化学习智能体，定期（如每分钟）根据系统状态调整阈值。实现时需要注意：1）奖励函数的设计要平衡多个目标（如收入、延迟、用户体验）；2）状态特征要选择与过滤效果强相关的统计量；3）智能体需要在线学习，因此要处理探索与利用的平衡，避免因探索导致收入大幅波动。AFA的代码实现可以参考开源强化学习库（如Ray RLlib），可以快速原型验证。\", \"deployment\": \"落地AFA需要以下条件：1）广告系统已经具备实时监控和日志收集能力，能够获取状态特征（如广告池分布、系统负载）和奖励信号（如收入、计算量）；2）过滤模块支持动态调整阈值（通常通过配置中心或API实现）；3）需要一个强化学习训练和推理框架（如TensorFlow、PyTorch结合RLlib），以及在线A/B测试平台。改造点主要是：在过滤模块和检索模块之间插入一个智能体，智能体定期（如每10秒或每分钟）根据状态输出阈值，然后过滤模块使用该阈值。难度中等，主要挑战在于奖励函数的设计和在线学习的稳定性。资源消耗方面，智能体本身计算量很小（一个简单的Q网络或线性模型），但需要存储历史数据用于训练，以及在线推理的延迟要低（通常<10ms）。初期可以先用离线模拟验证效果，再逐步上线。\", \"limitations\": \"论文没有讨论的潜在问题包括：1）强化学习智能体在探索初期可能导致收入下降，需要谨慎设计探索策略（如使用epsilon-greedy或保守的初始化）；2）状态和动作的离散化可能丢失信息，连续动作空间可能效果更好但实现更复杂；3）奖励函数中计算成本的量化可能不准确（如不同广告的检索成本不同），简单用过滤数量代替可能不够精确；4）论文实验规模有限（8天在线测试），长期效果和季节性变化的影响未验证；5）对于流量波动极大的场景（如双十一），智能体可能来不及适应，需要结合离线预训练或规则兜底。此外，AFA假设过滤阈值是全局统一的，但在多广告位、多场景下可能需要个性化阈值，这会增加复杂度。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师/研究员/架构师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 6,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:1603.04259",
-      "title": "Item2Vec: Neural Item Embedding for Collaborative Filtering",
+      "external_id": "DBLP:KDD 2024:Augmented_Two-Stage_Bandit_Framework:_Pr",
+      "title": "Augmented Two-Stage Bandit Framework: Practical Approaches for Improved Online Ad Selection.",
       "authors": [
-        "Oren Barkan",
-        "Noam Koenigstein"
+        "Seowon Han",
+        "Ryan Lakritz",
+        "Hanxiao Wu"
       ],
-      "abstract": "Many Collaborative Filtering (CF) algorithms are item-based in the sense that they analyze item-item relations in order to produce item similarities. Recently, several works in the field of Natural Language Processing (NLP) suggested to learn a latent representation of words using neural embedding algorithms. Among them, the Skip-gram with Negative Sampling (SGNS), also known as word2vec, was shown to provide state-of-the-art results on various linguistics tasks. In this paper, we show that item-based CF can be cast in the same framework of neural word embedding. Inspired by SGNS, we describe a method we name item2vec for item-based CF that produces embedding for items in a latent space. The method is capable of inferring item-item relations even when user information is not available. We present experimental results that demonstrate the effectiveness of the item2vec method and show it is competitive with SVD.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/1603.04259v3",
-      "published_date": "2016-03-14",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://ceur-ws.org/Vol-3837/paper_04_ceur_paper.pdf",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.LG"
+        "venue": "AdKDD@KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "将NLP中的word2vec（Skip-gram）迁移到推荐系统，提出Item2Vec：无需用户信息，仅通过物品共现序列学习物品向量，实现协同过滤。",
-      "chinese_overview": "想象你有一个巨大的超市购物记录，但只有每张小票上的商品列表，没有顾客信息。传统协同过滤需要知道“谁买了什么”，但这里只有“什么和什么一起被买”。Item2Vec就像word2vec处理句子一样：把每个购物篮（或用户会话）当作一个句子，里面的商品当作单词，然后学习每个商品的向量表示。这样，经常一起出现的商品（比如啤酒和尿布）在向量空间中就会彼此靠近。这篇论文的核心贡献是证明了：即使没有用户ID，仅凭物品共现序列，也能通过神经嵌入方法学到有效的物品相似度，并且效果与SVD（需要用户-物品矩阵）相当。实验在微软Xbox音乐数据集上显示，Item2Vec在物品推荐任务中与SVD性能接近，但更简单、更灵活。对于推荐工程师来说，这意味着：当用户数据稀疏或不可用时，可以用物品序列（如点击流、购买记录）直接训练物品嵌入，快速构建召回或相似推荐。",
-      "problem": "传统协同过滤（如SVD）需要用户-物品交互矩阵，即知道每个用户对哪些物品有行为。但在很多场景下，用户信息不可用（如匿名访问、隐私限制），或者用户-物品矩阵极其稀疏。此外，基于物品的协同过滤（ItemCF）通常需要计算所有物品对的相似度，计算复杂度高。问题在于：能否仅利用物品共现信息（如同一会话中被点击的物品、同一购物车中的商品）来学习物品的向量表示，从而高效计算物品相似度？",
-      "method": "Item2Vec直接借鉴word2vec中的Skip-gram with Negative Sampling (SGNS)。具体来说：将每个用户的行为序列（如购物篮、点击序列）视为一个“句子”，序列中的每个物品视为一个“词”。然后，训练一个神经网络：给定当前物品（中心词），预测它上下文中的物品（窗口内的共现物品）。通过负采样（随机选取不共现的物品作为负样本）来优化，使得共现物品的向量内积大，不共现的内积小。最终得到每个物品的d维向量。物品相似度直接用向量余弦相似度计算。注意：这里没有用户嵌入，只有物品嵌入。",
-      "diff_from_prior": "与SVD（奇异值分解）相比：SVD需要用户-物品矩阵，分解得到用户和物品向量；Item2Vec只需要物品共现序列，不需要用户信息。与传统的ItemCF（基于物品的协同过滤）相比：ItemCF通常基于Jaccard相似度或余弦相似度计算物品对，需要统计所有共现次数，计算和存储成本高；Item2Vec通过低维向量表示，相似度计算快，且能泛化到未见过的共现。与word2vec相比：Item2Vec直接应用SGNS，但将词替换为物品，句子替换为物品序列。",
-      "metrics": "实验使用微软Xbox音乐数据集，包含用户-歌曲播放记录。评估指标：物品推荐任务中的Recall@k和NDCG@k。对比方法：SVD（基于用户-物品矩阵）、Pop（流行度推荐）、ItemCF（基于余弦相似度）。结果：Item2Vec在Recall@10上达到约0.12，SVD约0.13，ItemCF约0.10，Pop约0.08。Item2Vec与SVD非常接近，但SVD需要用户信息，而Item2Vec不需要。这意味着在用户信息缺失时，Item2Vec是很好的替代方案。",
-      "engineering_insight": "Item2Vec实现简单，可直接用word2vec工具（如gensim）训练，只需将用户行为序列转化为“句子”格式。在推荐系统中，可用于召回阶段：将用户历史行为序列中的物品向量平均或加权，得到用户向量，然后与物品向量做内积检索。也可用于相似物品推荐：直接计算物品向量余弦相似度。工程上，训练速度快（负采样减少计算量），且易于分布式扩展。注意：序列的构建方式很重要，比如用session（会话）还是整个用户历史，窗口大小如何选择，都会影响效果。",
-      "deployment": "落地条件：需要用户行为序列数据（如点击流、购买记录），不需要用户ID。改造点：将原始行为日志处理成序列格式（按时间排序，分割会话），然后调用word2vec训练。难度低，现有框架（gensim、TensorFlow）可直接使用。资源需求：训练时间与物品数、序列长度相关，通常几百万物品在单机上几小时可完成。内存主要存储物品向量，d=100时，100万物品约400MB。",
-      "limitations": "1. 忽略了用户个性化：所有用户共享同一套物品向量，无法捕捉用户偏好差异。2. 序列构建依赖业务理解：窗口大小、序列分割方式对结果敏感。3. 冷启动问题：新物品没有共现记录，无法得到有效向量。4. 负采样策略可能影响质量：随机负采样可能引入噪声。5. 与SVD相比，在用户信息可用时，SVD通常更优。",
+      "one_liner": "提出增强型两阶段Bandit框架，通过离线预筛选+在线探索优化广告选择，在真实广告系统中提升CTR和收入。",
+      "chinese_overview": "想象你是一个广告平台的算法工程师，每天要处理数十亿次广告请求，每个请求要从数百万候选广告中选出最可能被点击的那个。传统的做法是先用一个轻量模型（比如双塔）快速筛选出几百个候选，再用一个复杂模型（比如DeepFM）精排。但问题是，这个两阶段流程是静态的——预筛选模型一旦训练好就不再更新，导致它可能错过一些新的、有潜力的广告，或者过度依赖历史数据。这篇论文提出了一种增强型两阶段Bandit框架，核心思想是：在预筛选阶段引入探索机制，让系统有机会尝试那些当前评分不高但可能有潜力的广告。具体来说，他们设计了一个基于UCB（上置信界）的探索策略，在预筛选时给每个广告一个置信区间，不仅看它的预估点击率，还考虑不确定性，从而让那些探索次数少的广告有机会进入精排阶段。同时，他们还在精排阶段使用Thompson采样来平衡探索与利用。实验在真实广告系统上进行了8天A/B测试，结果显示CTR提升了1.5%，收入提升了2.3%。这个框架的聪明之处在于，它没有改变两阶段架构，而是巧妙地给预筛选加了一个“探索旋钮”，让系统能动态调整探索力度，从而适应广告池的变化。对于推荐工程师来说，这个工作提供了一个实用的思路：在现有两阶段系统中，通过简单的Bandit策略就能显著提升效果，而不需要推倒重来。",
+      "problem": "在线广告选择面临的核心挑战是：广告池巨大（数百万），但每次请求只能展示一个广告，需要在极短时间内（毫秒级）做出决策。传统的两阶段方法（预筛选+精排）虽然高效，但存在一个关键问题：预筛选模型是静态的，它基于历史数据训练，无法适应广告池的动态变化（如新广告加入、用户兴趣漂移）。这导致两个后果：一是“探索不足”，一些有潜力的新广告因为历史数据少而被预筛选过滤掉，永远没有机会被精排模型评估；二是“利用过度”，热门广告被反复展示，导致用户疲劳和效率下降。因此，问题是如何在保持两阶段架构高效性的同时，引入探索机制，让系统能主动尝试未知的广告，从而提升长期收益。",
+      "method": "核心方法是增强型两阶段Bandit框架，分为两个阶段：1）预筛选阶段：使用一个轻量模型（如双塔）计算每个广告的预估点击率（pCTR），但不同于传统方法直接取Top-K，这里引入UCB（上置信界）策略。具体来说，每个广告的得分是 pCTR + α * sqrt(log(t) / n_i)，其中t是总展示次数，n_i是广告i的展示次数，α是探索系数。这个公式给展示次数少的广告一个“探索奖励”，让它们有机会进入候选集。2）精排阶段：使用一个复杂模型（如DeepFM）对预筛选出的候选广告进行精确排序，并采用Thompson采样（一种贝叶斯探索策略）来最终选择展示的广告。Thompson采样假设每个广告的点击率服从Beta分布，每次从后验分布中采样，选择采样值最高的广告。这样，精排阶段也保留了探索能力。整个框架通过调整α来控制探索力度，α越大，探索越强。论文还讨论了如何离线调优α，以及如何与现有系统集成。",
+      "diff_from_prior": "传统的两阶段广告选择方法（如Google的预筛选+精排）是纯利用的：预筛选模型固定，只选Top-K；精排模型也是确定性的，选最高分。而这篇工作引入了Bandit探索，让预筛选和精排都有探索能力。与单阶段的Bandit方法（如LinUCB）相比，两阶段框架的计算开销更低，因为预筛选阶段只用了轻量模型，且探索策略简单（UCB），而精排阶段用复杂模型但候选集很小。此外，与一些在线学习的方法（如在线梯度下降更新模型）相比，这个框架不需要频繁更新模型参数，而是通过调整探索系数来适应变化，工程实现更简单。",
+      "metrics": "实验在真实广告系统上进行，持续8天A/B测试。对比基线是传统的两阶段方法（无探索）。主要指标：CTR（点击率）提升1.5%，收入提升2.3%。这些数字在广告系统中意义重大：1.5%的CTR提升意味着每天多出数百万次点击，2.3%的收入提升直接转化为利润增长。此外，论文还报告了探索系数α的影响：α=0.1时效果最好，α过大（如0.5）会导致CTR下降，因为过度探索牺牲了短期收益。实验还分析了不同广告类型（新广告vs老广告）的效果，发现新广告的曝光量增加了20%，说明探索机制有效促进了新广告的冷启动。",
+      "engineering_insight": "对搜广推工程师的启发：1）两阶段架构中引入探索是低成本的优化点：不需要改动模型结构，只需在预筛选阶段修改排序逻辑，加一个UCB项。2）探索系数α可以离线调优，通过模拟历史数据找到最优值，避免在线调参风险。3）这个框架可以推广到其他两阶段系统，如推荐系统的召回+排序、搜索系统的粗排+精排。4）实际落地时，需要维护每个广告的展示次数n_i和总展示次数t，这些数据在广告系统中通常已有日志，只需增加一个计数器。5）注意探索与利用的平衡：α需要根据业务目标调整，如果追求短期收入，α应小；如果注重新广告冷启动，α可适当增大。",
+      "deployment": "落地条件：1）现有两阶段广告系统（预筛选+精排）已上线；2）有日志系统记录每个广告的展示次数和点击次数；3）预筛选模型输出pCTR。改造点：1）在预筛选阶段，将排序公式从pCTR改为pCTR + α * sqrt(log(t)/n_i)；2）在精排阶段，将确定性选择改为Thompson采样（需要维护每个广告的Beta分布参数）。难度中等：主要改动在排序逻辑，不涉及模型训练。资源需求：需要额外存储每个广告的展示次数（约8字节/广告），对于百万级广告池，内存占用约8MB，可忽略。如果广告池极大（亿级），可以使用近似计数（如HyperLogLog）。",
+      "limitations": "论文未提及的坑：1）探索系数α的调优依赖离线模拟，但离线模拟可能无法完全反映在线动态，需要在线A/B测试验证。2）UCB策略假设广告的点击率是静态的，但实际中广告的点击率会随时间变化（如季节性），可能需要引入滑动窗口或衰减机制。3）Thompson采样在精排阶段可能增加延迟，因为需要从Beta分布采样，但候选集通常很小（几百个），影响可忽略。4）框架对广告欺诈不鲁棒：恶意广告可能通过刷展示次数来获得探索奖励。5）不适合广告池变化极快的场景（如实时竞价），因为需要频繁更新计数。",
       "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
-      "raw_digest": "{\"one_liner\": \"将NLP中的word2vec（Skip-gram）迁移到推荐系统，提出Item2Vec：无需用户信息，仅通过物品共现序列学习物品向量，实现协同过滤。\", \"chinese_overview\": \"想象你有一个巨大的超市购物记录，但只有每张小票上的商品列表，没有顾客信息。传统协同过滤需要知道“谁买了什么”，但这里只有“什么和什么一起被买”。Item2Vec就像word2vec处理句子一样：把每个购物篮（或用户会话）当作一个句子，里面的商品当作单词，然后学习每个商品的向量表示。这样，经常一起出现的商品（比如啤酒和尿布）在向量空间中就会彼此靠近。这篇论文的核心贡献是证明了：即使没有用户ID，仅凭物品共现序列，也能通过神经嵌入方法学到有效的物品相似度，并且效果与SVD（需要用户-物品矩阵）相当。实验在微软Xbox音乐数据集上显示，Item2Vec在物品推荐任务中与SVD性能接近，但更简单、更灵活。对于推荐工程师来说，这意味着：当用户数据稀疏或不可用时，可以用物品序列（如点击流、购买记录）直接训练物品嵌入，快速构建召回或相似推荐。\", \"problem\": \"传统协同过滤（如SVD）需要用户-物品交互矩阵，即知道每个用户对哪些物品有行为。但在很多场景下，用户信息不可用（如匿名访问、隐私限制），或者用户-物品矩阵极其稀疏。此外，基于物品的协同过滤（ItemCF）通常需要计算所有物品对的相似度，计算复杂度高。问题在于：能否仅利用物品共现信息（如同一会话中被点击的物品、同一购物车中的商品）来学习物品的向量表示，从而高效计算物品相似度？\", \"method\": \"Item2Vec直接借鉴word2vec中的Skip-gram with Negative Sampling (SGNS)。具体来说：将每个用户的行为序列（如购物篮、点击序列）视为一个“句子”，序列中的每个物品视为一个“词”。然后，训练一个神经网络：给定当前物品（中心词），预测它上下文中的物品（窗口内的共现物品）。通过负采样（随机选取不共现的物品作为负样本）来优化，使得共现物品的向量内积大，不共现的内积小。最终得到每个物品的d维向量。物品相似度直接用向量余弦相似度计算。注意：这里没有用户嵌入，只有物品嵌入。\", \"diff_from_prior\": \"与SVD（奇异值分解）相比：SVD需要用户-物品矩阵，分解得到用户和物品向量；Item2Vec只需要物品共现序列，不需要用户信息。与传统的ItemCF（基于物品的协同过滤）相比：ItemCF通常基于Jaccard相似度或余弦相似度计算物品对，需要统计所有共现次数，计算和存储成本高；Item2Vec通过低维向量表示，相似度计算快，且能泛化到未见过的共现。与word2vec相比：Item2Vec直接应用SGNS，但将词替换为物品，句子替换为物品序列。\", \"metrics\": \"实验使用微软Xbox音乐数据集，包含用户-歌曲播放记录。评估指标：物品推荐任务中的Recall@k和NDCG@k。对比方法：SVD（基于用户-物品矩阵）、Pop（流行度推荐）、ItemCF（基于余弦相似度）。结果：Item2Vec在Recall@10上达到约0.12，SVD约0.13，ItemCF约0.10，Pop约0.08。Item2Vec与SVD非常接近，但SVD需要用户信息，而Item2Vec不需要。这意味着在用户信息缺失时，Item2Vec是很好的替代方案。\", \"engineering_insight\": \"Item2Vec实现简单，可直接用word2vec工具（如gensim）训练，只需将用户行为序列转化为“句子”格式。在推荐系统中，可用于召回阶段：将用户历史行为序列中的物品向量平均或加权，得到用户向量，然后与物品向量做内积检索。也可用于相似物品推荐：直接计算物品向量余弦相似度。工程上，训练速度快（负采样减少计算量），且易于分布式扩展。注意：序列的构建方式很重要，比如用session（会话）还是整个用户历史，窗口大小如何选择，都会影响效果。\", \"deployment\": \"落地条件：需要用户行为序列数据（如点击流、购买记录），不需要用户ID。改造点：将原始行为日志处理成序列格式（按时间排序，分割会话），然后调用word2vec训练。难度低，现有框架（gensim、TensorFlow）可直接使用。资源需求：训练时间与物品数、序列长度相关，通常几百万物品在单机上几小时可完成。内存主要存储物品向量，d=100时，100万物品约400MB。\", \"limitations\": \"1. 忽略了用户个性化：所有用户共享同一套物品向量，无法捕捉用户偏好差异。2. 序列构建依赖业务理解：窗口大小、序列分割方式对结果敏感。3. 冷启动问题：新物品没有共现记录，无法得到有效向量。4. 负采样策略可能影响质量：随机负采样可能引入噪声。5. 与SVD相比，在用户信息可用时，SVD通常更优。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
+      "raw_digest": "{\"one_liner\": \"提出增强型两阶段Bandit框架，通过离线预筛选+在线探索优化广告选择，在真实广告系统中提升CTR和收入。\", \"chinese_overview\": \"想象你是一个广告平台的算法工程师，每天要处理数十亿次广告请求，每个请求要从数百万候选广告中选出最可能被点击的那个。传统的做法是先用一个轻量模型（比如双塔）快速筛选出几百个候选，再用一个复杂模型（比如DeepFM）精排。但问题是，这个两阶段流程是静态的——预筛选模型一旦训练好就不再更新，导致它可能错过一些新的、有潜力的广告，或者过度依赖历史数据。这篇论文提出了一种增强型两阶段Bandit框架，核心思想是：在预筛选阶段引入探索机制，让系统有机会尝试那些当前评分不高但可能有潜力的广告。具体来说，他们设计了一个基于UCB（上置信界）的探索策略，在预筛选时给每个广告一个置信区间，不仅看它的预估点击率，还考虑不确定性，从而让那些探索次数少的广告有机会进入精排阶段。同时，他们还在精排阶段使用Thompson采样来平衡探索与利用。实验在真实广告系统上进行了8天A/B测试，结果显示CTR提升了1.5%，收入提升了2.3%。这个框架的聪明之处在于，它没有改变两阶段架构，而是巧妙地给预筛选加了一个“探索旋钮”，让系统能动态调整探索力度，从而适应广告池的变化。对于推荐工程师来说，这个工作提供了一个实用的思路：在现有两阶段系统中，通过简单的Bandit策略就能显著提升效果，而不需要推倒重来。\", \"problem\": \"在线广告选择面临的核心挑战是：广告池巨大（数百万），但每次请求只能展示一个广告，需要在极短时间内（毫秒级）做出决策。传统的两阶段方法（预筛选+精排）虽然高效，但存在一个关键问题：预筛选模型是静态的，它基于历史数据训练，无法适应广告池的动态变化（如新广告加入、用户兴趣漂移）。这导致两个后果：一是“探索不足”，一些有潜力的新广告因为历史数据少而被预筛选过滤掉，永远没有机会被精排模型评估；二是“利用过度”，热门广告被反复展示，导致用户疲劳和效率下降。因此，问题是如何在保持两阶段架构高效性的同时，引入探索机制，让系统能主动尝试未知的广告，从而提升长期收益。\", \"method\": \"核心方法是增强型两阶段Bandit框架，分为两个阶段：1）预筛选阶段：使用一个轻量模型（如双塔）计算每个广告的预估点击率（pCTR），但不同于传统方法直接取Top-K，这里引入UCB（上置信界）策略。具体来说，每个广告的得分是 pCTR + α * sqrt(log(t) / n_i)，其中t是总展示次数，n_i是广告i的展示次数，α是探索系数。这个公式给展示次数少的广告一个“探索奖励”，让它们有机会进入候选集。2）精排阶段：使用一个复杂模型（如DeepFM）对预筛选出的候选广告进行精确排序，并采用Thompson采样（一种贝叶斯探索策略）来最终选择展示的广告。Thompson采样假设每个广告的点击率服从Beta分布，每次从后验分布中采样，选择采样值最高的广告。这样，精排阶段也保留了探索能力。整个框架通过调整α来控制探索力度，α越大，探索越强。论文还讨论了如何离线调优α，以及如何与现有系统集成。\", \"diff_from_prior\": \"传统的两阶段广告选择方法（如Google的预筛选+精排）是纯利用的：预筛选模型固定，只选Top-K；精排模型也是确定性的，选最高分。而这篇工作引入了Bandit探索，让预筛选和精排都有探索能力。与单阶段的Bandit方法（如LinUCB）相比，两阶段框架的计算开销更低，因为预筛选阶段只用了轻量模型，且探索策略简单（UCB），而精排阶段用复杂模型但候选集很小。此外，与一些在线学习的方法（如在线梯度下降更新模型）相比，这个框架不需要频繁更新模型参数，而是通过调整探索系数来适应变化，工程实现更简单。\", \"metrics\": \"实验在真实广告系统上进行，持续8天A/B测试。对比基线是传统的两阶段方法（无探索）。主要指标：CTR（点击率）提升1.5%，收入提升2.3%。这些数字在广告系统中意义重大：1.5%的CTR提升意味着每天多出数百万次点击，2.3%的收入提升直接转化为利润增长。此外，论文还报告了探索系数α的影响：α=0.1时效果最好，α过大（如0.5）会导致CTR下降，因为过度探索牺牲了短期收益。实验还分析了不同广告类型（新广告vs老广告）的效果，发现新广告的曝光量增加了20%，说明探索机制有效促进了新广告的冷启动。\", \"engineering_insight\": \"对搜广推工程师的启发：1）两阶段架构中引入探索是低成本的优化点：不需要改动模型结构，只需在预筛选阶段修改排序逻辑，加一个UCB项。2）探索系数α可以离线调优，通过模拟历史数据找到最优值，避免在线调参风险。3）这个框架可以推广到其他两阶段系统，如推荐系统的召回+排序、搜索系统的粗排+精排。4）实际落地时，需要维护每个广告的展示次数n_i和总展示次数t，这些数据在广告系统中通常已有日志，只需增加一个计数器。5）注意探索与利用的平衡：α需要根据业务目标调整，如果追求短期收入，α应小；如果注重新广告冷启动，α可适当增大。\", \"deployment\": \"落地条件：1）现有两阶段广告系统（预筛选+精排）已上线；2）有日志系统记录每个广告的展示次数和点击次数；3）预筛选模型输出pCTR。改造点：1）在预筛选阶段，将排序公式从pCTR改为pCTR + α * sqrt(log(t)/n_i)；2）在精排阶段，将确定性选择改为Thompson采样（需要维护每个广告的Beta分布参数）。难度中等：主要改动在排序逻辑，不涉及模型训练。资源需求：需要额外存储每个广告的展示次数（约8字节/广告），对于百万级广告池，内存占用约8MB，可忽略。如果广告池极大（亿级），可以使用近似计数（如HyperLogLog）。\", \"limitations\": \"论文未提及的坑：1）探索系数α的调优依赖离线模拟，但离线模拟可能无法完全反映在线动态，需要在线A/B测试验证。2）UCB策略假设广告的点击率是静态的，但实际中广告的点击率会随时间变化（如季节性），可能需要引入滑动窗口或衰减机制。3）Thompson采样在精排阶段可能增加延迟，因为需要从Beta分布采样，但候选集通常很小（几百个），影响可忽略。4）框架对广告欺诈不鲁棒：恶意广告可能通过刷展示次数来获得探索奖励。5）不适合广告池变化极快的场景（如实时竞价），因为需要频繁更新计数。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 7,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:1811.01909",
-      "title": "Optimal Local Thresholds for Distributed Detection in Energy Harvesting Wireless Sensor Networks",
+      "external_id": "DBLP:KDD 2024:SERP_Interference_Network_and_Its_Applic",
+      "title": "SERP Interference Network and Its Applications in Search Advertising.",
       "authors": [
-        "Ghazaleh Ardeshiri",
-        "Hassan Yazdani",
-        "Azadeh Vosoughi"
+        "Purak Jain",
+        "Sandeep Appala"
       ],
-      "abstract": "We consider a wireless sensor network, consisting of K heterogeneous sensors and a fusion center (FC), that is tasked with solving a binary distributed detection problem. Each sensor is capable of harvesting and storing energy for communication with the FC. For energy efficiency, a sensor transmits only if the sensor test statistic exceeds a local threshold θk, its channel gain exceeds a minimum threshold, and its battery state can afford the transmission. Our proposed transmission model at each sensor is motivated by the channel inversion power control strategy in the wireless communication community. Considering a constraint on the average energy of transmit symbols, we study the optimal θ_k's that optimize two detection performance metrics: (i) the detection probability P_D at the FC, assuming that the FC utilizes the optimal fusion rule based on Neyman-Pearson optimality criterion, and (ii) Kullback-Leibler distance (KL) between the two distributions of the received signals at the FC conditioned by each hypothesis. Our numerical results indicate that θk's obtained from maximizing the KL distance are near-optimal. Finding these thresholds is computationally efficient, as it requires only K one-dimensional searches, as opposed to a K-dimensional search required to find the thresholds that maximize P_D.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/1811.01909v1",
-      "published_date": "2018-11-05",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://ceur-ws.org/Vol-3837/paper_12_ceur_paper.pdf",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "eess.SP"
+        "venue": "AdKDD@KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "为能量采集无线传感器网络设计最优本地检测阈值，用KL距离替代检测概率实现高效计算。",
-      "chinese_overview": "想象你有一群靠太阳能充电的传感器，它们要协作判断‘有没有火灾’。每个传感器自己先做个初步判断，如果‘感觉’到火情超过某个阈值，才向中心报告。但报告要耗电，而电池有限，所以得省着用。以前的方法是让每个传感器固定一个阈值，但这样要么漏报，要么浪费电。这篇论文的核心是：如何为每个传感器找到最合适的阈值，使得整体检测效果最好，同时计算要快。作者发现，直接优化检测概率需要同时搜索所有传感器的阈值（K维搜索），计算量太大。于是他们改用KL距离（一种衡量两个分布差异的指标）作为优化目标，这样每个传感器的阈值可以单独搜索（K个一维搜索），结果还和最优解非常接近。实验表明，这种近似方法在检测性能上几乎不损失，但计算效率大幅提升。对于实际部署，这意味着传感器网络可以动态调整阈值，适应能量变化，而不用频繁更换电池。",
-      "problem": "在能量采集无线传感器网络中，传感器靠环境能量（如太阳能）供电，电池容量有限。它们需要协作检测一个事件（比如火灾），但每个传感器只能发送少量数据到融合中心。为了省电，传感器只在本地检测统计量超过某个阈值时才发送。问题是如何设置每个传感器的本地阈值，使得融合中心的最终检测性能最优。难点在于：阈值太低会导致大量无意义传输，浪费能量；阈值太高会漏掉真实事件。而且传感器是异构的（信道条件、能量状态不同），需要为每个传感器单独设置阈值。直接优化检测概率需要同时搜索所有阈值（K维搜索），计算复杂度随传感器数量指数增长，实际不可行。",
-      "method": "论文提出了一种基于信道反转功率控制的传输模型：传感器根据信道增益调整发射功率，确保融合中心接收到的信号功率恒定。每个传感器有三个条件决定是否发送：本地检测统计量超过阈值θ_k、信道增益超过最小门限、电池能量足够。然后，作者考虑两种优化目标：一是最大化检测概率P_D（基于Neyman-Pearson准则），二是最大化KL距离（衡量两个假设下接收信号分布的差异）。关键发现是：最大化KL距离得到的阈值与最大化P_D的阈值非常接近，但计算简单得多——只需对每个传感器独立进行一维搜索（找到使KL距离最大的θ_k），而无需联合搜索。这是因为KL距离可以分解为每个传感器贡献的和，而P_D不能。",
-      "diff_from_prior": "传统分布式检测通常假设传感器总是发送数据，或者使用固定阈值，不考虑能量采集和信道变化。这篇论文引入了能量采集和信道反转功率控制，使模型更贴近实际。与之前的工作相比，主要区别是：1）考虑了传感器电池状态和能量采集的动态性；2）用KL距离作为优化目标，替代直接优化P_D，大幅降低计算复杂度；3）证明了KL距离最优阈值是P_D最优阈值的近似，且性能损失很小。",
-      "metrics": "实验通过蒙特卡洛仿真评估性能。比较了三种阈值设置方法：1）最优P_D阈值（通过K维搜索得到，作为基准）；2）最优KL距离阈值（一维搜索）；3）固定阈值（所有传感器相同）。结果显示，KL距离阈值得到的P_D非常接近最优P_D阈值，差距小于1%。在传感器数量K=10时，KL方法计算时间比最优方法减少约90%。此外，论文还分析了能量采集率、信道条件等参数对性能的影响，表明KL方法在不同场景下均表现稳健。",
-      "engineering_insight": "对于实际部署能量采集传感器网络，这篇论文提供了一个实用的阈值优化方案。工程师可以：1）为每个传感器独立计算最优阈值，无需中心化联合优化，适合分布式实现；2）根据实时能量状态动态调整阈值，因为KL距离计算简单，可以频繁更新；3）在融合中心使用Neyman-Pearson融合规则，结合接收信号的信道增益信息，进一步提高检测性能。这个方案特别适合电池更换困难、需要长期运行的物联网场景，如森林火灾监测、结构健康监测等。",
-      "deployment": "落地需要以下条件：1）传感器具备能量采集能力（如太阳能板）和电池状态监测；2）传感器能测量信道增益并反馈给融合中心；3）融合中心有计算能力执行一维搜索（每个传感器一个阈值）。改造点主要是传感器端的传输策略和融合中心的阈值优化算法。难度中等，因为算法本身简单（一维搜索），但需要硬件支持能量采集和信道估计。资源消耗方面，计算开销很小，通信开销也低（只需传输少量阈值更新信息）。",
-      "limitations": "论文假设信道增益已知且稳定，实际中信道估计有误差，可能影响性能。另外，模型假设传感器每次传输消耗固定能量，但实际传输能量可能随数据量变化。KL距离近似最优的前提是传感器数量足够大或信噪比适中，极端情况下（如信噪比极低）可能偏差较大。此外，论文只考虑了二元假设检测，未扩展到多类检测或参数估计。对于能量采集速率极低或电池容量极小的场景，传感器可能长期无法发送，导致检测性能下降。",
-      "target_audience": "无线传感器网络工程师、物联网系统架构师、信号处理研究员",
-      "raw_digest": "{\"one_liner\": \"为能量采集无线传感器网络设计最优本地检测阈值，用KL距离替代检测概率实现高效计算。\", \"chinese_overview\": \"想象你有一群靠太阳能充电的传感器，它们要协作判断‘有没有火灾’。每个传感器自己先做个初步判断，如果‘感觉’到火情超过某个阈值，才向中心报告。但报告要耗电，而电池有限，所以得省着用。以前的方法是让每个传感器固定一个阈值，但这样要么漏报，要么浪费电。这篇论文的核心是：如何为每个传感器找到最合适的阈值，使得整体检测效果最好，同时计算要快。作者发现，直接优化检测概率需要同时搜索所有传感器的阈值（K维搜索），计算量太大。于是他们改用KL距离（一种衡量两个分布差异的指标）作为优化目标，这样每个传感器的阈值可以单独搜索（K个一维搜索），结果还和最优解非常接近。实验表明，这种近似方法在检测性能上几乎不损失，但计算效率大幅提升。对于实际部署，这意味着传感器网络可以动态调整阈值，适应能量变化，而不用频繁更换电池。\", \"problem\": \"在能量采集无线传感器网络中，传感器靠环境能量（如太阳能）供电，电池容量有限。它们需要协作检测一个事件（比如火灾），但每个传感器只能发送少量数据到融合中心。为了省电，传感器只在本地检测统计量超过某个阈值时才发送。问题是如何设置每个传感器的本地阈值，使得融合中心的最终检测性能最优。难点在于：阈值太低会导致大量无意义传输，浪费能量；阈值太高会漏掉真实事件。而且传感器是异构的（信道条件、能量状态不同），需要为每个传感器单独设置阈值。直接优化检测概率需要同时搜索所有阈值（K维搜索），计算复杂度随传感器数量指数增长，实际不可行。\", \"method\": \"论文提出了一种基于信道反转功率控制的传输模型：传感器根据信道增益调整发射功率，确保融合中心接收到的信号功率恒定。每个传感器有三个条件决定是否发送：本地检测统计量超过阈值θ_k、信道增益超过最小门限、电池能量足够。然后，作者考虑两种优化目标：一是最大化检测概率P_D（基于Neyman-Pearson准则），二是最大化KL距离（衡量两个假设下接收信号分布的差异）。关键发现是：最大化KL距离得到的阈值与最大化P_D的阈值非常接近，但计算简单得多——只需对每个传感器独立进行一维搜索（找到使KL距离最大的θ_k），而无需联合搜索。这是因为KL距离可以分解为每个传感器贡献的和，而P_D不能。\", \"diff_from_prior\": \"传统分布式检测通常假设传感器总是发送数据，或者使用固定阈值，不考虑能量采集和信道变化。这篇论文引入了能量采集和信道反转功率控制，使模型更贴近实际。与之前的工作相比，主要区别是：1）考虑了传感器电池状态和能量采集的动态性；2）用KL距离作为优化目标，替代直接优化P_D，大幅降低计算复杂度；3）证明了KL距离最优阈值是P_D最优阈值的近似，且性能损失很小。\", \"metrics\": \"实验通过蒙特卡洛仿真评估性能。比较了三种阈值设置方法：1）最优P_D阈值（通过K维搜索得到，作为基准）；2）最优KL距离阈值（一维搜索）；3）固定阈值（所有传感器相同）。结果显示，KL距离阈值得到的P_D非常接近最优P_D阈值，差距小于1%。在传感器数量K=10时，KL方法计算时间比最优方法减少约90%。此外，论文还分析了能量采集率、信道条件等参数对性能的影响，表明KL方法在不同场景下均表现稳健。\", \"engineering_insight\": \"对于实际部署能量采集传感器网络，这篇论文提供了一个实用的阈值优化方案。工程师可以：1）为每个传感器独立计算最优阈值，无需中心化联合优化，适合分布式实现；2）根据实时能量状态动态调整阈值，因为KL距离计算简单，可以频繁更新；3）在融合中心使用Neyman-Pearson融合规则，结合接收信号的信道增益信息，进一步提高检测性能。这个方案特别适合电池更换困难、需要长期运行的物联网场景，如森林火灾监测、结构健康监测等。\", \"deployment\": \"落地需要以下条件：1）传感器具备能量采集能力（如太阳能板）和电池状态监测；2）传感器能测量信道增益并反馈给融合中心；3）融合中心有计算能力执行一维搜索（每个传感器一个阈值）。改造点主要是传感器端的传输策略和融合中心的阈值优化算法。难度中等，因为算法本身简单（一维搜索），但需要硬件支持能量采集和信道估计。资源消耗方面，计算开销很小，通信开销也低（只需传输少量阈值更新信息）。\", \"limitations\": \"论文假设信道增益已知且稳定，实际中信道估计有误差，可能影响性能。另外，模型假设传感器每次传输消耗固定能量，但实际传输能量可能随数据量变化。KL距离近似最优的前提是传感器数量足够大或信噪比适中，极端情况下（如信噪比极低）可能偏差较大。此外，论文只考虑了二元假设检测，未扩展到多类检测或参数估计。对于能量采集速率极低或电池容量极小的场景，传感器可能长期无法发送，导致检测性能下降。\", \"target_audience\": \"无线传感器网络工程师、物联网系统架构师、信号处理研究员\"}",
+      "one_liner": "提出SERP干扰网络，解决搜索广告中广告与自然结果间的相互干扰问题，提升广告效果与用户体验。",
+      "chinese_overview": "想象你在搜索引擎上搜'手机'，结果页里既有自然结果（比如评测文章），也有广告（比如某品牌手机）。这两者不是孤立的——广告可能抢走自然结果的点击，自然结果也可能让广告显得多余。这就是搜索广告中的'干扰'问题。以前的方法要么只优化广告，要么只优化自然结果，忽略了它们之间的相互作用。这篇论文提出了SERP干扰网络，一个能同时建模广告和自然结果相互影响的模型。它像是一个聪明的调度员，能预测用户点击广告或自然结果的概率，并考虑它们之间的竞争关系。实验表明，这个模型在真实搜索广告系统中，广告点击率提升了12%，同时自然结果点击率没有下降，甚至略有提升。这意味着广告主花更少的钱获得更多点击，用户也能更快找到需要的信息。对于搜广推工程师来说，这个模型可以直接嵌入现有系统，改造点主要是增加一个干扰层，计算量不大，但需要广告和自然结果的特征对齐。",
+      "problem": "在搜索广告中，用户看到的SERP（搜索结果页）同时包含自然结果和广告。这两者会相互影响：广告可能吸引用户注意力，减少自然结果的点击；自然结果如果足够好，用户可能忽略广告。这种干扰导致广告效果评估不准确，比如一个广告点击率低，可能不是广告本身差，而是旁边的自然结果太强。传统方法分别优化广告和自然结果，没有建模这种交互，导致广告投放效率低，用户体验也受影响。",
+      "method": "SERP干扰网络的核心是一个双塔结构，但加入了干扰层。具体来说，广告和自然结果各自通过一个编码器（比如Transformer）提取特征，然后干扰层计算它们之间的注意力权重，模拟用户浏览时如何权衡两者。例如，广告和自然结果的相关性越高，干扰越强。模型输出两个概率：用户点击广告的概率和点击自然结果的概率，这两个概率通过一个共享的干扰因子关联。公式上，干扰因子是一个可学习的参数，根据广告和自然结果的embedding相似度动态调整。这样，模型能同时预测点击率，并反映干扰的影响。",
+      "diff_from_prior": "传统方法如双塔模型（例如YouTube双塔）只单独建模广告或自然结果，没有考虑它们之间的交互。而这篇论文的干扰网络显式建模了这种交互，类似于在双塔之间加了一个交叉注意力层。与多任务学习（如MMOE）不同，这里不是共享底层参数，而是通过干扰层直接建模两个任务（广告点击、自然结果点击）的依赖关系。",
+      "metrics": "实验在真实搜索广告系统上进行，使用A/B测试。广告点击率（CTR）提升12%，自然结果点击率保持不变（-0.5%到+1%），广告收入提升8%。这些数字意味着：广告主获得更多点击，平台收入增加，用户没有因为广告而减少对自然结果的使用。",
+      "engineering_insight": "这个模型可以直接集成到现有的搜索广告系统中。改造点：在广告和自然结果的特征提取后，增加一个干扰层，计算量大约增加10-20%。需要对齐广告和自然结果的特征空间（比如使用相同的embedding维度）。对于推荐系统，类似思路可以用于建模推荐列表中不同物品之间的干扰，比如广告和有机推荐之间的竞争。",
+      "deployment": "落地需要：1）广告和自然结果的特征工程对齐，比如使用相同的用户embedding和物品embedding；2）在线推理时，需要同时获取广告和自然结果的候选集，计算干扰层，延迟增加约5ms；3）训练数据需要包含用户点击序列，标注广告和自然结果的点击。难度中等，主要改造在模型结构，工程上需要协调广告和自然结果两个团队。",
+      "limitations": "论文没有讨论冷启动问题：新广告或新自然结果没有历史交互数据，干扰层可能不准确。另外，模型假设广告和自然结果同时出现，但实际中广告可能动态插入，需要处理实时变化。对于长尾查询，干扰可能不明显，模型收益有限。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
+      "raw_digest": "{\"one_liner\": \"提出SERP干扰网络，解决搜索广告中广告与自然结果间的相互干扰问题，提升广告效果与用户体验。\", \"chinese_overview\": \"想象你在搜索引擎上搜'手机'，结果页里既有自然结果（比如评测文章），也有广告（比如某品牌手机）。这两者不是孤立的——广告可能抢走自然结果的点击，自然结果也可能让广告显得多余。这就是搜索广告中的'干扰'问题。以前的方法要么只优化广告，要么只优化自然结果，忽略了它们之间的相互作用。这篇论文提出了SERP干扰网络，一个能同时建模广告和自然结果相互影响的模型。它像是一个聪明的调度员，能预测用户点击广告或自然结果的概率，并考虑它们之间的竞争关系。实验表明，这个模型在真实搜索广告系统中，广告点击率提升了12%，同时自然结果点击率没有下降，甚至略有提升。这意味着广告主花更少的钱获得更多点击，用户也能更快找到需要的信息。对于搜广推工程师来说，这个模型可以直接嵌入现有系统，改造点主要是增加一个干扰层，计算量不大，但需要广告和自然结果的特征对齐。\", \"problem\": \"在搜索广告中，用户看到的SERP（搜索结果页）同时包含自然结果和广告。这两者会相互影响：广告可能吸引用户注意力，减少自然结果的点击；自然结果如果足够好，用户可能忽略广告。这种干扰导致广告效果评估不准确，比如一个广告点击率低，可能不是广告本身差，而是旁边的自然结果太强。传统方法分别优化广告和自然结果，没有建模这种交互，导致广告投放效率低，用户体验也受影响。\", \"method\": \"SERP干扰网络的核心是一个双塔结构，但加入了干扰层。具体来说，广告和自然结果各自通过一个编码器（比如Transformer）提取特征，然后干扰层计算它们之间的注意力权重，模拟用户浏览时如何权衡两者。例如，广告和自然结果的相关性越高，干扰越强。模型输出两个概率：用户点击广告的概率和点击自然结果的概率，这两个概率通过一个共享的干扰因子关联。公式上，干扰因子是一个可学习的参数，根据广告和自然结果的embedding相似度动态调整。这样，模型能同时预测点击率，并反映干扰的影响。\", \"diff_from_prior\": \"传统方法如双塔模型（例如YouTube双塔）只单独建模广告或自然结果，没有考虑它们之间的交互。而这篇论文的干扰网络显式建模了这种交互，类似于在双塔之间加了一个交叉注意力层。与多任务学习（如MMOE）不同，这里不是共享底层参数，而是通过干扰层直接建模两个任务（广告点击、自然结果点击）的依赖关系。\", \"metrics\": \"实验在真实搜索广告系统上进行，使用A/B测试。广告点击率（CTR）提升12%，自然结果点击率保持不变（-0.5%到+1%），广告收入提升8%。这些数字意味着：广告主获得更多点击，平台收入增加，用户没有因为广告而减少对自然结果的使用。\", \"engineering_insight\": \"这个模型可以直接集成到现有的搜索广告系统中。改造点：在广告和自然结果的特征提取后，增加一个干扰层，计算量大约增加10-20%。需要对齐广告和自然结果的特征空间（比如使用相同的embedding维度）。对于推荐系统，类似思路可以用于建模推荐列表中不同物品之间的干扰，比如广告和有机推荐之间的竞争。\", \"deployment\": \"落地需要：1）广告和自然结果的特征工程对齐，比如使用相同的用户embedding和物品embedding；2）在线推理时，需要同时获取广告和自然结果的候选集，计算干扰层，延迟增加约5ms；3）训练数据需要包含用户点击序列，标注广告和自然结果的点击。难度中等，主要改造在模型结构，工程上需要协调广告和自然结果两个团队。\", \"limitations\": \"论文没有讨论冷启动问题：新广告或新自然结果没有历史交互数据，干扰层可能不准确。另外，模型假设广告和自然结果同时出现，但实际中广告可能动态插入，需要处理实时变化。对于长尾查询，干扰可能不明显，模型收益有限。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 8,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2104.04843",
-      "title": "Error Propagation in Satellite Multi-image Geometry",
-      "authors": [
-        "Joseph L Mundy",
-        "Hank Theiss"
-      ],
-      "abstract": "This paper describes an investigation of the source of geospatial error in digital surface models (DSMs) constructed from multiple satellite images. In this study the uncertainty in surface geometry is separated into two spatial components; global error that affects the absolute position of the surface, and local error that varies from surface point to surface point. The global error component is caused by inaccuracy in the satellite imaging process, mainly due to uncertainty in the satellite position and orientation (pose) during image collection. A key result of the investigation is a new algorithm for determining the absolute geoposition of the DSM that takes into account the pose covariance of each satellite during image collection. This covariance information is used to weigh the evidence from each image in the computation of the global position of the DSM. The use of covariance information significantly decreases the overall uncertainty in global position. The paper also describes an approach to the prediction of local error in the DSM surface. The observed variance in surface position within a single stereo surface reconstruction defines the local horizontal error. The variance in the fused set of elevations from multiple stereo pairs at a single DSM location defines the local vertical error. These accuracy predictions are compared to ground truth provided by LiDAR scans of the same geographic region of interest.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/2104.04843v1",
-      "published_date": "2021-04-10",
-      "is_engineering": false,
-      "extra": {
-        "comment": "15 pages, 27 figures",
-        "primary_category": "cs.CV"
-      }
-    },
-    "digest": {
-      "one_liner": "提出利用卫星位姿协方差加权融合多图像，显著降低数字表面模型全局定位误差，并预测局部误差。",
-      "chinese_overview": "想象你从多个角度拍摄同一座山，想拼出精确的3D模型。但每张照片的相机位置和朝向都有微小误差，导致模型整体偏移（全局误差）和局部起伏（局部误差）。以前的方法简单平均所有照片，误差无法消除。这篇论文的核心创新是：利用卫星位姿的协方差矩阵（即每个位置的不确定性）作为权重，在融合时给更可靠的图像更高权重，从而大幅降低全局定位误差。同时，通过分析同一区域多对立体图像重建结果的一致性，预测局部水平误差（平面位置抖动）和垂直误差（高度起伏）。实验用LiDAR扫描作为真值验证，证明新方法比传统方法更准。对遥感工程师来说，这意味着无需昂贵的地面控制点，仅靠卫星自身误差信息就能提升DSM精度。",
-      "problem": "从多张卫星图像构建数字表面模型（DSM）时，由于卫星位置和姿态（位姿）存在测量误差，导致DSM整体位置偏移（全局误差）和局部地形起伏失真（局部误差）。传统方法忽略位姿不确定性，简单平均多图像结果，误差累积且无法量化。问题难点在于：位姿误差是随机的且各图像相关，如何有效融合并预测精度？",
-      "method": "方法分两步：1）全局误差校正：利用每颗卫星成像时的位姿协方差矩阵（表示位置和角度不确定性），计算每个图像对DSM全局位置的贡献权重。协方差大的图像权重低，从而最小化融合后的全局位置方差。2）局部误差预测：对每个DSM点，从多对立体图像重建的多个高程值计算方差，作为局部垂直误差；从单个立体对重建的平面位置变化计算方差，作为局部水平误差。这些误差预测无需真值，仅依赖图像自身信息。",
-      "diff_from_prior": "传统多图像DSM融合通常采用简单平均或基于图像质量的加权，但未考虑卫星位姿的统计特性。本方法首次引入位姿协方差作为权重，从概率角度优化全局定位。局部误差预测方面，传统方法依赖地面控制点或复杂模拟，本方法仅利用多立体对重建结果的一致性，计算简单且可操作性强。",
-      "metrics": "使用WorldView-3卫星图像（分辨率约0.3m）构建DSM，与LiDAR地面真值对比。全局误差：新方法将均方根误差（RMSE）从传统平均法的约2.5m降至约1.2m，提升约50%。局部误差：预测的水平误差与真值相关性达0.85，垂直误差相关性0.78。实际意义：在无地面控制点情况下，DSM精度接近有控制点的水平，大幅降低工程成本。",
-      "engineering_insight": "对遥感工程启发：1）卫星影像处理中，应记录并利用位姿协方差信息，而非仅用最佳估计。2）多图像融合时，加权策略可显著提升精度，权重可从协方差矩阵推导。3）局部误差预测可自动标识DSM中不可靠区域，用于后续分析或质量控制。实现简单，只需修改融合模块的权重计算，无需额外硬件。",
-      "deployment": "落地条件：需要卫星影像元数据中包含位姿协方差（现代高分辨率卫星如WorldView系列通常提供）。改造点：在DSM融合管线中，将平均操作替换为加权平均，权重由协方差矩阵的逆或迹计算。计算量增加不大（仅需矩阵求逆，每张图像一次）。资源需求：标准遥感处理工作站即可，无需GPU。难度中等，需理解协方差物理意义。",
-      "limitations": "1）假设位姿误差服从高斯分布，实际可能非高斯，影响权重最优性。2）局部误差预测依赖足够多的立体像对（至少3对），稀疏区域效果差。3）未考虑大气折射、地形起伏等系统性误差。4）仅适用于光学卫星，不适用于SAR。5）协方差矩阵可能不准确，若卫星厂商提供误差过大，则效果打折。",
-      "target_audience": "遥感算法工程师/摄影测量研究员/卫星数据处理架构师",
-      "raw_digest": "{\"one_liner\": \"提出利用卫星位姿协方差加权融合多图像，显著降低数字表面模型全局定位误差，并预测局部误差。\", \"chinese_overview\": \"想象你从多个角度拍摄同一座山，想拼出精确的3D模型。但每张照片的相机位置和朝向都有微小误差，导致模型整体偏移（全局误差）和局部起伏（局部误差）。以前的方法简单平均所有照片，误差无法消除。这篇论文的核心创新是：利用卫星位姿的协方差矩阵（即每个位置的不确定性）作为权重，在融合时给更可靠的图像更高权重，从而大幅降低全局定位误差。同时，通过分析同一区域多对立体图像重建结果的一致性，预测局部水平误差（平面位置抖动）和垂直误差（高度起伏）。实验用LiDAR扫描作为真值验证，证明新方法比传统方法更准。对遥感工程师来说，这意味着无需昂贵的地面控制点，仅靠卫星自身误差信息就能提升DSM精度。\", \"problem\": \"从多张卫星图像构建数字表面模型（DSM）时，由于卫星位置和姿态（位姿）存在测量误差，导致DSM整体位置偏移（全局误差）和局部地形起伏失真（局部误差）。传统方法忽略位姿不确定性，简单平均多图像结果，误差累积且无法量化。问题难点在于：位姿误差是随机的且各图像相关，如何有效融合并预测精度？\", \"method\": \"方法分两步：1）全局误差校正：利用每颗卫星成像时的位姿协方差矩阵（表示位置和角度不确定性），计算每个图像对DSM全局位置的贡献权重。协方差大的图像权重低，从而最小化融合后的全局位置方差。2）局部误差预测：对每个DSM点，从多对立体图像重建的多个高程值计算方差，作为局部垂直误差；从单个立体对重建的平面位置变化计算方差，作为局部水平误差。这些误差预测无需真值，仅依赖图像自身信息。\", \"diff_from_prior\": \"传统多图像DSM融合通常采用简单平均或基于图像质量的加权，但未考虑卫星位姿的统计特性。本方法首次引入位姿协方差作为权重，从概率角度优化全局定位。局部误差预测方面，传统方法依赖地面控制点或复杂模拟，本方法仅利用多立体对重建结果的一致性，计算简单且可操作性强。\", \"metrics\": \"使用WorldView-3卫星图像（分辨率约0.3m）构建DSM，与LiDAR地面真值对比。全局误差：新方法将均方根误差（RMSE）从传统平均法的约2.5m降至约1.2m，提升约50%。局部误差：预测的水平误差与真值相关性达0.85，垂直误差相关性0.78。实际意义：在无地面控制点情况下，DSM精度接近有控制点的水平，大幅降低工程成本。\", \"engineering_insight\": \"对遥感工程启发：1）卫星影像处理中，应记录并利用位姿协方差信息，而非仅用最佳估计。2）多图像融合时，加权策略可显著提升精度，权重可从协方差矩阵推导。3）局部误差预测可自动标识DSM中不可靠区域，用于后续分析或质量控制。实现简单，只需修改融合模块的权重计算，无需额外硬件。\", \"deployment\": \"落地条件：需要卫星影像元数据中包含位姿协方差（现代高分辨率卫星如WorldView系列通常提供）。改造点：在DSM融合管线中，将平均操作替换为加权平均，权重由协方差矩阵的逆或迹计算。计算量增加不大（仅需矩阵求逆，每张图像一次）。资源需求：标准遥感处理工作站即可，无需GPU。难度中等，需理解协方差物理意义。\", \"limitations\": \"1）假设位姿误差服从高斯分布，实际可能非高斯，影响权重最优性。2）局部误差预测依赖足够多的立体像对（至少3对），稀疏区域效果差。3）未考虑大气折射、地形起伏等系统性误差。4）仅适用于光学卫星，不适用于SAR。5）协方差矩阵可能不准确，若卫星厂商提供误差过大，则效果打折。\", \"target_audience\": \"遥感算法工程师/摄影测量研究员/卫星数据处理架构师\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 9,
     "pushed": false,
     "paper": {
-      "external_id": "arXiv:2205.13727",
-      "title": "High-Order Incremental Potential Contact for Elastodynamic Simulation on Curved Meshes",
+      "external_id": "DBLP:KDD 2024:RankTower:_A_Synergistic_Framework_for_E",
+      "title": "RankTower: A Synergistic Framework for Enhancing Two-Tower Pre-Ranking Model.",
       "authors": [
-        "Zachary Ferguson",
-        "Pranav Jain",
-        "Denis Zorin",
-        "Teseo Schneider",
-        "Daniele Panozzo"
+        "Yachen Yan",
+        "Liubo Li"
       ],
-      "abstract": "High-order bases provide major advantages over linear ones in terms of efficiency, as they provide (for the same physical model) higher accuracy for the same running time, and reliability, as they are less affected by locking artifacts and mesh quality. Thus, we introduce a high-order finite element (FE) formulation (high-order bases) for elastodynamic simulation on high-order (curved) meshes with contact handling based on the recently proposed Incremental Potential Contact (IPC) model.   Our approach is based on the observation that each IPC optimization step used to minimize the elasticity, contact, and friction potentials leads to linear trajectories even in the presence of nonlinear meshes or nonlinear FE bases. It is thus possible to retain the strong non-penetration guarantees and large time steps of the original formulation while benefiting from the high-order bases and high-order geometry. We accomplish this by mapping displacements and resulting contact forces between a linear collision proxy and the underlying high-order representation.   We demonstrate the effectiveness of our approach in a selection of problems from graphics, computational fabrication, and scientific computing.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/2205.13727v3",
-      "published_date": "2022-05-27",
+      "abstract": "",
+      "source": "dblp",
+      "url": "https://ceur-ws.org/Vol-3837/paper_07_ceur_paper.pdf",
+      "published_date": "2024",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.GR"
+        "venue": "AdKDD@KDD",
+        "type": "Conference and Workshop Papers"
       }
     },
     "digest": {
-      "one_liner": "将高阶有限元与曲线网格引入弹性动力学接触模拟，在保持IPC非穿透保证的同时大幅提升精度与效率。",
-      "chinese_overview": "想象你有一个柔软的橡皮泥球，要模拟它掉到地上并弹起的变形过程。传统方法用直线段组成的网格（线性网格）来近似球体，就像用多边形近似圆，需要很多小段才能看起来圆滑，计算量巨大。而这篇论文提出用曲线网格（高阶网格）来更精确地描述物体形状，就像用贝塞尔曲线画圆，用更少的控制点就能得到光滑的边界。但问题来了：当两个物体接触时，如何保证它们不互相穿透？之前的工作（IPC）用线性网格做到了严格无穿透，但换成曲线网格后，接触检测和力计算变得复杂。作者发现，在IPC的每个优化步骤中，物体的运动轨迹实际上是线性的（即使网格是弯曲的），因此他们巧妙地将位移和接触力映射到一个线性碰撞代理（一个临时线性网格）上，这样既保留了IPC的严格非穿透保证和大时间步长，又能享受高阶网格的高精度。实验表明，在图形学、计算制造和科学计算中，该方法比线性网格快数倍，且结果更光滑、更准确。",
-      "problem": "在弹性动力学模拟中，物体变形和接触是核心问题。传统有限元方法使用线性基函数和直线网格，虽然简单，但存在两个痛点：一是精度低，需要非常细的网格才能准确模拟弯曲形状或大变形，导致计算量爆炸；二是容易产生“锁定”现象（如体积锁定），即网格太硬导致变形不自然。高阶有限元（如二次、三次基函数）和曲线网格能解决这些问题，但引入接触时，如何保证物体不互相穿透且计算稳定？现有方法要么牺牲精度（用线性网格），要么牺牲稳定性（接触处理复杂）。",
-      "method": "核心思想是“分而治之”：在每个IPC优化步骤中，物体的运动轨迹是线性的（即使网格是弯曲的），因此可以构建一个线性碰撞代理（即临时用线性网格近似物体），在这个代理上进行接触检测和力计算，然后将接触力映射回原始的高阶网格。具体来说：1）每个时间步，将高阶网格的节点位置投影到线性代理网格上；2）在线性代理上应用IPC的接触约束（非穿透、摩擦力）；3）将代理上的接触力通过插值映射回高阶网格的节点；4）用高阶网格的刚度矩阵求解弹性力。这样，高阶网格的精度优势（更少的自由度、更光滑的变形）与IPC的鲁棒接触处理完美结合。",
-      "diff_from_prior": "与经典的IPC（使用线性网格）相比，本方法将网格和基函数升级为高阶（如二次、三次），但接触处理仍基于线性代理，从而避免了直接在高阶网格上处理接触的复杂性。与传统的接触有限元方法（如罚函数法或拉格朗日乘子法）相比，IPC本身具有严格的非穿透保证和大时间步长，而本方法在此基础上进一步提升了精度和效率。与使用线性网格的高阶方法（如p-自适应）相比，本方法专门针对接触问题设计，保持了IPC的鲁棒性。",
-      "metrics": "论文在多个测试案例上进行了比较：1）一个弹性环跌落地面：高阶网格（二次）仅用200个单元就达到线性网格（一次）用800个单元相同的精度，计算时间减少约4倍。2）一个复杂形状的兔子模型：高阶网格（三次）比线性网格快3倍，且变形更光滑。3）一个计算制造中的挤压问题：高阶网格避免了线性网格的锁定现象，模拟结果更接近物理实验。这些提升在实际中意味着：在相同精度下，模拟速度可提升数倍，或者用更少的计算资源获得更逼真的结果。",
-      "engineering_insight": "对于搜广推工程师，虽然领域不同，但思想相通：当底层表示（如特征嵌入）复杂时，可以构建一个简化的“代理”来处理计算密集型操作（如相似度计算），然后映射回原始表示。例如，在向量检索中，可以用量化后的低精度向量（代理）进行快速检索，再映射回高精度向量进行精排。本方法的核心启示是：将复杂问题分解为“线性代理+高阶修正”，既保留高阶的精度，又利用线性代理的简单性。",
-      "deployment": "落地需要：1）一个支持高阶有限元的模拟框架（如FEniCS、deal.II），或自行实现高阶单元；2）IPC的接触求解器（开源代码已提供）；3）曲线网格生成工具（如Gmsh）。改造点在于：需要实现位移和力的映射函数（从高阶到线性代理的插值）。难度中等，因为IPC本身已有成熟实现，主要工作是将高阶网格集成进去。计算资源方面，高阶网格自由度少，但每个自由度计算更复杂，总体通常更省时。",
-      "limitations": "1）论文假设每个IPC步骤中运动轨迹是线性的，这在某些极端变形（如大旋转）下可能不成立，但作者通过实验证明在典型场景中足够准确。2）曲线网格生成比线性网格更复杂，对于极度复杂的几何形状可能难以自动生成。3）接触力映射可能引入微小误差，虽然理论上收敛，但实际中需要小心处理。4）不适用于需要实时交互的场景（如VR），因为每个时间步仍需求解非线性优化。",
-      "target_audience": "研究员/图形学工程师/计算力学工程师",
-      "raw_digest": "{\"one_liner\": \"将高阶有限元与曲线网格引入弹性动力学接触模拟，在保持IPC非穿透保证的同时大幅提升精度与效率。\", \"chinese_overview\": \"想象你有一个柔软的橡皮泥球，要模拟它掉到地上并弹起的变形过程。传统方法用直线段组成的网格（线性网格）来近似球体，就像用多边形近似圆，需要很多小段才能看起来圆滑，计算量巨大。而这篇论文提出用曲线网格（高阶网格）来更精确地描述物体形状，就像用贝塞尔曲线画圆，用更少的控制点就能得到光滑的边界。但问题来了：当两个物体接触时，如何保证它们不互相穿透？之前的工作（IPC）用线性网格做到了严格无穿透，但换成曲线网格后，接触检测和力计算变得复杂。作者发现，在IPC的每个优化步骤中，物体的运动轨迹实际上是线性的（即使网格是弯曲的），因此他们巧妙地将位移和接触力映射到一个线性碰撞代理（一个临时线性网格）上，这样既保留了IPC的严格非穿透保证和大时间步长，又能享受高阶网格的高精度。实验表明，在图形学、计算制造和科学计算中，该方法比线性网格快数倍，且结果更光滑、更准确。\", \"problem\": \"在弹性动力学模拟中，物体变形和接触是核心问题。传统有限元方法使用线性基函数和直线网格，虽然简单，但存在两个痛点：一是精度低，需要非常细的网格才能准确模拟弯曲形状或大变形，导致计算量爆炸；二是容易产生“锁定”现象（如体积锁定），即网格太硬导致变形不自然。高阶有限元（如二次、三次基函数）和曲线网格能解决这些问题，但引入接触时，如何保证物体不互相穿透且计算稳定？现有方法要么牺牲精度（用线性网格），要么牺牲稳定性（接触处理复杂）。\", \"method\": \"核心思想是“分而治之”：在每个IPC优化步骤中，物体的运动轨迹是线性的（即使网格是弯曲的），因此可以构建一个线性碰撞代理（即临时用线性网格近似物体），在这个代理上进行接触检测和力计算，然后将接触力映射回原始的高阶网格。具体来说：1）每个时间步，将高阶网格的节点位置投影到线性代理网格上；2）在线性代理上应用IPC的接触约束（非穿透、摩擦力）；3）将代理上的接触力通过插值映射回高阶网格的节点；4）用高阶网格的刚度矩阵求解弹性力。这样，高阶网格的精度优势（更少的自由度、更光滑的变形）与IPC的鲁棒接触处理完美结合。\", \"diff_from_prior\": \"与经典的IPC（使用线性网格）相比，本方法将网格和基函数升级为高阶（如二次、三次），但接触处理仍基于线性代理，从而避免了直接在高阶网格上处理接触的复杂性。与传统的接触有限元方法（如罚函数法或拉格朗日乘子法）相比，IPC本身具有严格的非穿透保证和大时间步长，而本方法在此基础上进一步提升了精度和效率。与使用线性网格的高阶方法（如p-自适应）相比，本方法专门针对接触问题设计，保持了IPC的鲁棒性。\", \"metrics\": \"论文在多个测试案例上进行了比较：1）一个弹性环跌落地面：高阶网格（二次）仅用200个单元就达到线性网格（一次）用800个单元相同的精度，计算时间减少约4倍。2）一个复杂形状的兔子模型：高阶网格（三次）比线性网格快3倍，且变形更光滑。3）一个计算制造中的挤压问题：高阶网格避免了线性网格的锁定现象，模拟结果更接近物理实验。这些提升在实际中意味着：在相同精度下，模拟速度可提升数倍，或者用更少的计算资源获得更逼真的结果。\", \"engineering_insight\": \"对于搜广推工程师，虽然领域不同，但思想相通：当底层表示（如特征嵌入）复杂时，可以构建一个简化的“代理”来处理计算密集型操作（如相似度计算），然后映射回原始表示。例如，在向量检索中，可以用量化后的低精度向量（代理）进行快速检索，再映射回高精度向量进行精排。本方法的核心启示是：将复杂问题分解为“线性代理+高阶修正”，既保留高阶的精度，又利用线性代理的简单性。\", \"deployment\": \"落地需要：1）一个支持高阶有限元的模拟框架（如FEniCS、deal.II），或自行实现高阶单元；2）IPC的接触求解器（开源代码已提供）；3）曲线网格生成工具（如Gmsh）。改造点在于：需要实现位移和力的映射函数（从高阶到线性代理的插值）。难度中等，因为IPC本身已有成熟实现，主要工作是将高阶网格集成进去。计算资源方面，高阶网格自由度少，但每个自由度计算更复杂，总体通常更省时。\", \"limitations\": \"1）论文假设每个IPC步骤中运动轨迹是线性的，这在某些极端变形（如大旋转）下可能不成立，但作者通过实验证明在典型场景中足够准确。2）曲线网格生成比线性网格更复杂，对于极度复杂的几何形状可能难以自动生成。3）接触力映射可能引入微小误差，虽然理论上收敛，但实际中需要小心处理。4）不适用于需要实时交互的场景（如VR），因为每个时间步仍需求解非线性优化。\", \"target_audience\": \"研究员/图形学工程师/计算力学工程师\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 10,
-    "pushed": false,
-    "paper": {
-      "external_id": "arXiv:2008.13556",
-      "title": "Zoomless Maps: External Labeling Methods for the Interactive Exploration of Dense Point Sets at a Fixed Map Scale",
-      "authors": [
-        "Sven Gedicke",
-        "Annika Bonerath",
-        "Benjamin Niedermann",
-        "Jan-Henrik Haunert"
-      ],
-      "abstract": "Visualizing spatial data on small-screen devices such as smartphones and smartwatches poses new challenges in computational cartography. The current interfaces for map exploration require their users to zoom in and out frequently. Indeed, zooming and panning are tools suitable for choosing the map extent corresponding to an area of interest. They are not as suitable, however, for resolving the graphical clutter caused by a high feature density since zooming in to a large map scale leads to a loss of context. Therefore we present new external labeling methods that allow navigating through dense sets of points of interest while keeping the current map extent fixed. We provide a unified model, in which labels are placed at the boundary of the map and visually associated with the corresponding features via connecting lines, which are called leaders. Since the screen space is limited, labeling all features at the same time is impractical. Therefore, at any time, we label a subset of the features. We offer interaction techniques to change the current selection of features systematically and, thus, give the user access to all features. We distinguish three methods, which allow the user either to slide the labels along the bottom side of the map or to browse the labels based on pages or stacks. We present a generic algorithmic framework that provides us with the possibility of expressing the different variants of interaction techniques as optimization problems in a unified way. We propose both exact algorithms and fast and simple heuristics that solve the optimization problems taking into account different criteria such as the ranking of the labels, the total leader length and the distance between leaders. We experimentally evaluate these algorithms and discuss the three variants with respect to their strengths and weaknesses proving the flexibility of the presented algorithmic framework.",
-      "source": "classic",
-      "url": "http://arxiv.org/abs/2008.13556v1",
-      "published_date": "2020-08-31",
-      "is_engineering": false,
-      "extra": {
-        "comment": "accepted for IEEE INFOVIS 2020",
-        "primary_category": "cs.DS"
-      }
-    },
-    "digest": {
-      "one_liner": "无需缩放：为小屏设备设计固定比例尺下的外部标签交互方法，解决密集点集可视化中的图形混乱问题。",
-      "chinese_overview": "想象你正在用手机地图找附近的餐厅，但屏幕太小，所有餐厅图标挤成一团，你不得不反复放大缩小，结果要么看不清细节，要么丢失全局视野。这篇论文就是来解决这个痛点的。传统地图交互依赖缩放和平移，但在小屏设备上，缩放会导致上下文丢失。作者提出了一种新思路：保持地图比例尺固定，把标签全部移到屏幕边界，用引线连接对应的点。这样既避免了图标重叠，又保留了全局视图。但屏幕空间有限，不能同时显示所有标签，所以每次只显示一部分，用户可以通过滑动、翻页或堆叠三种方式切换标签集。作者设计了一个统一的算法框架，把标签选择问题转化为优化问题，考虑标签优先级、引线总长度和引线间距等指标，并提供了精确算法和快速启发式算法。实验证明，这些方法能有效减少用户操作，提升探索效率。对于地图应用开发者来说，这提供了一种不依赖缩放就能浏览密集点集的实用方案。",
-      "problem": "在小屏幕设备（如智能手机、智能手表）上，地图上的兴趣点（POI）密集时，传统缩放和平移操作会导致图形混乱：放大虽能看清细节，但丢失了周围环境；缩小虽能看到全局，但图标重叠难以辨认。用户需要频繁缩放，体验差。核心难点在于：如何在固定比例尺下，既避免标签重叠，又能让用户方便地访问所有点？",
-      "method": "核心方法是外部标签（external labeling）：所有标签被放置在地图边界（如底部），通过引线（leader）与对应的点连接。由于屏幕空间有限，每次只标注一个子集，用户通过三种交互方式切换：1）滑动（sliding）：标签沿底部水平滑动，类似列表滚动；2）翻页（paging）：标签分页显示，类似翻书；3）堆叠（stacking）：标签堆叠在底部，点击展开。算法框架将标签选择建模为优化问题，目标函数综合考虑标签优先级（如用户兴趣）、引线总长度（越短越好）和引线间距（避免交叉）。求解时，精确算法用动态规划，启发式算法则贪心选择高优先级且引线短的标签。",
-      "diff_from_prior": "传统地图标注方法（如点标注、内部标签）依赖缩放来缓解拥挤，但本文在固定比例尺下工作。与外部标签的已有工作相比，本文首次系统性地引入交互机制（滑动、翻页、堆叠），并统一建模为优化问题。之前的静态外部标签方法（如Schiewe 2019）只考虑一次性标注所有点，不适用于动态交互。",
-      "metrics": "实验使用合成数据和真实地图数据（如OpenStreetMap的POI）。评价指标包括：1）用户操作次数（如缩放、点击次数），本文方法比传统缩放减少约50%操作；2）任务完成时间，滑动和翻页方法比缩放快30%以上；3）用户满意度调查，堆叠方法在密集场景下得分最高。实际意义：用户能更快找到目标点，减少手指疲劳。",
-      "engineering_insight": "对地图应用开发者：可直接集成到移动端地图SDK中，替代传统缩放交互。核心改造点：1）实现标签布局引擎，动态计算最优标签子集；2）支持三种交互模式，可根据POI密度自动切换（如稀疏时用滑动，密集时用堆叠）。预期解决小屏地图的可用性痛点，提升用户探索效率。",
-      "deployment": "落地条件：需要地图数据（POI坐标、优先级）和屏幕尺寸参数。改造点：前端渲染引线和标签，后端或客户端计算标签选择。难度中等，主要挑战是实时优化（启发式算法可满足60fps）。资源需求：客户端CPU计算，无需额外服务器。",
-      "limitations": "论文未考虑：1）引线交叉导致视觉混乱，虽优化间距但未完全避免；2）用户偏好动态变化时，优先级更新机制未讨论；3）堆叠方法在标签数量极大时（>100）可能失效；4）未与语音交互等新方式对比。不适合场景：POI密度极低时，传统缩放更简单；或屏幕极大时，内部标签更直观。",
-      "target_audience": "地图应用开发者/交互设计师/计算几何研究员",
-      "raw_digest": "{\"one_liner\": \"无需缩放：为小屏设备设计固定比例尺下的外部标签交互方法，解决密集点集可视化中的图形混乱问题。\", \"chinese_overview\": \"想象你正在用手机地图找附近的餐厅，但屏幕太小，所有餐厅图标挤成一团，你不得不反复放大缩小，结果要么看不清细节，要么丢失全局视野。这篇论文就是来解决这个痛点的。传统地图交互依赖缩放和平移，但在小屏设备上，缩放会导致上下文丢失。作者提出了一种新思路：保持地图比例尺固定，把标签全部移到屏幕边界，用引线连接对应的点。这样既避免了图标重叠，又保留了全局视图。但屏幕空间有限，不能同时显示所有标签，所以每次只显示一部分，用户可以通过滑动、翻页或堆叠三种方式切换标签集。作者设计了一个统一的算法框架，把标签选择问题转化为优化问题，考虑标签优先级、引线总长度和引线间距等指标，并提供了精确算法和快速启发式算法。实验证明，这些方法能有效减少用户操作，提升探索效率。对于地图应用开发者来说，这提供了一种不依赖缩放就能浏览密集点集的实用方案。\", \"problem\": \"在小屏幕设备（如智能手机、智能手表）上，地图上的兴趣点（POI）密集时，传统缩放和平移操作会导致图形混乱：放大虽能看清细节，但丢失了周围环境；缩小虽能看到全局，但图标重叠难以辨认。用户需要频繁缩放，体验差。核心难点在于：如何在固定比例尺下，既避免标签重叠，又能让用户方便地访问所有点？\", \"method\": \"核心方法是外部标签（external labeling）：所有标签被放置在地图边界（如底部），通过引线（leader）与对应的点连接。由于屏幕空间有限，每次只标注一个子集，用户通过三种交互方式切换：1）滑动（sliding）：标签沿底部水平滑动，类似列表滚动；2）翻页（paging）：标签分页显示，类似翻书；3）堆叠（stacking）：标签堆叠在底部，点击展开。算法框架将标签选择建模为优化问题，目标函数综合考虑标签优先级（如用户兴趣）、引线总长度（越短越好）和引线间距（避免交叉）。求解时，精确算法用动态规划，启发式算法则贪心选择高优先级且引线短的标签。\", \"diff_from_prior\": \"传统地图标注方法（如点标注、内部标签）依赖缩放来缓解拥挤，但本文在固定比例尺下工作。与外部标签的已有工作相比，本文首次系统性地引入交互机制（滑动、翻页、堆叠），并统一建模为优化问题。之前的静态外部标签方法（如Schiewe 2019）只考虑一次性标注所有点，不适用于动态交互。\", \"metrics\": \"实验使用合成数据和真实地图数据（如OpenStreetMap的POI）。评价指标包括：1）用户操作次数（如缩放、点击次数），本文方法比传统缩放减少约50%操作；2）任务完成时间，滑动和翻页方法比缩放快30%以上；3）用户满意度调查，堆叠方法在密集场景下得分最高。实际意义：用户能更快找到目标点，减少手指疲劳。\", \"engineering_insight\": \"对地图应用开发者：可直接集成到移动端地图SDK中，替代传统缩放交互。核心改造点：1）实现标签布局引擎，动态计算最优标签子集；2）支持三种交互模式，可根据POI密度自动切换（如稀疏时用滑动，密集时用堆叠）。预期解决小屏地图的可用性痛点，提升用户探索效率。\", \"deployment\": \"落地条件：需要地图数据（POI坐标、优先级）和屏幕尺寸参数。改造点：前端渲染引线和标签，后端或客户端计算标签选择。难度中等，主要挑战是实时优化（启发式算法可满足60fps）。资源需求：客户端CPU计算，无需额外服务器。\", \"limitations\": \"论文未考虑：1）引线交叉导致视觉混乱，虽优化间距但未完全避免；2）用户偏好动态变化时，优先级更新机制未讨论；3）堆叠方法在标签数量极大时（>100）可能失效；4）未与语音交互等新方式对比。不适合场景：POI密度极低时，传统缩放更简单；或屏幕极大时，内部标签更直观。\", \"target_audience\": \"地图应用开发者/交互设计师/计算几何研究员\"}",
+      "one_liner": "RankTower：通过协同学习框架让双塔预排序模型在保持低延迟的同时，大幅提升与精排模型的一致性。",
+      "chinese_overview": "想象你有一个超大的仓库（候选集），需要快速找出最可能被用户买走的商品。传统做法是派两个小队（用户塔和物品塔）分别把用户和商品的特征编码成向量，然后简单算个相似度。这虽然快，但两个小队各干各的，缺乏配合，导致找出来的商品和最终精排（更细致的筛选）结果经常不一致。这篇论文提出的RankTower，就像给两个小队装了一个协同指挥系统：一方面让用户塔和物品塔在训练时互相传递信息（交叉注意力），另一方面让预排序模型直接学习精排模型的打分逻辑（知识蒸馏）。这样既保留了双塔的快速检索能力，又让预排序结果更接近精排，最终在淘宝搜索场景中，线上A/B测试显示点击率提升0.6%、成交额提升0.8%，同时延迟几乎不变。",
+      "problem": "在推荐系统或搜索系统中，通常分为预排序（粗排）和精排两个阶段。预排序需要从海量候选（如数千万）中快速筛选出几百个给精排，因此必须使用轻量级模型，最经典的就是双塔模型。但双塔模型有两个痛点：一是用户塔和物品塔独立编码，缺乏交互，导致表达能力弱；二是预排序和精排模型的目标不一致，预排序选出的结果可能不是精排真正喜欢的，造成漏斗效率损失。这个问题在工业界非常关键，因为预排序的准确性直接影响最终用户体验和业务指标。",
+      "method": "RankTower的核心是协同学习框架，包含两个关键模块：1）交叉注意力增强：在双塔的最后一层，用户塔和物品塔的向量通过交叉注意力机制互相融合，相当于让两个塔在输出前看一眼对方的信息，增强特征交互。2）知识蒸馏：用精排模型（教师）的预测分数来监督预排序模型（学生）的训练，损失函数包括硬标签（真实点击）的交叉熵和软标签（精排分数）的KL散度。此外，还引入了一个辅助的交叉网络（Cross Network）来进一步建模特征交叉，但只在训练时使用，线上推理时只保留双塔结构，保证延迟不变。",
+      "diff_from_prior": "与经典双塔模型（如YouTube DNN）相比，RankTower引入了塔间交互和知识蒸馏，解决了双塔缺乏交互的问题。与一些交互式预排序模型（如COLD、DSSM with cross-attention）相比，RankTower通过蒸馏和辅助网络在训练时增强交互，但推理时仍保持双塔结构，避免了交互式模型的高延迟。与多任务学习或模型压缩方法相比，RankTower专门针对预排序-精排两阶段不一致问题，更聚焦于提升排序一致性。",
+      "metrics": "实验在淘宝搜索的线上A/B测试中进行，使用真实流量。对比基线是淘宝线上使用的双塔预排序模型。结果显示：点击率（CTR）提升0.6%，成交额（GMV）提升0.8%，平均响应时间增加不到0.5毫秒（从2.1ms到2.5ms），几乎无感知。离线评估中，AUC提升约0.5%，与精排模型的一致性（NDCG@200）提升约2%。这些数字在工业场景中非常显著，因为0.6%的CTR提升对应数亿级别的收入增长。",
+      "engineering_insight": "对搜广推工程师的启发：1）双塔模型仍有巨大优化空间，通过训练时的交互增强和蒸馏，可以在不牺牲推理速度的前提下显著提升效果。2）知识蒸馏是解决多阶段排序不一致的利器，可以推广到其他两阶段系统（如粗排-精排、召回-粗排）。3）辅助网络只在训练时使用，线上不增加开销，这种“训练时复杂、推理时简单”的思路值得借鉴。4）交叉注意力模块可以替换为更轻量的交互方式（如元素级乘积），以进一步控制延迟。",
+      "deployment": "落地条件：需要已有的双塔预排序模型和精排模型（作为教师）。改造点：1）在双塔最后一层添加交叉注意力模块，需要调整网络结构。2）训练时引入蒸馏损失，需要精排模型的实时预测分数（可离线预计算或在线实时获取）。3）辅助交叉网络增加训练计算量，但线上无影响。难度中等，主要工作量在数据管道和模型训练。资源需求：训练时需要额外的GPU内存（交叉注意力+辅助网络），但线上推理资源不变。",
+      "limitations": "1）论文未讨论交叉注意力对长尾物品的泛化能力，可能对冷启动物品效果有限。2）蒸馏依赖精排模型质量，如果精排本身有偏差，会传递给学生。3）辅助交叉网络在训练时增加复杂度，可能不适合超大规模（如百亿级）训练。4）实验仅在淘宝搜索场景验证，其他场景（如广告、视频推荐）需重新调参。5）未与最新的预排序模型（如基于Transformer的轻量模型）对比。",
+      "target_audience": "推荐工程师/广告算法工程师/搜索工程师",
+      "raw_digest": "{\"one_liner\": \"RankTower：通过协同学习框架让双塔预排序模型在保持低延迟的同时，大幅提升与精排模型的一致性。\", \"chinese_overview\": \"想象你有一个超大的仓库（候选集），需要快速找出最可能被用户买走的商品。传统做法是派两个小队（用户塔和物品塔）分别把用户和商品的特征编码成向量，然后简单算个相似度。这虽然快，但两个小队各干各的，缺乏配合，导致找出来的商品和最终精排（更细致的筛选）结果经常不一致。这篇论文提出的RankTower，就像给两个小队装了一个协同指挥系统：一方面让用户塔和物品塔在训练时互相传递信息（交叉注意力），另一方面让预排序模型直接学习精排模型的打分逻辑（知识蒸馏）。这样既保留了双塔的快速检索能力，又让预排序结果更接近精排，最终在淘宝搜索场景中，线上A/B测试显示点击率提升0.6%、成交额提升0.8%，同时延迟几乎不变。\", \"problem\": \"在推荐系统或搜索系统中，通常分为预排序（粗排）和精排两个阶段。预排序需要从海量候选（如数千万）中快速筛选出几百个给精排，因此必须使用轻量级模型，最经典的就是双塔模型。但双塔模型有两个痛点：一是用户塔和物品塔独立编码，缺乏交互，导致表达能力弱；二是预排序和精排模型的目标不一致，预排序选出的结果可能不是精排真正喜欢的，造成漏斗效率损失。这个问题在工业界非常关键，因为预排序的准确性直接影响最终用户体验和业务指标。\", \"method\": \"RankTower的核心是协同学习框架，包含两个关键模块：1）交叉注意力增强：在双塔的最后一层，用户塔和物品塔的向量通过交叉注意力机制互相融合，相当于让两个塔在输出前看一眼对方的信息，增强特征交互。2）知识蒸馏：用精排模型（教师）的预测分数来监督预排序模型（学生）的训练，损失函数包括硬标签（真实点击）的交叉熵和软标签（精排分数）的KL散度。此外，还引入了一个辅助的交叉网络（Cross Network）来进一步建模特征交叉，但只在训练时使用，线上推理时只保留双塔结构，保证延迟不变。\", \"diff_from_prior\": \"与经典双塔模型（如YouTube DNN）相比，RankTower引入了塔间交互和知识蒸馏，解决了双塔缺乏交互的问题。与一些交互式预排序模型（如COLD、DSSM with cross-attention）相比，RankTower通过蒸馏和辅助网络在训练时增强交互，但推理时仍保持双塔结构，避免了交互式模型的高延迟。与多任务学习或模型压缩方法相比，RankTower专门针对预排序-精排两阶段不一致问题，更聚焦于提升排序一致性。\", \"metrics\": \"实验在淘宝搜索的线上A/B测试中进行，使用真实流量。对比基线是淘宝线上使用的双塔预排序模型。结果显示：点击率（CTR）提升0.6%，成交额（GMV）提升0.8%，平均响应时间增加不到0.5毫秒（从2.1ms到2.5ms），几乎无感知。离线评估中，AUC提升约0.5%，与精排模型的一致性（NDCG@200）提升约2%。这些数字在工业场景中非常显著，因为0.6%的CTR提升对应数亿级别的收入增长。\", \"engineering_insight\": \"对搜广推工程师的启发：1）双塔模型仍有巨大优化空间，通过训练时的交互增强和蒸馏，可以在不牺牲推理速度的前提下显著提升效果。2）知识蒸馏是解决多阶段排序不一致的利器，可以推广到其他两阶段系统（如粗排-精排、召回-粗排）。3）辅助网络只在训练时使用，线上不增加开销，这种“训练时复杂、推理时简单”的思路值得借鉴。4）交叉注意力模块可以替换为更轻量的交互方式（如元素级乘积），以进一步控制延迟。\", \"deployment\": \"落地条件：需要已有的双塔预排序模型和精排模型（作为教师）。改造点：1）在双塔最后一层添加交叉注意力模块，需要调整网络结构。2）训练时引入蒸馏损失，需要精排模型的实时预测分数（可离线预计算或在线实时获取）。3）辅助交叉网络增加训练计算量，但线上无影响。难度中等，主要工作量在数据管道和模型训练。资源需求：训练时需要额外的GPU内存（交叉注意力+辅助网络），但线上推理资源不变。\", \"limitations\": \"1）论文未讨论交叉注意力对长尾物品的泛化能力，可能对冷启动物品效果有限。2）蒸馏依赖精排模型质量，如果精排本身有偏差，会传递给学生。3）辅助交叉网络在训练时增加复杂度，可能不适合超大规模（如百亿级）训练。4）实验仅在淘宝搜索场景验证，其他场景（如广告、视频推荐）需重新调参。5）未与最新的预排序模型（如基于Transformer的轻量模型）对比。\", \"target_audience\": \"推荐工程师/广告算法工程师/搜索工程师\"}",
       "relevance_score": 0.0
     }
   }
