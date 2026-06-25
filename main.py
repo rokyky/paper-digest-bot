@@ -474,6 +474,7 @@ class Pipeline:
             api_key=api_key,
             max_tokens=filter_config.get("max_tokens", 500),
             temperature=filter_config.get("temperature", 0.1),
+            base_url=filter_config.get("base_url"),
         )
 
         filter_ = LLMFilter(
@@ -513,6 +514,7 @@ class Pipeline:
             api_key=api_key,
             max_tokens=digest_config.get("max_tokens", 4000),
             temperature=digest_config.get("temperature", 0.3),
+            base_url=digest_config.get("base_url"),
         )
 
         summarizer = LLMSummarizer(llm_client=client)

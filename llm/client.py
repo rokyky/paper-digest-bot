@@ -11,12 +11,14 @@ class LLMClient:
     """统一的 LLM 调用客户端，封装多 provider 切换"""
 
     def __init__(self, provider: str, model: str, api_key: str = None,
-                 max_tokens: int = 1000, temperature: float = 0.3):
+                 max_tokens: int = 1000, temperature: float = 0.3,
+                 base_url: str = None):
         self.provider = provider
         self.model = model
         self.api_key = api_key
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self.base_url = base_url
         self._client = None
         self._init_client()
 
@@ -33,10 +35,11 @@ class LLMClient:
             self._client = anthropic.Anthropic(api_key=self.api_key)
 
         elif p == "deepseek":
-            import openai  # DeepSeek 兼容 OpenAI SDK
+            import openai
+            url = self.base_url or "https://api.deepseek.com"
             self._client = openai.OpenAI(
                 api_key=self.api_key,
-                base_url="https://api.deepseek.com",
+                base_url=url,
             )
 
         elif p == "qwen":

@@ -85,12 +85,14 @@ llm:
     model: "deepseek-chat"
     max_tokens: 500
     temperature: 0.1
+    base_url: ""             # 非官方 API 填这里，如 "https://你的地址/v1"
   # 解读模型（强模型，用于深度解读）
   digest:
     provider: "deepseek"     # openai / claude / deepseek / qwen
     model: "deepseek-chat"
     max_tokens: 4000
     temperature: 0.3
+    base_url: ""             # 同上
 
 # 推送配置
 push:
