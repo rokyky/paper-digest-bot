@@ -85,7 +85,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:An_Adaptable_Budget_Planner_for_Enhancin",
       "title": "An Adaptable Budget Planner for Enhancing Budget-Constrained Auto-Bidding in Online Advertising.",
