@@ -215,7 +215,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.25249",
       "title": "Adaptive Re-Ranking",
