@@ -129,7 +129,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.25237",
       "title": "Extreme Meta-Classification for Large-Scale Zero-Shot Retrieval",
