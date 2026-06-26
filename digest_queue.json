@@ -251,7 +251,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.25268",
       "title": "Learning Interpretable Text Signals for Structured Responses",
