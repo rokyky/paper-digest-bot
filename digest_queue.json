@@ -193,7 +193,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.26787",
       "title": "AIGP: An LLM-Based Framework for Long-Term Value Alignment in E-Commerce Pricing",
