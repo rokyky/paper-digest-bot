@@ -100,7 +100,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.26859",
       "title": "AgentX: Towards Agent-Driven Self-Iteration of Industrial Recommender Systems",
