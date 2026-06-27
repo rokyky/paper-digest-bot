@@ -352,7 +352,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.27291",
       "title": "Designing Reward Signals for Portable Query Generation: A Case Study in Industrial Semantic Job Search",
