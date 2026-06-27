@@ -314,7 +314,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.27214",
       "title": "TRUST: Item-Calibrated Interval Evidence for Temporal Session-Based Recommendation",
