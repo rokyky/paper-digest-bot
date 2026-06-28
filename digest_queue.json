@@ -119,7 +119,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:An_Efficient_Long-Context_Ranking_Archit",
       "title": "An Efficient Long-Context Ranking Architecture With Calibrated LLM Distillation: Application to Person-Job Fit.",
