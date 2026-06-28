@@ -85,7 +85,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Multi-Stage_RecSys_with_Gated-VIC_2T:_GF",
       "title": "Multi-Stage RecSys with Gated-VIC 2T: GFLU-Enhanced Pre-Ranking Meets VICReg.",
