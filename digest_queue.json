@@ -277,7 +277,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Clickbait_Mitigation_in_Industrial_Recom",
       "title": "Clickbait Mitigation in Industrial Recommender System.",
