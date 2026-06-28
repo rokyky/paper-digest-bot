@@ -155,7 +155,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Sequential_Recommenders_and_Multimodal_I",
       "title": "Sequential Recommenders and Multimodal Inputs: Mitigating Data Quality Issues in Industry-Scale Recommenders.",
