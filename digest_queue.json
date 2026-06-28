@@ -44,7 +44,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:A_Bag_of_Tricks_for_Scaling_CPU-based_De",
       "title": "A Bag of Tricks for Scaling CPU-based Deep FFMs to more than 300m Predictions per Second.",
