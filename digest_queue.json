@@ -190,7 +190,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:Put_Teacher_in_Student&apos;s_Shoes:_Cro",
       "title": "Put Teacher in Student&apos;s Shoes: Cross-Distillation for Ultra-compact Model Compression Framework.",
