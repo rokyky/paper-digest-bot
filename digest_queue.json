@@ -75,7 +75,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.27114",
       "title": "Cross-Head Attention Uplift Network with Inverse Propensity Score under Unobserved Confounding",
