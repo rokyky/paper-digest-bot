@@ -196,7 +196,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2024:RAH!_RecSys-Assistant-Human:_A_Human-Cen",
       "title": "RAH! RecSys-Assistant-Human: A Human-Centered Recommendation Framework With LLM Agents.",
