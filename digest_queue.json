@@ -41,7 +41,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.27202",
       "title": "Graph Neural Networks Applications Across Domains: All Insights You Need",
