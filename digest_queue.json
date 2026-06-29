@@ -160,7 +160,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2024:Mitigating_Extreme_Cold_Start_in_Graph-b",
       "title": "Mitigating Extreme Cold Start in Graph-based RecSys through Re-ranking.",
