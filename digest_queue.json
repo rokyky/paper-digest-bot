@@ -38,7 +38,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WWW 2025:Two-stage_Auction_Design_in_Online_Adver",
       "title": "Two-stage Auction Design in Online Advertising.",
