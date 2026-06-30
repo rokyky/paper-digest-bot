@@ -114,7 +114,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WWW 2024:User_Response_in_Ad_Auctions:_An_MDP_For",
       "title": "User Response in Ad Auctions: An MDP Formulation of Long-term Revenue Optimization.",
