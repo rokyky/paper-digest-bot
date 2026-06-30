@@ -273,7 +273,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WWW 2024:GraphPro:_Graph_Pre-training_and_Prompt_",
       "title": "GraphPro: Graph Pre-training and Prompt Learning for Recommendation.",
