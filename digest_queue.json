@@ -235,7 +235,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WWW 2024:Breaking_the_Single-Reference-Vector_Bar",
       "title": "Breaking the Single-Reference-Vector Barrier in Approximate Nearest Neighbor Search.",
