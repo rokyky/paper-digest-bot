@@ -78,7 +78,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WWW 2025:Efficient_and_Practical_Approximation_Al",
       "title": "Efficient and Practical Approximation Algorithms for Advertising in Content Feeds.",
