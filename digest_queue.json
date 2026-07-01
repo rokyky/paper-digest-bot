@@ -241,7 +241,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.32016",
       "title": "FedLAB: Traceable Semantic Codebooks for Federated Multimodal Graph Foundation Learning",
