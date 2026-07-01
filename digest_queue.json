@@ -200,7 +200,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.31517",
       "title": "Unsupervised Data-Efficient Cross-Modal Retrieval with Global-Neighborhood Alignment Hashing",
