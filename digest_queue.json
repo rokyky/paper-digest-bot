@@ -78,7 +78,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2025:Transformers_are_Good_Clusterers_for_Lif",
       "title": "Transformers are Good Clusterers for Lifelong User Behavior Sequence Modeling.",
