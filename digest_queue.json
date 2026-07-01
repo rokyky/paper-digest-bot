@@ -40,7 +40,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2025:A_Technical_Report_on_the_Second_Place_S",
       "title": "A Technical Report on the Second Place Solution for the CIKM 2025 AnalytiCup Competition.",
