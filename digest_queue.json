@@ -354,7 +354,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:What_News_Recommendation_Research_Did_(B",
       "title": "What News Recommendation Research Did (But Mostly Didn&apos;t) Teach Us About Building A News Recommender.",
