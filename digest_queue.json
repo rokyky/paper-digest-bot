@@ -318,7 +318,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Exploring_the_Impact_of_Data_Quality_on_",
       "title": "Exploring the Impact of Data Quality on Agentic Recommender Systems.",
