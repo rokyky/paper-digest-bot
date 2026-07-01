@@ -54,9 +54,12 @@ def _build_paper_section(digest: Digest, label: str, max_field_len: int = 600) -
     source_tag = "学术论文" if not paper.is_engineering else "工程博客"
 
     # 构建每篇论文的详细内容
+    # 原文链接放在标题下方，最显眼的位置
+    url_line = f"🔗 [原文链接]({paper.url})" if paper.url else "🔗 *（无原文链接）*"
     content_parts = [
         f"**{source_icon} {label}. {paper.title}**",
         f"*{source_tag} | {', '.join(paper.authors[:4])} | {paper.published_date or ''}*",
+        url_line,
         "",
     ]
 
@@ -82,10 +85,6 @@ def _build_paper_section(digest: Digest, label: str, max_field_len: int = 600) -
         truncated = truncate_text(field_value.strip(), max_field_len)
         content_parts.append(f"{icon}**{label}:**\n{truncated}")
         content_parts.append("")
-
-    # 原文链接
-    if paper.url:
-        content_parts.append(f"🔗 [原文链接]({paper.url})")
 
     markdown_content = "\n".join(content_parts)
 
