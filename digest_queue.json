@@ -281,7 +281,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Responsible_RecSys_by_Design:_Approximat",
       "title": "Responsible RecSys by Design: Approximation Algorithms for Calibrated Recommendations with Sponsored Items.",
