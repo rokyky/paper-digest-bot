@@ -240,7 +240,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WSDM 2025:LightGNN:_Simple_Graph_Neural_Network_fo",
       "title": "LightGNN: Simple Graph Neural Network for Recommendation.",
