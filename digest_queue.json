@@ -164,7 +164,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.31449",
       "title": "Contextual Slate GLM Bandits with Limited Adaptivity",
