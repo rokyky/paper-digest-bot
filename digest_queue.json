@@ -91,7 +91,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.00486",
       "title": "PAPA: Online Personalized Active Preference Alignment",
