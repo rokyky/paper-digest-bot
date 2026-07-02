@@ -105,7 +105,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2606.31693",
       "title": "ShopX: A Foundation Model for Intent-to-Item Fulfillment in Agentic Shopping",
