@@ -276,7 +276,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WSDM 2024:PEFA:_Parameter-Free_Adapters_for_Large-",
       "title": "PEFA: Parameter-Free Adapters for Large-scale Embedding-based Retrieval Models.",
