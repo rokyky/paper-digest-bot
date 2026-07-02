@@ -43,7 +43,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.01170",
       "title": "Diffusion-GR2: Diffusion Generative Reasoning Re-ranker",
