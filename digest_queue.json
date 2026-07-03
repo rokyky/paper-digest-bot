@@ -235,7 +235,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:Proceedings_of_the_Workshop_on_Data_Mini",
       "title": "Proceedings of the Workshop on Data Mining for Online Advertising (AdKDD 2024) co-located with the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD 2024), Barcelona, Spain, August 25, 2024.",
