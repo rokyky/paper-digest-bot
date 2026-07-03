@@ -117,7 +117,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:International_Workshop_on_Online_and_Ada",
       "title": "International Workshop on Online and Adaptive Recommender Systems (OARS 2025).",
