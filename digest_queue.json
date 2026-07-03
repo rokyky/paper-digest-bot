@@ -78,7 +78,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:AdKDD_2025.",
       "title": "AdKDD 2025.",
