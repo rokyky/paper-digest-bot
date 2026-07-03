@@ -194,7 +194,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:Proceedings_of_the_Workshop_on_Knowledge",
       "title": "Proceedings of the Workshop on Knowledge-infused Learning co-located with 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD), Barcelona, Spain, August 26, 2024.",
