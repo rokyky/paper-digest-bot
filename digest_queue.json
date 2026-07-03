@@ -157,7 +157,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:The_6th_International_Workshop_on_Talent",
       "title": "The 6th International Workshop on Talent and Management Computing (TMC 2025).",
