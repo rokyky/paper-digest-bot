@@ -40,7 +40,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2025:KDD_2025_-_AI_Reasoning_Day.",
       "title": "KDD 2025 - AI Reasoning Day.",
