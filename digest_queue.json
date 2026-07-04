@@ -257,7 +257,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Multimodality_In_Recommender_Systems:_Do",
       "title": "Multimodality In Recommender Systems: Does It Help, and Should We Expect An Answer?",
