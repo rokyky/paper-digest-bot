@@ -187,7 +187,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Exploration-Exploitation_Dilemma_in_Reco",
       "title": "Exploration-Exploitation Dilemma in Recommender Systems: Is It the Time to Switch to the Exploration Mode Again?",
