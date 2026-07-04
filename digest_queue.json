@@ -114,7 +114,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Single-Branch_Architectures_for_Recommen",
       "title": "Single-Branch Architectures for Recommendation.",
