@@ -221,7 +221,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:We&apos;re_Still_Doing_It_(All)_Wrong:_R",
       "title": "We&apos;re Still Doing It (All) Wrong: Recommender Systems, Fifteen Years Later.",
