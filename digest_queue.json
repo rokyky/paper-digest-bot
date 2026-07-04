@@ -36,7 +36,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.02338",
       "title": "HNSW with Accuracy Guarantees Using Graph Spanners -- A Technical Report",
