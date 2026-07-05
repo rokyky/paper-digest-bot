@@ -115,7 +115,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Proceedings_of_the_DaQuaMRec_2025_Worksh",
       "title": "Proceedings of the DaQuaMRec 2025 Workshop on Data Quality-Aware Multimodal Recommendation co-located with RecSys 2025, Prague, Czech Republic, September 22, 2025.",
