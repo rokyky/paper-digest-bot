@@ -170,7 +170,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:RecSys_Challenge_2025:_Universal_Behavio",
       "title": "RecSys Challenge 2025: Universal Behavioral Profiles for Recommender Systems.",
