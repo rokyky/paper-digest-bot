@@ -2,9 +2,13 @@
 
 import json
 import logging
-from typing import Optional
+import time
+from typing import Optional, Callable
 
 logger = logging.getLogger(__name__)
+
+MAX_RETRIES = 3
+RETRY_BASE_DELAY = 2  # seconds
 
 
 class LLMClient:
@@ -21,6 +25,26 @@ class LLMClient:
         self.base_url = base_url
         self._client = None
         self._init_client()
+
+    def _call_with_retry(self, fn: Callable[[], str], label: str = "LLM call") -> str:
+        """带指数退避重试的 API 调用"""
+        last_exc = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                return fn()
+            except Exception as e:
+                last_exc = e
+                if attempt < MAX_RETRIES:
+                    delay = RETRY_BASE_DELAY ** attempt  # 2s, 4s, 8s
+                    logger.warning(
+                        "%s failed (attempt %d/%d): %s. Retrying in %ds...",
+                        label, attempt, MAX_RETRIES, e, delay,
+                    )
+                    time.sleep(delay)
+                else:
+                    logger.error("%s failed after %d attempts: %s",
+                                 label, MAX_RETRIES, e)
+        raise last_exc  # type: ignore
 
     def _init_client(self):
         """初始化对应 provider 的客户端"""
@@ -64,32 +88,38 @@ class LLMClient:
 
     def _chat_openai_like(self, system_prompt: str, user_prompt: str,
                           response_format: Optional[dict] = None) -> str:
-        """调用 OpenAI 兼容接口"""
-        kwargs = {
-            "model": self.model,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "max_tokens": self.max_tokens,
-            "temperature": self.temperature,
-        }
-        if response_format:
-            kwargs["response_format"] = response_format
+        """调用 OpenAI 兼容接口（带重试）"""
+        def _do_call() -> str:
+            kwargs = {
+                "model": self.model,
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                "max_tokens": self.max_tokens,
+                "temperature": self.temperature,
+            }
+            if response_format:
+                kwargs["response_format"] = response_format
 
-        resp = self._client.chat.completions.create(**kwargs)
-        return resp.choices[0].message.content or ""
+            resp = self._client.chat.completions.create(**kwargs)
+            return resp.choices[0].message.content or ""
+
+        return self._call_with_retry(_do_call, label=f"OpenAI-like ({self.model})")
 
     def _chat_claude(self, system_prompt: str, user_prompt: str) -> str:
-        """调用 Claude API"""
-        resp = self._client.messages.create(
-            model=self.model,
-            system=system_prompt,
-            messages=[{"role": "user", "content": user_prompt}],
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-        )
-        return resp.content[0].text if resp.content else ""
+        """调用 Claude API（带重试）"""
+        def _do_call() -> str:
+            resp = self._client.messages.create(
+                model=self.model,
+                system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+                max_tokens=self.max_tokens,
+                temperature=self.temperature,
+            )
+            return resp.content[0].text if resp.content else ""
+
+        return self._call_with_retry(_do_call, label=f"Claude ({self.model})")
 
     def chat_structured(self, system_prompt: str, user_prompt: str,
                         output_schema: dict) -> dict:
