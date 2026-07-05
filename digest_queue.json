@@ -39,7 +39,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WSDM 2024:LabelCraft:_Empowering_Short_Video_Recom",
       "title": "LabelCraft: Empowering Short Video Recommendations with Automated Label Crafting.",
