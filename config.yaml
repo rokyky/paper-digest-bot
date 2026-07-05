@@ -103,7 +103,7 @@ llm:
   digest:
     provider: "deepseek"     # openai / claude / deepseek / qwen
     model: "deepseek-chat"
-    max_tokens: 4000
+    max_tokens: 8192     # 输出上限（新格式 1500-2500 字中文 ~5000 tokens）
     temperature: 0.3
     base_url: ""             # 同上
 
