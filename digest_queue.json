@@ -80,7 +80,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WSDM 2024:Practical_Bandits:_An_Industry_Perspecti",
       "title": "Practical Bandits: An Industry Perspective.",
