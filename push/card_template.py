@@ -47,7 +47,7 @@ def truncate_text(text: str, max_len: int = 800) -> str:
     return text[:max_len] + "...(已截断)"
 
 
-def _build_paper_section(digest: Digest, label: str, max_field_len: int = 3000) -> dict:
+def _build_paper_section(digest: Digest, label: str, max_field_len: int = 5000) -> dict:
     """构建单篇论文的卡片 section（div element）"""
     paper = digest.paper
     source_icon = "📄" if not paper.is_engineering else "📝"
