@@ -129,7 +129,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Proceedings_of_the_International_Worksho",
       "title": "Proceedings of the International Workshop on News Recommendation and Analytics co-located with the 2024 ACM Conference on Recommender Systems (RecSys 2024), Bari, Italy, 18 October 2024.",
