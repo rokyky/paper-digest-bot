@@ -4,34 +4,47 @@
 topic:
   name: "搜广推前沿论文速报"
   max_items: 1          # 每次推送论文数（每2小时推1篇）
+  relevance_threshold: 0.70  # 相关性门槛（0-1），>0.7 才通过
   keywords:
+    # ——— 最核心：LLM for Rec / 生成式推荐 ———
+    - LLM for recommendation
+    - generative recommendation
+    - LLM for advertising
+    - LLM for search
+    - reasoning for recommendation
+    # ——— 推荐系统核心 ———
     - recommender system
-    - ranking
-    - retrieval
     - CTR prediction
     - CVR prediction
+    - ranking
+    - reranking
+    - retrieval
+    - candidate generation
+    - learning to rank
+    - two-tower
+    - multi-task learning
+    - multi-goal
+    - user modeling
+    - personalization
+    - sequential recommendation
+    - graph recommendation
+    - feature interaction
+    - cold start
+    # ——— 广告/搜索 ———
     - advertising
     - sponsored search
     - auction
     - bidding
-    - two-tower
-    - candidate generation
-    - learning to rank
-    - personalization
-    - user modeling
-    - graph recommendation
-    - sequential recommendation
-    - LLM for recommendation
-    - generative recommendation
-    - dense retrieval
-    - vector search
-    - ANN
-    - reranking
     - marketplace
     - feed ranking
     - search ranking
-    - multi-task learning
-    - multi-goal
+    - ad targeting
+    # ——— 向量检索 / ANN ———
+    - vector search
+    - dense retrieval
+    - ANN
+    - semantic matching
+    - embedding retrieval
 
 # 学术源配置
 sources:
