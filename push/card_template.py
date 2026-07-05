@@ -16,26 +16,37 @@ HEADER_COLORS = ["blue", "wathet", "turquoise", "green", "yellow", "orange", "re
 FIELD_ICONS = {
     "one_liner": "💡 ",
     "chinese_overview": "📖 ",
+    "analogy": "🔥 ",
     "problem": "🎯 ",
+    "method_comparison": "⚖️ ",
+    "core_method": "🔬 ",
+    "results": "📊 ",
+    "limitations": "⚠️ ",
+    # 旧版字段（保留兼容）
     "method": "🔬 ",
     "diff_from_prior": "⚡ ",
     "metrics": "📊 ",
     "engineering_insight": "🛠️ ",
     "deployment": "🚀 ",
-    "limitations": "⚠️ ",
     "lessons_learned": "📝 ",
+    "target_audience": "🎯 ",
 }
 
 FIELD_LABELS = {
     "one_liner": "一句话结论",
     "chinese_overview": "中文精读",
-    "problem": "解决了什么问题",
+    "analogy": "30 秒类比",
+    "problem": "要解决什么问题",
+    "method_comparison": "已有方法对比",
+    "core_method": "核心方法拆解",
+    "results": "实验结果",
+    "limitations": "局限性",
+    # 旧版字段（保留兼容）
     "method": "核心方法",
     "diff_from_prior": "和已有方法的区别",
     "metrics": "实验/业务指标",
     "engineering_insight": "对搜广推工程的启发",
     "deployment": "可能的落地方式",
-    "limitations": "局限性/坑",
     "target_audience": "适合谁读",
 }
 
@@ -64,18 +75,32 @@ def _build_paper_section(digest: Digest, label: str, max_field_len: int = 5000) 
     ]
 
     # 字段映射：字段名 -> Digest 属性
+    # 新格式：独立模块
     field_map = [
         ("one_liner", digest.one_liner),
-        ("chinese_overview", digest.chinese_overview),
+        ("analogy", digest.analogy),
         ("problem", digest.problem),
-        ("method", digest.method),
-        ("diff_from_prior", digest.diff_from_prior),
-        ("metrics", digest.metrics),
-        ("engineering_insight", digest.engineering_insight),
-        ("deployment", digest.deployment),
+        ("method_comparison", digest.method_comparison),
+        ("core_method", digest.core_method),
+        ("results", digest.results),
         ("limitations", digest.limitations),
-        ("target_audience", digest.target_audience),
     ]
+
+    # 如果新字段都为空，回退到旧版 chinese_overview（兼容旧队列）
+    new_fields_have_content = any(v for _, v in field_map if v and v.strip())
+    if not new_fields_have_content and digest.chinese_overview:
+        field_map = [
+            ("one_liner", digest.one_liner),
+            ("chinese_overview", digest.chinese_overview),
+            ("problem", digest.problem),
+            ("method", digest.method),
+            ("diff_from_prior", digest.diff_from_prior),
+            ("metrics", digest.metrics),
+            ("engineering_insight", digest.engineering_insight),
+            ("deployment", digest.deployment),
+            ("limitations", digest.limitations),
+            ("target_audience", digest.target_audience),
+        ]
 
     for field_name, field_value in field_map:
         if not field_value or field_value.strip() == "":
