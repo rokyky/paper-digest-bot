@@ -1,7 +1,7 @@
 [
   {
     "position": 1,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:KDD 2024:Generative_AI_Day.",
       "title": "Generative AI Day.",
