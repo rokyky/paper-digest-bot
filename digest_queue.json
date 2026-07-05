@@ -41,7 +41,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:RecSys 2025:Proceedings_of_the_3rd_Music_Recommender",
       "title": "Proceedings of the 3rd Music Recommender Systems Workshop (MuRS 2025) co-located with the 19th ACM Conference on Recommender Systems (RecSys 2025), Prague, Czech Republic, September 22, 2025.",
