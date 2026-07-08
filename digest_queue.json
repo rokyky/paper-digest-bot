@@ -183,7 +183,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:WSDM 2025:DLCRec:_A_Novel_Approach_for_Managing_Di",
       "title": "DLCRec: A Novel Approach for Managing Diversity in LLM-Based Recommender Systems.",
