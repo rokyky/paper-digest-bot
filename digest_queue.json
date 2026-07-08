@@ -90,7 +90,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2024:LLM4MSR:_An_LLM-Enhanced_Paradigm_for_Mu",
       "title": "LLM4MSR: An LLM-Enhanced Paradigm for Multi-Scenario Recommendation.",
