@@ -226,7 +226,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2024:Professionalism-Aware_Pre-Finetuning_for",
       "title": "Professionalism-Aware Pre-Finetuning for Profitability Ranking.",
