@@ -267,7 +267,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2024:In_Situ_Answer_Sentence_Selection_at_Web",
       "title": "In Situ Answer Sentence Selection at Web-scale.",
