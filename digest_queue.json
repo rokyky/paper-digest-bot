@@ -136,7 +136,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "DBLP:CIKM 2024:AlignRec:_Aligning_and_Training_in_Multi",
       "title": "AlignRec: Aligning and Training in Multimodal Recommendations.",
