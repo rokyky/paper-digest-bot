@@ -169,7 +169,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.06765",
       "title": "When and How to Ask: Dynamic Preference Elicitation Strategies for Conversational Recommendation",
