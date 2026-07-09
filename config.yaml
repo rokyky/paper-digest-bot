@@ -111,7 +111,7 @@ llm:
 # 推送配置
 push:
   channel: "feishu"
-  local_export_dir: "E:/my-projects/arxiv-paper/raw"  # 推送成功后保存到本地的 markdown 目录
+  local_export_dir: "E:/my-projects/arxiv-paper"  # 推送成功后保存到本地的根目录（自动按分类/文件名归档）
   feishu:
     webhooks:
       - "${FEISHU_WEBHOOK}"       # 飞书机器人 webhook URL

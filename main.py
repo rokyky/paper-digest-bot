@@ -433,23 +433,143 @@ class Pipeline:
         except Exception as e:
             self.logger.warning("去重文件同步失败: %s", e)
 
+    # ── 论文分类词库 ───────────────────────────────────────
+    _CATEGORY_KEYWORDS = {
+        "召回": [
+            "retrieval", "recall", "candidate generation", "matching",
+            "双塔", "two-tower", "embedding retrieval", "ANN",
+            "dense retrieval", "semantic matching", "vector search",
+            "hard negative", "negative sampling",
+        ],
+        "排序": [
+            "ranking", "reranking", "CTR prediction", "CVR prediction",
+            "learning to rank", "click-through rate", "conversion rate",
+            "排序", "精排", "粗排", "pointwise", "pairwise", "listwise",
+        ],
+        "生成式推荐": [
+            "generative recommendation", "generative retrieval",
+            "generative ranking", "TIGER", "RQVAE", "semantic ID",
+            "生成式推荐", "端到端生成",
+        ],
+        "LLM推荐": [
+            "LLM for recommendation", "LLM for advertising", "LLM for search",
+            "LLM4Rec", "reasoning for recommendation", "large language model",
+            "agent", "recommendation", "llm-based", "prompt",
+        ],
+        "广告竞价": [
+            "advertising", "bidding", "auction", "sponsored search",
+            "budget", "marketplace", "ad targeting",
+        ],
+        "多模态": [
+            "multimodal", "multi-modal", "vision", "visual", "image",
+            "text and image", "cross-modal",
+        ],
+        "特征模型": [
+            "feature interaction", "multi-task learning", "multi-goal",
+            "cold start", "user modeling", "personalization",
+            "序列推荐", "sequential recommendation", "graph",
+        ],
+    }
+
+    @staticmethod
+    def _classify_paper(paper) -> str:
+        """基于关键词将论文分类
+
+        匹配规则：标题和摘要中命中最多的类别即为论文分类。
+        如果全部未命中，归为"其他"。
+        """
+        from collections import Counter
+        text = (paper.title + " " + paper.abstract).lower()
+        scores = Counter()
+        for cat, keywords in Pipeline._CATEGORY_KEYWORDS.items():
+            for kw in keywords:
+                if kw in text:
+                    scores[cat] += 1
+        if scores:
+            return scores.most_common(1)[0][0]
+        return "其他"
+
+    @staticmethod
+    def _make_paper_filename(paper) -> str:
+        """按规范生成文件名：{缩写}_{5-10字描述}.md
+
+        规则参考：.提示词_论文精读写作规范.md
+        - 前半段：从标题提取方法/模型缩写（第一个大写缩写、或竞赛名）
+        - 后半段：5-10 字中文描述
+        - 不包含论文全称、作者、年份、arXiv ID
+        """
+        title = paper.title
+        title_lower = title.lower()
+
+        # --- 前半段：提取缩写 ---
+        prefix = ""
+        # 优先提取括号内的模型名，如 "Sortify: ..." "LUCID: ..."
+        import re
+        m = re.match(r'^([A-Z][A-Za-z0-9_-]{1,20})[:\s]', title)
+        if m:
+            prefix = m.group(1)
+        else:
+            # 提取全大写的缩写词（如 LLMCluster, RQVAE, TIGER）
+            m = re.search(r'\b([A-Z]{2,10})\b', title)
+            if m:
+                prefix = m.group(1)
+            else:
+                # 首单词
+                first_word = title.split()[0] if title.split() else ""
+                prefix = first_word[:15] if first_word else "paper"
+
+        # --- 后半段：生成 5-10 字中文描述 ---
+        # 从 keywords 中找匹配的中文
+        description = ""
+        cat_keywords = {
+            "检索": ["retrieval", "recall", "召回", "dense retrieval", "matching", "向量检索"],
+            "排序": ["ranking", "reranking", "排序", "CTR", "learning to rank"],
+            "推荐": ["recommendation", "recommender", "推荐", "generative"],
+            "多任务": ["multi-task", "multi-goal", "多任务", "多目标"],
+            "多模态": ["multimodal", "multi-modal", "多模态", "cross-modal", "vision"],
+            "序列": ["sequential", "sequence", "序列", "session"],
+            "冷启动": ["cold start", "冷启动"],
+            "蒸馏": ["distillation", "蒸馏", "压缩"],
+            "广告": ["advertising", "bidding", "广告", "竞价", "出价"],
+            "跨域": ["cross-domain", "跨域", "transfer"],
+            "图": ["graph", "图神经", "GNN"],
+        }
+        for desc, kws in cat_keywords.items():
+            for kw in kws:
+                if kw in title_lower or kw in paper.abstract.lower()[:200]:
+                    description = desc
+                    break
+            if description:
+                break
+        if not description and paper.extra.get("type"):
+            description = paper.extra["type"]
+        if not description:
+            description = "论文精读"
+
+        # 拼接
+        safe_prefix = "".join(c if c.isalnum() or c in "-_" else "_" for c in prefix)[:20]
+        filename = f"{safe_prefix}_{description}.md"
+        return filename
+
     def _export_local_digest(self, digest):
         """推送成功后，将解读保存为本地 markdown 文件
 
-        保存路径：config push.local_export_dir / storage/pushed/<year>/<month>/<external_id>.md
-        如果配置了 local_export_dir 则使用该路径，否则使用 storage/pushed/
+        保存到：{local_export_dir}/{分类}/{文件名}.md
+        文件名格式：{方法缩写}_{5-10字中文描述}.md（参考 .提示词_论文精读写作规范.md）
+        分类：基于关键词自动归类到 召回/排序/生成式推荐/LLM推荐/广告竞价/多模态/特征模型/其他
         """
         try:
-            import os
             from pathlib import Path
 
             paper = digest.paper
-            eid = paper.external_id or paper.title[:30]
 
-            # 安全文件名
-            safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in eid)[:120]
+            # ── 1. 分类 ──
+            category = self._classify_paper(paper)
 
-            # 输出目录：优先使用 config 中的 local_export_dir
+            # ── 2. 生成文件名 ──
+            filename = self._make_paper_filename(paper)
+
+            # ── 3. 输出目录 ──
             export_dir = self.config.get("push", {}).get("local_export_dir", "")
             if export_dir:
                 p = Path(export_dir)
@@ -457,41 +577,99 @@ class Pipeline:
             else:
                 out_root = ROOT_DIR / "storage" / "pushed"
 
-            date_str = paper.published_date or ""
-            year = date_str[:4] if len(date_str) >= 4 else "unknown"
-            month = date_str[5:7] if len(date_str) >= 7 else "00"
-
-            out_dir = out_root / year / month
+            out_dir = out_root / category
             out_dir.mkdir(parents=True, exist_ok=True)
-            md_path = out_dir / f"{safe_id}.md"
+            md_path = out_dir / filename
 
             # 已存在则跳过（避免重复写入）
             if md_path.exists():
+                self.logger.info("本地文档已存在，跳过: %s", md_path)
                 return
 
+            # ── 4. 提取关键信息 ──
+            # 作者字符串
+            author_str = ", ".join(paper.authors[:8])
+            if len(paper.authors) > 8:
+                author_str += " et al."
+
+            # arXiv ID 和会议信息
+            arxiv_id = ""
+            venue_info = paper.published_date or ""
+            if paper.extra:
+                if isinstance(paper.extra, dict):
+                    arxiv_id = paper.external_id.replace("arXiv:", "") if paper.external_id else ""
+                    if "comment" in paper.extra and paper.extra["comment"]:
+                        venue_info = paper.extra["comment"]
+                    elif "venue" in paper.extra:
+                        venue_info = str(paper.extra.get("venue", ""))
+
+            # ── 5. 写文件（参考 .提示词_论文精读写作规范.md 格式）──
+            title_clean = paper.title.replace("**", "").replace("$$", "")
+
             with open(md_path, "w", encoding="utf-8") as f:
-                f.write(f"# {paper.title}\n\n")
-                if paper.authors:
-                    f.write(f"**作者**: {', '.join(paper.authors[:5])}\n\n")
-                f.write(f"**来源**: {paper.source} | **日期**: {paper.published_date or 'N/A'}\n\n")
-                f.write(f"**原文链接**: [{paper.url}]({paper.url})\n\n")
+                # -- 头部 --
+                one_liner = digest.one_liner or "（待补充）"
+                f.write(f"# {title_clean} — {one_liner}\n\n")
+
+                f.write(f"> 论文：**{title_clean}**\n")
+                if author_str:
+                    f.write(f"> 作者：{author_str}\n")
+                f.write(f"> 发表：{venue_info}\n")
+                f.write(f"> 原文链接：<{paper.url}>\n\n")
+
                 f.write("---\n\n")
 
-                sections = [
-                    ("💡 一句话结论", digest.one_liner),
-                    ("🔥 30 秒类比", digest.analogy),
-                    ("🎯 要解决什么问题", digest.problem),
-                    ("⚖️ 已有方法对比", digest.method_comparison),
-                    ("🔬 核心方法拆解", digest.core_method),
-                    ("📊 实验结果", digest.results),
-                    ("⚠️ 局限性", digest.limitations),
-                    ("📖 中文精读", digest.chinese_overview),
-                ]
-                for icon_title, content in sections:
-                    if content and content.strip():
-                        f.write(f"## {icon_title}\n\n{content.strip()}\n\n")
+                # -- 30秒类比 --
+                if digest.analogy and digest.analogy.strip():
+                    f.write("## 30 秒类比\n\n")
+                    f.write(digest.analogy.strip())
+                    f.write("\n\n---\n\n")
 
-            self.logger.info("本地文档已保存: %s", md_path)
+                # -- 要解决什么问题 --
+                if digest.problem and digest.problem.strip():
+                    f.write("## 一、要解决什么问题\n\n")
+                    f.write(digest.problem.strip())
+                    f.write("\n\n---\n\n")
+
+                # -- 已有方法对比 --
+                if digest.method_comparison and digest.method_comparison.strip():
+                    f.write("## 二、已有方法对比\n\n")
+                    f.write(digest.method_comparison.strip())
+                    f.write("\n\n---\n\n")
+
+                # -- 核心方法拆解 --
+                if digest.core_method and digest.core_method.strip():
+                    f.write("## 三、核心方法拆解\n\n")
+                    f.write(digest.core_method.strip())
+                    f.write("\n\n---\n\n")
+
+                # -- 实验结果 --
+                if digest.results and digest.results.strip():
+                    f.write("## 四、实验结果\n\n")
+                    f.write(digest.results.strip())
+                    f.write("\n\n---\n\n")
+
+                # -- 项目结合（占位，因为我们没有这个字段） --
+                f.write("## 五、对搜广推项目的参考\n\n")
+                f.write("> 自动生成解读尚未包含完整的项目结合分析。\n")
+                f.write("> 后续可通过 LLM 补充生成此章节。\n")
+                f.write("\n---\n\n")
+
+                # -- 局限性 --
+                if digest.limitations and digest.limitations.strip():
+                    f.write("## 六、局限性\n\n")
+                    f.write(digest.limitations.strip())
+                    f.write("\n\n---\n\n")
+
+                # -- 面试一句话 --
+                if digest.one_liner and digest.one_liner.strip():
+                    f.write(f"## 七、面试一句话\n\n> {digest.one_liner.strip()}\n\n")
+
+                # -- 验证标注 --
+                f.write("---\n\n")
+                f.write(f"*本文由 paper-digest-bot 于 {datetime.now().strftime('%Y-%m-%d %H:%M')} 自动生成，基于 arXiv/DBLP 数据*\n")
+
+            self.logger.info("本地文档已保存: %s （分类: %s）", md_path, category)
         except Exception as e:
             self.logger.warning("本地文档保存失败: %s", e)
 
