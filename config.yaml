@@ -4,6 +4,7 @@
 topic:
   name: "搜广推前沿论文速报"
   max_items: 1          # 每次推送论文数（每2小时推1篇）
+  min_year: 2026         # 只推 >= 该年份的新论文
   relevance_threshold: 0.70  # 相关性门槛（0-1），>0.7 才通过
   keywords:
     # ——— 最核心：LLM for Rec / 生成式推荐 ———
@@ -77,18 +78,18 @@ sources:
     enabled: true
     max_results: 50
     venues:
+      - "KDD 2026"
       - "KDD 2025"
-      - "KDD 2024"
+      - "RecSys 2026"
       - "RecSys 2025"
-      - "RecSys 2024"
+      - "WWW 2026"
       - "WWW 2025"
-      - "WWW 2024"
+      - "CIKM 2026"
       - "CIKM 2025"
-      - "CIKM 2024"
+      - "SIGIR 2026"
       - "SIGIR 2025"
-      - "SIGIR 2024"
+      - "WSDM 2026"
       - "WSDM 2025"
-      - "WSDM 2024"
 
 # LLM 配置
 llm:
@@ -110,6 +111,7 @@ llm:
 # 推送配置
 push:
   channel: "feishu"
+  local_export_dir: "E:/my-projects/arxiv-paper/raw"  # 推送成功后保存到本地的 markdown 目录
   feishu:
     webhooks:
       - "${FEISHU_WEBHOOK}"       # 飞书机器人 webhook URL

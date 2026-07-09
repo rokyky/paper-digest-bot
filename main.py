@@ -42,10 +42,22 @@ def setup_logging(config: dict):
 
     level = getattr(logging, config.get("logging", {}).get("level", "INFO").upper(), logging.INFO)
 
-    handlers = [
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler(log_dir / f"pipeline-{datetime.now().strftime('%Y%m%d')}.log", encoding="utf-8"),
-    ]
+    # StreamHandler：使用 utf-8 编码 + errors=replace 防止 GBK 终端因 emoji 崩溃
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass  # 某些环境不支持 reconfigure
+
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setLevel(level)
+
+    file_handler = logging.FileHandler(
+        log_dir / f"pipeline-{datetime.now().strftime('%Y%m%d')}.log",
+        encoding="utf-8",
+    )
+    file_handler.setLevel(level)
+
+    handlers = [stream_handler, file_handler]
 
     logging.basicConfig(
         level=level,
@@ -106,6 +118,7 @@ class Pipeline:
         self.stats = {
             "total_fetched": 0,
             "after_dedup": 0,
+            "after_validate": 0,
             "relevant": 0,
             "selected": 0,
             "digested": 0,
@@ -197,7 +210,7 @@ class Pipeline:
             return
 
         # ── Stage 2: 去重（检查 paper 表和 pushed_ids.json）──
-        self.logger.info("[Stage 2/5] 去重...")
+        self.logger.info("[Stage 2/6] 去重...")
         new_papers = self._stage_dedup(all_papers)
         self.stats["after_dedup"] = len(new_papers)
         if not new_papers:
@@ -205,12 +218,21 @@ class Pipeline:
             self._print_summary(start_time)
             return
 
+        # ── Stage 2.5: 质量校验（年份 + 摘要）──
+        self.logger.info("[Stage 2.5/6] 质量校验...")
+        validated_papers = self._stage_validate(new_papers)
+        self.stats["after_validate"] = len(validated_papers)
+        if not validated_papers:
+            self.logger.warning("没有通过质量校验的论文，提前终止")
+            self._print_summary(start_time)
+            return
+
         # ── Stage 3: LLM 筛选 + 排序 ──
-        self.logger.info("[Stage 3/5] LLM 相关性筛选 + 排序...")
+        self.logger.info("[Stage 3/6] LLM 相关性筛选 + 排序...")
         # Collect 模式需要生成足够篇数填满当天推送时间槽
         # 8 点 collect 后立即 push，10/12/14/16/18/20/22 点继续 push，共 8 篇
         self.config.setdefault("topic", {})["max_items"] = 8
-        selected = self._stage_filter(new_papers)
+        selected = self._stage_filter(validated_papers)
         self.stats["selected"] = len(selected)
         if not selected:
             self.logger.warning("没有筛选到相关论文，提前终止")
@@ -288,6 +310,7 @@ class Pipeline:
                 self._mark_queue_entry_pushed(entry)
                 self._record_pushed_digest(digest)
                 self._sync_dedup_file()
+                self._export_local_digest(digest)
             else:
                 self.logger.error("推送失败，队列条目保持未推送状态")
 
@@ -410,6 +433,68 @@ class Pipeline:
         except Exception as e:
             self.logger.warning("去重文件同步失败: %s", e)
 
+    def _export_local_digest(self, digest):
+        """推送成功后，将解读保存为本地 markdown 文件
+
+        保存路径：config push.local_export_dir / storage/pushed/<year>/<month>/<external_id>.md
+        如果配置了 local_export_dir 则使用该路径，否则使用 storage/pushed/
+        """
+        try:
+            import os
+            from pathlib import Path
+
+            paper = digest.paper
+            eid = paper.external_id or paper.title[:30]
+
+            # 安全文件名
+            safe_id = "".join(c if c.isalnum() or c in "-_." else "_" for c in eid)[:120]
+
+            # 输出目录：优先使用 config 中的 local_export_dir
+            export_dir = self.config.get("push", {}).get("local_export_dir", "")
+            if export_dir:
+                p = Path(export_dir)
+                out_root = p if p.is_absolute() else (ROOT_DIR / p)
+            else:
+                out_root = ROOT_DIR / "storage" / "pushed"
+
+            date_str = paper.published_date or ""
+            year = date_str[:4] if len(date_str) >= 4 else "unknown"
+            month = date_str[5:7] if len(date_str) >= 7 else "00"
+
+            out_dir = out_root / year / month
+            out_dir.mkdir(parents=True, exist_ok=True)
+            md_path = out_dir / f"{safe_id}.md"
+
+            # 已存在则跳过（避免重复写入）
+            if md_path.exists():
+                return
+
+            with open(md_path, "w", encoding="utf-8") as f:
+                f.write(f"# {paper.title}\n\n")
+                if paper.authors:
+                    f.write(f"**作者**: {', '.join(paper.authors[:5])}\n\n")
+                f.write(f"**来源**: {paper.source} | **日期**: {paper.published_date or 'N/A'}\n\n")
+                f.write(f"**原文链接**: [{paper.url}]({paper.url})\n\n")
+                f.write("---\n\n")
+
+                sections = [
+                    ("💡 一句话结论", digest.one_liner),
+                    ("🔥 30 秒类比", digest.analogy),
+                    ("🎯 要解决什么问题", digest.problem),
+                    ("⚖️ 已有方法对比", digest.method_comparison),
+                    ("🔬 核心方法拆解", digest.core_method),
+                    ("📊 实验结果", digest.results),
+                    ("⚠️ 局限性", digest.limitations),
+                    ("📖 中文精读", digest.chinese_overview),
+                ]
+                for icon_title, content in sections:
+                    if content and content.strip():
+                        f.write(f"## {icon_title}\n\n{content.strip()}\n\n")
+
+            self.logger.info("本地文档已保存: %s", md_path)
+        except Exception as e:
+            self.logger.warning("本地文档保存失败: %s", e)
+
     def _stage_fetch(self) -> list[Paper]:
         """Stage 1: 从所有源抓取"""
         self.logger.info("正在并发抓取论文/文章...")
@@ -424,6 +509,47 @@ class Pipeline:
                 self.logger.info("  %s: %d 篇", src, cnt)
 
         return papers
+
+    def _stage_validate(self, papers: list[Paper]) -> list[Paper]:
+        """Stage 2.5: 质量校验（年份 + 摘要完整性）
+
+        确保：
+        1. 论文发表日期 >= 2026（用户要求只推 26 年新论文）
+        2. 有摘要内容（LLM 需要摘要判断相关性，DBLP 源返回空摘要）
+        """
+        min_year = self.config.get("topic", {}).get("min_year", 2026)
+        validated = []
+        rejected_reasons = {"old": 0, "no_abstract": 0}
+
+        for p in papers:
+            # -- 年份检查 --
+            year_str = p.published_date
+            year = None
+            if year_str:
+                try:
+                    year = int(year_str[:4])  # "2026-06-01" → 2026, "2026" → 2026
+                except (ValueError, TypeError):
+                    pass
+
+            if year is not None and year < min_year:
+                rejected_reasons["old"] += 1
+                continue
+
+            # -- 摘要检查（DBLP 返回空 abstract，LLM 无法判断相关性）--
+            if not p.abstract or p.abstract.strip() == "":
+                # 允许经典论文源（classic_papers.json）不受此限制
+                if p.source != "classic":
+                    rejected_reasons["no_abstract"] += 1
+                    continue
+
+            validated.append(p)
+
+        if rejected_reasons["old"] > 0:
+            self.logger.info("  年份过滤: 剔除 %d 篇 < %d 年的旧论文", rejected_reasons["old"], min_year)
+        if rejected_reasons["no_abstract"] > 0:
+            self.logger.info("  摘要过滤: 剔除 %d 篇空摘要论文（通常为 DBLP 元数据）", rejected_reasons["no_abstract"])
+        self.logger.info("  校验通过: %d / %d 篇", len(validated), len(papers))
+        return validated
 
     def _stage_dedup(self, papers: list[Paper]) -> list[Paper]:
         """Stage 2: 去重（双重保障：SQLite + JSON 文件）"""
@@ -622,6 +748,7 @@ class Pipeline:
         print("=" * 60)
         print(f"  抓取论文:      {stats['total_fetched']:>4} 篇")
         print(f"  去重后:        {stats['after_dedup']:>4} 篇")
+        print(f"  校验通过:      {stats['after_validate']:>4} 篇")
         print(f"  相关论文:      {stats['relevant']:>4} 篇")
         print(f"  最终入选:      {stats['selected']:>4} 篇")
         print(f"  解读成功:      {stats['digested']:>4} 篇")
