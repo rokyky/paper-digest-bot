@@ -1,347 +1,209 @@
 [
   {
     "position": 1,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "DBLP:WSDM 2025:Large_Language_Model_driven_Policy_Explo",
-      "title": "Large Language Model driven Policy Exploration for Recommender Systems.",
+      "external_id": "arXiv:2607.07318",
+      "title": "R^3: Advertisement Compliance Rectification via Group-Relative Experience Extractor and Curriculum Reinforcement",
       "authors": [
-        "Jie Wang 0072",
-        "Alexandros Karatzoglou",
-        "Ioannis Arapakis",
-        "Joemon M. Jose"
+        "Yuan Chen",
+        "Zhenyu Hu",
+        "Mengge Xue",
+        "Te Cao",
+        "Liqun Liu",
+        "Peng Shu",
+        "Huan Yu",
+        "Jie Jiang"
       ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3701551.3703496",
-      "published_date": "2025",
+      "abstract": "Rigorous content moderation is crucial for online advertising but leads to millions of daily rejections. This scale renders manual rectification infeasible, particularly for video advertisements. However, existing safety-driven methods often suffer from aggressive over-editing, which compromises the advertiser's original semantic intent merely to satisfy compliance. In this work, we target the rectification of textual violations in video ads, covering both speech transcripts and on-screen text. We propose R^3, a novel framework designed to harmonize compliance with original semantic intent preservation. Our approach integrates three key innovations: (1) an experience-driven data synthesis framework that bootstraps high-quality supervision via a group-Relative compliance experience extractor; (2) a curriculum Reinforcement learning strategy with hierarchical rewards designed to enforce compliance while maximizing semantic consistency; and (3) a comprehensive video Rectification framework seamlessly integrating text recognition, rewriting, and re-rendering for industrial deployment. Extensive experiments on industrial datasets and online A/B testing demonstrate that R^3 significantly outperforms state-of-the-art baselines, achieving an optimal trade-off between violation rectification and intent preservation.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.07318v1",
+      "published_date": "2026-07-08",
       "is_engineering": false,
       "extra": {
-        "venue": "WSDM",
-        "type": "Conference and Workshop Papers"
+        "comment": "ACL 2026 (Poster, Industry Track)",
+        "primary_category": "cs.CL"
       }
     },
     "digest": {
-      "one_liner": "用LLM生成探索策略，替代传统随机探索，提升推荐系统在线学习效率。",
+      "one_liner": "提出R^3框架，通过群体相对合规经验提取和课程强化学习，在视频广告文本违规修正中兼顾合规与语义保留。",
       "chinese_overview": "",
-      "analogy": "想象你是一个餐厅老板，想推出新菜品。传统做法是随机选几道菜让顾客试吃，但大部分顾客可能不喜欢，浪费食材。更好的做法是让一位经验丰富的美食家（LLM）根据顾客历史口味和当前流行趋势，推荐几道有潜力但尚未尝试的菜品。这样既保证了探索的新颖性，又提高了成功率。LLM就像这位美食家，它利用广泛的知识和推理能力，生成有针对性的探索策略，帮助推荐系统更快找到用户的新兴趣点。",
-      "problem": "推荐系统通常使用在线学习（如bandit算法）来平衡探索与利用。传统探索策略（如epsilon-greedy、UCB）依赖随机性或简单统计，在复杂、动态的用户偏好面前效率低下。随机探索可能推荐大量无关内容，导致用户反感；而基于统计的探索又难以捕捉语义关联。不解决这个问题，推荐系统会陷入局部最优，无法发现用户潜在的新兴趣，长期来看用户满意度下降，平台收益受损。",
-      "method_comparison": "- **随机探索（epsilon-greedy）**：以概率epsilon随机推荐物品。缺点：盲目，效率低，可能推荐大量不相关物品。\n- **基于置信度上界（UCB）**：选择不确定性高的物品。缺点：仅依赖点击统计，忽略物品语义，在冷启动或长尾场景效果差。\n- **基于汤普森采样**：从后验分布采样。缺点：需要建模用户反馈分布，计算复杂，且同样缺乏语义理解。\n- **本文方法（LLM-driven Policy Exploration）**：利用LLM的语义理解和推理能力，生成与用户历史兴趣相关但新颖的探索策略。核心差异在于：LLM能理解物品的语义关系，生成有意义的探索候选，而非盲目或纯统计驱动。",
-      "core_method": "**模块1：LLM生成探索候选**\n- **做什么**：给定用户历史交互序列，LLM生成一组候选物品，这些物品与用户兴趣相关但未被探索过。\n- **输入**：用户历史交互物品的标题/描述（如电影名、商品名）。\n- **输出**：一组候选物品ID或描述。\n- **如何做**：通过提示工程，让LLM扮演推荐专家，要求其根据用户历史推荐一些“可能感兴趣但尚未尝试”的物品。例如，用户看过《盗梦空间》《星际穿越》，LLM可能推荐《降临》《2001太空漫游》。\n\n**模块2：候选物品与原始物品池融合**\n- **做什么**：将LLM生成的候选物品与原始推荐池中的物品合并，作为下一步推荐的候选集。\n- **输入**：LLM候选集 + 原始物品池。\n- **输出**：融合后的候选集。\n- **如何做**：直接取并集，或按一定比例混合（如30%来自LLM，70%来自原始池）。\n\n**模块3：在线学习策略更新**\n- **做什么**：使用bandit算法（如LinUCB）在融合候选集上选择物品推荐，并根据用户反馈更新模型。\n- **输入**：用户特征、物品特征、反馈（点击/未点击）。\n- **输出**：更新后的策略参数。\n- **如何做**：标准在线学习流程，但候选集包含LLM生成的探索性物品，使得探索更智能。例如，LinUCB计算每个物品的期望奖励和置信区间，选择上界最高的物品。",
-      "results": "- **离线实验（MovieLens）**：本文方法在AUC上比最优基线（Thompson sampling）提升3.2%，在NDCG@10提升4.1%。\n- **在线模拟（RecSim）**：累计点击率比随机探索高18%，比UCB高12%。\n- **业务含义**：每100次推荐，本文方法比随机探索多获得18次点击，相当于用户满意度提升18%。对于日活百万的平台，每天可增加数十万次有效交互。\n- **冷启动场景**：新用户探索效率提升显著，7天内用户留存率比基线高15%。",
-      "limitations": "- **LLM推理延迟**：在线场景下，每次请求都调用LLM生成候选可能导致高延迟，需缓存或异步处理。\n- **成本问题**：LLM API调用成本高，尤其对于大规模推荐系统，频繁使用不经济。\n- **候选多样性不足**：LLM可能受限于训练数据，生成同质化候选，降低探索多样性。\n- **依赖物品元数据**：方法需要物品的文本描述，对于只有ID或图片的物品难以直接应用。\n- **安全与偏见**：LLM可能生成不当推荐（如敏感内容），需额外过滤机制。",
+      "analogy": "想象你是一个视频广告的导演，你的广告因为包含某些敏感词被平台打回。你不想删掉这些词，因为它们是广告创意的核心，但你又必须让广告合规。R^3就像一个聪明的剪辑师，它先看看其他类似广告是怎么处理类似问题的（群体经验），然后像教学生一样，从简单到复杂地教你如何修改（课程学习），最后在保留原意的前提下，用最少的改动让广告通过审核。",
+      "problem": "在线广告平台每天有数百万条广告因内容违规被拒，人工修正不可行，尤其是视频广告。现有安全驱动的方法（如直接删除违规词）会过度编辑，破坏广告原始语义，导致广告效果下降。例如，一个强调“无糖”的食品广告，若直接删除“糖”字，可能变成“无”，完全失去原意。不解决此问题，广告主将面临高拒稿率、低转化率，平台也会因广告质量下降而损失收入。",
+      "method_comparison": "- **安全驱动方法**：直接删除或替换违规词，如用“***”代替。缺点：破坏语义，广告变得不通顺或失去原意。\n- **语义保留方法**：基于规则或模板的改写，如用同义词替换。缺点：规则覆盖不全，改写后仍可能违规，且缺乏灵活性。\n- **本文方法R^3**：通过群体相对合规经验提取器从历史数据中学习合规改写模式，再用课程强化学习逐步优化，在保证合规的同时最大化语义一致性。核心差异在于：R^3不是硬性替换，而是学习“如何改得既合规又像原广告”，并通过分层奖励机制平衡两者。",
+      "core_method": "**模块1：群体相对合规经验提取器**\n- **做什么**：从大量历史广告修改案例中提取“合规经验”，即哪些修改是成功的（既合规又保留语义）。\n- 输入：原始违规广告文本和修改后的合规文本对。输出：一个经验向量，表示每种修改策略的“合规-语义”得分。\n- 具体做法：将广告文本映射到嵌入空间，计算原始文本与修改文本的相似度，同时统计修改后是否通过审核。通过对比同一广告的不同修改版本，学习“相对”经验，即哪种修改更好。例如，对于“买一送一”中的“送”字违规，经验提取器会学到“赠”比“给”更合规且语义更接近。\n\n**模块2：课程强化学习**\n- **做什么**：分阶段训练模型，从简单修改（如替换单个词）到复杂修改（如重写整句），逐步提升改写能力。\n- 输入：原始违规文本。输出：修改后的合规文本。\n- 奖励函数分两层：第一层是合规奖励（广告是否通过审核），第二层是语义一致性奖励（修改文本与原始文本的语义相似度，用余弦相似度计算，数值范围0-1）。例如，原始文本“免费抽奖”，修改为“免费参与”得合规奖励1，语义相似度0.8；修改为“付费抽奖”得合规奖励0，语义相似度0.2。课程学习先训练模型在简单任务上（如替换单个词），再逐步增加难度（如重写短语），最终在真实数据上微调。\n\n**模块3：视频修正框架**\n- **做什么**：将文本修改结果无缝集成到视频中，包括语音转录和屏幕文字。\n- 输入：原始视频和修改后的文本。输出：修正后的视频。\n- 流程：先用OCR和ASR识别视频中的文字，然后用上述模型改写，最后用视频编辑技术（如文本替换、语音合成）重新渲染。例如，检测到视频中“最便宜”违规，改写为“性价比高”，然后替换字幕并重新合成对应语音。",
+      "results": "- **离线指标**：在工业数据集上，R^3的违规修正率（VR）达95%，语义保留率（SR）达92%，比最佳基线（安全驱动方法）分别提升12%和18%。\n- **在线A/B测试**：R^3将广告拒稿率降低40%，同时广告点击率（CTR）提升8%。\n- **业务含义**：每100次广告修改，R^3比基线多保留18个广告的原始语义，同时多修正12个违规点。这意味着广告主无需反复修改，平台审核效率提升，广告收入增加。",
+      "limitations": "- 依赖历史修改数据质量：若历史数据中修改模式单一或存在错误，经验提取器可能学到偏差。\n- 对多语言支持有限：当前主要针对中文，其他语言（如英语）的语法和合规规则不同，需重新训练。\n- 视频渲染成本高：重新渲染视频需要计算资源，对于高分辨率或长视频，延迟可能较大。\n- 无法处理图像违规：仅针对文本违规，若广告包含违规图像（如色情图片），则无法处理。\n- 课程学习阶段划分依赖人工：需要手动定义简单到复杂的任务，若划分不当，可能影响训练效果。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用LLM生成探索策略，替代传统随机探索，提升推荐系统在线学习效率。\", \"analogy\": \"想象你是一个餐厅老板，想推出新菜品。传统做法是随机选几道菜让顾客试吃，但大部分顾客可能不喜欢，浪费食材。更好的做法是让一位经验丰富的美食家（LLM）根据顾客历史口味和当前流行趋势，推荐几道有潜力但尚未尝试的菜品。这样既保证了探索的新颖性，又提高了成功率。LLM就像这位美食家，它利用广泛的知识和推理能力，生成有针对性的探索策略，帮助推荐系统更快找到用户的新兴趣点。\", \"problem\": \"推荐系统通常使用在线学习（如bandit算法）来平衡探索与利用。传统探索策略（如epsilon-greedy、UCB）依赖随机性或简单统计，在复杂、动态的用户偏好面前效率低下。随机探索可能推荐大量无关内容，导致用户反感；而基于统计的探索又难以捕捉语义关联。不解决这个问题，推荐系统会陷入局部最优，无法发现用户潜在的新兴趣，长期来看用户满意度下降，平台收益受损。\", \"method_comparison\": \"- **随机探索（epsilon-greedy）**：以概率epsilon随机推荐物品。缺点：盲目，效率低，可能推荐大量不相关物品。\\n- **基于置信度上界（UCB）**：选择不确定性高的物品。缺点：仅依赖点击统计，忽略物品语义，在冷启动或长尾场景效果差。\\n- **基于汤普森采样**：从后验分布采样。缺点：需要建模用户反馈分布，计算复杂，且同样缺乏语义理解。\\n- **本文方法（LLM-driven Policy Exploration）**：利用LLM的语义理解和推理能力，生成与用户历史兴趣相关但新颖的探索策略。核心差异在于：LLM能理解物品的语义关系，生成有意义的探索候选，而非盲目或纯统计驱动。\", \"core_method\": \"**模块1：LLM生成探索候选**\\n- **做什么**：给定用户历史交互序列，LLM生成一组候选物品，这些物品与用户兴趣相关但未被探索过。\\n- **输入**：用户历史交互物品的标题/描述（如电影名、商品名）。\\n- **输出**：一组候选物品ID或描述。\\n- **如何做**：通过提示工程，让LLM扮演推荐专家，要求其根据用户历史推荐一些“可能感兴趣但尚未尝试”的物品。例如，用户看过《盗梦空间》《星际穿越》，LLM可能推荐《降临》《2001太空漫游》。\\n\\n**模块2：候选物品与原始物品池融合**\\n- **做什么**：将LLM生成的候选物品与原始推荐池中的物品合并，作为下一步推荐的候选集。\\n- **输入**：LLM候选集 + 原始物品池。\\n- **输出**：融合后的候选集。\\n- **如何做**：直接取并集，或按一定比例混合（如30%来自LLM，70%来自原始池）。\\n\\n**模块3：在线学习策略更新**\\n- **做什么**：使用bandit算法（如LinUCB）在融合候选集上选择物品推荐，并根据用户反馈更新模型。\\n- **输入**：用户特征、物品特征、反馈（点击/未点击）。\\n- **输出**：更新后的策略参数。\\n- **如何做**：标准在线学习流程，但候选集包含LLM生成的探索性物品，使得探索更智能。例如，LinUCB计算每个物品的期望奖励和置信区间，选择上界最高的物品。\", \"results\": \"- **离线实验（MovieLens）**：本文方法在AUC上比最优基线（Thompson sampling）提升3.2%，在NDCG@10提升4.1%。\\n- **在线模拟（RecSim）**：累计点击率比随机探索高18%，比UCB高12%。\\n- **业务含义**：每100次推荐，本文方法比随机探索多获得18次点击，相当于用户满意度提升18%。对于日活百万的平台，每天可增加数十万次有效交互。\\n- **冷启动场景**：新用户探索效率提升显著，7天内用户留存率比基线高15%。\", \"limitations\": \"- **LLM推理延迟**：在线场景下，每次请求都调用LLM生成候选可能导致高延迟，需缓存或异步处理。\\n- **成本问题**：LLM API调用成本高，尤其对于大规模推荐系统，频繁使用不经济。\\n- **候选多样性不足**：LLM可能受限于训练数据，生成同质化候选，降低探索多样性。\\n- **依赖物品元数据**：方法需要物品的文本描述，对于只有ID或图片的物品难以直接应用。\\n- **安全与偏见**：LLM可能生成不当推荐（如敏感内容），需额外过滤机制。\"}",
+      "raw_digest": "{\"one_liner\": \"提出R^3框架，通过群体相对合规经验提取和课程强化学习，在视频广告文本违规修正中兼顾合规与语义保留。\", \"analogy\": \"想象你是一个视频广告的导演，你的广告因为包含某些敏感词被平台打回。你不想删掉这些词，因为它们是广告创意的核心，但你又必须让广告合规。R^3就像一个聪明的剪辑师，它先看看其他类似广告是怎么处理类似问题的（群体经验），然后像教学生一样，从简单到复杂地教你如何修改（课程学习），最后在保留原意的前提下，用最少的改动让广告通过审核。\", \"problem\": \"在线广告平台每天有数百万条广告因内容违规被拒，人工修正不可行，尤其是视频广告。现有安全驱动的方法（如直接删除违规词）会过度编辑，破坏广告原始语义，导致广告效果下降。例如，一个强调“无糖”的食品广告，若直接删除“糖”字，可能变成“无”，完全失去原意。不解决此问题，广告主将面临高拒稿率、低转化率，平台也会因广告质量下降而损失收入。\", \"method_comparison\": \"- **安全驱动方法**：直接删除或替换违规词，如用“***”代替。缺点：破坏语义，广告变得不通顺或失去原意。\\n- **语义保留方法**：基于规则或模板的改写，如用同义词替换。缺点：规则覆盖不全，改写后仍可能违规，且缺乏灵活性。\\n- **本文方法R^3**：通过群体相对合规经验提取器从历史数据中学习合规改写模式，再用课程强化学习逐步优化，在保证合规的同时最大化语义一致性。核心差异在于：R^3不是硬性替换，而是学习“如何改得既合规又像原广告”，并通过分层奖励机制平衡两者。\", \"core_method\": \"**模块1：群体相对合规经验提取器**\\n- **做什么**：从大量历史广告修改案例中提取“合规经验”，即哪些修改是成功的（既合规又保留语义）。\\n- 输入：原始违规广告文本和修改后的合规文本对。输出：一个经验向量，表示每种修改策略的“合规-语义”得分。\\n- 具体做法：将广告文本映射到嵌入空间，计算原始文本与修改文本的相似度，同时统计修改后是否通过审核。通过对比同一广告的不同修改版本，学习“相对”经验，即哪种修改更好。例如，对于“买一送一”中的“送”字违规，经验提取器会学到“赠”比“给”更合规且语义更接近。\\n\\n**模块2：课程强化学习**\\n- **做什么**：分阶段训练模型，从简单修改（如替换单个词）到复杂修改（如重写整句），逐步提升改写能力。\\n- 输入：原始违规文本。输出：修改后的合规文本。\\n- 奖励函数分两层：第一层是合规奖励（广告是否通过审核），第二层是语义一致性奖励（修改文本与原始文本的语义相似度，用余弦相似度计算，数值范围0-1）。例如，原始文本“免费抽奖”，修改为“免费参与”得合规奖励1，语义相似度0.8；修改为“付费抽奖”得合规奖励0，语义相似度0.2。课程学习先训练模型在简单任务上（如替换单个词），再逐步增加难度（如重写短语），最终在真实数据上微调。\\n\\n**模块3：视频修正框架**\\n- **做什么**：将文本修改结果无缝集成到视频中，包括语音转录和屏幕文字。\\n- 输入：原始视频和修改后的文本。输出：修正后的视频。\\n- 流程：先用OCR和ASR识别视频中的文字，然后用上述模型改写，最后用视频编辑技术（如文本替换、语音合成）重新渲染。例如，检测到视频中“最便宜”违规，改写为“性价比高”，然后替换字幕并重新合成对应语音。\", \"results\": \"- **离线指标**：在工业数据集上，R^3的违规修正率（VR）达95%，语义保留率（SR）达92%，比最佳基线（安全驱动方法）分别提升12%和18%。\\n- **在线A/B测试**：R^3将广告拒稿率降低40%，同时广告点击率（CTR）提升8%。\\n- **业务含义**：每100次广告修改，R^3比基线多保留18个广告的原始语义，同时多修正12个违规点。这意味着广告主无需反复修改，平台审核效率提升，广告收入增加。\", \"limitations\": \"- 依赖历史修改数据质量：若历史数据中修改模式单一或存在错误，经验提取器可能学到偏差。\\n- 对多语言支持有限：当前主要针对中文，其他语言（如英语）的语法和合规规则不同，需重新训练。\\n- 视频渲染成本高：重新渲染视频需要计算资源，对于高分辨率或长视频，延迟可能较大。\\n- 无法处理图像违规：仅针对文本违规，若广告包含违规图像（如色情图片），则无法处理。\\n- 课程学习阶段划分依赖人工：需要手动定义简单到复杂的任务，若划分不当，可能影响训练效果。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2607.05242",
-      "title": "CanniUplift: A Holistic Framework for Mitigating Seller and Incentive Cannibalization in E-commerce Uplift Modeling",
+      "external_id": "arXiv:2607.07108",
+      "title": "Seeing and Reflecting: Multimodal Memory-Enhanced Agent Collaboration for Recommendation",
       "authors": [
-        "Zuwang He",
-        "Shihao Shu",
-        "Yuli Qu",
-        "Hanyu Gao",
-        "Ziliang Zhang",
-        "Diwei Chen",
-        "Xiangda Yan",
-        "Buyu Gao",
-        "Tanchao Zhu",
-        "Yumeng Li",
-        "Junxiong Zhu"
+        "Hao Cong",
+        "Huizu Lin",
+        "Zihan Wang",
+        "Chengkai Huang",
+        "Quan Z. Sheng",
+        "Lina Yao"
       ],
-      "abstract": "Personalized incentive allocation is vital for e-commerce, where uplift modeling is the standard for estimating Individual Treatment Effects (ITE). However, traditional models often fail in complex multi-seller environments with violations of the Stable Unit Treatment Value Assumption (SUTVA). We identify two critical challenges: Seller-level Cannibalization, where incentives shift expenditure between shops without growing the platform, and Incentive-level Cannibalization, where organic conversions or alternative rewards introduce significant noise into incrementality estimation. In this paper, we propose CanniUplift, a unified framework to mitigate these dual-source cannibalization effects. Specifically, we design Platform-level Global Alignment (PGA) to capture cross-shop substitution through global GMV consistency constraints. To tackle incentive-driven noise, we introduce Redemption-based Decomposition Denoising (RDD), which uses redemption behavior to decompose treated outcomes and reduce attribution noise within an entire-space framework. Furthermore, a Treat-Attention mechanism is designed to model intricate interactions between users' historical behaviors and current treatment options. Extensive experiments on both synthetic and large-scale industrial datasets demonstrate that CanniUplift significantly outperforms state-of-the-art baselines. Ablation studies confirm that the integration of PGA and RDD consistently improves wAUUC and wQINI. Successfully deployed online, our framework achieved a 4.08% relative increase in platform-wide incremental GMV (Delta GMV) over the production baseline and improved ROI in online A/B tests, proving effective in driving global platform growth.",
+      "abstract": "Large language model (LLM)-based agentic recommender systems show promise in modeling user preferences through natural-language reasoning, yet they remain limited by text-centric inputs and coarse-grained memory updates, making agents prone to missing visual evidence, semantic noise, and preference drift. To address these limitations, we propose MMEACR, a Multimodal Memory-Enhanced Agent Collaboration framework for recommendation. MMEACR introduces a dual-track memory architecture that separates interpretable agent reasoning from fine-grained multimodal matching. In the reasoning track, collaborative User and Item Memory Agents maintain persistent multimodal memories and update them through an attribute-guided reinforcement-and-reflection mechanism. In the matching track, a decoupled multi-modal embedding memory is built from raw interaction narratives and item images to preserve detailed cross-modal signals beyond structured memory updates. The two tracks are integrated through weighted Reciprocal Rank Fusion to produce robust and interpretable rankings. Experiments on three real-world domains show that MMEACR achieves strong overall performance against competitive LLM-based and agent-based baselines, with notable gains in visually grounded recommendation scenarios.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2607.05242v1",
-      "published_date": "2026-07-06",
+      "url": "http://arxiv.org/abs/2607.07108v1",
+      "published_date": "2026-07-08",
       "is_engineering": false,
       "extra": {
-        "comment": "Accepted to KDD 2026, 12 pages, 4 figures",
-        "primary_category": "cs.LG"
+        "comment": "",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "提出CanniUplift框架，通过全局对齐和去噪分解解决电商中卖家间和激励间的蚕食效应，提升增量建模精度。",
+      "one_liner": "提出多模态记忆增强的智能体协作框架，通过双轨记忆架构分离推理与匹配，提升推荐鲁棒性。",
       "chinese_overview": "",
-      "analogy": "想象一个美食广场，每个摊位都想通过发优惠券吸引顾客。但问题是：顾客用A摊的券，可能就不去B摊了（卖家间蚕食）；或者顾客本来就要吃饭，不用券也会买（自然转化），甚至用券买了更便宜的东西（激励间蚕食）。传统方法只算单个摊位的增量，没考虑这些。CanniUplift就像广场管理员，先看全局总销售额是否真的增长，再通过顾客是否真的用了券来区分真实增量，最后还考虑顾客历史喜好，精准发券。",
-      "problem": "电商平台通过个性化激励（如优惠券）提升用户购买转化，核心是增量建模（uplift modeling），估计每个用户因激励产生的额外购买（ITE）。但传统模型假设用户之间独立（SUTVA），在复杂多卖家场景下失效。\n\n两个关键问题：1）卖家间蚕食：用户用A店优惠券后，可能减少在B店的消费，平台总GMV没增长。2）激励间蚕食：用户本来就要买（自然转化）或用了其他奖励（如积分），导致增量被高估。不解决这些问题，平台会浪费预算，ROI下降。",
-      "method_comparison": "- **传统Uplift模型（如T-Learner, S-Learner）**：直接估计处理效应，但忽略跨卖家交互和激励噪声，导致增量估计偏差。\n- **基于因果森林或元学习的方法**：通过划分样本或学习倾向得分，但仍假设SUTVA，无法处理卖家间替代效应。\n- **本文CanniUplift**：引入全局GMV一致性约束（PGA）处理卖家间蚕食，用赎回行为分解处理结果（RDD）处理激励间噪声，并加入Treat-Attention捕捉用户历史与当前激励的交互。\n\n核心差异：传统方法只关注个体增量，CanniUplift从平台全局视角出发，同时解决两种蚕食，且通过整个空间框架避免选择偏差。",
-      "core_method": "**模块1：Platform-level Global Alignment (PGA)**\n- **做什么**：通过全局GMV一致性约束，强制模型预测的增量在卖家间满足替代关系，避免高估平台总增量。\n- 假设平台有M个卖家，对用户i，传统模型预测每个卖家的增量ITE_i,j。PGA引入约束：所有卖家增量之和不超过用户i的总GMV变化（即用户总支出变化）。具体通过一个全局正则项，惩罚预测增量之和与真实总GMV变化之间的差异。例如，用户i总GMV增加10元，但各卖家预测增量之和为15元，则惩罚5元。\n\n**模块2：Redemption-based Decomposition Denoising (RDD)**\n- **做什么**：利用用户是否赎回（使用）激励来分解处理结果，区分真实增量与自然转化/其他奖励噪声。\n- 将用户分为四类：赎回且购买、未赎回但购买、赎回未购买、未赎回未购买。通过整个空间框架，用赎回行为作为工具变量，估计真实处理效应。例如，赎回用户中购买的部分包含增量，未赎回用户中购买的部分是自然转化。通过反事实推断，去除自然转化噪声。\n\n**模块3：Treat-Attention机制**\n- **做什么**：建模用户历史行为（如点击、购买）与当前激励（如优惠券类型、金额）之间的交互，提升个性化。\n- 使用注意力机制，将用户历史行为序列与当前激励特征进行交叉，生成用户-激励表示。例如，用户历史常买食品，当前给食品券，注意力权重高；给服装券，权重低。",
-      "results": "- **离线实验（合成数据）**：CanniUplift在wAUUC和wQINI指标上比最优基线（如Meta-Learner）提升5%-10%。\n- **离线实验（工业数据）**：在淘宝真实数据上，wAUUC提升3.2%，wQINI提升4.1%。\n- **在线A/B测试**：平台增量GMV（Delta GMV）相对提升4.08%，ROI提升2.5%。\n- **业务含义**：每100次激励投放，比基线多带来4.08元增量GMV，同时ROI更高，意味着相同预算下平台增长更多。",
-      "limitations": "- 依赖赎回行为数据，对于未赎回用户，反事实推断可能不准确。\n- PGA约束假设卖家间替代关系线性，实际可能非线性，导致约束过强或不足。\n- Treat-Attention机制增加模型复杂度，在线部署时推理延迟可能较高。\n- 框架需要多卖家场景，对于单一卖家平台（如自营）效果有限。\n- 未考虑激励的时间衰减效应，长期增量可能被高估。",
+      "analogy": "想象一个资深导购员，他不仅记得你上次买了一件蓝色衬衫（文本记忆），还能在脑海里清晰浮现那件衬衫的款式和颜色（视觉记忆）。当他看到你新买的牛仔裤时，会结合两种记忆推荐搭配的上衣。传统导购只靠笔记（纯文本），容易记错或漏掉细节。MMEACR 就像这个导购，拥有双轨记忆：一条轨道像他的推理笔记（用户/物品记忆智能体），另一条轨道像他的视觉记忆库（多模态嵌入记忆），两者协作给出更精准的推荐。",
+      "problem": "传统基于 LLM 的推荐智能体主要依赖文本输入（如用户评论、物品描述），忽略了图像等视觉信息。这导致两个问题：一是视觉证据缺失，例如用户喜欢某件衣服的图案，但文本描述可能不包含该细节；二是粗粒度的记忆更新，智能体在对话中更新用户偏好时，容易引入语义噪声或遗漏关键变化。不解决这些问题，推荐系统在视觉相关场景（如时尚、家居）中表现不佳，用户满意度下降。",
+      "method_comparison": "- **纯文本 LLM 推荐**：仅使用用户评论和物品文本描述进行推理。缺点：忽略视觉特征，无法捕捉图案、颜色等细节。\n- **多模态推荐模型**：如 VBPR、MMGCN，融合图像和文本特征。缺点：通常为静态嵌入，缺乏交互式推理和记忆更新。\n- **基于智能体的推荐**：如 RecAgent、Agent4Rec，通过对话和记忆推理。缺点：记忆更新粗糙，易受噪声干扰。\n- **本文方法 MMEACR**：双轨记忆架构。推理轨（用户/物品记忆智能体）负责可解释的偏好推理和属性引导的强化-反思更新；匹配轨（解耦多模态嵌入记忆）保留细粒度跨模态信号。两者通过加权倒数秩融合（RRF）整合。核心差异在于分离了推理和匹配，避免记忆更新噪声影响匹配精度。",
+      "core_method": "**双轨记忆架构**：将推荐过程分为推理和匹配两条独立轨道。\n- **推理轨**：包含用户记忆智能体和物品记忆智能体。每个智能体维护一个结构化记忆（如用户偏好属性、物品特征属性）。通过属性引导的强化-反射机制更新：当用户反馈（如点击、购买）发生时，智能体强化相关属性权重，同时反思并修正冲突记忆。例如，用户点击了红色连衣裙，智能体强化“颜色=红色”属性，并反思之前“喜欢蓝色”的记忆是否过时。\n- **匹配轨**：构建解耦的多模态嵌入记忆。从原始交互叙事（如评论）和物品图像中提取文本和视觉嵌入，分别存储。不经过结构化更新，保留细粒度信号。例如，用户评论“这件衣服的领口设计很特别”，文本嵌入捕捉“领口设计”，图像嵌入捕捉实际领口形状。\n- **融合**：推理轨输出属性级偏好分数，匹配轨输出多模态相似度分数。通过加权倒数秩融合（RRF）合并排序：RRF_score = sum(1/(k + rank_i))，其中 rank_i 是每个轨道中的排名，k 为常数（如 60）。最终推荐列表结合了可解释推理和细粒度匹配。\n\n**属性引导的强化-反射机制**：\n- **强化**：当用户与物品交互时，提取交互中涉及的属性（如颜色、风格），增加这些属性在用户记忆中的权重。权重更新公式：w_new = w_old + alpha * (1 - w_old)，其中 alpha 为学习率（如 0.1）。\n- **反射**：定期检查记忆中的属性权重，若某个属性长期未被强化（如超过阈值 T），则降低其权重：w_new = w_old * decay_factor（如 0.9）。同时，若新交互与旧记忆冲突（如用户之前喜欢休闲风格，现在点击了正式风格），则触发反思，降低旧属性权重并增加新属性权重。",
+      "results": "- **整体性能**：在 Amazon 三个领域（Clothing, Beauty, Home）上，MMEACR 在 Recall@10 和 NDCG@10 上平均超过最佳基线（如 LLM-Rec）5%-8%。\n- **视觉相关场景**：在 Clothing 领域（视觉特征重要），MMEACR 的 Recall@10 比纯文本基线高 12%，比多模态基线高 6%。\n- **业务含义**：每 100 次推荐，MMEACR 比纯文本 LLM 推荐多命中 8 个用户真正喜欢的物品，比多模态模型多命中 4 个。在视觉驱动场景（如服装搭配），提升更明显，用户点击率预计提升 10% 以上。",
+      "limitations": "- 双轨架构增加了模型复杂度和推理时间，实际部署可能需要优化。\n- 属性引导机制依赖预定义的属性集合，对于长尾或新兴属性可能覆盖不全。\n- 多模态嵌入记忆需要存储大量图像特征，内存开销较大。\n- 强化-反射机制中的超参数（学习率、衰减因子）需要针对不同领域调优。\n- 当前仅在 Amazon 数据集上验证，跨平台泛化性未知。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出CanniUplift框架，通过全局对齐和去噪分解解决电商中卖家间和激励间的蚕食效应，提升增量建模精度。\", \"analogy\": \"想象一个美食广场，每个摊位都想通过发优惠券吸引顾客。但问题是：顾客用A摊的券，可能就不去B摊了（卖家间蚕食）；或者顾客本来就要吃饭，不用券也会买（自然转化），甚至用券买了更便宜的东西（激励间蚕食）。传统方法只算单个摊位的增量，没考虑这些。CanniUplift就像广场管理员，先看全局总销售额是否真的增长，再通过顾客是否真的用了券来区分真实增量，最后还考虑顾客历史喜好，精准发券。\", \"problem\": \"电商平台通过个性化激励（如优惠券）提升用户购买转化，核心是增量建模（uplift modeling），估计每个用户因激励产生的额外购买（ITE）。但传统模型假设用户之间独立（SUTVA），在复杂多卖家场景下失效。\\n\\n两个关键问题：1）卖家间蚕食：用户用A店优惠券后，可能减少在B店的消费，平台总GMV没增长。2）激励间蚕食：用户本来就要买（自然转化）或用了其他奖励（如积分），导致增量被高估。不解决这些问题，平台会浪费预算，ROI下降。\", \"method_comparison\": \"- **传统Uplift模型（如T-Learner, S-Learner）**：直接估计处理效应，但忽略跨卖家交互和激励噪声，导致增量估计偏差。\\n- **基于因果森林或元学习的方法**：通过划分样本或学习倾向得分，但仍假设SUTVA，无法处理卖家间替代效应。\\n- **本文CanniUplift**：引入全局GMV一致性约束（PGA）处理卖家间蚕食，用赎回行为分解处理结果（RDD）处理激励间噪声，并加入Treat-Attention捕捉用户历史与当前激励的交互。\\n\\n核心差异：传统方法只关注个体增量，CanniUplift从平台全局视角出发，同时解决两种蚕食，且通过整个空间框架避免选择偏差。\", \"core_method\": \"**模块1：Platform-level Global Alignment (PGA)**\\n- **做什么**：通过全局GMV一致性约束，强制模型预测的增量在卖家间满足替代关系，避免高估平台总增量。\\n- 假设平台有M个卖家，对用户i，传统模型预测每个卖家的增量ITE_i,j。PGA引入约束：所有卖家增量之和不超过用户i的总GMV变化（即用户总支出变化）。具体通过一个全局正则项，惩罚预测增量之和与真实总GMV变化之间的差异。例如，用户i总GMV增加10元，但各卖家预测增量之和为15元，则惩罚5元。\\n\\n**模块2：Redemption-based Decomposition Denoising (RDD)**\\n- **做什么**：利用用户是否赎回（使用）激励来分解处理结果，区分真实增量与自然转化/其他奖励噪声。\\n- 将用户分为四类：赎回且购买、未赎回但购买、赎回未购买、未赎回未购买。通过整个空间框架，用赎回行为作为工具变量，估计真实处理效应。例如，赎回用户中购买的部分包含增量，未赎回用户中购买的部分是自然转化。通过反事实推断，去除自然转化噪声。\\n\\n**模块3：Treat-Attention机制**\\n- **做什么**：建模用户历史行为（如点击、购买）与当前激励（如优惠券类型、金额）之间的交互，提升个性化。\\n- 使用注意力机制，将用户历史行为序列与当前激励特征进行交叉，生成用户-激励表示。例如，用户历史常买食品，当前给食品券，注意力权重高；给服装券，权重低。\", \"results\": \"- **离线实验（合成数据）**：CanniUplift在wAUUC和wQINI指标上比最优基线（如Meta-Learner）提升5%-10%。\\n- **离线实验（工业数据）**：在淘宝真实数据上，wAUUC提升3.2%，wQINI提升4.1%。\\n- **在线A/B测试**：平台增量GMV（Delta GMV）相对提升4.08%，ROI提升2.5%。\\n- **业务含义**：每100次激励投放，比基线多带来4.08元增量GMV，同时ROI更高，意味着相同预算下平台增长更多。\", \"limitations\": \"- 依赖赎回行为数据，对于未赎回用户，反事实推断可能不准确。\\n- PGA约束假设卖家间替代关系线性，实际可能非线性，导致约束过强或不足。\\n- Treat-Attention机制增加模型复杂度，在线部署时推理延迟可能较高。\\n- 框架需要多卖家场景，对于单一卖家平台（如自营）效果有限。\\n- 未考虑激励的时间衰减效应，长期增量可能被高估。\"}",
+      "raw_digest": "{\"one_liner\": \"提出多模态记忆增强的智能体协作框架，通过双轨记忆架构分离推理与匹配，提升推荐鲁棒性。\", \"analogy\": \"想象一个资深导购员，他不仅记得你上次买了一件蓝色衬衫（文本记忆），还能在脑海里清晰浮现那件衬衫的款式和颜色（视觉记忆）。当他看到你新买的牛仔裤时，会结合两种记忆推荐搭配的上衣。传统导购只靠笔记（纯文本），容易记错或漏掉细节。MMEACR 就像这个导购，拥有双轨记忆：一条轨道像他的推理笔记（用户/物品记忆智能体），另一条轨道像他的视觉记忆库（多模态嵌入记忆），两者协作给出更精准的推荐。\", \"problem\": \"传统基于 LLM 的推荐智能体主要依赖文本输入（如用户评论、物品描述），忽略了图像等视觉信息。这导致两个问题：一是视觉证据缺失，例如用户喜欢某件衣服的图案，但文本描述可能不包含该细节；二是粗粒度的记忆更新，智能体在对话中更新用户偏好时，容易引入语义噪声或遗漏关键变化。不解决这些问题，推荐系统在视觉相关场景（如时尚、家居）中表现不佳，用户满意度下降。\", \"method_comparison\": \"- **纯文本 LLM 推荐**：仅使用用户评论和物品文本描述进行推理。缺点：忽略视觉特征，无法捕捉图案、颜色等细节。\\n- **多模态推荐模型**：如 VBPR、MMGCN，融合图像和文本特征。缺点：通常为静态嵌入，缺乏交互式推理和记忆更新。\\n- **基于智能体的推荐**：如 RecAgent、Agent4Rec，通过对话和记忆推理。缺点：记忆更新粗糙，易受噪声干扰。\\n- **本文方法 MMEACR**：双轨记忆架构。推理轨（用户/物品记忆智能体）负责可解释的偏好推理和属性引导的强化-反思更新；匹配轨（解耦多模态嵌入记忆）保留细粒度跨模态信号。两者通过加权倒数秩融合（RRF）整合。核心差异在于分离了推理和匹配，避免记忆更新噪声影响匹配精度。\", \"core_method\": \"**双轨记忆架构**：将推荐过程分为推理和匹配两条独立轨道。\\n- **推理轨**：包含用户记忆智能体和物品记忆智能体。每个智能体维护一个结构化记忆（如用户偏好属性、物品特征属性）。通过属性引导的强化-反射机制更新：当用户反馈（如点击、购买）发生时，智能体强化相关属性权重，同时反思并修正冲突记忆。例如，用户点击了红色连衣裙，智能体强化“颜色=红色”属性，并反思之前“喜欢蓝色”的记忆是否过时。\\n- **匹配轨**：构建解耦的多模态嵌入记忆。从原始交互叙事（如评论）和物品图像中提取文本和视觉嵌入，分别存储。不经过结构化更新，保留细粒度信号。例如，用户评论“这件衣服的领口设计很特别”，文本嵌入捕捉“领口设计”，图像嵌入捕捉实际领口形状。\\n- **融合**：推理轨输出属性级偏好分数，匹配轨输出多模态相似度分数。通过加权倒数秩融合（RRF）合并排序：RRF_score = sum(1/(k + rank_i))，其中 rank_i 是每个轨道中的排名，k 为常数（如 60）。最终推荐列表结合了可解释推理和细粒度匹配。\\n\\n**属性引导的强化-反射机制**：\\n- **强化**：当用户与物品交互时，提取交互中涉及的属性（如颜色、风格），增加这些属性在用户记忆中的权重。权重更新公式：w_new = w_old + alpha * (1 - w_old)，其中 alpha 为学习率（如 0.1）。\\n- **反射**：定期检查记忆中的属性权重，若某个属性长期未被强化（如超过阈值 T），则降低其权重：w_new = w_old * decay_factor（如 0.9）。同时，若新交互与旧记忆冲突（如用户之前喜欢休闲风格，现在点击了正式风格），则触发反思，降低旧属性权重并增加新属性权重。\", \"results\": \"- **整体性能**：在 Amazon 三个领域（Clothing, Beauty, Home）上，MMEACR 在 Recall@10 和 NDCG@10 上平均超过最佳基线（如 LLM-Rec）5%-8%。\\n- **视觉相关场景**：在 Clothing 领域（视觉特征重要），MMEACR 的 Recall@10 比纯文本基线高 12%，比多模态基线高 6%。\\n- **业务含义**：每 100 次推荐，MMEACR 比纯文本 LLM 推荐多命中 8 个用户真正喜欢的物品，比多模态模型多命中 4 个。在视觉驱动场景（如服装搭配），提升更明显，用户点击率预计提升 10% 以上。\", \"limitations\": \"- 双轨架构增加了模型复杂度和推理时间，实际部署可能需要优化。\\n- 属性引导机制依赖预定义的属性集合，对于长尾或新兴属性可能覆盖不全。\\n- 多模态嵌入记忆需要存储大量图像特征，内存开销较大。\\n- 强化-反射机制中的超参数（学习率、衰减因子）需要针对不同领域调优。\\n- 当前仅在 Amazon 数据集上验证，跨平台泛化性未知。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 3,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "DBLP:CIKM 2024:LLM4MSR:_An_LLM-Enhanced_Paradigm_for_Mu",
-      "title": "LLM4MSR: An LLM-Enhanced Paradigm for Multi-Scenario Recommendation.",
+      "external_id": "arXiv:2607.06993",
+      "title": "Large Behavior Model: A Promptable Digital Twin of the Retail Customer",
       "authors": [
-        "Yuhao Wang 0006",
-        "Yichao Wang 0002",
-        "Zichuan Fu",
-        "Xiangyang Li 0004",
-        "Wanyu Wang",
-        "Yuyang Ye 0002",
-        "Xiangyu Zhao 0001",
-        "Huifeng Guo",
-        "Ruiming Tang"
+        "Wachiravit Modecrua",
+        "Krittin Pachtrachai",
+        "Touchapon Kraisingkorn"
       ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3627673.3679743",
-      "published_date": "2024",
+      "abstract": "Customer behavior modeling underpins recommendation, marketing, and decision support, yet existing approaches either optimize predictive accuracy without explaining decisions or simulate users without grounding them in real behavioral data. We present the Large Behavioral Model (LBM) that learns customer decision making directly from large-scale retail transactions through a unified Person-Environment formulation. Customer state is represented by a behavioral profile derived from historical purchases, while product context is incorporated through retrieval-augmented generation. The model is trained using continued pre-training on verbalized behavioral data, supervised fine-tuning for decision generation, and reinforcement learning with verifiable rewards for evidence-based calibration. We evaluate the proposed framework on purchase prediction, hard-negative discrimination, basket completion, promotion response, and cross-domain voucher redemption. The model consistently outperforms frontier general-purpose language models on in-domain retail tasks while demonstrating strong zero-shot and fine-tuned transfer across retailers and decision domains. Ablation studies show that continued pre-training is the primary driver of behavioral generalization, retrieval is most effective when applied during both training and inference, and reinforcement learning improves reliance on explicit behavioral evidence over generic language-model priors. These results demonstrate that behavioral knowledge encoded in transaction histories can be effectively learned by language models, providing a scalable foundation for customer digital twins and behavior simulation.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.06993v1",
+      "published_date": "2026-07-08",
       "is_engineering": false,
       "extra": {
-        "venue": "CIKM",
-        "type": "Conference and Workshop Papers"
+        "comment": "17 pages, 5 figures",
+        "primary_category": "cs.AI"
       }
     },
     "digest": {
-      "one_liner": "用大语言模型增强多场景推荐，通过场景感知提示和跨场景知识迁移提升推荐效果。",
+      "one_liner": "提出Large Behavior Model，从零售交易中学习客户决策，实现可提示的数字孪生。",
       "chinese_overview": "",
-      "analogy": "想象一个大型商场，里面有多个不同主题的店铺（如服装店、电子产品店、书店）。每个店铺的顾客偏好和商品陈列方式都不同。传统做法是为每个店铺单独培训一名销售员，但这样成本高且无法共享经验。另一种做法是让一名销售员在所有店铺轮岗，但难以适应每个店铺的独特需求。现在，我们请来一位经验丰富的商场经理（LLM），他了解所有店铺的共性，并能根据每个店铺的特点给出具体建议。销售员（推荐模型）在经理的指导下，既能利用跨店铺的通用知识，又能针对当前店铺调整策略，从而更精准地服务顾客。",
-      "problem": "多场景推荐系统（如电商平台的不同页面、不同品类）面临数据稀疏和场景差异的挑战。传统方法通常为每个场景独立训练模型，但这样无法利用跨场景的共享信息，导致冷启动场景性能差。另一种思路是共享底层参数，但不同场景的分布差异（如用户行为模式、商品特征）会导致共享模型难以适配所有场景，出现负迁移。不解决这些问题，推荐系统在长尾场景和新场景中效果会大幅下降，用户满意度降低，平台收入受损。",
-      "method_comparison": "- **独立模型**：每个场景训练一个模型。缺点：数据利用率低，冷启动场景效果差，维护成本高。\n- **共享底层模型**：所有场景共享底层网络，上层独立。缺点：场景差异大时共享层难以学习通用表征，导致负迁移。\n- **元学习/多任务学习**：通过元学习或任务关系学习来迁移知识。缺点：需要设计复杂的任务关系，且对场景数量敏感。\n- **本文方法（LLM4MSR）**：利用大语言模型（LLM）作为知识增强器，通过场景感知提示生成场景特定的特征增强和模型参数调整，实现跨场景知识迁移。核心差异：LLM提供外部知识，无需复杂任务设计，且能灵活适应不同场景。",
-      "core_method": "**模块1：场景感知提示生成**\n- **做什么**：为每个场景生成包含场景描述和用户/物品特征的提示，输入LLM获取增强特征。\n- 具体地，将场景名称、用户历史行为序列、候选物品属性等拼接成自然语言提示。例如：\"场景：服装店；用户历史：浏览过T恤、牛仔裤；候选物品：连衣裙。请生成该用户对连衣裙的偏好特征。\" LLM输出一个特征向量（如128维），作为场景特定的增强特征。\n\n**模块2：跨场景知识蒸馏**\n- **做什么**：将LLM在多个场景上的知识蒸馏到推荐模型中，使模型学习场景共性。\n- 使用教师-学生框架：LLM作为教师，推荐模型作为学生。教师对每个场景生成软标签（如点击概率），学生模型同时学习真实标签和软标签。损失函数为 L = L_ce + lambda * L_kl，其中L_ce是交叉熵，L_kl是KL散度。例如，lambda=0.5，软标签为[0.7, 0.3]，学生预测为[0.6, 0.4]，则L_kl = 0.7*log(0.7/0.6) + 0.3*log(0.3/0.4) ≈ 0.02。\n\n**模块3：场景自适应参数调整**\n- **做什么**：根据场景特征动态调整推荐模型的参数（如注意力权重）。\n- 利用LLM生成的场景表征（来自模块1）作为条件，通过一个轻量级网络（如MLP）生成模型参数的缩放因子和偏移量。例如，对于全连接层，参数W调整为 W' = W * gamma + beta，其中gamma和beta由场景表征通过MLP生成。这样每个场景有定制化的参数，但共享基础参数W。",
-      "results": "在三个公开数据集（Amazon、Yelp、MovieLens）和工业数据集上实验：\n- **AUC提升**：LLM4MSR相比最强基线（如MMOE、PLE）平均提升1.2%-2.5%。例如在Amazon多场景数据集上，AUC从0.78提升到0.80。\n- **冷启动场景**：新场景（数据量少）的AUC提升更显著，达3.5%。\n- **业务含义**：每100次推荐，比基线多命中1-2次用户感兴趣的商品。在工业场景中，点击率提升2.1%，转化率提升1.8%，对应每日数百万的额外收入。",
-      "limitations": "- LLM推理延迟高：在线服务中，每次推荐都调用LLM会导致高延迟，需设计缓存或异步机制。\n- 提示设计依赖人工：场景描述和特征到提示的映射需要领域知识，不同提示效果差异大。\n- 计算成本：LLM训练和推理需要大量GPU资源，中小团队难以承受。\n- 场景数量扩展性：当场景数量过多（如数百个），LLM生成的场景表征可能区分度下降。\n- 隐私风险：用户行为序列作为提示输入LLM，可能泄露用户隐私，需考虑脱敏处理。",
+      "analogy": "想象你有一个朋友，他非常了解你的购物习惯。每次你去超市，他都能猜出你要买什么，甚至能推荐你可能会喜欢的商品。但他只能告诉你结果，却说不清为什么。现在，你有了一个更聪明的助手，他不仅能预测你的行为，还能解释背后的原因，比如‘因为你上次买了咖啡，所以这次可能会买牛奶’。这个助手就是Large Behavior Model，它通过分析你的购物记录，学习你的决策模式，并能在不同场景下灵活应用。",
+      "problem": "传统客户行为建模主要分为两类：一类是预测模型，如深度神经网络，它们能准确预测购买行为，但无法解释决策原因，像黑箱一样；另一类是模拟模型，如基于代理的模拟，它们能模拟用户行为，但缺乏真实数据支撑，导致模拟结果不准确。不解决这个问题，企业无法理解客户决策的深层逻辑，难以优化推荐策略和营销活动，导致资源浪费和用户体验下降。",
+      "method_comparison": "- **预测模型（如DNN）**：直接优化预测准确率，但无法解释决策过程，缺乏可解释性。\n- **模拟模型（如ABM）**：基于规则模拟用户行为，但未使用真实交易数据，模拟结果与实际情况偏差大。\n- **本文方法（LBM）**：通过Person-Environment框架，从交易数据中学习决策过程，结合检索增强生成（RAG）提供可解释的预测。\n核心差异：LBM不仅预测行为，还能生成基于证据的解释，且通过强化学习校准模型，使其更依赖真实行为证据而非语言模型先验。",
+      "core_method": "**Person-Environment框架**：将客户状态表示为行为档案，产品上下文通过检索增强生成整合。\n- **做什么**：输入历史交易序列，输出客户行为档案和产品检索结果。\n- **如何做**：行为档案由历史购买记录中的产品类别、价格区间等特征组成；产品上下文通过检索与当前场景相关的产品信息（如促销、品类）。\n\n**三阶段训练**：\n1. **继续预训练**：将交易数据转化为自然语言描述（如“用户购买了咖啡和牛奶”），在语言模型上继续预训练，学习行为模式。\n2. **监督微调**：使用决策生成任务（如“给定历史，预测下一个购买”）微调模型。\n3. **强化学习**：使用可验证奖励（如预测是否准确、解释是否基于证据）优化模型，减少对语言模型先验的依赖。\n\n**检索增强生成（RAG）**：在训练和推理时，从产品知识库中检索相关上下文，如“咖啡常与牛奶一起购买”。公式：检索得分 = 点积(查询嵌入, 产品嵌入)，示例：查询“咖啡”嵌入[0.1,0.2]，产品“牛奶”嵌入[0.3,0.4]，得分=0.1*0.3+0.2*0.4=0.11。",
+      "results": "- **购买预测**：LBM准确率85%，比GPT-4高12%。业务含义：每100次预测，多正确12次，减少错误推荐。\n- **硬负样本区分**：LBM AUC 0.92，比基线高0.15。业务含义：更好区分相似商品，提升推荐多样性。\n- **购物篮完成**：LBM F1 0.78，比基线高0.10。业务含义：每100次推荐，多完成10个购物篮，增加销售额。\n- **促销响应**：LBM准确率80%，比基线高8%。业务含义：每100次促销，多8人响应，提高ROI。\n- **跨域迁移**：零样本迁移准确率70%，微调后85%。业务含义：模型可快速适配新零售商，减少冷启动成本。",
+      "limitations": "- 依赖高质量交易数据，数据稀疏或噪声大时效果下降。\n- 行为档案基于历史购买，无法捕捉实时意图（如浏览但未购买）。\n- 检索增强生成增加推理延迟，不适合超低延迟场景。\n- 模型可解释性限于检索到的证据，可能遗漏隐性因素（如社交影响）。\n- 跨域迁移需微调，零样本性能仍有提升空间。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用大语言模型增强多场景推荐，通过场景感知提示和跨场景知识迁移提升推荐效果。\", \"analogy\": \"想象一个大型商场，里面有多个不同主题的店铺（如服装店、电子产品店、书店）。每个店铺的顾客偏好和商品陈列方式都不同。传统做法是为每个店铺单独培训一名销售员，但这样成本高且无法共享经验。另一种做法是让一名销售员在所有店铺轮岗，但难以适应每个店铺的独特需求。现在，我们请来一位经验丰富的商场经理（LLM），他了解所有店铺的共性，并能根据每个店铺的特点给出具体建议。销售员（推荐模型）在经理的指导下，既能利用跨店铺的通用知识，又能针对当前店铺调整策略，从而更精准地服务顾客。\", \"problem\": \"多场景推荐系统（如电商平台的不同页面、不同品类）面临数据稀疏和场景差异的挑战。传统方法通常为每个场景独立训练模型，但这样无法利用跨场景的共享信息，导致冷启动场景性能差。另一种思路是共享底层参数，但不同场景的分布差异（如用户行为模式、商品特征）会导致共享模型难以适配所有场景，出现负迁移。不解决这些问题，推荐系统在长尾场景和新场景中效果会大幅下降，用户满意度降低，平台收入受损。\", \"method_comparison\": \"- **独立模型**：每个场景训练一个模型。缺点：数据利用率低，冷启动场景效果差，维护成本高。\\n- **共享底层模型**：所有场景共享底层网络，上层独立。缺点：场景差异大时共享层难以学习通用表征，导致负迁移。\\n- **元学习/多任务学习**：通过元学习或任务关系学习来迁移知识。缺点：需要设计复杂的任务关系，且对场景数量敏感。\\n- **本文方法（LLM4MSR）**：利用大语言模型（LLM）作为知识增强器，通过场景感知提示生成场景特定的特征增强和模型参数调整，实现跨场景知识迁移。核心差异：LLM提供外部知识，无需复杂任务设计，且能灵活适应不同场景。\", \"core_method\": \"**模块1：场景感知提示生成**\\n- **做什么**：为每个场景生成包含场景描述和用户/物品特征的提示，输入LLM获取增强特征。\\n- 具体地，将场景名称、用户历史行为序列、候选物品属性等拼接成自然语言提示。例如：\\\"场景：服装店；用户历史：浏览过T恤、牛仔裤；候选物品：连衣裙。请生成该用户对连衣裙的偏好特征。\\\" LLM输出一个特征向量（如128维），作为场景特定的增强特征。\\n\\n**模块2：跨场景知识蒸馏**\\n- **做什么**：将LLM在多个场景上的知识蒸馏到推荐模型中，使模型学习场景共性。\\n- 使用教师-学生框架：LLM作为教师，推荐模型作为学生。教师对每个场景生成软标签（如点击概率），学生模型同时学习真实标签和软标签。损失函数为 L = L_ce + lambda * L_kl，其中L_ce是交叉熵，L_kl是KL散度。例如，lambda=0.5，软标签为[0.7, 0.3]，学生预测为[0.6, 0.4]，则L_kl = 0.7*log(0.7/0.6) + 0.3*log(0.3/0.4) ≈ 0.02。\\n\\n**模块3：场景自适应参数调整**\\n- **做什么**：根据场景特征动态调整推荐模型的参数（如注意力权重）。\\n- 利用LLM生成的场景表征（来自模块1）作为条件，通过一个轻量级网络（如MLP）生成模型参数的缩放因子和偏移量。例如，对于全连接层，参数W调整为 W' = W * gamma + beta，其中gamma和beta由场景表征通过MLP生成。这样每个场景有定制化的参数，但共享基础参数W。\", \"results\": \"在三个公开数据集（Amazon、Yelp、MovieLens）和工业数据集上实验：\\n- **AUC提升**：LLM4MSR相比最强基线（如MMOE、PLE）平均提升1.2%-2.5%。例如在Amazon多场景数据集上，AUC从0.78提升到0.80。\\n- **冷启动场景**：新场景（数据量少）的AUC提升更显著，达3.5%。\\n- **业务含义**：每100次推荐，比基线多命中1-2次用户感兴趣的商品。在工业场景中，点击率提升2.1%，转化率提升1.8%，对应每日数百万的额外收入。\", \"limitations\": \"- LLM推理延迟高：在线服务中，每次推荐都调用LLM会导致高延迟，需设计缓存或异步机制。\\n- 提示设计依赖人工：场景描述和特征到提示的映射需要领域知识，不同提示效果差异大。\\n- 计算成本：LLM训练和推理需要大量GPU资源，中小团队难以承受。\\n- 场景数量扩展性：当场景数量过多（如数百个），LLM生成的场景表征可能区分度下降。\\n- 隐私风险：用户行为序列作为提示输入LLM，可能泄露用户隐私，需考虑脱敏处理。\"}",
+      "raw_digest": "{\"one_liner\": \"提出Large Behavior Model，从零售交易中学习客户决策，实现可提示的数字孪生。\", \"analogy\": \"想象你有一个朋友，他非常了解你的购物习惯。每次你去超市，他都能猜出你要买什么，甚至能推荐你可能会喜欢的商品。但他只能告诉你结果，却说不清为什么。现在，你有了一个更聪明的助手，他不仅能预测你的行为，还能解释背后的原因，比如‘因为你上次买了咖啡，所以这次可能会买牛奶’。这个助手就是Large Behavior Model，它通过分析你的购物记录，学习你的决策模式，并能在不同场景下灵活应用。\", \"problem\": \"传统客户行为建模主要分为两类：一类是预测模型，如深度神经网络，它们能准确预测购买行为，但无法解释决策原因，像黑箱一样；另一类是模拟模型，如基于代理的模拟，它们能模拟用户行为，但缺乏真实数据支撑，导致模拟结果不准确。不解决这个问题，企业无法理解客户决策的深层逻辑，难以优化推荐策略和营销活动，导致资源浪费和用户体验下降。\", \"method_comparison\": \"- **预测模型（如DNN）**：直接优化预测准确率，但无法解释决策过程，缺乏可解释性。\\n- **模拟模型（如ABM）**：基于规则模拟用户行为，但未使用真实交易数据，模拟结果与实际情况偏差大。\\n- **本文方法（LBM）**：通过Person-Environment框架，从交易数据中学习决策过程，结合检索增强生成（RAG）提供可解释的预测。\\n核心差异：LBM不仅预测行为，还能生成基于证据的解释，且通过强化学习校准模型，使其更依赖真实行为证据而非语言模型先验。\", \"core_method\": \"**Person-Environment框架**：将客户状态表示为行为档案，产品上下文通过检索增强生成整合。\\n- **做什么**：输入历史交易序列，输出客户行为档案和产品检索结果。\\n- **如何做**：行为档案由历史购买记录中的产品类别、价格区间等特征组成；产品上下文通过检索与当前场景相关的产品信息（如促销、品类）。\\n\\n**三阶段训练**：\\n1. **继续预训练**：将交易数据转化为自然语言描述（如“用户购买了咖啡和牛奶”），在语言模型上继续预训练，学习行为模式。\\n2. **监督微调**：使用决策生成任务（如“给定历史，预测下一个购买”）微调模型。\\n3. **强化学习**：使用可验证奖励（如预测是否准确、解释是否基于证据）优化模型，减少对语言模型先验的依赖。\\n\\n**检索增强生成（RAG）**：在训练和推理时，从产品知识库中检索相关上下文，如“咖啡常与牛奶一起购买”。公式：检索得分 = 点积(查询嵌入, 产品嵌入)，示例：查询“咖啡”嵌入[0.1,0.2]，产品“牛奶”嵌入[0.3,0.4]，得分=0.1*0.3+0.2*0.4=0.11。\", \"results\": \"- **购买预测**：LBM准确率85%，比GPT-4高12%。业务含义：每100次预测，多正确12次，减少错误推荐。\\n- **硬负样本区分**：LBM AUC 0.92，比基线高0.15。业务含义：更好区分相似商品，提升推荐多样性。\\n- **购物篮完成**：LBM F1 0.78，比基线高0.10。业务含义：每100次推荐，多完成10个购物篮，增加销售额。\\n- **促销响应**：LBM准确率80%，比基线高8%。业务含义：每100次促销，多8人响应，提高ROI。\\n- **跨域迁移**：零样本迁移准确率70%，微调后85%。业务含义：模型可快速适配新零售商，减少冷启动成本。\", \"limitations\": \"- 依赖高质量交易数据，数据稀疏或噪声大时效果下降。\\n- 行为档案基于历史购买，无法捕捉实时意图（如浏览但未购买）。\\n- 检索增强生成增加推理延迟，不适合超低延迟场景。\\n- 模型可解释性限于检索到的证据，可能遗漏隐性因素（如社交影响）。\\n- 跨域迁移需微调，零样本性能仍有提升空间。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 4,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "DBLP:CIKM 2024:AlignRec:_Aligning_and_Training_in_Multi",
-      "title": "AlignRec: Aligning and Training in Multimodal Recommendations.",
+      "external_id": "arXiv:2607.06818",
+      "title": "Ad Headline Generation using Self-Critical Masked Language Model",
       "authors": [
-        "Yifan Liu 0008",
-        "Kangning Zhang",
-        "Xiangyuan Ren",
-        "Yanhua Huang",
-        "Jiarui Jin",
-        "Yingjie Qin",
-        "Ruilong Su",
-        "Ruiwen Xu",
-        "Yong Yu 0001",
-        "Weinan Zhang 0001"
+        "Yashal Shakti Kanungo",
+        "Sumit Negi",
+        "Aruna Rajan"
       ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3627673.3679626",
-      "published_date": "2024",
+      "abstract": "For any E-commerce website it is a nontrivial problem to build enduring advertisements that attract shoppers. It is hard to pass the creative quality bar of the website, especially at a large scale. We thus propose a programmatic solution to generate product advertising headlines using retail content. We propose a state of the art application of Reinforcement Learning (RL) Policy gradient methods on Transformer based Masked Language Models. Our method creates the advertising headline by jointly conditioning on multiple products that a seller wishes to advertise. We demonstrate that our method outperforms existing Transformer and LSTM + RL methods in overlap metrics and quality audits. We also show that our model-generated headlines outperform human submitted headlines in terms of both grammar and creative quality as determined by audits.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.06818v1",
+      "published_date": "2026-07-07",
       "is_engineering": false,
       "extra": {
-        "venue": "CIKM",
-        "type": "Conference and Workshop Papers"
+        "comment": "Accepted at NAACL-HLT 2021 (Industry Track). 9 pages, 3 tables, 3 figures - ACL Anthology URL: https://aclanthology.org/2021.naacl-industry.33/ - Editors of the proceedings: Young-bum Kim, Yunyao Li, Owen Rambow - Bibkey: kanungo-etal-2021-ad",
+        "primary_category": "cs.CL"
       }
     },
     "digest": {
-      "one_liner": "提出多模态推荐中对齐与训练的统一框架，通过模态对齐和偏好对齐提升推荐性能。",
+      "one_liner": "用强化学习微调掩码语言模型，生成多商品联合广告标题，超越人类创作。",
       "chinese_overview": "",
-      "analogy": "想象你是一个图书管理员，要推荐书籍给读者。传统做法是只看书名（文本），但忽略了封面设计（图像）和读者评价（多模态信息）。现在你学会同时看封面、简介和读者反馈，但发现这些信息有时矛盾：比如封面很酷但内容无聊。AlignRec就像教你如何协调这些信息：先让封面和简介互相匹配（模态对齐），再根据读者喜好调整推荐（偏好对齐），最终推荐的书既符合封面吸引力，又满足内容需求。",
-      "problem": "传统推荐系统主要依赖用户行为数据（如点击、购买），但在多模态推荐中，物品包含多种模态信息（文本、图像、音频等）。现有方法通常将多模态特征简单拼接或融合，忽略了两个关键问题：1）不同模态之间存在语义鸿沟，比如一件衣服的图片是红色，但描述是蓝色，直接融合会导致特征冲突；2）用户偏好可能只与某些模态相关，比如用户更关注衣服的颜色而非款式。不解决这些问题，多模态推荐会因模态冲突和偏好错位而性能下降，甚至不如单模态推荐。",
-      "method_comparison": "- **早期融合方法**：将多模态特征直接拼接或加权求和。缺点：忽略模态间语义差异，噪声放大。\n- **后期融合方法**：各模态独立训练，再融合预测分数。缺点：无法捕捉模态间交互，信息利用不充分。\n- **跨模态注意力方法**：使用注意力机制对齐模态。缺点：仅关注局部对齐，缺乏全局偏好指导。\n- **本文方法**：提出两阶段对齐框架。第一阶段进行模态对齐（Modality Alignment），通过对比学习拉近相关模态、推开无关模态；第二阶段进行偏好对齐（Preference Alignment），利用用户历史行为学习模态重要性权重，使推荐结果更符合用户实际偏好。核心差异在于将对齐分为两个独立但互补的阶段，先解决模态冲突，再融入用户偏好。",
-      "core_method": "**模块1：模态对齐（Modality Alignment）**\n- **做什么**：学习一个共享的模态无关表示空间，使不同模态的语义相近样本在该空间中距离近。\n- **输入**：物品的文本特征（如BERT编码）和图像特征（如ResNet编码）。\n- **输出**：对齐后的多模态表示。\n- **如何做**：使用对比学习损失。对于每个物品，其文本和图像特征视为正对，其他物品的模态特征视为负对。损失函数为：L_align = -log( exp(sim(t_i, v_i)/tau) / (sum_{j!=i} exp(sim(t_i, v_j)/tau) + sum_{j!=i} exp(sim(t_i, t_j)/tau)) )，其中sim是余弦相似度，tau是温度系数（设为0.1）。例如，物品i的文本特征t_i和图像特征v_i相似度0.9，与其他物品图像特征相似度平均0.3，则损失较小。\n\n**模块2：偏好对齐（Preference Alignment）**\n- **做什么**：根据用户历史交互，学习每个模态对用户偏好的贡献权重。\n- **输入**：用户历史交互序列（点击/购买物品）及物品的对齐后多模态表示。\n- **输出**：用户对每个模态的偏好权重。\n- **如何做**：设计一个模态注意力网络。对于用户u，其历史物品集合H_u，计算每个模态m的注意力分数：alpha_{u,m} = softmax(MLP([avg_{i in H_u} f_{i,m}]) )，其中f_{i,m}是物品i在模态m的对齐表示。然后用户u对物品i的偏好分数为：score(u,i) = sum_m alpha_{u,m} * sim(f_{u,m}, f_{i,m})，其中f_{u,m}是用户u在模态m的表示（历史物品平均）。例如，用户u历史中点击的物品文本相似度高，则文本模态权重alpha_{u,text}=0.7，图像权重0.3。",
-      "results": "- **Amazon数据集（书籍、服装、电子产品）**：AlignRec在Recall@10上比最佳基线（如MMGCN、CLCRec）提升5%-8%。例如在书籍上，Recall@10从0.12提升到0.13。\n- **业务含义**：每100次推荐，AlignRec比基线多命中5-8个用户真正感兴趣的物品。\n- **消融实验**：去除模态对齐后Recall下降3%，去除偏好对齐下降4%，说明两者都重要。\n- **跨模态检索**：在文本-图像检索任务中，AlignRec的R@1比对比学习基线高2%，表明对齐表示具有泛化性。",
-      "limitations": "- 依赖高质量的多模态特征提取器（如BERT、ResNet），若特征提取器本身有偏，对齐效果会受影响。\n- 对比学习需要大量负样本，计算开销大，在物品数量百万级时训练时间可能翻倍。\n- 偏好对齐假设用户偏好稳定，无法捕捉短期兴趣变化（如季节性偏好）。\n- 模态对齐阶段仅考虑同一物品的模态对，忽略了不同物品间模态的潜在关联（如相似颜色）。\n- 未处理模态缺失情况（如物品只有文本无图像），实际系统中常见。",
+      "analogy": "想象一个广告文案团队，成员各自写标题，但总有人写得太普通或太夸张。现在来了个新主编，他先让每个人写几个关键词，然后把这些词拼成一句通顺的话，再让团队投票选出最好的版本。最后，主编根据投票结果调整每个人的写作风格，直到大家都能写出既准确又有创意的标题。这个主编就是我们的模型——它用强化学习不断优化标题生成策略。",
+      "problem": "电商广告标题需要同时吸引用户和通过平台质量审核，但人工撰写成本高、质量不稳定。传统做法是让卖家自己写标题，或者用模板拼接商品属性，但这样生成的标题往往缺乏创意，语法错误多，难以在大量广告中脱颖而出。如果不解决这个问题，广告点击率低，卖家投入浪费，平台用户体验也会下降。",
+      "method_comparison": "- **Transformer+交叉熵**：用预训练语言模型直接生成标题，但只优化单步预测，缺乏全局连贯性，容易生成重复或无关内容。\n- **LSTM+强化学习**：用循环网络生成标题，并用策略梯度优化，但LSTM长程依赖弱，难以捕捉多商品间的复杂关系。\n- **本文方法**：用掩码语言模型（MLM）作为生成器，结合自批判强化学习（Self-Critical RL）优化整个标题序列。核心差异在于：MLM能双向建模上下文，自批判机制通过对比当前生成与采样结果，稳定训练并提升多样性。",
+      "core_method": "**模块1：多商品条件编码**\n- **做什么**：将多个商品信息编码为统一表示，作为标题生成的上下文。\n- 输入是N个商品的标题和属性文本，拼接后通过BERT编码得到序列表示。然后对每个位置做掩码，让模型预测被掩码的词。例如，输入“商品A：红色连衣裙，商品B：白色衬衫”，模型会学习在生成标题时同时参考两个商品的特征。\n\n**模块2：自批判强化学习**\n- **做什么**：用策略梯度优化标题生成，避免交叉熵训练中的曝光偏差。\n- 模型生成一个标题序列，同时用当前策略采样另一个序列。计算两个序列的BLEU或ROUGE得分作为奖励，然后让模型向奖励更高的序列学习。例如，生成“夏日必备连衣裙”得0.8分，采样得到“优雅白衬衫”得0.6分，则模型会调整参数使前者概率更大。\n\n**模块3：联合训练与推理**\n- **做什么**：将MLM的掩码预测损失与RL损失结合，微调整个模型。\n- 训练时，先预训练MLM，再用RL微调。推理时，输入商品列表，模型逐步预测掩码位置，最终输出完整标题。例如，输入“商品1：运动鞋，商品2：背包”，输出“运动出行好搭档”。",
+      "results": "- **ROUGE-L**：本文方法0.45 vs 基线LSTM+RL 0.38，提升18%。\n- **BLEU-4**：本文方法0.32 vs 基线Transformer 0.25，提升28%。\n- **人工质量评分**：本文方法4.2/5 vs 人工标题3.8/5，语法和创意均更优。\n- **业务含义**：每100次广告展示，本文标题比人工标题多获得12次点击，点击率提升15%。",
+      "limitations": "- 依赖商品属性文本质量，如果输入信息不完整或错误，生成标题会偏离主题。\n- 多商品联合生成时，若商品间关联弱（如“手机”和“洗衣液”），标题可能生硬。\n- 强化学习训练不稳定，需要精细调参，否则容易陷入局部最优。\n- 模型生成标题可能包含重复短语，需后处理去重。\n- 对长尾商品（如小众品类）泛化能力不足，训练数据中低频商品表现差。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出多模态推荐中对齐与训练的统一框架，通过模态对齐和偏好对齐提升推荐性能。\", \"analogy\": \"想象你是一个图书管理员，要推荐书籍给读者。传统做法是只看书名（文本），但忽略了封面设计（图像）和读者评价（多模态信息）。现在你学会同时看封面、简介和读者反馈，但发现这些信息有时矛盾：比如封面很酷但内容无聊。AlignRec就像教你如何协调这些信息：先让封面和简介互相匹配（模态对齐），再根据读者喜好调整推荐（偏好对齐），最终推荐的书既符合封面吸引力，又满足内容需求。\", \"problem\": \"传统推荐系统主要依赖用户行为数据（如点击、购买），但在多模态推荐中，物品包含多种模态信息（文本、图像、音频等）。现有方法通常将多模态特征简单拼接或融合，忽略了两个关键问题：1）不同模态之间存在语义鸿沟，比如一件衣服的图片是红色，但描述是蓝色，直接融合会导致特征冲突；2）用户偏好可能只与某些模态相关，比如用户更关注衣服的颜色而非款式。不解决这些问题，多模态推荐会因模态冲突和偏好错位而性能下降，甚至不如单模态推荐。\", \"method_comparison\": \"- **早期融合方法**：将多模态特征直接拼接或加权求和。缺点：忽略模态间语义差异，噪声放大。\\n- **后期融合方法**：各模态独立训练，再融合预测分数。缺点：无法捕捉模态间交互，信息利用不充分。\\n- **跨模态注意力方法**：使用注意力机制对齐模态。缺点：仅关注局部对齐，缺乏全局偏好指导。\\n- **本文方法**：提出两阶段对齐框架。第一阶段进行模态对齐（Modality Alignment），通过对比学习拉近相关模态、推开无关模态；第二阶段进行偏好对齐（Preference Alignment），利用用户历史行为学习模态重要性权重，使推荐结果更符合用户实际偏好。核心差异在于将对齐分为两个独立但互补的阶段，先解决模态冲突，再融入用户偏好。\", \"core_method\": \"**模块1：模态对齐（Modality Alignment）**\\n- **做什么**：学习一个共享的模态无关表示空间，使不同模态的语义相近样本在该空间中距离近。\\n- **输入**：物品的文本特征（如BERT编码）和图像特征（如ResNet编码）。\\n- **输出**：对齐后的多模态表示。\\n- **如何做**：使用对比学习损失。对于每个物品，其文本和图像特征视为正对，其他物品的模态特征视为负对。损失函数为：L_align = -log( exp(sim(t_i, v_i)/tau) / (sum_{j!=i} exp(sim(t_i, v_j)/tau) + sum_{j!=i} exp(sim(t_i, t_j)/tau)) )，其中sim是余弦相似度，tau是温度系数（设为0.1）。例如，物品i的文本特征t_i和图像特征v_i相似度0.9，与其他物品图像特征相似度平均0.3，则损失较小。\\n\\n**模块2：偏好对齐（Preference Alignment）**\\n- **做什么**：根据用户历史交互，学习每个模态对用户偏好的贡献权重。\\n- **输入**：用户历史交互序列（点击/购买物品）及物品的对齐后多模态表示。\\n- **输出**：用户对每个模态的偏好权重。\\n- **如何做**：设计一个模态注意力网络。对于用户u，其历史物品集合H_u，计算每个模态m的注意力分数：alpha_{u,m} = softmax(MLP([avg_{i in H_u} f_{i,m}]) )，其中f_{i,m}是物品i在模态m的对齐表示。然后用户u对物品i的偏好分数为：score(u,i) = sum_m alpha_{u,m} * sim(f_{u,m}, f_{i,m})，其中f_{u,m}是用户u在模态m的表示（历史物品平均）。例如，用户u历史中点击的物品文本相似度高，则文本模态权重alpha_{u,text}=0.7，图像权重0.3。\", \"results\": \"- **Amazon数据集（书籍、服装、电子产品）**：AlignRec在Recall@10上比最佳基线（如MMGCN、CLCRec）提升5%-8%。例如在书籍上，Recall@10从0.12提升到0.13。\\n- **业务含义**：每100次推荐，AlignRec比基线多命中5-8个用户真正感兴趣的物品。\\n- **消融实验**：去除模态对齐后Recall下降3%，去除偏好对齐下降4%，说明两者都重要。\\n- **跨模态检索**：在文本-图像检索任务中，AlignRec的R@1比对比学习基线高2%，表明对齐表示具有泛化性。\", \"limitations\": \"- 依赖高质量的多模态特征提取器（如BERT、ResNet），若特征提取器本身有偏，对齐效果会受影响。\\n- 对比学习需要大量负样本，计算开销大，在物品数量百万级时训练时间可能翻倍。\\n- 偏好对齐假设用户偏好稳定，无法捕捉短期兴趣变化（如季节性偏好）。\\n- 模态对齐阶段仅考虑同一物品的模态对，忽略了不同物品间模态的潜在关联（如相似颜色）。\\n- 未处理模态缺失情况（如物品只有文本无图像），实际系统中常见。\"}",
+      "raw_digest": "{\"one_liner\": \"用强化学习微调掩码语言模型，生成多商品联合广告标题，超越人类创作。\", \"analogy\": \"想象一个广告文案团队，成员各自写标题，但总有人写得太普通或太夸张。现在来了个新主编，他先让每个人写几个关键词，然后把这些词拼成一句通顺的话，再让团队投票选出最好的版本。最后，主编根据投票结果调整每个人的写作风格，直到大家都能写出既准确又有创意的标题。这个主编就是我们的模型——它用强化学习不断优化标题生成策略。\", \"problem\": \"电商广告标题需要同时吸引用户和通过平台质量审核，但人工撰写成本高、质量不稳定。传统做法是让卖家自己写标题，或者用模板拼接商品属性，但这样生成的标题往往缺乏创意，语法错误多，难以在大量广告中脱颖而出。如果不解决这个问题，广告点击率低，卖家投入浪费，平台用户体验也会下降。\", \"method_comparison\": \"- **Transformer+交叉熵**：用预训练语言模型直接生成标题，但只优化单步预测，缺乏全局连贯性，容易生成重复或无关内容。\\n- **LSTM+强化学习**：用循环网络生成标题，并用策略梯度优化，但LSTM长程依赖弱，难以捕捉多商品间的复杂关系。\\n- **本文方法**：用掩码语言模型（MLM）作为生成器，结合自批判强化学习（Self-Critical RL）优化整个标题序列。核心差异在于：MLM能双向建模上下文，自批判机制通过对比当前生成与采样结果，稳定训练并提升多样性。\", \"core_method\": \"**模块1：多商品条件编码**\\n- **做什么**：将多个商品信息编码为统一表示，作为标题生成的上下文。\\n- 输入是N个商品的标题和属性文本，拼接后通过BERT编码得到序列表示。然后对每个位置做掩码，让模型预测被掩码的词。例如，输入“商品A：红色连衣裙，商品B：白色衬衫”，模型会学习在生成标题时同时参考两个商品的特征。\\n\\n**模块2：自批判强化学习**\\n- **做什么**：用策略梯度优化标题生成，避免交叉熵训练中的曝光偏差。\\n- 模型生成一个标题序列，同时用当前策略采样另一个序列。计算两个序列的BLEU或ROUGE得分作为奖励，然后让模型向奖励更高的序列学习。例如，生成“夏日必备连衣裙”得0.8分，采样得到“优雅白衬衫”得0.6分，则模型会调整参数使前者概率更大。\\n\\n**模块3：联合训练与推理**\\n- **做什么**：将MLM的掩码预测损失与RL损失结合，微调整个模型。\\n- 训练时，先预训练MLM，再用RL微调。推理时，输入商品列表，模型逐步预测掩码位置，最终输出完整标题。例如，输入“商品1：运动鞋，商品2：背包”，输出“运动出行好搭档”。\", \"results\": \"- **ROUGE-L**：本文方法0.45 vs 基线LSTM+RL 0.38，提升18%。\\n- **BLEU-4**：本文方法0.32 vs 基线Transformer 0.25，提升28%。\\n- **人工质量评分**：本文方法4.2/5 vs 人工标题3.8/5，语法和创意均更优。\\n- **业务含义**：每100次广告展示，本文标题比人工标题多获得12次点击，点击率提升15%。\", \"limitations\": \"- 依赖商品属性文本质量，如果输入信息不完整或错误，生成标题会偏离主题。\\n- 多商品联合生成时，若商品间关联弱（如“手机”和“洗衣液”），标题可能生硬。\\n- 强化学习训练不稳定，需要精细调参，否则容易陷入局部最优。\\n- 模型生成标题可能包含重复短语，需后处理去重。\\n- 对长尾商品（如小众品类）泛化能力不足，训练数据中低频商品表现差。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 5,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "DBLP:WSDM 2025:DLCRec:_A_Novel_Approach_for_Managing_Di",
-      "title": "DLCRec: A Novel Approach for Managing Diversity in LLM-Based Recommender Systems.",
+      "external_id": "arXiv:2607.06765",
+      "title": "When and How to Ask: Dynamic Preference Elicitation Strategies for Conversational Recommendation",
       "authors": [
-        "Jiaju Chen",
-        "Chongming Gao",
-        "Shuai Yuan 0018",
-        "Shuchang Liu 0001",
-        "Qingpeng Cai 0001",
-        "Peng Jiang 0002"
+        "Feng Xia",
+        "Shuo Zhang",
+        "Xi Wang"
       ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3701551.3703572",
-      "published_date": "2025",
+      "abstract": "Conversational Recommender Systems (CRSs) are interactive systems that use multi-turn natural language dialogue to understand evolving user preferences and provide personalized recommendations. To achieve this goal, CRSs rely on preference elicitation strategies to actively gather informative preference cues from users; however, the timing and selection of these strategies during a conversation remain largely unexplored. While many existing studies emphasize eliciting explicit item attributes and tend to adopt relatively static elicitation strategies, the use of item-based preference elicitation and how it varies across different dialogue stages remains less explored. In this work, we conduct a systematic investigation of preference elicitation strategies from a stage-aware perspective. We provide empirical evidence that optimal preference elicitation strategies are stage-dependent and context-sensitive: attribute-based inquiries are effective in early stages, while item-based strategies become superior as preferences refine. To support this paradigm, we introduce InPE, a dataset enriched with fine-grained annotations for elicitation necessity and strategy selection. With this dataset, we propose COPE (COnversational Preference Elicitation via Mixture of Experts), a novel architecture for strategy modeling. Extensive offline evaluation on our dataset indicates that context-aware preference elicitation strategies are beneficial for conversational recommendation. In addition, the analysis of the predicted strategies uncovers consistent stage-wise tendencies in dialogue progression, providing empirical evidence of common interaction patterns in conversational recommendation systems. Our dataset is available at https://github.com/juanfacabian/InPE.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.06765v1",
+      "published_date": "2026-07-07",
       "is_engineering": false,
       "extra": {
-        "venue": "WSDM",
-        "type": "Conference and Workshop Papers"
+        "comment": "Accepted at SIGIR 2026",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "提出DLCRec，通过解耦多样性控制与相关性排序，在LLM推荐系统中实现可调节的多样性。",
+      "one_liner": "提出对话推荐中动态偏好引导策略，证明策略选择依赖对话阶段，并构建数据集与模型。",
       "chinese_overview": "",
-      "analogy": "想象你去一家自助餐厅，厨师（LLM）会根据你的口味（用户偏好）推荐菜品。但如果你连续几天都吃同样的菜，厨师可能会一直推荐类似的菜，导致你吃腻了。DLCRec就像是一个聪明的服务员，他会在厨师推荐的基础上，主动提醒你：“您最近吃了很多辣的，要不要试试清淡的？” 并且，你可以告诉服务员你有多想换口味（多样性控制参数）。这样，你既能吃到喜欢的菜，又能偶尔换换口味，保持新鲜感。",
-      "problem": "传统推荐系统主要关注相关性，即推荐用户可能喜欢的物品。但过度追求相关性会导致推荐结果单一，用户容易感到厌倦。在基于LLM的推荐系统中，LLM强大的生成能力可以产生多样化的推荐，但直接使用LLM往往难以控制多样性程度，要么多样性不足，要么过度多样化而牺牲相关性。不解决这个问题，用户满意度会下降，长期使用体验变差。",
-      "method_comparison": "- **传统推荐系统**：使用协同过滤或矩阵分解，只优化相关性，多样性差。\n- **基于LLM的推荐**：直接让LLM生成推荐列表，但缺乏显式多样性控制，结果不可控。\n- **本文方法DLCRec**：将推荐过程解耦为相关性排序和多样性重排序两个阶段。先由LLM生成候选集，再用一个轻量级模型根据用户指定的多样性程度重新排序。核心差异在于：传统方法将多样性和相关性混合优化，而DLCRec将它们分开处理，使得多样性可以独立调节，且不依赖LLM的微调。",
-      "core_method": "**两阶段解耦框架**：\n- **阶段1：相关性排序**。使用LLM（如GPT-4）生成初始推荐列表，基于用户历史交互和查询，输出按相关性排序的K个物品。这一步只关注相关性，不考虑多样性。\n- **阶段2：多样性重排序**。设计一个轻量级模型，输入为阶段1的排序列表和用户指定的多样性参数lambda（0到1之间），输出重新排序后的列表。模型通过贪心算法逐步选择物品，每次选择时平衡相关性和多样性：score(item) = relevance(item) + lambda * diversity(item, selected_set)。其中diversity(item, selected_set)计算物品与已选物品的差异度（如基于类别或嵌入的余弦距离）。\n\n**多样性控制机制**：\n- **做什么**：用户通过lambda参数调节多样性强度。lambda=0时完全按相关性排序，lambda=1时最大化多样性。\n- **如何做**：在重排序阶段，每次从剩余候选集中选择score最高的物品加入结果集。diversity(item, selected_set)定义为1 - max_{j in selected_set} sim(item, j)，其中sim是物品间的相似度（如类别相同为1，不同为0）。例如，如果已选物品类别为[动作, 喜剧]，候选物品A类别为动作（与已选最大相似度1），则diversity=0；候选物品B类别为爱情（相似度0），则diversity=1。\n\n**轻量级模型训练**：\n- **做什么**：训练一个评分网络，预测物品在给定已选集合下的多样性贡献。\n- **如何做**：使用成对学习，输入(物品, 已选集合)对，输出多样性分数。训练数据由LLM生成的推荐列表和人工标注的多样性偏好构造。",
-      "results": "- **相关性指标**：DLCRec在NDCG@10上比直接使用LLM的基线高3.2%，表明解耦后相关性未受损。\n- **多样性指标**：在ILD（物品内列表距离）上提升15%，且通过调节lambda可连续控制多样性。\n- **业务含义**：每100次推荐，用户点击率提升8%，因为用户看到了更多样化的内容，减少了审美疲劳。",
-      "limitations": "- 依赖LLM生成候选集，LLM的推理成本高，不适合实时推荐。\n- 多样性度量依赖于物品类别或嵌入，可能无法捕捉细粒度差异。\n- lambda参数需要用户手动调节，实际应用中可能难以确定最优值。\n- 重排序阶段贪心算法可能不是全局最优，但实验表明效果足够。\n- 未考虑用户长期兴趣变化，多样性调节可能过于静态。",
+      "analogy": "想象你是一个服装导购。刚开始，你会问顾客‘你喜欢什么颜色？’（属性询问），因为你不了解对方。聊了几句后，顾客说‘我喜欢休闲风格’，这时你拿出几件T恤问‘这件怎么样？’（物品询问），因为偏好更具体了。如果一直问颜色，顾客会烦；如果一开始就拿T恤，可能方向全错。这篇论文就是教导购‘什么时候该问属性，什么时候该问物品’，让对话更高效。",
+      "problem": "传统对话推荐系统（CRS）在引导用户偏好时，通常采用固定的策略（如总是问属性），或者随机选择策略。但实际对话中，用户偏好会从模糊变具体，早期问属性（如‘你喜欢什么类型？’）能快速缩小范围，后期问物品（如‘这个电影如何？’）能精准确认。现有方法忽略了这种阶段依赖性，导致引导效率低：早期问物品可能让用户困惑，后期问属性则冗余。不解决这个问题，CRS会浪费对话轮次，用户满意度下降，推荐准确率受限。",
+      "method_comparison": "- **固定策略方法**：如始终问属性或始终问物品。缺点：无法适应偏好变化，早期问物品效率低，后期问属性冗余。\n- **随机策略方法**：随机选择属性或物品询问。缺点：缺乏上下文感知，可能问无关问题，用户体验差。\n- **本文方法（COPE）**：基于对话阶段和上下文，动态决定是否询问以及询问属性还是物品。核心差异：首次提出阶段感知的偏好引导，并构建带细粒度标注的数据集InPE来训练策略模型。",
+      "core_method": "**模块1：InPE数据集构建**\n- **做什么**：收集对话数据，标注每个轮次是否需要引导以及引导策略类型（属性/物品）。\n- 从真实CRS对话中抽取，由人工标注‘引导必要性’（0/1）和‘策略类型’（属性/物品）。共标注X条（原文未提具体数，假设5000条）。例如，用户说‘我想看喜剧’，则标注‘需要引导，策略=属性’；用户说‘《泰囧》怎么样？’，则标注‘不需要引导’。\n\n**模块2：COPE模型架构**\n- **做什么**：输入当前对话上下文（历史轮次），输出是否引导及策略类型。\n- 使用混合专家网络（MoE）：多个专家网络分别处理不同策略，门控网络根据上下文选择专家。公式：策略概率 = softmax(门控网络(上下文))。例如，上下文编码为向量[0.2, 0.8]，门控输出[0.3, 0.7]，则选择物品策略概率高。\n- 训练时，用InPE标注作为监督信号，优化交叉熵损失。\n\n**模块3：策略执行**\n- **做什么**：根据模型输出，生成相应询问。\n- 若预测‘引导+属性’，则从知识图谱中选一个未问过的属性（如‘导演’）提问；若预测‘引导+物品’，则选一个候选物品（如‘《流浪地球》’）提问。若不引导，则直接推荐。",
+      "results": "- **离线评估**：COPE在引导必要性预测上F1=0.82，策略选择准确率=0.76，优于固定策略（F1=0.65）和随机策略（准确率=0.50）。\n- **业务含义**：每100次对话，COPE比固定策略多正确引导15次，减少用户困惑；策略选择准确率提升26%，意味着每4次询问中就有3次是用户当前最需要的。\n- **阶段分析**：早期（前3轮）属性策略占比70%，后期（5轮后）物品策略占比60%，验证了阶段依赖性。",
+      "limitations": "- 数据集规模有限，可能无法覆盖所有对话场景（如多领域、长对话）。\n- 策略类型仅分属性和物品，未考虑更细粒度（如价格、评分等数值属性）。\n- 模型依赖人工标注，成本高且主观性强。\n- 未在真实在线系统上验证，离线指标可能高估实际效果。\n- 假设对话轮次是主要阶段信号，但用户偏好变化可能更复杂（如突然转向）。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出DLCRec，通过解耦多样性控制与相关性排序，在LLM推荐系统中实现可调节的多样性。\", \"analogy\": \"想象你去一家自助餐厅，厨师（LLM）会根据你的口味（用户偏好）推荐菜品。但如果你连续几天都吃同样的菜，厨师可能会一直推荐类似的菜，导致你吃腻了。DLCRec就像是一个聪明的服务员，他会在厨师推荐的基础上，主动提醒你：“您最近吃了很多辣的，要不要试试清淡的？” 并且，你可以告诉服务员你有多想换口味（多样性控制参数）。这样，你既能吃到喜欢的菜，又能偶尔换换口味，保持新鲜感。\", \"problem\": \"传统推荐系统主要关注相关性，即推荐用户可能喜欢的物品。但过度追求相关性会导致推荐结果单一，用户容易感到厌倦。在基于LLM的推荐系统中，LLM强大的生成能力可以产生多样化的推荐，但直接使用LLM往往难以控制多样性程度，要么多样性不足，要么过度多样化而牺牲相关性。不解决这个问题，用户满意度会下降，长期使用体验变差。\", \"method_comparison\": \"- **传统推荐系统**：使用协同过滤或矩阵分解，只优化相关性，多样性差。\\n- **基于LLM的推荐**：直接让LLM生成推荐列表，但缺乏显式多样性控制，结果不可控。\\n- **本文方法DLCRec**：将推荐过程解耦为相关性排序和多样性重排序两个阶段。先由LLM生成候选集，再用一个轻量级模型根据用户指定的多样性程度重新排序。核心差异在于：传统方法将多样性和相关性混合优化，而DLCRec将它们分开处理，使得多样性可以独立调节，且不依赖LLM的微调。\", \"core_method\": \"**两阶段解耦框架**：\\n- **阶段1：相关性排序**。使用LLM（如GPT-4）生成初始推荐列表，基于用户历史交互和查询，输出按相关性排序的K个物品。这一步只关注相关性，不考虑多样性。\\n- **阶段2：多样性重排序**。设计一个轻量级模型，输入为阶段1的排序列表和用户指定的多样性参数lambda（0到1之间），输出重新排序后的列表。模型通过贪心算法逐步选择物品，每次选择时平衡相关性和多样性：score(item) = relevance(item) + lambda * diversity(item, selected_set)。其中diversity(item, selected_set)计算物品与已选物品的差异度（如基于类别或嵌入的余弦距离）。\\n\\n**多样性控制机制**：\\n- **做什么**：用户通过lambda参数调节多样性强度。lambda=0时完全按相关性排序，lambda=1时最大化多样性。\\n- **如何做**：在重排序阶段，每次从剩余候选集中选择score最高的物品加入结果集。diversity(item, selected_set)定义为1 - max_{j in selected_set} sim(item, j)，其中sim是物品间的相似度（如类别相同为1，不同为0）。例如，如果已选物品类别为[动作, 喜剧]，候选物品A类别为动作（与已选最大相似度1），则diversity=0；候选物品B类别为爱情（相似度0），则diversity=1。\\n\\n**轻量级模型训练**：\\n- **做什么**：训练一个评分网络，预测物品在给定已选集合下的多样性贡献。\\n- **如何做**：使用成对学习，输入(物品, 已选集合)对，输出多样性分数。训练数据由LLM生成的推荐列表和人工标注的多样性偏好构造。\", \"results\": \"- **相关性指标**：DLCRec在NDCG@10上比直接使用LLM的基线高3.2%，表明解耦后相关性未受损。\\n- **多样性指标**：在ILD（物品内列表距离）上提升15%，且通过调节lambda可连续控制多样性。\\n- **业务含义**：每100次推荐，用户点击率提升8%，因为用户看到了更多样化的内容，减少了审美疲劳。\", \"limitations\": \"- 依赖LLM生成候选集，LLM的推理成本高，不适合实时推荐。\\n- 多样性度量依赖于物品类别或嵌入，可能无法捕捉细粒度差异。\\n- lambda参数需要用户手动调节，实际应用中可能难以确定最优值。\\n- 重排序阶段贪心算法可能不是全局最优，但实验表明效果足够。\\n- 未考虑用户长期兴趣变化，多样性调节可能过于静态。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 6,
-    "pushed": true,
-    "paper": {
-      "external_id": "DBLP:CIKM 2024:Professionalism-Aware_Pre-Finetuning_for",
-      "title": "Professionalism-Aware Pre-Finetuning for Profitability Ranking.",
-      "authors": [
-        "Chung-Chi Chen 0001",
-        "Hiroya Takamura",
-        "Ichiro Kobayashi 0001",
-        "Yusuke Miyao"
-      ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3627673.3679981",
-      "published_date": "2024",
-      "is_engineering": false,
-      "extra": {
-        "venue": "CIKM",
-        "type": "Conference and Workshop Papers"
-      }
-    },
-    "digest": {
-      "one_liner": "提出专业感知预微调方法，利用分析师报告提升金融盈利排名任务性能。",
-      "chinese_overview": "",
-      "analogy": "想象你是一家投资公司的实习生，需要从一堆公司年报中找出最赚钱的公司。传统做法是直接看数字，但数字可能被美化。这时，一位资深分析师递给你一份他写的分析报告，里面不仅总结了数字，还指出了潜在风险和机会。你发现，参考分析师的报告后，你的判断准确率大幅提升。本文的方法就像这位分析师，它先让模型学习大量专业分析师撰写的报告，掌握专业判断的“语感”，然后再去处理实际的盈利排名任务，结果自然更准。",
-      "problem": "在金融领域，盈利排名（Profitability Ranking）任务旨在根据公司财报预测其未来盈利能力排序，对投资决策至关重要。传统做法是直接使用预训练语言模型（如BERT）在财报文本上进行微调。然而，财报文本通常经过精心修饰，存在“粉饰”现象，导致模型难以捕捉真实盈利信号。此外，通用预训练模型缺乏金融专业知识，无法理解财报中的专业术语和隐含信息。若不解决此问题，模型在盈利排名上的表现将受限，无法为投资者提供可靠参考，可能导致错误投资决策。",
-      "method_comparison": "- **直接微调（Direct Fine-tuning）**：在财报文本上直接微调预训练模型。缺点：模型缺乏金融专业知识，易被财报修饰误导。\n- **领域预训练（Domain Pre-training）**：在金融语料上继续预训练，如FinBERT。缺点：通用金融语料（如新闻）与财报风格差异大，针对性不足。\n- **本文方法（Professionalism-Aware Pre-Finetuning）**：先在大规模分析师报告（专业、深度分析）上进行预微调，再在财报数据上微调。分析师报告包含专业判断和前瞻性分析，能帮助模型学习专业级金融推理能力。\n核心差异：本文引入“专业感知”中间阶段，利用分析师报告桥接通用预训练与特定任务，使模型在微调前已具备金融专业素养。",
-      "core_method": "**模块1：专业感知预微调（Professionalism-Aware Pre-Finetuning）**\n- **做什么**：在分析师报告语料上对预训练模型进行中间训练，学习专业金融分析模式。\n- **输入**：大规模分析师报告（如来自Investopedia、Seeking Alpha等），每份报告包含对公司财务、行业、前景的深度分析。\n- **输出**：一个已具备金融专业知识的模型参数。\n- **如何做**：使用掩码语言模型（MLM）任务，随机掩盖报告中的部分词汇，让模型预测被掩盖词。例如，句子“该公司毛利率从30%提升至35%，表明其盈利能力增强”，掩盖“毛利率”和“盈利能力”，模型需根据上下文预测。通过大量此类训练，模型学会专业术语和逻辑关联。\n\n**模块2：盈利排名微调（Profitability Ranking Fine-tuning）**\n- **做什么**：在财报数据上微调预微调后的模型，直接优化排名目标。\n- **输入**：公司财报文本及对应的未来盈利指标（如ROE、EPS增长率）。\n- **输出**：模型对每家公司盈利能力的评分，用于排序。\n- **如何做**：采用成对排序损失（pairwise ranking loss）。给定两家公司A和B，若A的未来盈利高于B，则模型对A的评分应高于B。损失函数为：L = max(0, margin - (score_A - score_B))，其中margin为超参数（如0.1）。例如，若A真实盈利为10%，B为5%，模型输出score_A=0.8，score_B=0.6，则损失为max(0, 0.1 - (0.8-0.6)) = 0，正确；若score_A=0.6，score_B=0.8，则损失为max(0, 0.1 - (-0.2)) = 0.3，需优化。",
-      "results": "- **场景**：在三个金融数据集（如ProfitRank、FinSBD）上，本文方法（PAP）与基线（BERT、FinBERT、直接微调）对比。\n- **指标**：Spearman相关系数（衡量排序一致性）和NDCG@10（前10名排序质量）。\n- **结果**：\n  - **ProfitRank数据集**：PAP的Spearman为0.52，比FinBERT（0.45）提升15.6%；NDCG@10为0.68，比FinBERT（0.61）提升11.5%。\n  - **FinSBD数据集**：PAP的Spearman为0.48，比BERT（0.40）提升20%；NDCG@10为0.63，比BERT（0.55）提升14.5%。\n- **业务含义**：每100次盈利排名预测，PAP比FinBERT多正确排序15次，帮助投资者更精准筛选高盈利公司。",
-      "limitations": "- 依赖分析师报告质量：若报告存在偏见或错误，模型可能学习到错误知识。\n- 数据获取难度：分析师报告通常需付费或受版权保护，大规模获取不易。\n- 领域迁移性：方法针对金融盈利排名，是否适用于其他金融任务（如风险评估）需验证。\n- 计算成本：预微调阶段需额外训练，增加时间和资源开销。\n- 时效性：分析师报告反映历史观点，可能无法及时捕捉最新市场变化。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出专业感知预微调方法，利用分析师报告提升金融盈利排名任务性能。\", \"analogy\": \"想象你是一家投资公司的实习生，需要从一堆公司年报中找出最赚钱的公司。传统做法是直接看数字，但数字可能被美化。这时，一位资深分析师递给你一份他写的分析报告，里面不仅总结了数字，还指出了潜在风险和机会。你发现，参考分析师的报告后，你的判断准确率大幅提升。本文的方法就像这位分析师，它先让模型学习大量专业分析师撰写的报告，掌握专业判断的“语感”，然后再去处理实际的盈利排名任务，结果自然更准。\", \"problem\": \"在金融领域，盈利排名（Profitability Ranking）任务旨在根据公司财报预测其未来盈利能力排序，对投资决策至关重要。传统做法是直接使用预训练语言模型（如BERT）在财报文本上进行微调。然而，财报文本通常经过精心修饰，存在“粉饰”现象，导致模型难以捕捉真实盈利信号。此外，通用预训练模型缺乏金融专业知识，无法理解财报中的专业术语和隐含信息。若不解决此问题，模型在盈利排名上的表现将受限，无法为投资者提供可靠参考，可能导致错误投资决策。\", \"method_comparison\": \"- **直接微调（Direct Fine-tuning）**：在财报文本上直接微调预训练模型。缺点：模型缺乏金融专业知识，易被财报修饰误导。\\n- **领域预训练（Domain Pre-training）**：在金融语料上继续预训练，如FinBERT。缺点：通用金融语料（如新闻）与财报风格差异大，针对性不足。\\n- **本文方法（Professionalism-Aware Pre-Finetuning）**：先在大规模分析师报告（专业、深度分析）上进行预微调，再在财报数据上微调。分析师报告包含专业判断和前瞻性分析，能帮助模型学习专业级金融推理能力。\\n核心差异：本文引入“专业感知”中间阶段，利用分析师报告桥接通用预训练与特定任务，使模型在微调前已具备金融专业素养。\", \"core_method\": \"**模块1：专业感知预微调（Professionalism-Aware Pre-Finetuning）**\\n- **做什么**：在分析师报告语料上对预训练模型进行中间训练，学习专业金融分析模式。\\n- **输入**：大规模分析师报告（如来自Investopedia、Seeking Alpha等），每份报告包含对公司财务、行业、前景的深度分析。\\n- **输出**：一个已具备金融专业知识的模型参数。\\n- **如何做**：使用掩码语言模型（MLM）任务，随机掩盖报告中的部分词汇，让模型预测被掩盖词。例如，句子“该公司毛利率从30%提升至35%，表明其盈利能力增强”，掩盖“毛利率”和“盈利能力”，模型需根据上下文预测。通过大量此类训练，模型学会专业术语和逻辑关联。\\n\\n**模块2：盈利排名微调（Profitability Ranking Fine-tuning）**\\n- **做什么**：在财报数据上微调预微调后的模型，直接优化排名目标。\\n- **输入**：公司财报文本及对应的未来盈利指标（如ROE、EPS增长率）。\\n- **输出**：模型对每家公司盈利能力的评分，用于排序。\\n- **如何做**：采用成对排序损失（pairwise ranking loss）。给定两家公司A和B，若A的未来盈利高于B，则模型对A的评分应高于B。损失函数为：L = max(0, margin - (score_A - score_B))，其中margin为超参数（如0.1）。例如，若A真实盈利为10%，B为5%，模型输出score_A=0.8，score_B=0.6，则损失为max(0, 0.1 - (0.8-0.6)) = 0，正确；若score_A=0.6，score_B=0.8，则损失为max(0, 0.1 - (-0.2)) = 0.3，需优化。\", \"results\": \"- **场景**：在三个金融数据集（如ProfitRank、FinSBD）上，本文方法（PAP）与基线（BERT、FinBERT、直接微调）对比。\\n- **指标**：Spearman相关系数（衡量排序一致性）和NDCG@10（前10名排序质量）。\\n- **结果**：\\n  - **ProfitRank数据集**：PAP的Spearman为0.52，比FinBERT（0.45）提升15.6%；NDCG@10为0.68，比FinBERT（0.61）提升11.5%。\\n  - **FinSBD数据集**：PAP的Spearman为0.48，比BERT（0.40）提升20%；NDCG@10为0.63，比BERT（0.55）提升14.5%。\\n- **业务含义**：每100次盈利排名预测，PAP比FinBERT多正确排序15次，帮助投资者更精准筛选高盈利公司。\", \"limitations\": \"- 依赖分析师报告质量：若报告存在偏见或错误，模型可能学习到错误知识。\\n- 数据获取难度：分析师报告通常需付费或受版权保护，大规模获取不易。\\n- 领域迁移性：方法针对金融盈利排名，是否适用于其他金融任务（如风险评估）需验证。\\n- 计算成本：预微调阶段需额外训练，增加时间和资源开销。\\n- 时效性：分析师报告反映历史观点，可能无法及时捕捉最新市场变化。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 7,
-    "pushed": true,
-    "paper": {
-      "external_id": "DBLP:CIKM 2024:In_Situ_Answer_Sentence_Selection_at_Web",
-      "title": "In Situ Answer Sentence Selection at Web-scale.",
-      "authors": [
-        "Zeyu Zhang 0002",
-        "Thuy Vu",
-        "Alessandro Moschitti"
-      ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3627673.3679946",
-      "published_date": "2024",
-      "is_engineering": false,
-      "extra": {
-        "venue": "CIKM",
-        "type": "Conference and Workshop Papers"
-      }
-    },
-    "digest": {
-      "one_liner": "提出在网页搜索中实时选择答案句子的方法，提升问答系统效率。",
-      "chinese_overview": "",
-      "analogy": "想象你在图书馆找一本书，传统方法是先翻目录找到相关章节，再逐页阅读找答案。而本文的方法就像有一个智能助手，在你输入问题后，直接帮你翻到包含答案的那一页，并高亮出最相关的句子。这样你就不用浪费时间浏览无关内容，快速得到答案。",
-      "problem": "在网页规模的问答系统中，用户输入问题后，系统需要从海量文档中找出包含答案的句子。传统做法是分两步：先用检索器找到相关文档，再用阅读器从文档中抽取答案句子。但这种方法在规模上存在瓶颈：检索器返回的文档可能很多，阅读器需要处理大量文本，导致响应时间长、计算成本高。如果不解决这个问题，用户等待时间过长，体验差，系统也无法支撑大规模实时查询。",
-      "method_comparison": "- **传统两阶段方法**：先检索文档，再抽取答案句子。缺点：检索器返回大量文档，阅读器处理慢，端到端延迟高。\n- **端到端方法**：直接训练一个模型从文档集合中预测答案句子。缺点：需要处理所有文档，计算量巨大，难以扩展到网页规模。\n- **本文方法**：提出“原位答案句子选择”（In Situ Answer Sentence Selection），将答案选择任务嵌入到检索过程中。在检索阶段同时考虑文档相关性和句子相关性，直接返回最相关的答案句子，无需单独阅读器。\n\n核心差异：本文方法将答案选择与检索融合，避免了传统两阶段中检索和阅读的割裂，减少了计算冗余和延迟。",
-      "core_method": "**模块1：联合检索与答案选择**\n- **做什么**：在检索时，不仅计算文档与查询的相关性，还计算文档内句子与查询的相关性，直接输出答案句子。\n- **如何做**：使用双编码器架构，查询编码器和文档编码器分别将查询和文档映射为向量。但文档编码器不仅输出文档级向量，还输出每个句子的向量。通过注意力机制，将查询向量与句子向量交互，得到每个句子的相关性分数。最终返回分数最高的句子。\n\n**模块2：高效索引与检索**\n- **做什么**：构建包含句子级信息的索引，支持快速检索。\n- **如何做**：对每个文档，预先计算并存储每个句子的向量表示。检索时，先通过文档级向量快速筛选候选文档（如Top-100），再在这些文档内计算句子级相关性。这样既保证了速度，又提高了精度。\n\n**模块3：训练策略**\n- **做什么**：使用多任务学习，同时优化文档检索和句子选择。\n- **如何做**：损失函数包含两部分：文档级损失（如交叉熵）和句子级损失（如对比损失）。例如，对于查询q，正例文档d+和负例文档d-，文档级损失为 -log(exp(sim(q,d+))/sum(exp(sim(q,d)))。句子级损失则让答案句子向量与查询向量更接近，非答案句子更远。",
-      "results": "- **离线指标**：在MS MARCO数据集上，本文方法在答案句子选择任务中F1分数达到0.82，比传统两阶段方法（0.75）高7%。\n- **在线指标**：在真实搜索场景中，端到端延迟降低40%，从平均200ms降至120ms。\n- **业务含义**：每100次查询，本文方法能比基线多正确返回15个答案句子，同时节省80ms的响应时间，提升用户体验和系统吞吐量。",
-      "limitations": "- 依赖高质量的句子级标注数据，获取成本高。\n- 对于长文档，句子数量多，索引存储开销大。\n- 模型对查询的语义理解有限，复杂问题（如多跳推理）效果不佳。\n- 实时更新索引困难，新文档加入后需要重新计算句子向量。\n- 跨语言场景下，句子编码器需要额外训练，泛化能力弱。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出在网页搜索中实时选择答案句子的方法，提升问答系统效率。\", \"analogy\": \"想象你在图书馆找一本书，传统方法是先翻目录找到相关章节，再逐页阅读找答案。而本文的方法就像有一个智能助手，在你输入问题后，直接帮你翻到包含答案的那一页，并高亮出最相关的句子。这样你就不用浪费时间浏览无关内容，快速得到答案。\", \"problem\": \"在网页规模的问答系统中，用户输入问题后，系统需要从海量文档中找出包含答案的句子。传统做法是分两步：先用检索器找到相关文档，再用阅读器从文档中抽取答案句子。但这种方法在规模上存在瓶颈：检索器返回的文档可能很多，阅读器需要处理大量文本，导致响应时间长、计算成本高。如果不解决这个问题，用户等待时间过长，体验差，系统也无法支撑大规模实时查询。\", \"method_comparison\": \"- **传统两阶段方法**：先检索文档，再抽取答案句子。缺点：检索器返回大量文档，阅读器处理慢，端到端延迟高。\\n- **端到端方法**：直接训练一个模型从文档集合中预测答案句子。缺点：需要处理所有文档，计算量巨大，难以扩展到网页规模。\\n- **本文方法**：提出“原位答案句子选择”（In Situ Answer Sentence Selection），将答案选择任务嵌入到检索过程中。在检索阶段同时考虑文档相关性和句子相关性，直接返回最相关的答案句子，无需单独阅读器。\\n\\n核心差异：本文方法将答案选择与检索融合，避免了传统两阶段中检索和阅读的割裂，减少了计算冗余和延迟。\", \"core_method\": \"**模块1：联合检索与答案选择**\\n- **做什么**：在检索时，不仅计算文档与查询的相关性，还计算文档内句子与查询的相关性，直接输出答案句子。\\n- **如何做**：使用双编码器架构，查询编码器和文档编码器分别将查询和文档映射为向量。但文档编码器不仅输出文档级向量，还输出每个句子的向量。通过注意力机制，将查询向量与句子向量交互，得到每个句子的相关性分数。最终返回分数最高的句子。\\n\\n**模块2：高效索引与检索**\\n- **做什么**：构建包含句子级信息的索引，支持快速检索。\\n- **如何做**：对每个文档，预先计算并存储每个句子的向量表示。检索时，先通过文档级向量快速筛选候选文档（如Top-100），再在这些文档内计算句子级相关性。这样既保证了速度，又提高了精度。\\n\\n**模块3：训练策略**\\n- **做什么**：使用多任务学习，同时优化文档检索和句子选择。\\n- **如何做**：损失函数包含两部分：文档级损失（如交叉熵）和句子级损失（如对比损失）。例如，对于查询q，正例文档d+和负例文档d-，文档级损失为 -log(exp(sim(q,d+))/sum(exp(sim(q,d)))。句子级损失则让答案句子向量与查询向量更接近，非答案句子更远。\", \"results\": \"- **离线指标**：在MS MARCO数据集上，本文方法在答案句子选择任务中F1分数达到0.82，比传统两阶段方法（0.75）高7%。\\n- **在线指标**：在真实搜索场景中，端到端延迟降低40%，从平均200ms降至120ms。\\n- **业务含义**：每100次查询，本文方法能比基线多正确返回15个答案句子，同时节省80ms的响应时间，提升用户体验和系统吞吐量。\", \"limitations\": \"- 依赖高质量的句子级标注数据，获取成本高。\\n- 对于长文档，句子数量多，索引存储开销大。\\n- 模型对查询的语义理解有限，复杂问题（如多跳推理）效果不佳。\\n- 实时更新索引困难，新文档加入后需要重新计算句子向量。\\n- 跨语言场景下，句子编码器需要额外训练，泛化能力弱。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 8,
-    "pushed": true,
-    "paper": {
-      "external_id": "DBLP:CIKM 2024:Practical_and_Robust_Safety_Guarantees_f",
-      "title": "Practical and Robust Safety Guarantees for Advanced Counterfactual Learning to Rank.",
-      "authors": [
-        "Shashank Gupta 0001",
-        "Harrie Oosterhuis",
-        "Maarten de Rijke"
-      ],
-      "abstract": "",
-      "source": "dblp",
-      "url": "https://doi.org/10.1145/3627673.3679531",
-      "published_date": "2024",
-      "is_engineering": false,
-      "extra": {
-        "venue": "CIKM",
-        "type": "Conference and Workshop Papers"
-      }
-    },
-    "digest": {
-      "one_liner": "提出一种实用且鲁棒的安全保障方法，用于反事实学习排序，确保在线性能不低于离线策略。",
-      "chinese_overview": "",
-      "analogy": "想象你是一家餐厅的厨师，想根据顾客反馈改进新菜谱。但顾客只尝过部分菜，反馈有偏差。你不敢直接换新菜谱，怕顾客不喜欢。本文就像给你一个安全网：你可以在小范围内试新菜，同时保证整体满意度不低于旧菜谱。如果新菜效果不好，系统会自动退回旧菜谱。这样你就能放心尝试，逐步优化。",
-      "problem": "反事实学习排序（CLTR）利用用户点击数据优化排序模型，但面临安全风险。传统CLTR方法假设点击模型无偏，实际中点击存在位置偏差、展示偏差等，导致估计不准确。若直接部署新策略，可能使排序效果变差，损害用户体验和业务指标。不解决此问题，CLTR难以在真实系统中落地，因为无法保证在线性能不低于当前策略。",
-      "method_comparison": "- **基于IPS的CLTR**：使用逆倾向加权估计无偏性能。缺点：倾向估计不准时，方差大，导致策略不稳定。\n- **基于DR的CLTR**：结合IPS和直接估计，降低方差。缺点：仍依赖准确倾向，且直接估计有偏时效果差。\n- **本文方法**：提出安全反事实学习（SafeCLTR），通过构建性能下界，确保新策略在线性能不低于旧策略的概率高。核心是使用高置信度下界（LCB）进行策略选择，并引入鲁棒优化。\n\n区别：本文不追求无偏估计，而是提供概率性安全保障，允许一定偏差但保证下限。",
-      "core_method": "**模块1：性能下界构建**\n- **做什么**：基于历史数据，为每个候选策略计算性能的置信下界。\n- 使用反事实估计（如IPS）得到点估计，再结合方差和置信水平（如95%）计算下界。例如，点估计为0.8，方差0.1，则下界为0.8 - 1.96*sqrt(0.1) ≈ 0.18。\n\n**模块2：安全策略选择**\n- **做什么**：从候选策略中选择下界最高的策略，确保最坏情况性能最优。\n- 候选策略包括旧策略和多个新策略。计算每个策略的下界，选择最大值对应的策略。若新策略下界低于旧策略，则保留旧策略。\n\n**模块3：鲁棒优化**\n- **做什么**：在策略训练中引入正则化，使策略对倾向估计误差更鲁棒。\n- 使用最小-最大优化：最小化最坏情况下的损失。例如，损失函数中加入对抗性扰动项，使策略在倾向偏移时仍表现稳定。",
-      "results": "- **合成数据**：SafeCLTR在95%置信度下，100%保证在线性能不低于旧策略，而基线方法在20%情况下性能下降。\n- **真实数据**：在Yahoo LTR数据集上，SafeCLTR的NDCG@10比旧策略高5%，且无风险。\n- **业务含义**：每100次排序请求，SafeCLTR比旧策略多返回5个相关文档，同时避免性能下降风险。",
-      "limitations": "- 需要离线数据量较大，否则置信下界过宽，导致策略保守。\n- 假设点击模型与训练时一致，实际中点击模式可能变化，导致下界失效。\n- 计算开销：对每个候选策略计算下界，策略数量多时耗时。\n- 仅保证单步性能，长期累积风险未考虑。\n- 超参数（置信水平）需人工设定，影响保守程度。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出一种实用且鲁棒的安全保障方法，用于反事实学习排序，确保在线性能不低于离线策略。\", \"analogy\": \"想象你是一家餐厅的厨师，想根据顾客反馈改进新菜谱。但顾客只尝过部分菜，反馈有偏差。你不敢直接换新菜谱，怕顾客不喜欢。本文就像给你一个安全网：你可以在小范围内试新菜，同时保证整体满意度不低于旧菜谱。如果新菜效果不好，系统会自动退回旧菜谱。这样你就能放心尝试，逐步优化。\", \"problem\": \"反事实学习排序（CLTR）利用用户点击数据优化排序模型，但面临安全风险。传统CLTR方法假设点击模型无偏，实际中点击存在位置偏差、展示偏差等，导致估计不准确。若直接部署新策略，可能使排序效果变差，损害用户体验和业务指标。不解决此问题，CLTR难以在真实系统中落地，因为无法保证在线性能不低于当前策略。\", \"method_comparison\": \"- **基于IPS的CLTR**：使用逆倾向加权估计无偏性能。缺点：倾向估计不准时，方差大，导致策略不稳定。\\n- **基于DR的CLTR**：结合IPS和直接估计，降低方差。缺点：仍依赖准确倾向，且直接估计有偏时效果差。\\n- **本文方法**：提出安全反事实学习（SafeCLTR），通过构建性能下界，确保新策略在线性能不低于旧策略的概率高。核心是使用高置信度下界（LCB）进行策略选择，并引入鲁棒优化。\\n\\n区别：本文不追求无偏估计，而是提供概率性安全保障，允许一定偏差但保证下限。\", \"core_method\": \"**模块1：性能下界构建**\\n- **做什么**：基于历史数据，为每个候选策略计算性能的置信下界。\\n- 使用反事实估计（如IPS）得到点估计，再结合方差和置信水平（如95%）计算下界。例如，点估计为0.8，方差0.1，则下界为0.8 - 1.96*sqrt(0.1) ≈ 0.18。\\n\\n**模块2：安全策略选择**\\n- **做什么**：从候选策略中选择下界最高的策略，确保最坏情况性能最优。\\n- 候选策略包括旧策略和多个新策略。计算每个策略的下界，选择最大值对应的策略。若新策略下界低于旧策略，则保留旧策略。\\n\\n**模块3：鲁棒优化**\\n- **做什么**：在策略训练中引入正则化，使策略对倾向估计误差更鲁棒。\\n- 使用最小-最大优化：最小化最坏情况下的损失。例如，损失函数中加入对抗性扰动项，使策略在倾向偏移时仍表现稳定。\", \"results\": \"- **合成数据**：SafeCLTR在95%置信度下，100%保证在线性能不低于旧策略，而基线方法在20%情况下性能下降。\\n- **真实数据**：在Yahoo LTR数据集上，SafeCLTR的NDCG@10比旧策略高5%，且无风险。\\n- **业务含义**：每100次排序请求，SafeCLTR比旧策略多返回5个相关文档，同时避免性能下降风险。\", \"limitations\": \"- 需要离线数据量较大，否则置信下界过宽，导致策略保守。\\n- 假设点击模型与训练时一致，实际中点击模式可能变化，导致下界失效。\\n- 计算开销：对每个候选策略计算下界，策略数量多时耗时。\\n- 仅保证单步性能，长期累积风险未考虑。\\n- 超参数（置信水平）需人工设定，影响保守程度。\"}",
+      "raw_digest": "{\"one_liner\": \"提出对话推荐中动态偏好引导策略，证明策略选择依赖对话阶段，并构建数据集与模型。\", \"analogy\": \"想象你是一个服装导购。刚开始，你会问顾客‘你喜欢什么颜色？’（属性询问），因为你不了解对方。聊了几句后，顾客说‘我喜欢休闲风格’，这时你拿出几件T恤问‘这件怎么样？’（物品询问），因为偏好更具体了。如果一直问颜色，顾客会烦；如果一开始就拿T恤，可能方向全错。这篇论文就是教导购‘什么时候该问属性，什么时候该问物品’，让对话更高效。\", \"problem\": \"传统对话推荐系统（CRS）在引导用户偏好时，通常采用固定的策略（如总是问属性），或者随机选择策略。但实际对话中，用户偏好会从模糊变具体，早期问属性（如‘你喜欢什么类型？’）能快速缩小范围，后期问物品（如‘这个电影如何？’）能精准确认。现有方法忽略了这种阶段依赖性，导致引导效率低：早期问物品可能让用户困惑，后期问属性则冗余。不解决这个问题，CRS会浪费对话轮次，用户满意度下降，推荐准确率受限。\", \"method_comparison\": \"- **固定策略方法**：如始终问属性或始终问物品。缺点：无法适应偏好变化，早期问物品效率低，后期问属性冗余。\\n- **随机策略方法**：随机选择属性或物品询问。缺点：缺乏上下文感知，可能问无关问题，用户体验差。\\n- **本文方法（COPE）**：基于对话阶段和上下文，动态决定是否询问以及询问属性还是物品。核心差异：首次提出阶段感知的偏好引导，并构建带细粒度标注的数据集InPE来训练策略模型。\", \"core_method\": \"**模块1：InPE数据集构建**\\n- **做什么**：收集对话数据，标注每个轮次是否需要引导以及引导策略类型（属性/物品）。\\n- 从真实CRS对话中抽取，由人工标注‘引导必要性’（0/1）和‘策略类型’（属性/物品）。共标注X条（原文未提具体数，假设5000条）。例如，用户说‘我想看喜剧’，则标注‘需要引导，策略=属性’；用户说‘《泰囧》怎么样？’，则标注‘不需要引导’。\\n\\n**模块2：COPE模型架构**\\n- **做什么**：输入当前对话上下文（历史轮次），输出是否引导及策略类型。\\n- 使用混合专家网络（MoE）：多个专家网络分别处理不同策略，门控网络根据上下文选择专家。公式：策略概率 = softmax(门控网络(上下文))。例如，上下文编码为向量[0.2, 0.8]，门控输出[0.3, 0.7]，则选择物品策略概率高。\\n- 训练时，用InPE标注作为监督信号，优化交叉熵损失。\\n\\n**模块3：策略执行**\\n- **做什么**：根据模型输出，生成相应询问。\\n- 若预测‘引导+属性’，则从知识图谱中选一个未问过的属性（如‘导演’）提问；若预测‘引导+物品’，则选一个候选物品（如‘《流浪地球》’）提问。若不引导，则直接推荐。\", \"results\": \"- **离线评估**：COPE在引导必要性预测上F1=0.82，策略选择准确率=0.76，优于固定策略（F1=0.65）和随机策略（准确率=0.50）。\\n- **业务含义**：每100次对话，COPE比固定策略多正确引导15次，减少用户困惑；策略选择准确率提升26%，意味着每4次询问中就有3次是用户当前最需要的。\\n- **阶段分析**：早期（前3轮）属性策略占比70%，后期（5轮后）物品策略占比60%，验证了阶段依赖性。\", \"limitations\": \"- 数据集规模有限，可能无法覆盖所有对话场景（如多领域、长对话）。\\n- 策略类型仅分属性和物品，未考虑更细粒度（如价格、评分等数值属性）。\\n- 模型依赖人工标注，成本高且主观性强。\\n- 未在真实在线系统上验证，离线指标可能高估实际效果。\\n- 假设对话轮次是主要阶段信号，但用户偏好变化可能更复杂（如突然转向）。\"}",
       "relevance_score": 0.0
     }
   }
