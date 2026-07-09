@@ -1,7 +1,7 @@
 [
   {
     "position": 1,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.07318",
       "title": "R^3: Advertisement Compliance Rectification via Group-Relative Experience Extractor and Curriculum Reinforcement",
