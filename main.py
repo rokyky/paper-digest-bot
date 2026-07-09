@@ -490,21 +490,20 @@ class Pipeline:
         return "其他"
 
     @staticmethod
-    def _make_paper_filename(paper) -> str:
+    def _make_paper_filename(paper, category: str = "") -> str:
         """按规范生成文件名：{缩写}_{5-10字描述}.md
 
         规则参考：.提示词_论文精读写作规范.md
         - 前半段：从标题提取方法/模型缩写（第一个大写缩写、或竞赛名）
-        - 后半段：5-10 字中文描述
+        - 后半段：复用分类名作为描述
         - 不包含论文全称、作者、年份、arXiv ID
         """
         title = paper.title
-        title_lower = title.lower()
 
         # --- 前半段：提取缩写 ---
+        import re
         prefix = ""
         # 优先提取括号内的模型名，如 "Sortify: ..." "LUCID: ..."
-        import re
         m = re.match(r'^([A-Z][A-Za-z0-9_-]{1,20})[:\s]', title)
         if m:
             prefix = m.group(1)
@@ -518,35 +517,9 @@ class Pipeline:
                 first_word = title.split()[0] if title.split() else ""
                 prefix = first_word[:15] if first_word else "paper"
 
-        # --- 后半段：生成 5-10 字中文描述 ---
-        # 从 keywords 中找匹配的中文
-        description = ""
-        cat_keywords = {
-            "检索": ["retrieval", "recall", "召回", "dense retrieval", "matching", "向量检索"],
-            "排序": ["ranking", "reranking", "排序", "CTR", "learning to rank"],
-            "推荐": ["recommendation", "recommender", "推荐", "generative"],
-            "多任务": ["multi-task", "multi-goal", "多任务", "多目标"],
-            "多模态": ["multimodal", "multi-modal", "多模态", "cross-modal", "vision"],
-            "序列": ["sequential", "sequence", "序列", "session"],
-            "冷启动": ["cold start", "冷启动"],
-            "蒸馏": ["distillation", "蒸馏", "压缩"],
-            "广告": ["advertising", "bidding", "广告", "竞价", "出价"],
-            "跨域": ["cross-domain", "跨域", "transfer"],
-            "图": ["graph", "图神经", "GNN"],
-        }
-        for desc, kws in cat_keywords.items():
-            for kw in kws:
-                if kw in title_lower or kw in paper.abstract.lower()[:200]:
-                    description = desc
-                    break
-            if description:
-                break
-        if not description and paper.extra.get("type"):
-            description = paper.extra["type"]
-        if not description:
-            description = "论文精读"
+        # --- 后半段：直接使用分类名 ---
+        description = category if category else "论文精读"
 
-        # 拼接
         safe_prefix = "".join(c if c.isalnum() or c in "-_" else "_" for c in prefix)[:20]
         filename = f"{safe_prefix}_{description}.md"
         return filename
@@ -567,7 +540,7 @@ class Pipeline:
             category = self._classify_paper(paper)
 
             # ── 2. 生成文件名 ──
-            filename = self._make_paper_filename(paper)
+            filename = self._make_paper_filename(paper, category)
 
             # ── 3. 输出目录 ──
             export_dir = self.config.get("push", {}).get("local_export_dir", "")

@@ -77,7 +77,7 @@ def classify_paper(paper) -> str:
     return "其他"
 
 
-def make_paper_filename(paper) -> str:
+def make_paper_filename(paper, category="") -> str:
     """按规范生成文件名：{缩写}_{5-10字描述}.md"""
     title = paper.title
     title_lower = title.lower()
@@ -96,31 +96,7 @@ def make_paper_filename(paper) -> str:
             prefix = first_word[:15] if first_word else "paper"
 
     # 后半段：中文描述
-    abstract_lower = paper.abstract.lower()[:200]
-    description = ""
-    cat_keywords = {
-        "检索": ["retrieval", "recall", "召回", "dense retrieval", "matching", "向量检索"],
-        "排序": ["ranking", "reranking", "排序", "CTR", "learning to rank"],
-        "推荐": ["recommendation", "recommender", "推荐", "generative"],
-        "多任务": ["multi-task", "multi-goal", "多任务", "多目标"],
-        "多模态": ["multimodal", "multi-modal", "多模态"],
-        "序列": ["sequential", "sequence", "序列"],
-        "冷启动": ["cold start", "冷启动"],
-        "蒸馏": ["distillation", "蒸馏", "压缩"],
-        "广告": ["advertising", "bidding", "广告"],
-        "跨域": ["cross-domain", "跨域"],
-        "图": ["graph", "图神经", "GNN"],
-    }
-    for desc, kws in cat_keywords.items():
-        for kw in kws:
-            if kw in title_lower or kw in abstract_lower:
-                description = desc
-                break
-        if description:
-            break
-
-    if not description:
-        description = "论文精读"
+    description = category if category else "论文精读"
 
     safe_prefix = "".join(c if c.isalnum() or c in "-_" else "_" for c in prefix)[:20]
     return f"{safe_prefix}_{description}.md"
@@ -171,7 +147,7 @@ def export_from_queue_and_pushed_ids(root_dir: Path, outdir: Path):
     for digest in pushed_digests:
         paper = digest.paper
         category = classify_paper(paper)
-        filename = make_paper_filename(paper)
+        filename = make_paper_filename(paper, category)
 
         file_path = outdir / category / filename
         file_path.parent.mkdir(parents=True, exist_ok=True)
