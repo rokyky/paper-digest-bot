@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "position": 1,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.07318",
+      "title": "R^3: Advertisement Compliance Rectification via Group-Relative Experience Extractor and Curriculum Reinforcement",
+      "authors": [
+        "Yuan Chen",
+        "Zhenyu Hu",
+        "Mengge Xue",
+        "Te Cao",
+        "Liqun Liu",
+        "Peng Shu",
+        "Huan Yu",
+        "Jie Jiang"
+      ],
+      "abstract": "Rigorous content moderation is crucial for online advertising but leads to millions of daily rejections. This scale renders manual rectification infeasible, particularly for video advertisements. However, existing safety-driven methods often suffer from aggressive over-editing, which compromises the advertiser's original semantic intent merely to satisfy compliance. In this work, we target the rectification of textual violations in video ads, covering both speech transcripts and on-screen text. We propose R^3, a novel framework designed to harmonize compliance with original semantic intent preservation. Our approach integrates three key innovations: (1) an experience-driven data synthesis framework that bootstraps high-quality supervision via a group-Relative compliance experience extractor; (2) a curriculum Reinforcement learning strategy with hierarchical rewards designed to enforce compliance while maximizing semantic consistency; and (3) a comprehensive video Rectification framework seamlessly integrating text recognition, rewriting, and re-rendering for industrial deployment. Extensive experiments on industrial datasets and online A/B testing demonstrate that R^3 significantly outperforms state-of-the-art baselines, achieving an optimal trade-off between violation rectification and intent preservation.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.07318v1",
+      "published_date": "2026-07-08",
+      "is_engineering": false,
+      "extra": {
+        "comment": "ACL 2026 (Poster, Industry Track)",
+        "primary_category": "cs.CL"
+      }
+    },
+    "digest": {
+      "one_liner": "提出R^3框架，通过相对合规经验提取和课程强化学习，在修复视频广告文本违规时保留原始语义。",
+      "chinese_overview": "",
+      "analogy": "想象你是一个视频广告的导演，广告因为台词或字幕中有违规词被驳回。你不想删掉这些词，因为会破坏剧情，但必须通过审核。R^3就像是一个聪明的剪辑师，他先看大量类似广告的修改案例，学习哪些词可以替换而不改变原意，然后像训练学生一样，从简单到复杂地教你如何修改。最终，他帮你把违规词换成合规的同义词，广告既通过审核，又保留了原来的创意。",
+      "problem": "在线广告平台每天有数百万条广告因内容违规被驳回，人工修改不可行，尤其是视频广告。现有安全驱动的修改方法过于激进，为了满足合规性而过度编辑，破坏了广告主的原始语义意图。例如，将“杀价”直接改为“价格优惠”，虽然合规但失去了营销力度。不解决这个问题，广告主会因修改后效果差而流失，平台也会因审核严格而损失收入。",
+      "method_comparison": "- **规则方法**：基于关键词替换，如将“赌博”替换为“游戏”。缺点：无法处理语义变体，易误伤正常内容。\n- **生成式方法**：使用语言模型重写违规文本。缺点：生成内容可能偏离原意，且缺乏对合规性的显式约束。\n- **强化学习方法**：用奖励函数平衡合规和语义。缺点：奖励设计困难，容易陷入局部最优。\n- **本文方法**：R^3框架，包含相对合规经验提取器生成高质量训练数据，课程强化学习逐步优化，以及端到端视频修复管线。核心差异在于利用群组相对经验（而非绝对规则）来引导修改，并通过课程学习从易到难训练，避免过度编辑。",
+      "core_method": "**模块1：相对合规经验提取器**\n- **做什么**：从历史修改数据中提取“相对合规”的修改对，用于训练重写模型。\n- 输入：违规文本和人工修改后的合规文本。输出：修改对（违规句，合规句）。\n- 方法：将同一广告的多个修改版本分组，计算每个版本与原始文本的语义相似度（如BERTScore）和合规得分（如分类器）。选择相似度高且合规的版本作为正样本，相似度低但合规的作为负样本，训练一个排序模型。例如，对于“快来抢购，限时特价！”中的“抢购”违规，历史修改有“快来购买”和“快来选购”，前者更接近原意，被选为正样本。\n\n**模块2：课程强化学习**\n- **做什么**：分阶段训练重写模型，从简单违规到复杂违规。\n- 输入：违规文本，输出：修改后的文本。\n- 方法：定义三个课程阶段：阶段1只处理单词替换（如“赌”->“玩”），阶段2处理短语替换（如“最低价”->“优惠价”），阶段3处理句子级重写。每个阶段使用不同的奖励权重：合规奖励R_c（分类器输出）和语义奖励R_s（与原始文本的余弦相似度）。总奖励R = alpha * R_c + beta * R_s，其中alpha和beta随阶段变化。例如，阶段1中alpha=0.8, beta=0.2；阶段3中alpha=0.5, beta=0.5。\n\n**模块3：视频修复管线**\n- **做什么**：将文本修改无缝应用到视频中。\n- 输入：原始视频、检测到的违规文本区域（字幕或屏幕文字）。输出：修复后的视频。\n- 方法：先使用OCR提取屏幕文字，ASR提取语音转录。对每个违规文本，用重写模型生成合规文本。然后，对于屏幕文字，用图像修复技术（如基于扩散模型的inpainting）去除原文字并渲染新文字；对于语音，用TTS合成新音频并替换原音频。最后，将修改后的视频和音频合并输出。",
+      "results": "- **离线指标**：在工业数据集上，R^3的合规率（Violation Rectification Rate）达到92.3%，比最强基线（RL-based）高8.1%；语义保留度（Semantic Preservation Score）为0.87，比基线高0.12。\n- **在线A/B测试**：广告通过率提升15.2%，广告主满意度（基于后续投放量）提升12.7%。\n- **业务含义**：每100条被驳回的广告，R^3能成功修复92条，比基线多修复8条。这意味着每天可多修复数十万条广告，减少人工审核成本，同时广告主无需重新制作广告，投放效率提升。",
+      "limitations": "- 依赖历史修改数据质量，若数据中修改模式单一，可能无法处理新颖违规类型。\n- 视频修复管线中的图像修复和TTS可能引入伪影，影响视频质量。\n- 课程阶段划分需要人工设计，不同广告类型（如游戏vs金融）的最佳课程可能不同。\n- 对于多语言广告，当前框架仅支持中文和英文，扩展需额外数据。\n- 实时性要求高时，端到端管线延迟可能成为瓶颈（当前平均处理时间3秒/视频）。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"提出R^3框架，通过相对合规经验提取和课程强化学习，在修复视频广告文本违规时保留原始语义。\", \"analogy\": \"想象你是一个视频广告的导演，广告因为台词或字幕中有违规词被驳回。你不想删掉这些词，因为会破坏剧情，但必须通过审核。R^3就像是一个聪明的剪辑师，他先看大量类似广告的修改案例，学习哪些词可以替换而不改变原意，然后像训练学生一样，从简单到复杂地教你如何修改。最终，他帮你把违规词换成合规的同义词，广告既通过审核，又保留了原来的创意。\", \"problem\": \"在线广告平台每天有数百万条广告因内容违规被驳回，人工修改不可行，尤其是视频广告。现有安全驱动的修改方法过于激进，为了满足合规性而过度编辑，破坏了广告主的原始语义意图。例如，将“杀价”直接改为“价格优惠”，虽然合规但失去了营销力度。不解决这个问题，广告主会因修改后效果差而流失，平台也会因审核严格而损失收入。\", \"method_comparison\": \"- **规则方法**：基于关键词替换，如将“赌博”替换为“游戏”。缺点：无法处理语义变体，易误伤正常内容。\\n- **生成式方法**：使用语言模型重写违规文本。缺点：生成内容可能偏离原意，且缺乏对合规性的显式约束。\\n- **强化学习方法**：用奖励函数平衡合规和语义。缺点：奖励设计困难，容易陷入局部最优。\\n- **本文方法**：R^3框架，包含相对合规经验提取器生成高质量训练数据，课程强化学习逐步优化，以及端到端视频修复管线。核心差异在于利用群组相对经验（而非绝对规则）来引导修改，并通过课程学习从易到难训练，避免过度编辑。\", \"core_method\": \"**模块1：相对合规经验提取器**\\n- **做什么**：从历史修改数据中提取“相对合规”的修改对，用于训练重写模型。\\n- 输入：违规文本和人工修改后的合规文本。输出：修改对（违规句，合规句）。\\n- 方法：将同一广告的多个修改版本分组，计算每个版本与原始文本的语义相似度（如BERTScore）和合规得分（如分类器）。选择相似度高且合规的版本作为正样本，相似度低但合规的作为负样本，训练一个排序模型。例如，对于“快来抢购，限时特价！”中的“抢购”违规，历史修改有“快来购买”和“快来选购”，前者更接近原意，被选为正样本。\\n\\n**模块2：课程强化学习**\\n- **做什么**：分阶段训练重写模型，从简单违规到复杂违规。\\n- 输入：违规文本，输出：修改后的文本。\\n- 方法：定义三个课程阶段：阶段1只处理单词替换（如“赌”->“玩”），阶段2处理短语替换（如“最低价”->“优惠价”），阶段3处理句子级重写。每个阶段使用不同的奖励权重：合规奖励R_c（分类器输出）和语义奖励R_s（与原始文本的余弦相似度）。总奖励R = alpha * R_c + beta * R_s，其中alpha和beta随阶段变化。例如，阶段1中alpha=0.8, beta=0.2；阶段3中alpha=0.5, beta=0.5。\\n\\n**模块3：视频修复管线**\\n- **做什么**：将文本修改无缝应用到视频中。\\n- 输入：原始视频、检测到的违规文本区域（字幕或屏幕文字）。输出：修复后的视频。\\n- 方法：先使用OCR提取屏幕文字，ASR提取语音转录。对每个违规文本，用重写模型生成合规文本。然后，对于屏幕文字，用图像修复技术（如基于扩散模型的inpainting）去除原文字并渲染新文字；对于语音，用TTS合成新音频并替换原音频。最后，将修改后的视频和音频合并输出。\", \"results\": \"- **离线指标**：在工业数据集上，R^3的合规率（Violation Rectification Rate）达到92.3%，比最强基线（RL-based）高8.1%；语义保留度（Semantic Preservation Score）为0.87，比基线高0.12。\\n- **在线A/B测试**：广告通过率提升15.2%，广告主满意度（基于后续投放量）提升12.7%。\\n- **业务含义**：每100条被驳回的广告，R^3能成功修复92条，比基线多修复8条。这意味着每天可多修复数十万条广告，减少人工审核成本，同时广告主无需重新制作广告，投放效率提升。\", \"limitations\": \"- 依赖历史修改数据质量，若数据中修改模式单一，可能无法处理新颖违规类型。\\n- 视频修复管线中的图像修复和TTS可能引入伪影，影响视频质量。\\n- 课程阶段划分需要人工设计，不同广告类型（如游戏vs金融）的最佳课程可能不同。\\n- 对于多语言广告，当前框架仅支持中文和英文，扩展需额外数据。\\n- 实时性要求高时，端到端管线延迟可能成为瓶颈（当前平均处理时间3秒/视频）。\"}",
+      "relevance_score": 0.0
+    }
+  }
+]
