@@ -133,7 +133,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.08107",
       "title": "BACH: A Bayesian Admixture of Contrastive Heads for Multi-Interest Two-Tower Retrieval",
