@@ -41,7 +41,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.08662",
       "title": "WebSwarm: Recursive Multi-Agent Orchestration for Deep-and-Wide Web Search",
