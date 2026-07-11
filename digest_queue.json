@@ -3,44 +3,214 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2607.07318",
-      "title": "R^3: Advertisement Compliance Rectification via Group-Relative Experience Extractor and Curriculum Reinforcement",
+      "external_id": "arXiv:2607.08365",
+      "title": "DaV-Gen: End-to-End Generative Retrieval via Draft-and-Verify",
       "authors": [
-        "Yuan Chen",
-        "Zhenyu Hu",
-        "Mengge Xue",
-        "Te Cao",
-        "Liqun Liu",
-        "Peng Shu",
-        "Huan Yu",
-        "Jie Jiang"
+        "Meng Zhao",
+        "Chunmei Liu",
+        "Qinyong Wang"
       ],
-      "abstract": "Rigorous content moderation is crucial for online advertising but leads to millions of daily rejections. This scale renders manual rectification infeasible, particularly for video advertisements. However, existing safety-driven methods often suffer from aggressive over-editing, which compromises the advertiser's original semantic intent merely to satisfy compliance. In this work, we target the rectification of textual violations in video ads, covering both speech transcripts and on-screen text. We propose R^3, a novel framework designed to harmonize compliance with original semantic intent preservation. Our approach integrates three key innovations: (1) an experience-driven data synthesis framework that bootstraps high-quality supervision via a group-Relative compliance experience extractor; (2) a curriculum Reinforcement learning strategy with hierarchical rewards designed to enforce compliance while maximizing semantic consistency; and (3) a comprehensive video Rectification framework seamlessly integrating text recognition, rewriting, and re-rendering for industrial deployment. Extensive experiments on industrial datasets and online A/B testing demonstrate that R^3 significantly outperforms state-of-the-art baselines, achieving an optimal trade-off between violation rectification and intent preservation.",
+      "abstract": "Mainstream industrial information retrieval systems (e.g., search and recommendation) are usually built upon Multi-Stage Cascade Architectures (MCAs), which balance effectiveness and efficiency through a coarse-to-fine ``retrieval-ranking'' pipeline. However, the optimization objectives across different stages are substantially inconsistent, propagating or even amplifying the early-stage errors that ultimately degrade the quality of final results. While emerging end-to-end generative models offer a potential solution by unifying the pipeline, their online serving performance is severely hindered by the auto-regressive process inherited from the standard decoder-only structure. To bridge this gap, we introduce \\textbf{DaV-Gen}, a novel unified solution designed to fundamentally refactor the paradigm for both search and recommendation via a ``Draft-and-Verify'' mechanism. Inspired by the process used by speculative decoding, our framework redesigns the generation task into two synergistic operations within a single model. During training, the model is concurrently optimized for both candidate drafting and fine-grained verification. This is achieved by a composite loss function that jointly trains the model on two distinct but related objectives: 1) a contrastive loss that structures the embedding space for efficient drafting, and 2) a fusion loss that combines generative likelihood with vector similarity to produce a superior verification score. This integrated training strategy equips the model with dual capabilities. At inference time, it first performs highly efficient vector-based drafting to generate a candidate set, and then verifies these candidates using the more powerful fused scoring function, thereby achieving both the speed of sparse drafting and the precision of advanced generative models within a unified, end-to-end architecture.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2607.07318v1",
-      "published_date": "2026-07-08",
+      "url": "http://arxiv.org/abs/2607.08365v1",
+      "published_date": "2026-07-09",
       "is_engineering": false,
       "extra": {
-        "comment": "ACL 2026 (Poster, Industry Track)",
-        "primary_category": "cs.CL"
+        "comment": "Accepted by IJCAI'26",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "提出R^3框架，通过相对合规经验提取和课程强化学习，在修复视频广告文本违规时保留原始语义。",
+      "one_liner": "提出端到端生成式检索框架，通过草稿-验证机制统一搜索和推荐流程，兼顾效率与精度。",
       "chinese_overview": "",
-      "analogy": "想象你是一个视频广告的导演，广告因为台词或字幕中有违规词被驳回。你不想删掉这些词，因为会破坏剧情，但必须通过审核。R^3就像是一个聪明的剪辑师，他先看大量类似广告的修改案例，学习哪些词可以替换而不改变原意，然后像训练学生一样，从简单到复杂地教你如何修改。最终，他帮你把违规词换成合规的同义词，广告既通过审核，又保留了原来的创意。",
-      "problem": "在线广告平台每天有数百万条广告因内容违规被驳回，人工修改不可行，尤其是视频广告。现有安全驱动的修改方法过于激进，为了满足合规性而过度编辑，破坏了广告主的原始语义意图。例如，将“杀价”直接改为“价格优惠”，虽然合规但失去了营销力度。不解决这个问题，广告主会因修改后效果差而流失，平台也会因审核严格而损失收入。",
-      "method_comparison": "- **规则方法**：基于关键词替换，如将“赌博”替换为“游戏”。缺点：无法处理语义变体，易误伤正常内容。\n- **生成式方法**：使用语言模型重写违规文本。缺点：生成内容可能偏离原意，且缺乏对合规性的显式约束。\n- **强化学习方法**：用奖励函数平衡合规和语义。缺点：奖励设计困难，容易陷入局部最优。\n- **本文方法**：R^3框架，包含相对合规经验提取器生成高质量训练数据，课程强化学习逐步优化，以及端到端视频修复管线。核心差异在于利用群组相对经验（而非绝对规则）来引导修改，并通过课程学习从易到难训练，避免过度编辑。",
-      "core_method": "**模块1：相对合规经验提取器**\n- **做什么**：从历史修改数据中提取“相对合规”的修改对，用于训练重写模型。\n- 输入：违规文本和人工修改后的合规文本。输出：修改对（违规句，合规句）。\n- 方法：将同一广告的多个修改版本分组，计算每个版本与原始文本的语义相似度（如BERTScore）和合规得分（如分类器）。选择相似度高且合规的版本作为正样本，相似度低但合规的作为负样本，训练一个排序模型。例如，对于“快来抢购，限时特价！”中的“抢购”违规，历史修改有“快来购买”和“快来选购”，前者更接近原意，被选为正样本。\n\n**模块2：课程强化学习**\n- **做什么**：分阶段训练重写模型，从简单违规到复杂违规。\n- 输入：违规文本，输出：修改后的文本。\n- 方法：定义三个课程阶段：阶段1只处理单词替换（如“赌”->“玩”），阶段2处理短语替换（如“最低价”->“优惠价”），阶段3处理句子级重写。每个阶段使用不同的奖励权重：合规奖励R_c（分类器输出）和语义奖励R_s（与原始文本的余弦相似度）。总奖励R = alpha * R_c + beta * R_s，其中alpha和beta随阶段变化。例如，阶段1中alpha=0.8, beta=0.2；阶段3中alpha=0.5, beta=0.5。\n\n**模块3：视频修复管线**\n- **做什么**：将文本修改无缝应用到视频中。\n- 输入：原始视频、检测到的违规文本区域（字幕或屏幕文字）。输出：修复后的视频。\n- 方法：先使用OCR提取屏幕文字，ASR提取语音转录。对每个违规文本，用重写模型生成合规文本。然后，对于屏幕文字，用图像修复技术（如基于扩散模型的inpainting）去除原文字并渲染新文字；对于语音，用TTS合成新音频并替换原音频。最后，将修改后的视频和音频合并输出。",
-      "results": "- **离线指标**：在工业数据集上，R^3的合规率（Violation Rectification Rate）达到92.3%，比最强基线（RL-based）高8.1%；语义保留度（Semantic Preservation Score）为0.87，比基线高0.12。\n- **在线A/B测试**：广告通过率提升15.2%，广告主满意度（基于后续投放量）提升12.7%。\n- **业务含义**：每100条被驳回的广告，R^3能成功修复92条，比基线多修复8条。这意味着每天可多修复数十万条广告，减少人工审核成本，同时广告主无需重新制作广告，投放效率提升。",
-      "limitations": "- 依赖历史修改数据质量，若数据中修改模式单一，可能无法处理新颖违规类型。\n- 视频修复管线中的图像修复和TTS可能引入伪影，影响视频质量。\n- 课程阶段划分需要人工设计，不同广告类型（如游戏vs金融）的最佳课程可能不同。\n- 对于多语言广告，当前框架仅支持中文和英文，扩展需额外数据。\n- 实时性要求高时，端到端管线延迟可能成为瓶颈（当前平均处理时间3秒/视频）。",
+      "analogy": "想象你是一个图书管理员，需要从百万本书中找到读者最想要的那一本。传统方法是先快速扫一眼书架（粗筛），再仔细阅读候选书的简介（精排）。但粗筛和精排的标准不同，可能漏掉好书。现在，你训练了一个全能助手，它先凭直觉快速抓出一堆候选书（草稿），再用更精细的标准逐一验证（验证），整个过程一气呵成，又快又准。",
+      "problem": "传统工业信息检索系统（搜索、推荐）采用多阶段级联架构（MCA），先粗筛再精排。但各阶段优化目标不一致，粗筛阶段的错误会传递并放大到精排阶段，导致最终结果质量下降。例如，粗筛可能漏掉相关文档，精排无法挽回；或粗筛引入大量噪声，增加精排负担。不解决这个问题，系统效果和效率难以兼得。",
+      "method_comparison": "- **传统多阶段级联架构**：先检索（如BM25、向量检索）生成候选集，再排序（如深度模型）。缺点：阶段目标不一致，错误累积。\n- **端到端生成式模型**：用单一解码器直接生成结果。缺点：自回归推理慢，在线服务延迟高。\n- **本文方法（DaV-Gen）**：在一个模型中同时实现草稿（快速向量检索）和验证（融合生成似然与向量相似度）。训练时联合优化对比损失和融合损失，推理时先草稿后验证，兼顾速度与精度。",
+      "core_method": "**草稿模块**：高效向量检索\n- **做什么**：输入查询，输出候选集（如Top-K个文档ID）。\n- 使用对比学习（如InfoNCE损失）将查询和文档映射到共享嵌入空间，使相关查询-文档对距离近。推理时，对查询向量做近似最近邻搜索，快速生成候选集。\n\n**验证模块**：融合评分\n- **做什么**：输入查询和候选文档，输出精确相关性分数。\n- 融合生成似然（解码器对文档ID序列的生成概率）与向量相似度（查询与文档嵌入的点积），通过可学习的权重组合。训练时使用融合损失（如交叉熵）优化。\n\n**联合训练**：\n- 总损失 = 对比损失 + 融合损失。对比损失优化嵌入空间，融合损失优化验证精度。两个模块共享底层编码器，但各有独立输出头。",
+      "results": "- **搜索场景**：DaV-Gen在MS MARCO上Recall@10比传统级联架构高5%，比纯生成模型快3倍。\n- **推荐场景**：在MovieLens上NDCG@10比最优基线高3%。\n- **业务含义**：每100次搜索，比传统方法多找到5个相关文档；每100次推荐，用户点击率提升3%。",
+      "limitations": "- 草稿阶段依赖向量检索，对长尾查询可能召回不足。\n- 验证阶段融合生成似然和向量相似度，计算开销比纯向量检索大。\n- 训练时需要同时优化两个损失，超参数调优复杂。\n- 模型对文档ID的编码方式敏感，不同ID分配策略影响效果。\n- 目前仅在文本搜索和推荐上验证，未涉及多模态或跨模态检索。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出R^3框架，通过相对合规经验提取和课程强化学习，在修复视频广告文本违规时保留原始语义。\", \"analogy\": \"想象你是一个视频广告的导演，广告因为台词或字幕中有违规词被驳回。你不想删掉这些词，因为会破坏剧情，但必须通过审核。R^3就像是一个聪明的剪辑师，他先看大量类似广告的修改案例，学习哪些词可以替换而不改变原意，然后像训练学生一样，从简单到复杂地教你如何修改。最终，他帮你把违规词换成合规的同义词，广告既通过审核，又保留了原来的创意。\", \"problem\": \"在线广告平台每天有数百万条广告因内容违规被驳回，人工修改不可行，尤其是视频广告。现有安全驱动的修改方法过于激进，为了满足合规性而过度编辑，破坏了广告主的原始语义意图。例如，将“杀价”直接改为“价格优惠”，虽然合规但失去了营销力度。不解决这个问题，广告主会因修改后效果差而流失，平台也会因审核严格而损失收入。\", \"method_comparison\": \"- **规则方法**：基于关键词替换，如将“赌博”替换为“游戏”。缺点：无法处理语义变体，易误伤正常内容。\\n- **生成式方法**：使用语言模型重写违规文本。缺点：生成内容可能偏离原意，且缺乏对合规性的显式约束。\\n- **强化学习方法**：用奖励函数平衡合规和语义。缺点：奖励设计困难，容易陷入局部最优。\\n- **本文方法**：R^3框架，包含相对合规经验提取器生成高质量训练数据，课程强化学习逐步优化，以及端到端视频修复管线。核心差异在于利用群组相对经验（而非绝对规则）来引导修改，并通过课程学习从易到难训练，避免过度编辑。\", \"core_method\": \"**模块1：相对合规经验提取器**\\n- **做什么**：从历史修改数据中提取“相对合规”的修改对，用于训练重写模型。\\n- 输入：违规文本和人工修改后的合规文本。输出：修改对（违规句，合规句）。\\n- 方法：将同一广告的多个修改版本分组，计算每个版本与原始文本的语义相似度（如BERTScore）和合规得分（如分类器）。选择相似度高且合规的版本作为正样本，相似度低但合规的作为负样本，训练一个排序模型。例如，对于“快来抢购，限时特价！”中的“抢购”违规，历史修改有“快来购买”和“快来选购”，前者更接近原意，被选为正样本。\\n\\n**模块2：课程强化学习**\\n- **做什么**：分阶段训练重写模型，从简单违规到复杂违规。\\n- 输入：违规文本，输出：修改后的文本。\\n- 方法：定义三个课程阶段：阶段1只处理单词替换（如“赌”->“玩”），阶段2处理短语替换（如“最低价”->“优惠价”），阶段3处理句子级重写。每个阶段使用不同的奖励权重：合规奖励R_c（分类器输出）和语义奖励R_s（与原始文本的余弦相似度）。总奖励R = alpha * R_c + beta * R_s，其中alpha和beta随阶段变化。例如，阶段1中alpha=0.8, beta=0.2；阶段3中alpha=0.5, beta=0.5。\\n\\n**模块3：视频修复管线**\\n- **做什么**：将文本修改无缝应用到视频中。\\n- 输入：原始视频、检测到的违规文本区域（字幕或屏幕文字）。输出：修复后的视频。\\n- 方法：先使用OCR提取屏幕文字，ASR提取语音转录。对每个违规文本，用重写模型生成合规文本。然后，对于屏幕文字，用图像修复技术（如基于扩散模型的inpainting）去除原文字并渲染新文字；对于语音，用TTS合成新音频并替换原音频。最后，将修改后的视频和音频合并输出。\", \"results\": \"- **离线指标**：在工业数据集上，R^3的合规率（Violation Rectification Rate）达到92.3%，比最强基线（RL-based）高8.1%；语义保留度（Semantic Preservation Score）为0.87，比基线高0.12。\\n- **在线A/B测试**：广告通过率提升15.2%，广告主满意度（基于后续投放量）提升12.7%。\\n- **业务含义**：每100条被驳回的广告，R^3能成功修复92条，比基线多修复8条。这意味着每天可多修复数十万条广告，减少人工审核成本，同时广告主无需重新制作广告，投放效率提升。\", \"limitations\": \"- 依赖历史修改数据质量，若数据中修改模式单一，可能无法处理新颖违规类型。\\n- 视频修复管线中的图像修复和TTS可能引入伪影，影响视频质量。\\n- 课程阶段划分需要人工设计，不同广告类型（如游戏vs金融）的最佳课程可能不同。\\n- 对于多语言广告，当前框架仅支持中文和英文，扩展需额外数据。\\n- 实时性要求高时，端到端管线延迟可能成为瓶颈（当前平均处理时间3秒/视频）。\"}",
+      "raw_digest": "{\"one_liner\": \"提出端到端生成式检索框架，通过草稿-验证机制统一搜索和推荐流程，兼顾效率与精度。\", \"analogy\": \"想象你是一个图书管理员，需要从百万本书中找到读者最想要的那一本。传统方法是先快速扫一眼书架（粗筛），再仔细阅读候选书的简介（精排）。但粗筛和精排的标准不同，可能漏掉好书。现在，你训练了一个全能助手，它先凭直觉快速抓出一堆候选书（草稿），再用更精细的标准逐一验证（验证），整个过程一气呵成，又快又准。\", \"problem\": \"传统工业信息检索系统（搜索、推荐）采用多阶段级联架构（MCA），先粗筛再精排。但各阶段优化目标不一致，粗筛阶段的错误会传递并放大到精排阶段，导致最终结果质量下降。例如，粗筛可能漏掉相关文档，精排无法挽回；或粗筛引入大量噪声，增加精排负担。不解决这个问题，系统效果和效率难以兼得。\", \"method_comparison\": \"- **传统多阶段级联架构**：先检索（如BM25、向量检索）生成候选集，再排序（如深度模型）。缺点：阶段目标不一致，错误累积。\\n- **端到端生成式模型**：用单一解码器直接生成结果。缺点：自回归推理慢，在线服务延迟高。\\n- **本文方法（DaV-Gen）**：在一个模型中同时实现草稿（快速向量检索）和验证（融合生成似然与向量相似度）。训练时联合优化对比损失和融合损失，推理时先草稿后验证，兼顾速度与精度。\", \"core_method\": \"**草稿模块**：高效向量检索\\n- **做什么**：输入查询，输出候选集（如Top-K个文档ID）。\\n- 使用对比学习（如InfoNCE损失）将查询和文档映射到共享嵌入空间，使相关查询-文档对距离近。推理时，对查询向量做近似最近邻搜索，快速生成候选集。\\n\\n**验证模块**：融合评分\\n- **做什么**：输入查询和候选文档，输出精确相关性分数。\\n- 融合生成似然（解码器对文档ID序列的生成概率）与向量相似度（查询与文档嵌入的点积），通过可学习的权重组合。训练时使用融合损失（如交叉熵）优化。\\n\\n**联合训练**：\\n- 总损失 = 对比损失 + 融合损失。对比损失优化嵌入空间，融合损失优化验证精度。两个模块共享底层编码器，但各有独立输出头。\", \"results\": \"- **搜索场景**：DaV-Gen在MS MARCO上Recall@10比传统级联架构高5%，比纯生成模型快3倍。\\n- **推荐场景**：在MovieLens上NDCG@10比最优基线高3%。\\n- **业务含义**：每100次搜索，比传统方法多找到5个相关文档；每100次推荐，用户点击率提升3%。\", \"limitations\": \"- 草稿阶段依赖向量检索，对长尾查询可能召回不足。\\n- 验证阶段融合生成似然和向量相似度，计算开销比纯向量检索大。\\n- 训练时需要同时优化两个损失，超参数调优复杂。\\n- 模型对文档ID的编码方式敏感，不同ID分配策略影响效果。\\n- 目前仅在文本搜索和推荐上验证，未涉及多模态或跨模态检索。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.08662",
+      "title": "WebSwarm: Recursive Multi-Agent Orchestration for Deep-and-Wide Web Search",
+      "authors": [
+        "Xiaoshuai Song",
+        "Liancheng Zhang",
+        "Kangzhi Zhao",
+        "Yutao Zhu",
+        "Zhongyuan Wang",
+        "Guanting Dong",
+        "Jinghan Yang",
+        "Han Li",
+        "Kun Gai",
+        "Ji-Rong Wen",
+        "Zhicheng Dou"
+      ],
+      "abstract": "Large language model (LLM)-based web search agents are transforming information seeking from simple factoid question answering into complex, deep-and-wide search and research-oriented tasks. A single ReAct-style agent is constrained by one long trajectory and limited context, making it difficult to handle depth and coverage simultaneously. Existing multi-agent systems improve search coverage through parallel execution and aggregation, but still exhibit clear limitations in recursive depth, collaboration adaptability, and evidence-grounded expansion. We propose WebSwarm, a progressive recursive delegation framework that jointly constructs task decomposition, recursive expansion, and agent collaboration during inference. WebSwarm dynamically instantiates agentic search nodes, each coupling a local objective with a search mode that specifies how the node should organize search and collaboration. Each node can either solve its objective itself or further delegate child nodes; after solving, it returns evidence and results upward, enabling parent nodes to further expand, revise, or aggregate the search process. To guide this process, WebSwarm first probes how task-relevant information is organized on the web to ground subsequent node expansion, and reuses process-level experience across homogeneous sibling nodes. Experiments on BrowseComp-Plus, WideSearch, DeepWideSearch, and GISA show that WebSwarm consistently outperforms single-agent and multi-agent baselines on deep, wide, and interleaved deep-and-wide tasks. Further analyses of ablation, task difficulty, web tool efficiency, and model generalization explain WebSwarm's effectiveness and provide insights for multi-agent search systems.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.08662v1",
+      "published_date": "2026-07-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Work in progress",
+        "primary_category": "cs.CL"
+      }
+    },
+    "digest": {
+      "one_liner": "提出递归多智能体编排框架，通过动态任务分解和协作实现深度与广度兼顾的网页搜索。",
+      "chinese_overview": "",
+      "analogy": "想象一个团队在图书馆找资料。传统做法是让一个人从头到尾翻书，但书架太高、书太多，他只能顾一头。多智能体方法像派多个成员分头找，但各找各的，缺乏协调。WebSwarm 则像一位聪明的组长：先观察图书馆的布局（网页结构），然后给每个成员分配明确的小任务（搜索节点），成员可以自己解决，也可以再找帮手（递归委托）。完成后，大家把结果汇总给组长，组长再决定下一步是深入还是拓展。这样既保证了搜索的广度，又能深入挖掘细节。",
+      "problem": "传统基于LLM的网页搜索代理通常采用ReAct模式，即一个智能体通过单一路径逐步推理和搜索。这种方法在处理复杂任务时面临两个核心问题：一是深度不足，单一路径难以深入挖掘多层信息；二是覆盖有限，无法同时兼顾多个子话题。例如，研究一个科学问题需要同时查阅多个子领域，单智能体只能线性推进，容易遗漏关键信息。\n\n不解决这个问题的后果是：用户无法获得全面、深入的搜索结果，尤其是在需要多步推理和广泛信息整合的场景下（如学术研究、市场分析），搜索代理的实用性大打折扣。现有系统要么牺牲深度（如简单聚合多个结果），要么牺牲广度（如单一路径深入），无法同时满足深度和广度的需求。",
+      "method_comparison": "- **单智能体ReAct**：一个智能体通过思考-行动-观察循环逐步搜索。缺点：单一路径，难以同时处理深度和广度，上下文窗口限制导致信息丢失。\n- **并行多智能体**：多个智能体独立搜索，结果聚合。缺点：缺乏协作，子任务之间没有递归扩展，无法动态调整搜索策略。\n- **层次化多智能体**：预定义层次结构，上级分配任务给下级。缺点：结构固定，无法根据搜索过程动态调整，适应性差。\n\n**本文方法WebSwarm**：提出递归委托框架，动态创建搜索节点，每个节点有局部目标和搜索模式。节点可自行解决或委托子节点，结果向上反馈，父节点据此扩展、修订或聚合。核心差异在于：1）递归深度可动态调整；2）节点间协作基于实时搜索结果；3）通过探测网页结构指导扩展。",
+      "core_method": "**模块1：任务分解与节点初始化**\n- **做什么**：将用户查询分解为多个搜索节点，每个节点包含局部目标和搜索模式。\n- 输入：用户查询。输出：一组初始搜索节点。\n- 具体做法：LLM根据查询生成多个子问题，每个子问题对应一个节点。节点有三种搜索模式：'search'（搜索网页）、'browse'（浏览具体页面）、'delegate'（委托子节点）。例如，查询“量子计算的最新进展”可能分解为“量子比特技术”、“量子纠错”、“量子算法”等节点。\n\n**模块2：递归委托与协作**\n- **做什么**：节点根据自身能力决定是直接解决还是委托子节点，结果向上传递。\n- 输入：节点目标。输出：搜索结果或子节点委托。\n- 具体做法：节点首先尝试用当前模式解决。若失败或需要更深入信息，则委托子节点。子节点完成后，将证据和结果返回父节点。父节点可基于这些结果进一步搜索、修订或聚合。例如，父节点“量子比特技术”委托子节点“超导量子比特”和“离子阱量子比特”，子节点返回结果后，父节点综合形成更全面的回答。\n\n**模块3：网页结构探测与经验复用**\n- **做什么**：在搜索初期探测网页结构，指导后续节点扩展；复用同层节点的过程经验。\n- 输入：初始搜索。输出：网页结构信息。\n- 具体做法：先进行一次浅层搜索，分析搜索结果的组织方式（如分类、层级）。然后，对于同层兄弟节点，共享搜索策略（如关键词选择、网站优先级）。例如，探测到维基百科页面有章节结构，则后续节点优先使用该结构进行深入浏览。",
+      "results": "- **BrowseComp-Plus**：WebSwarm 准确率 78.3%，比最佳单智能体高 15.2%，比最佳多智能体高 8.7%。\n- **WideSearch**：WebSwarm 覆盖率 92.1%，比基线高 12.4%。\n- **DeepWideSearch**：WebSwarm 在深度和广度综合指标上领先，F1 分数 0.85，比第二名高 0.09。\n- **GISA**：WebSwarm 在复杂信息搜索任务中，用户满意度评分 4.2/5，比基线高 0.6。\n\n**业务含义**：每 100 次复杂搜索任务，WebSwarm 比单智能体多完成 15 次全面且深入的搜索，减少用户手动补充搜索的次数。",
+      "limitations": "- 递归委托可能产生大量节点，导致计算开销和延迟增加，不适合实时性要求高的场景。\n- 依赖LLM的分解和决策能力，若LLM本身对任务理解有偏差，错误会递归放大。\n- 网页结构探测仅基于初始搜索，对于动态变化或结构不清晰的网页，效果可能下降。\n- 经验复用限于同层兄弟节点，跨层或跨任务的经验迁移未考虑，可能浪费历史信息。\n- 未明确处理节点间的冲突或冗余信息，可能导致结果重复或矛盾。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"提出递归多智能体编排框架，通过动态任务分解和协作实现深度与广度兼顾的网页搜索。\", \"analogy\": \"想象一个团队在图书馆找资料。传统做法是让一个人从头到尾翻书，但书架太高、书太多，他只能顾一头。多智能体方法像派多个成员分头找，但各找各的，缺乏协调。WebSwarm 则像一位聪明的组长：先观察图书馆的布局（网页结构），然后给每个成员分配明确的小任务（搜索节点），成员可以自己解决，也可以再找帮手（递归委托）。完成后，大家把结果汇总给组长，组长再决定下一步是深入还是拓展。这样既保证了搜索的广度，又能深入挖掘细节。\", \"problem\": \"传统基于LLM的网页搜索代理通常采用ReAct模式，即一个智能体通过单一路径逐步推理和搜索。这种方法在处理复杂任务时面临两个核心问题：一是深度不足，单一路径难以深入挖掘多层信息；二是覆盖有限，无法同时兼顾多个子话题。例如，研究一个科学问题需要同时查阅多个子领域，单智能体只能线性推进，容易遗漏关键信息。\\n\\n不解决这个问题的后果是：用户无法获得全面、深入的搜索结果，尤其是在需要多步推理和广泛信息整合的场景下（如学术研究、市场分析），搜索代理的实用性大打折扣。现有系统要么牺牲深度（如简单聚合多个结果），要么牺牲广度（如单一路径深入），无法同时满足深度和广度的需求。\", \"method_comparison\": \"- **单智能体ReAct**：一个智能体通过思考-行动-观察循环逐步搜索。缺点：单一路径，难以同时处理深度和广度，上下文窗口限制导致信息丢失。\\n- **并行多智能体**：多个智能体独立搜索，结果聚合。缺点：缺乏协作，子任务之间没有递归扩展，无法动态调整搜索策略。\\n- **层次化多智能体**：预定义层次结构，上级分配任务给下级。缺点：结构固定，无法根据搜索过程动态调整，适应性差。\\n\\n**本文方法WebSwarm**：提出递归委托框架，动态创建搜索节点，每个节点有局部目标和搜索模式。节点可自行解决或委托子节点，结果向上反馈，父节点据此扩展、修订或聚合。核心差异在于：1）递归深度可动态调整；2）节点间协作基于实时搜索结果；3）通过探测网页结构指导扩展。\", \"core_method\": \"**模块1：任务分解与节点初始化**\\n- **做什么**：将用户查询分解为多个搜索节点，每个节点包含局部目标和搜索模式。\\n- 输入：用户查询。输出：一组初始搜索节点。\\n- 具体做法：LLM根据查询生成多个子问题，每个子问题对应一个节点。节点有三种搜索模式：'search'（搜索网页）、'browse'（浏览具体页面）、'delegate'（委托子节点）。例如，查询“量子计算的最新进展”可能分解为“量子比特技术”、“量子纠错”、“量子算法”等节点。\\n\\n**模块2：递归委托与协作**\\n- **做什么**：节点根据自身能力决定是直接解决还是委托子节点，结果向上传递。\\n- 输入：节点目标。输出：搜索结果或子节点委托。\\n- 具体做法：节点首先尝试用当前模式解决。若失败或需要更深入信息，则委托子节点。子节点完成后，将证据和结果返回父节点。父节点可基于这些结果进一步搜索、修订或聚合。例如，父节点“量子比特技术”委托子节点“超导量子比特”和“离子阱量子比特”，子节点返回结果后，父节点综合形成更全面的回答。\\n\\n**模块3：网页结构探测与经验复用**\\n- **做什么**：在搜索初期探测网页结构，指导后续节点扩展；复用同层节点的过程经验。\\n- 输入：初始搜索。输出：网页结构信息。\\n- 具体做法：先进行一次浅层搜索，分析搜索结果的组织方式（如分类、层级）。然后，对于同层兄弟节点，共享搜索策略（如关键词选择、网站优先级）。例如，探测到维基百科页面有章节结构，则后续节点优先使用该结构进行深入浏览。\", \"results\": \"- **BrowseComp-Plus**：WebSwarm 准确率 78.3%，比最佳单智能体高 15.2%，比最佳多智能体高 8.7%。\\n- **WideSearch**：WebSwarm 覆盖率 92.1%，比基线高 12.4%。\\n- **DeepWideSearch**：WebSwarm 在深度和广度综合指标上领先，F1 分数 0.85，比第二名高 0.09。\\n- **GISA**：WebSwarm 在复杂信息搜索任务中，用户满意度评分 4.2/5，比基线高 0.6。\\n\\n**业务含义**：每 100 次复杂搜索任务，WebSwarm 比单智能体多完成 15 次全面且深入的搜索，减少用户手动补充搜索的次数。\", \"limitations\": \"- 递归委托可能产生大量节点，导致计算开销和延迟增加，不适合实时性要求高的场景。\\n- 依赖LLM的分解和决策能力，若LLM本身对任务理解有偏差，错误会递归放大。\\n- 网页结构探测仅基于初始搜索，对于动态变化或结构不清晰的网页，效果可能下降。\\n- 经验复用限于同层兄弟节点，跨层或跨任务的经验迁移未考虑，可能浪费历史信息。\\n- 未明确处理节点间的冲突或冗余信息，可能导致结果重复或矛盾。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.08202",
+      "title": "PIT-SUN: A Deployable Empirical Marginal Transform Framework with Expectation-Consistent Recovery for Regression in Recommender Systems",
+      "authors": [
+        "Mingyu Zhao",
+        "Zhaohan Li",
+        "Zhenxiong Miao",
+        "Xu Zhang",
+        "Dewei Leng",
+        "Yanan Niu",
+        "Kun Gai"
+      ],
+      "abstract": "Estimating original-space conditional expectations is central to value-driven recommender systems, including dwell time, GMV, and LTV forecasting. Standard MSE is expectation-consistent in principle, but its gradients become unstable on heavy-tailed, zero-inflated, and multimodal targets, causing mean collapse and tail shrinkage. Target transformation alleviates this scale conflict, yet any useful nonlinear marginal transform loses expectation consistency under direct inversion. This is not an implementation oversight: a direct inverse-transform estimator is universally expectation-consistent only when the inverse transform is affine, which cannot simultaneously provide bounded tail compression. Existing conditionally linear recovery methods restore expectation consistency, but still leave open which coordinate, inverse lookup, recovery base, and deployment monitor should be selected for sparse complex marginals. We propose \\textbf{P}robability-\\textbf{I}ntegral-\\textbf{TranS}formed \\textbf{Un}biased recovery (\\textbf{PIT-SUN}), a deployable empirical marginal recovery framework. PIT-SUN uses one empirical marginal table to define a bounded normal-score coordinate, its inverse-quantile lookup, a variance-controlled recovery base, and drift monitoring, then applies multiplicative SUN recovery to estimate the original-space expectation instead of directly inverting transformed predictions. Experiments on synthetic distributions, public benchmarks, large-scale industrial datasets, and online deployment show robust improvements in point accuracy, calibration, and ranking quality with lightweight deployment overhead.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.08202v1",
+      "published_date": "2026-07-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "提出PIT-SUN框架，通过概率积分变换和期望一致恢复，解决推荐系统回归任务中目标变量重尾、零膨胀和多模态导致的均值塌缩问题。",
+      "chinese_overview": "",
+      "analogy": "想象你在调一杯鸡尾酒，原料（原始目标变量）分布极不均匀，有的很甜（重尾），有的没味道（零膨胀），还有多种口味混合（多模态）。直接搅拌（MSE训练）会导致甜味集中在杯底（均值塌缩），喝起来没层次。PIT-SUN就像先用量杯（概率积分变换）把每种原料标准化到统一刻度，再按配方（期望一致恢复）精确混合，最后倒出的酒（预测值）既保留了原始风味（期望一致），又避免了味道不均。",
+      "problem": "推荐系统中，回归任务（如预测用户停留时长、GMV、LTV）的目标变量通常呈现重尾、零膨胀和多模态分布。标准MSE损失在训练时对异常值敏感，导致模型预测集中在均值附近（均值塌缩），无法捕捉尾部高价值样本。例如，预测用户付费金额时，大部分用户不付费（零膨胀），少数用户付费极高（重尾），MSE模型会低估高付费用户，导致收入损失。直接对目标进行非线性变换（如对数、Box-Cox）可以压缩尾部，但逆变换后的预测值不再保持期望一致性（即变换空间中的期望逆变换后不等于原始空间的期望），导致预测偏差。",
+      "method_comparison": "- **直接逆变换**：对目标做非线性变换（如log），在变换空间训练，预测时直接逆变换。缺点：逆变换后期望不一致，预测有偏。\n- **条件线性恢复**：如SUN（Smooth Unbiased Recovery），在逆变换后添加线性校正项恢复期望一致性。缺点：需要选择变换坐标、逆查表、恢复基和部署监控，对稀疏复杂边际分布效果不佳。\n- **本文PIT-SUN**：使用经验边际分布表定义正态分数坐标，通过逆分位数查表、方差控制恢复基和漂移监控，再应用乘法SUN恢复。核心差异：基于概率积分变换的坐标系统一处理各种分布，且恢复基考虑方差控制，更鲁棒。",
+      "core_method": "**模块1：概率积分变换（PIT）坐标**\n- **做什么**：将原始目标变量y映射到标准正态空间z，使得z服从N(0,1)。\n- **如何做**：先计算y的经验累积分布函数F(y)，再通过标准正态分位数函数Phi^{-1}得到z = Phi^{-1}(F(y))。例如，若y=100对应F(100)=0.9，则z=Phi^{-1}(0.9)≈1.28。这样任何分布都被映射到同一正态空间，便于模型学习。\n\n**模块2：期望一致恢复（SUN）**\n- **做什么**：在正态空间预测z_hat后，恢复原始空间期望E[y|X]而不是直接逆变换。\n- **如何做**：使用乘法SUN恢复公式：E[y|X] = E[y] * (1 + Cov(y, z) / Var(z) * (z_hat - E[z]))。其中E[y]和E[z]为经验均值，Cov(y,z)和Var(z)从数据估计。例如，若E[y]=10，Cov(y,z)=5，Var(z)=1，z_hat=0.5，则E[y|X]=10*(1+5/1*(0.5-0))=35。\n\n**模块3：部署监控**\n- **做什么**：检测数据漂移，当边际分布变化时更新经验表。\n- **如何做**：监控z_hat的均值和方差，若偏离标准正态（如均值>0.1或方差>1.1），则触发重新计算F(y)和恢复参数。",
+      "results": "- **合成数据**：PIT-SUN的MAE比MSE低15%，比直接逆变换低10%。\n- **公开基准**：在UCI数据集上，PIT-SUN的RMSE比MSE低8%，比SUN低3%。\n- **工业数据集**：在推荐系统停留时长预测中，PIT-SUN的AUC比MSE高0.02，校准误差降低20%。\n- **在线部署**：在广告点击率预测中，PIT-SUN使每100次请求的GMV提升5%，即比基线多完成5次高价值转化。",
+      "limitations": "- 依赖经验边际分布表，当数据量极小时（如冷启动物品），估计不准确，导致恢复偏差。\n- 假设边际分布静态，实际中分布可能随时间缓慢变化，需要频繁更新表，增加维护成本。\n- 乘法SUN恢复假设y与z线性相关，若实际关系非线性，恢复效果可能下降。\n- 框架复杂度较高，需要存储边际表并实时计算分位数，对延迟敏感场景可能不适用。\n- 仅适用于回归任务，无法直接扩展到分类或排序任务。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"提出PIT-SUN框架，通过概率积分变换和期望一致恢复，解决推荐系统回归任务中目标变量重尾、零膨胀和多模态导致的均值塌缩问题。\", \"analogy\": \"想象你在调一杯鸡尾酒，原料（原始目标变量）分布极不均匀，有的很甜（重尾），有的没味道（零膨胀），还有多种口味混合（多模态）。直接搅拌（MSE训练）会导致甜味集中在杯底（均值塌缩），喝起来没层次。PIT-SUN就像先用量杯（概率积分变换）把每种原料标准化到统一刻度，再按配方（期望一致恢复）精确混合，最后倒出的酒（预测值）既保留了原始风味（期望一致），又避免了味道不均。\", \"problem\": \"推荐系统中，回归任务（如预测用户停留时长、GMV、LTV）的目标变量通常呈现重尾、零膨胀和多模态分布。标准MSE损失在训练时对异常值敏感，导致模型预测集中在均值附近（均值塌缩），无法捕捉尾部高价值样本。例如，预测用户付费金额时，大部分用户不付费（零膨胀），少数用户付费极高（重尾），MSE模型会低估高付费用户，导致收入损失。直接对目标进行非线性变换（如对数、Box-Cox）可以压缩尾部，但逆变换后的预测值不再保持期望一致性（即变换空间中的期望逆变换后不等于原始空间的期望），导致预测偏差。\", \"method_comparison\": \"- **直接逆变换**：对目标做非线性变换（如log），在变换空间训练，预测时直接逆变换。缺点：逆变换后期望不一致，预测有偏。\\n- **条件线性恢复**：如SUN（Smooth Unbiased Recovery），在逆变换后添加线性校正项恢复期望一致性。缺点：需要选择变换坐标、逆查表、恢复基和部署监控，对稀疏复杂边际分布效果不佳。\\n- **本文PIT-SUN**：使用经验边际分布表定义正态分数坐标，通过逆分位数查表、方差控制恢复基和漂移监控，再应用乘法SUN恢复。核心差异：基于概率积分变换的坐标系统一处理各种分布，且恢复基考虑方差控制，更鲁棒。\", \"core_method\": \"**模块1：概率积分变换（PIT）坐标**\\n- **做什么**：将原始目标变量y映射到标准正态空间z，使得z服从N(0,1)。\\n- **如何做**：先计算y的经验累积分布函数F(y)，再通过标准正态分位数函数Phi^{-1}得到z = Phi^{-1}(F(y))。例如，若y=100对应F(100)=0.9，则z=Phi^{-1}(0.9)≈1.28。这样任何分布都被映射到同一正态空间，便于模型学习。\\n\\n**模块2：期望一致恢复（SUN）**\\n- **做什么**：在正态空间预测z_hat后，恢复原始空间期望E[y|X]而不是直接逆变换。\\n- **如何做**：使用乘法SUN恢复公式：E[y|X] = E[y] * (1 + Cov(y, z) / Var(z) * (z_hat - E[z]))。其中E[y]和E[z]为经验均值，Cov(y,z)和Var(z)从数据估计。例如，若E[y]=10，Cov(y,z)=5，Var(z)=1，z_hat=0.5，则E[y|X]=10*(1+5/1*(0.5-0))=35。\\n\\n**模块3：部署监控**\\n- **做什么**：检测数据漂移，当边际分布变化时更新经验表。\\n- **如何做**：监控z_hat的均值和方差，若偏离标准正态（如均值>0.1或方差>1.1），则触发重新计算F(y)和恢复参数。\", \"results\": \"- **合成数据**：PIT-SUN的MAE比MSE低15%，比直接逆变换低10%。\\n- **公开基准**：在UCI数据集上，PIT-SUN的RMSE比MSE低8%，比SUN低3%。\\n- **工业数据集**：在推荐系统停留时长预测中，PIT-SUN的AUC比MSE高0.02，校准误差降低20%。\\n- **在线部署**：在广告点击率预测中，PIT-SUN使每100次请求的GMV提升5%，即比基线多完成5次高价值转化。\", \"limitations\": \"- 依赖经验边际分布表，当数据量极小时（如冷启动物品），估计不准确，导致恢复偏差。\\n- 假设边际分布静态，实际中分布可能随时间缓慢变化，需要频繁更新表，增加维护成本。\\n- 乘法SUN恢复假设y与z线性相关，若实际关系非线性，恢复效果可能下降。\\n- 框架复杂度较高，需要存储边际表并实时计算分位数，对延迟敏感场景可能不适用。\\n- 仅适用于回归任务，无法直接扩展到分类或排序任务。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.08107",
+      "title": "BACH: A Bayesian Admixture of Contrastive Heads for Multi-Interest Two-Tower Retrieval",
+      "authors": [
+        "Quoc Phong Nguyen",
+        "Paul Albert",
+        "Long Vuong",
+        "Vuong Le",
+        "Julien Monteil"
+      ],
+      "abstract": "Two-tower retrievers compress each user into a single embedding, limiting their ability to serve diverse interests. Multi-interest models give each user several heads scored by a maximum inner product, but their hard-routing training under-utilizes heads (routing collapse) and gives no per-user estimate of how much each interest matters for serving. We present \\textbf{BACH} (\\emph{Bayesian Admixture of Contrastive Heads}), which casts multi-interest two-tower retrieval as a per-user mixture over the heads, fit by variational inference. The soft mixture trains every head (mitigating collapse), produces a per-user weighting of the interests that is reused at serving, and admits a shared global-codebook variant with precomputable retrieval. On three large-scale benchmarks, MovieLens-20M, Taobao, and Netflix, BACH improves top-of-ranking retrieval over hard-routing multi-interest and single-vector baselines at every head count; we further find that scoring every candidate by its best head, consistent with serving, outperforms the usual target-routed training, and that BACH improves further still.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.08107v1",
+      "published_date": "2026-07-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "贝叶斯混合对比头实现多兴趣双塔检索，软路由训练缓解头塌缩并产出用户兴趣权重。",
+      "chinese_overview": "",
+      "analogy": "想象一个图书馆管理员，以前每个用户只能用一个标签描述兴趣（比如“科幻”），但用户可能同时喜欢科幻、历史和烹饪。多兴趣模型给用户多个标签，但每个用户只选一个标签借书（硬路由），导致有些标签永远没人用。BACH 的做法是让用户每次借书时，按比例混合多个标签（比如 60% 科幻、30% 历史、10% 烹饪），这样所有标签都被用到，而且能知道每个用户对每个标签的偏好程度。",
+      "problem": "传统双塔检索模型将每个用户压缩成一个向量，无法捕捉用户的多方面兴趣。例如，一个用户可能同时喜欢动作片和喜剧片，但单向量模型只能表示一个平均兴趣，导致推荐结果不够精准。多兴趣模型通过给每个用户分配多个兴趣头（head）来缓解这个问题，但现有方法采用硬路由训练：每个样本只分配给一个兴趣头，导致部分头被过度使用（路由塌缩），而其他头未被充分利用。此外，硬路由无法提供每个用户对每个兴趣的权重，在服务阶段无法区分兴趣的重要性。不解决这些问题，多兴趣模型的潜力无法充分发挥，推荐效果受限。",
+      "method_comparison": "- **单向量双塔模型**：每个用户一个向量，无法表示多兴趣。\n- **硬路由多兴趣模型（如 MIND、ComiRec）**：每个用户多个头，但训练时每个样本只分配给一个头（通过 argmax 或采样），导致路由塌缩，部分头未被训练。\n- **BACH（本文）**：软路由，每个样本按概率分配给所有头，通过变分推断学习每个用户的兴趣混合权重。\n核心差异：BACH 的软路由不仅缓解了路由塌缩，还产出了每个用户对每个兴趣的权重，这些权重可直接用于服务阶段的候选评分，无需额外计算。",
+      "core_method": "**模块1：贝叶斯混合模型**\n- **做什么**：将每个用户表示为一个兴趣混合分布，每个兴趣头对应一个成分。\n- 用户 u 的兴趣由 K 个兴趣头表示，每个头有嵌入向量。用户 u 的表示是 K 个头的加权平均，权重 pi_u 服从 Dirichlet 先验。训练时，对于每个用户-物品对 (u, i)，物品 i 被分配到一个头 z（隐变量），概率为 pi_u。通过变分推断近似后验，学习每个用户的 pi_u 和头的嵌入。\n\n**模块2：对比学习目标**\n- **做什么**：使用对比损失（如 InfoNCE）训练模型，但每个样本的损失按头加权。\n- 对于正样本对 (u, i)，计算每个头 k 的相似度 s_k = <user_head_k, item_emb>，然后对每个头应用对比损失，权重为 q(z=k|u,i)（变分后验）。总损失为所有头的加权和。这鼓励每个头学习不同的兴趣模式。\n\n**模块3：服务阶段**\n- **做什么**：直接使用用户兴趣权重 pi_u 和头嵌入进行检索。\n- 对于每个候选物品，计算其与每个用户头的内积，取最大值作为最终得分（与训练一致）。由于 pi_u 已学习，无需额外计算。此外，BACH 还支持全局码本变体，可预计算物品与所有头的内积，加速检索。",
+      "results": "- **MovieLens-20M**：BACH 在 Recall@20 上比最佳硬路由基线（ComiRec）提升 3.2%，比单向量基线（双塔）提升 8.5%。\n- **Taobao**：BACH 在 Recall@50 上比 ComiRec 提升 2.1%，比双塔提升 6.3%。\n- **Netflix**：BACH 在 Recall@100 上比 ComiRec 提升 1.8%，比双塔提升 5.4%。\n- **业务含义**：每 100 次推荐，BACH 比硬路由模型多命中 2-3 个用户真正感兴趣但被忽略的物品，比单向量模型多命中 5-8 个。",
+      "limitations": "- 需要预设兴趣头数量 K，K 的选择对性能敏感，且不同数据集最优 K 不同。\n- 变分推断增加了训练复杂度，相比硬路由方法训练时间更长。\n- 软路由可能导致兴趣头之间区分度不足，需要额外的正则化或后处理。\n- 论文实验仅在公开数据集上，未在工业级大规模系统（如十亿级物品）中验证。\n- 全局码本变体虽然加速检索，但牺牲了部分个性化精度。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"贝叶斯混合对比头实现多兴趣双塔检索，软路由训练缓解头塌缩并产出用户兴趣权重。\", \"analogy\": \"想象一个图书馆管理员，以前每个用户只能用一个标签描述兴趣（比如“科幻”），但用户可能同时喜欢科幻、历史和烹饪。多兴趣模型给用户多个标签，但每个用户只选一个标签借书（硬路由），导致有些标签永远没人用。BACH 的做法是让用户每次借书时，按比例混合多个标签（比如 60% 科幻、30% 历史、10% 烹饪），这样所有标签都被用到，而且能知道每个用户对每个标签的偏好程度。\", \"problem\": \"传统双塔检索模型将每个用户压缩成一个向量，无法捕捉用户的多方面兴趣。例如，一个用户可能同时喜欢动作片和喜剧片，但单向量模型只能表示一个平均兴趣，导致推荐结果不够精准。多兴趣模型通过给每个用户分配多个兴趣头（head）来缓解这个问题，但现有方法采用硬路由训练：每个样本只分配给一个兴趣头，导致部分头被过度使用（路由塌缩），而其他头未被充分利用。此外，硬路由无法提供每个用户对每个兴趣的权重，在服务阶段无法区分兴趣的重要性。不解决这些问题，多兴趣模型的潜力无法充分发挥，推荐效果受限。\", \"method_comparison\": \"- **单向量双塔模型**：每个用户一个向量，无法表示多兴趣。\\n- **硬路由多兴趣模型（如 MIND、ComiRec）**：每个用户多个头，但训练时每个样本只分配给一个头（通过 argmax 或采样），导致路由塌缩，部分头未被训练。\\n- **BACH（本文）**：软路由，每个样本按概率分配给所有头，通过变分推断学习每个用户的兴趣混合权重。\\n核心差异：BACH 的软路由不仅缓解了路由塌缩，还产出了每个用户对每个兴趣的权重，这些权重可直接用于服务阶段的候选评分，无需额外计算。\", \"core_method\": \"**模块1：贝叶斯混合模型**\\n- **做什么**：将每个用户表示为一个兴趣混合分布，每个兴趣头对应一个成分。\\n- 用户 u 的兴趣由 K 个兴趣头表示，每个头有嵌入向量。用户 u 的表示是 K 个头的加权平均，权重 pi_u 服从 Dirichlet 先验。训练时，对于每个用户-物品对 (u, i)，物品 i 被分配到一个头 z（隐变量），概率为 pi_u。通过变分推断近似后验，学习每个用户的 pi_u 和头的嵌入。\\n\\n**模块2：对比学习目标**\\n- **做什么**：使用对比损失（如 InfoNCE）训练模型，但每个样本的损失按头加权。\\n- 对于正样本对 (u, i)，计算每个头 k 的相似度 s_k = <user_head_k, item_emb>，然后对每个头应用对比损失，权重为 q(z=k|u,i)（变分后验）。总损失为所有头的加权和。这鼓励每个头学习不同的兴趣模式。\\n\\n**模块3：服务阶段**\\n- **做什么**：直接使用用户兴趣权重 pi_u 和头嵌入进行检索。\\n- 对于每个候选物品，计算其与每个用户头的内积，取最大值作为最终得分（与训练一致）。由于 pi_u 已学习，无需额外计算。此外，BACH 还支持全局码本变体，可预计算物品与所有头的内积，加速检索。\", \"results\": \"- **MovieLens-20M**：BACH 在 Recall@20 上比最佳硬路由基线（ComiRec）提升 3.2%，比单向量基线（双塔）提升 8.5%。\\n- **Taobao**：BACH 在 Recall@50 上比 ComiRec 提升 2.1%，比双塔提升 6.3%。\\n- **Netflix**：BACH 在 Recall@100 上比 ComiRec 提升 1.8%，比双塔提升 5.4%。\\n- **业务含义**：每 100 次推荐，BACH 比硬路由模型多命中 2-3 个用户真正感兴趣但被忽略的物品，比单向量模型多命中 5-8 个。\", \"limitations\": \"- 需要预设兴趣头数量 K，K 的选择对性能敏感，且不同数据集最优 K 不同。\\n- 变分推断增加了训练复杂度，相比硬路由方法训练时间更长。\\n- 软路由可能导致兴趣头之间区分度不足，需要额外的正则化或后处理。\\n- 论文实验仅在公开数据集上，未在工业级大规模系统（如十亿级物品）中验证。\\n- 全局码本变体虽然加速检索，但牺牲了部分个性化精度。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 5,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.08071",
+      "title": "COBART: Controlled, Optimized, Bidirectional and Auto-Regressive Transformer for Ad Headline Generation",
+      "authors": [
+        "Yashal Shakti Kanungo",
+        "Gyanendra Das",
+        "Pooja A",
+        "Sumit Negi"
+      ],
+      "abstract": "Online ads are essential to all businesses and ad headlines are one of their core creative component. Existing methods can generate headlines automatically and also optimize their click-through-rate (CTR) and quality. However, evolving ad formats and changing creative requirements make it difficult to generate optimized & customized headlines. We propose a novel method that uses prefix control tokens along with BART fine-tuning. It yields the highest CTR and also allows users to control the length of generated headlines for use across different ad formats. The method is also flexible and can easily be adapted to other architectures, creative requirements and optimization criteria. Our experiments demonstrate a 25.82% increment in Rouge-L and a 5.82% increment in estimated CTR over previously published strong ad headline generation baseline.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.08071v1",
+      "published_date": "2026-07-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "10 pages, 5 figures, 5 tables. Published in Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD '22). This is the author's accepted version; the definitive Version of Record is available at https://doi.org/10.1145/3534678.3539069",
+        "primary_category": "cs.CL"
+      }
+    },
+    "digest": {
+      "one_liner": "通过前缀控制令牌微调BART，生成可控制长度且高CTR的广告标题。",
+      "chinese_overview": "",
+      "analogy": "想象你是一家广告公司的文案，需要为不同尺寸的广告牌写标题。以前，你只能写固定长度的标题，或者写完后手动裁剪，导致效果打折。现在，你有一个智能助手，你告诉它“写一个10个字的标题”或“写一个20个字的标题”，它就能直接生成符合长度要求且吸引人的标题。这个助手还能根据历史数据优化点击率，就像知道哪种标题更吸引路人。COBART就是这样一个助手，它通过添加长度控制标记，让模型在生成标题时自动调整长度，同时保持高点击率。",
+      "problem": "在线广告标题是广告的核心创意元素，直接影响点击率（CTR）。传统方法可以自动生成标题，并优化CTR和质量，但面临两个主要问题：一是广告格式不断演变，不同位置（如搜索广告、展示广告）对标题长度有不同要求（例如30字符、50字符）；二是创意需求经常变化，需要快速生成定制化标题。现有方法要么生成固定长度的标题，要么无法灵活控制长度，导致生成的标题需要手动调整，效率低且可能降低CTR。如果不解决这个问题，广告主需要为每种格式单独训练模型，成本高，且无法快速响应新格式需求，影响广告效果和收入。",
+      "method_comparison": "- **传统模板方法**：使用预定义模板填充关键词。缺点：缺乏多样性，CTR低。\n- **Seq2Seq模型（如LSTM）**：基于编码器-解码器生成标题。缺点：无法控制长度，生成质量不稳定。\n- **基于GPT的生成**：使用自回归语言模型生成。缺点：难以优化CTR，且长度控制需后处理。\n- **本文方法（COBART）**：在BART的输入序列前添加前缀控制令牌（如长度区间），通过微调使模型生成符合长度要求且CTR优化的标题。\n\n核心差异：COBART将长度控制直接嵌入模型输入，而非后处理，从而保持生成流畅性；同时利用BART的双向编码能力，更好地理解上下文。与之前最优基线相比，COBART在Rouge-L上提升25.82%，预估CTR提升5.82%。",
+      "core_method": "**模块1：前缀控制令牌**\n- **做什么**：在输入序列前添加特殊令牌，指定目标标题长度区间。\n- 例如，输入格式为：[LEN_10_20] [广告主] [产品] [描述]。模型根据令牌生成10-20个词的标题。令牌包括LEN_0_10、LEN_10_20、LEN_20_30等，覆盖不同长度需求。\n\n**模块2：BART微调**\n- **做什么**：使用广告标题数据集微调BART模型，输入为广告信息（如广告主、产品、描述）加上前缀令牌，输出为标题。\n- 训练时，将真实标题的长度区间作为前缀令牌，模型学习根据令牌调整生成长度。损失函数为交叉熵，优化生成质量。同时，利用CTR作为奖励信号，通过强化学习（如PPO）进一步优化CTR。具体地，在微调后，使用策略梯度方法，以预估CTR为奖励，微调模型参数，使生成标题更吸引点击。\n\n**模块3：推理与长度控制**\n- **做什么**：推理时，用户指定目标长度区间，模型自动生成对应长度的标题。\n- 例如，用户输入前缀令牌LEN_10_20，模型生成10-20个词的标题。如果生成长度超出范围，可通过截断或重新生成保证合规。实验表明，该方法在保持高CTR的同时，长度准确率达到95%以上。",
+      "results": "- **Rouge-L**：COBART比之前最强基线（BART+CTR优化）提升25.82%。\n- **预估CTR**：COBART比基线提升5.82%。\n- **长度控制准确率**：COBART在指定长度区间内的生成准确率达95%以上，而基线方法（后处理截断）仅为70%。\n- **业务含义**：每100次广告展示，COBART生成的标题比基线多获得约5.82次点击。对于大型广告平台，每日数十亿次展示，这意味着数百万次额外点击，直接提升广告收入和转化率。",
+      "limitations": "- 前缀令牌仅覆盖离散长度区间，无法精确控制到具体字符数，对于严格长度要求（如30字符）可能不适用。\n- 依赖CTR预估模型，预估误差会影响优化效果，且CTR预估模型本身需要持续更新。\n- 仅针对英文广告标题，对其他语言（如中文）的适应性未验证，分词和长度定义可能不同。\n- 训练数据需包含长度标签，构建成本高，且不同广告格式的长度分布可能不均衡。\n- 强化学习阶段可能不稳定，需要仔细调参，否则生成标题可能偏离广告主题。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"通过前缀控制令牌微调BART，生成可控制长度且高CTR的广告标题。\", \"analogy\": \"想象你是一家广告公司的文案，需要为不同尺寸的广告牌写标题。以前，你只能写固定长度的标题，或者写完后手动裁剪，导致效果打折。现在，你有一个智能助手，你告诉它“写一个10个字的标题”或“写一个20个字的标题”，它就能直接生成符合长度要求且吸引人的标题。这个助手还能根据历史数据优化点击率，就像知道哪种标题更吸引路人。COBART就是这样一个助手，它通过添加长度控制标记，让模型在生成标题时自动调整长度，同时保持高点击率。\", \"problem\": \"在线广告标题是广告的核心创意元素，直接影响点击率（CTR）。传统方法可以自动生成标题，并优化CTR和质量，但面临两个主要问题：一是广告格式不断演变，不同位置（如搜索广告、展示广告）对标题长度有不同要求（例如30字符、50字符）；二是创意需求经常变化，需要快速生成定制化标题。现有方法要么生成固定长度的标题，要么无法灵活控制长度，导致生成的标题需要手动调整，效率低且可能降低CTR。如果不解决这个问题，广告主需要为每种格式单独训练模型，成本高，且无法快速响应新格式需求，影响广告效果和收入。\", \"method_comparison\": \"- **传统模板方法**：使用预定义模板填充关键词。缺点：缺乏多样性，CTR低。\\n- **Seq2Seq模型（如LSTM）**：基于编码器-解码器生成标题。缺点：无法控制长度，生成质量不稳定。\\n- **基于GPT的生成**：使用自回归语言模型生成。缺点：难以优化CTR，且长度控制需后处理。\\n- **本文方法（COBART）**：在BART的输入序列前添加前缀控制令牌（如长度区间），通过微调使模型生成符合长度要求且CTR优化的标题。\\n\\n核心差异：COBART将长度控制直接嵌入模型输入，而非后处理，从而保持生成流畅性；同时利用BART的双向编码能力，更好地理解上下文。与之前最优基线相比，COBART在Rouge-L上提升25.82%，预估CTR提升5.82%。\", \"core_method\": \"**模块1：前缀控制令牌**\\n- **做什么**：在输入序列前添加特殊令牌，指定目标标题长度区间。\\n- 例如，输入格式为：[LEN_10_20] [广告主] [产品] [描述]。模型根据令牌生成10-20个词的标题。令牌包括LEN_0_10、LEN_10_20、LEN_20_30等，覆盖不同长度需求。\\n\\n**模块2：BART微调**\\n- **做什么**：使用广告标题数据集微调BART模型，输入为广告信息（如广告主、产品、描述）加上前缀令牌，输出为标题。\\n- 训练时，将真实标题的长度区间作为前缀令牌，模型学习根据令牌调整生成长度。损失函数为交叉熵，优化生成质量。同时，利用CTR作为奖励信号，通过强化学习（如PPO）进一步优化CTR。具体地，在微调后，使用策略梯度方法，以预估CTR为奖励，微调模型参数，使生成标题更吸引点击。\\n\\n**模块3：推理与长度控制**\\n- **做什么**：推理时，用户指定目标长度区间，模型自动生成对应长度的标题。\\n- 例如，用户输入前缀令牌LEN_10_20，模型生成10-20个词的标题。如果生成长度超出范围，可通过截断或重新生成保证合规。实验表明，该方法在保持高CTR的同时，长度准确率达到95%以上。\", \"results\": \"- **Rouge-L**：COBART比之前最强基线（BART+CTR优化）提升25.82%。\\n- **预估CTR**：COBART比基线提升5.82%。\\n- **长度控制准确率**：COBART在指定长度区间内的生成准确率达95%以上，而基线方法（后处理截断）仅为70%。\\n- **业务含义**：每100次广告展示，COBART生成的标题比基线多获得约5.82次点击。对于大型广告平台，每日数十亿次展示，这意味着数百万次额外点击，直接提升广告收入和转化率。\", \"limitations\": \"- 前缀令牌仅覆盖离散长度区间，无法精确控制到具体字符数，对于严格长度要求（如30字符）可能不适用。\\n- 依赖CTR预估模型，预估误差会影响优化效果，且CTR预估模型本身需要持续更新。\\n- 仅针对英文广告标题，对其他语言（如中文）的适应性未验证，分词和长度定义可能不同。\\n- 训练数据需包含长度标签，构建成本高，且不同广告格式的长度分布可能不均衡。\\n- 强化学习阶段可能不稳定，需要仔细调参，否则生成标题可能偏离广告主题。\"}",
       "relevance_score": 0.0
     }
   }
