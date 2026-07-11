@@ -175,7 +175,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.08071",
       "title": "COBART: Controlled, Optimized, Bidirectional and Auto-Regressive Transformer for Ad Headline Generation",
