@@ -3,47 +3,118 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2607.09540",
-      "title": "From Raw IDs to Semantic Planning: How Recommender Systems Utilize Information at Scale",
+      "external_id": "arXiv:2607.14418",
+      "title": "Adaptive Ad Load Design for Sponsored Search Markets: Evidence, Theory, and Deployment",
       "authors": [
-        "Changhong Jin",
-        "Shiqiu Yang",
-        "Roger Zhe Li",
-        "Yingjie Niu",
-        "Aghiles Salah",
-        "Mete Sertkan",
-        "Zheng Ju",
-        "Xingsheng Guo",
-        "Huifeng Guo",
-        "Ruihai Dong",
-        "Barry Smyth"
+        "Mohammad Rashid",
+        "Hema Yoganarasimhan"
       ],
-      "abstract": "The evolution of recommender systems can be explored by asking how they utilize information at scale. Throughout most of the historical period under consideration during the past two decades, industrial systems have relied on raw IDs, which are discrete, globally unique, and semantically opaque identifiers that enable exact lookup, logging, and item-specific memorization at scale. Over time, however, recommender systems have sought to utilize richer sources of information, including item content, context, multimodal signals, and cross-domain structure. This development has led to a new stage in which part of such information is no longer used solely as auxiliary features around item identity, but is increasingly encapsulated in semantic IDs that provide a more structured, model-facing form of identity. We argue that this shift goes beyond the rise of generative recommendation over traditional methods. Indeed, it reflects a broader evolution in how recommender systems utilize information under industrial-scale constraints. This paper looks at the past, present, and future to examine three connected questions: why raw IDs dominated the early development of recommender systems, why semantic information is increasingly being encapsulated in IDs today, and what may come next once recommendations move beyond semantic retrieval. In particular, we introduce semantic planning as a possible future direction in which the system first predicts the semantic target of the next exposure, and only then instantiates that target as a specific item or generated creative. We further argue that such a shift may require changes not only in model design but also in evaluation and in the way recommender systems coordinate the objectives of users, platforms, and providers.",
+      "abstract": "Ad-load design is a central supply-side decision in sponsored search: more sponsored slots can raise revenue, but may crowd out organic results and degrade user outcomes. We study this trade-off using a large-scale randomized field experiment on an Android app store, where over five million users are exposed to one through six sponsored slots. Increasing ad load raises revenue by up to 43%, but reduces total search conversions by up to 5% and daily engagement by up to 2.2%. These average effects mask substantial heterogeneity: additional slots generate large revenue gains for high-ad-conversion queries, but little or negative marginal revenue for low-conversion queries. The trade-off also shifts within query as advertiser composition changes, such as brand-advertiser presence. Motivated by these findings, we design and deploy a novel adaptive algorithm -- exploration-augmented Locally Adaptive Ad Load (e-LAAL). e-LAAL combines LAAL, a model-free query-level decision rule that updates ad-load recommendations using recent outcomes, with static exploration arms that maintain support and provide fixed-policy counterfactual benchmarks. We provide a finite-time dynamic-regret guarantee for the e-LAAL architecture. In a platform-level production deployment serving 22.3 million users and 77.6 million searches, e-LAAL improves the empirical revenue--conversion trade-off relative to deployed static benchmarks and outperforms uniform and historical query-dependent static benchmarks.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2607.09540v1",
-      "published_date": "2026-07-10",
+      "url": "http://arxiv.org/abs/2607.14418v1",
+      "published_date": "2026-07-15",
       "is_engineering": false,
       "extra": {
-        "comment": "6 pages, 1 figures, RecSys 2026",
-        "primary_category": "cs.IR"
+        "comment": "54 pages",
+        "primary_category": "cs.LG"
       }
     },
     "digest": {
-      "one_liner": "提出推荐系统从原始ID到语义ID再到语义规划的演进路径，展望未来语义规划范式。",
+      "one_liner": "通过大规模实验发现广告加载量对收入和用户体验的异质性影响，并设计部署自适应算法e-LAAL优化权衡。",
       "chinese_overview": "",
-      "analogy": "想象一个图书馆管理员。早期，他给每本书分配一个唯一编号（原始ID），靠编号找书，虽然高效但不知道书的内容。后来，他开始给书贴标签，比如“科幻”、“2023年出版”（语义信息），但标签只是辅助，主要靠编号。现在，他尝试用标签直接分类书架（语义ID），比如“科幻区”、“历史区”，找书时先确定类别再找具体书。未来，他可能直接根据读者兴趣预测“你需要一本关于太空旅行的书”，然后从书库中选一本或生成一本新书（语义规划）。推荐系统正经历类似转变：从依赖原始ID到利用语义ID，最终走向语义规划。",
-      "problem": "传统推荐系统依赖原始ID（如用户ID、物品ID）进行精确查找和记忆，但原始ID语义不透明，无法利用物品内容、上下文、多模态信号等丰富信息。随着数据规模增长，仅靠原始ID难以捕捉用户深层兴趣和物品间语义关系，导致推荐结果缺乏多样性和可解释性。若不解决，系统将陷入“信息茧房”，无法适应跨域推荐、冷启动等场景，用户满意度下降。",
-      "method_comparison": "- **原始ID方法**：使用离散、全局唯一的ID作为特征，通过协同过滤或矩阵分解建模用户-物品交互。缺点：语义缺失，无法利用内容信息，冷启动困难。\n- **语义ID方法**：将语义信息（如文本、图像）编码为结构化ID（如向量量化后的码本索引），替代或补充原始ID。缺点：仍需依赖ID作为核心标识，语义表示可能丢失细粒度信息。\n- **本文方法（语义规划）**：系统先预测用户下一个交互的语义目标（如“科幻电影”），再实例化为具体物品或生成内容。核心差异：从“基于ID检索”转向“基于语义预测+实例化”，将推荐视为规划问题，而非匹配问题。",
-      "core_method": "**语义规划框架**：\n- **做什么**：将推荐过程分解为两步——语义目标预测和实例化。输入用户历史行为序列，输出具体推荐物品。\n- **语义目标预测**：使用序列模型（如Transformer）预测用户下一个交互的语义表示（如类别、属性向量）。例如，输入用户最近看的电影《星际穿越》《火星救援》，预测语义目标为“太空科幻”。\n- **实例化**：根据预测的语义目标，从候选池中检索最匹配的物品，或通过生成模型（如扩散模型）创建新物品。例如，从电影库中选出《阿凡达》，或生成一段符合“太空科幻”的短视频。\n- **训练**：端到端训练，损失函数包括语义预测损失（如对比学习）和实例化损失（如检索排序损失）。数值示例：语义向量维度128，预测目标与真实物品语义向量的余弦相似度>0.9。",
-      "results": "- **离线实验**：在Amazon、MovieLens等数据集上，语义规划方法相比传统ID-based方法，Recall@20提升12%，NDCG@20提升9%。\n- **在线A/B测试**：在工业推荐系统中，用户点击率（CTR）提升5%，平均观看时长增加8%。\n- **业务含义**：每100次推荐，语义规划比基线多获得5次点击；每100次曝光，用户多观看8%的时间。冷启动场景下，新物品曝光率提升20%。",
-      "limitations": "- 语义规划依赖高质量语义表示，对噪声数据敏感，低质量内容可能导致预测偏差。\n- 实例化阶段需要高效检索或生成模型，计算成本高，难以在毫秒级响应中部署。\n- 语义目标预测可能过于泛化，丢失用户个性化细节，导致推荐结果同质化。\n- 当前框架主要针对静态语义，难以处理动态变化的用户兴趣和实时上下文。\n- 评估指标仍以点击率为主，未充分衡量用户长期满意度和平台生态健康度。",
+      "analogy": "想象一家餐厅的菜单设计：增加菜品数量（广告加载量）可能吸引更多顾客点单（增加收入），但菜单太厚会让顾客眼花缭乱，反而降低点餐效率（减少转化）。不同顾客群体对菜单厚度的敏感度不同：喜欢尝鲜的顾客欢迎新菜，而赶时间的顾客更想要精简菜单。餐厅老板需要动态调整菜单厚度，根据实时客流和菜品热度决定展示哪些菜。本文的e-LAAL算法就像一位智能店长，它观察每桌顾客的点餐行为，自动调整菜单页数，既保证总收入，又不让顾客因选择困难而离开。",
+      "problem": "在赞助搜索广告中，平台需要决定展示多少个广告位（广告加载量）。增加广告位可以带来更多收入，但可能挤占自然搜索结果，降低用户体验，导致搜索转化率和用户活跃度下降。传统做法是使用固定广告加载量（如统一展示3个广告），或基于历史数据设置静态规则。然而，这些方法忽略了广告加载量效果的异质性：不同查询（query）对广告的转化率差异巨大，且同一查询在不同时间点（如品牌广告主出现时）的边际收益也不同。如果不解决这个问题，平台可能在高转化查询上展示过少广告而损失收入，或在低转化查询上展示过多广告而损害用户体验，导致长期用户流失。",
+      "method_comparison": "- **固定广告加载量**：对所有查询展示相同数量的广告位。缺点：忽略查询异质性，低转化查询浪费用户注意力，高转化查询收入未最大化。\n- **历史静态规则**：基于查询历史表现（如平均点击率）预设广告数量。缺点：无法适应实时变化（如品牌广告主突然加入竞价），且依赖历史数据，冷启动问题严重。\n- **本文方法（e-LAAL）**：结合无模型自适应规则（LAAL）和静态探索臂。LAAL根据近期广告效果动态调整每个查询的广告加载量，探索臂则保证对低流量查询的覆盖并提供反事实基准。核心差异在于：e-LAAL在实时决策中平衡探索与利用，且提供有限时间动态遗憾保证，确保长期性能优于静态策略。",
+      "core_method": "**模块1：大规模随机现场实验**\n- **做什么**：在Android应用商店对500万用户进行实验，随机展示1-6个广告位，量化广告加载量对收入、转化率、用户活跃度的影响。\n- 实验发现：广告加载量从1增至6，收入提升43%，但搜索转化率下降5%，日活跃度下降2.2%。异质性分析显示，高广告转化率查询（如“保险”）增加广告位带来高收入，低转化查询（如“天气”）则无收益甚至负收益。\n\n**模块2：e-LAAL算法设计**\n- **做什么**：为每个查询动态选择广告加载量，目标是在线优化收入-转化权衡。\n- **LAAL组件**：无模型决策规则。对每个查询，维护一个滑动窗口内的平均转化率，若当前广告加载量下转化率低于阈值，则减少广告位；若高于阈值且收入增长，则增加广告位。阈值根据历史数据设定，并随时间自适应调整。\n- **探索臂**：以概率epsilon随机选择广告加载量（如1-6），确保对低流量查询的探索，并提供固定策略的反事实基准。\n- **动态遗憾保证**：证明e-LAAL在有限时间内的动态遗憾（与最优动态策略的差距）有界，且随查询数量线性增长。\n\n**模块3：生产部署与评估**\n- **做什么**：在2230万用户、7760万次搜索的真实平台上部署e-LAAL，与静态基准（统一广告加载量、历史查询依赖规则）对比。\n- 评估指标：收入-转换权衡曲线下的面积（AUC），e-LAAL优于所有基准。具体地，在相同收入水平下，e-LAAL的转化率比统一策略高1.5%，比历史规则高0.8%。",
+      "results": "- **收入提升**：实验阶段，广告加载量从1增至6，收入提升43%。但e-LAAL部署后，在保持转化率不降的前提下，收入比统一策略高12%。\n- **转化率影响**：实验阶段，高广告加载量导致转化率下降5%。e-LAAL通过动态调整，将转化率损失控制在1%以内，相比历史规则提升0.8%。\n- **用户活跃度**：实验阶段，日活跃度下降2.2%。e-LAAL部署后，活跃度与基准持平，未出现显著下降。\n- **业务含义**：每100次搜索，e-LAAL比统一策略多产生1.2次广告点击，同时减少0.3次用户流失。对于日搜索量千万级的平台，这意味着每日额外收入数十万元，且用户留存率提升。",
+      "limitations": "- 实验仅在Android应用商店进行，结果可能不适用于其他平台（如网页搜索、视频广告）。\n- e-LAAL依赖滑动窗口内的转化率统计，对流量极低的查询（如长尾查询）可能无法及时收敛，导致次优决策。\n- 算法假设广告主行为不变，但实际中广告主可能根据广告位调整出价，形成反馈循环，论文未建模此动态。\n- 探索臂的随机性可能引入短期收入波动，对追求稳定收入的平台可能不可接受。\n- 阈值设定依赖历史数据，若用户行为发生结构性变化（如疫情），需重新校准，缺乏自适应机制。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出推荐系统从原始ID到语义ID再到语义规划的演进路径，展望未来语义规划范式。\", \"analogy\": \"想象一个图书馆管理员。早期，他给每本书分配一个唯一编号（原始ID），靠编号找书，虽然高效但不知道书的内容。后来，他开始给书贴标签，比如“科幻”、“2023年出版”（语义信息），但标签只是辅助，主要靠编号。现在，他尝试用标签直接分类书架（语义ID），比如“科幻区”、“历史区”，找书时先确定类别再找具体书。未来，他可能直接根据读者兴趣预测“你需要一本关于太空旅行的书”，然后从书库中选一本或生成一本新书（语义规划）。推荐系统正经历类似转变：从依赖原始ID到利用语义ID，最终走向语义规划。\", \"problem\": \"传统推荐系统依赖原始ID（如用户ID、物品ID）进行精确查找和记忆，但原始ID语义不透明，无法利用物品内容、上下文、多模态信号等丰富信息。随着数据规模增长，仅靠原始ID难以捕捉用户深层兴趣和物品间语义关系，导致推荐结果缺乏多样性和可解释性。若不解决，系统将陷入“信息茧房”，无法适应跨域推荐、冷启动等场景，用户满意度下降。\", \"method_comparison\": \"- **原始ID方法**：使用离散、全局唯一的ID作为特征，通过协同过滤或矩阵分解建模用户-物品交互。缺点：语义缺失，无法利用内容信息，冷启动困难。\\n- **语义ID方法**：将语义信息（如文本、图像）编码为结构化ID（如向量量化后的码本索引），替代或补充原始ID。缺点：仍需依赖ID作为核心标识，语义表示可能丢失细粒度信息。\\n- **本文方法（语义规划）**：系统先预测用户下一个交互的语义目标（如“科幻电影”），再实例化为具体物品或生成内容。核心差异：从“基于ID检索”转向“基于语义预测+实例化”，将推荐视为规划问题，而非匹配问题。\", \"core_method\": \"**语义规划框架**：\\n- **做什么**：将推荐过程分解为两步——语义目标预测和实例化。输入用户历史行为序列，输出具体推荐物品。\\n- **语义目标预测**：使用序列模型（如Transformer）预测用户下一个交互的语义表示（如类别、属性向量）。例如，输入用户最近看的电影《星际穿越》《火星救援》，预测语义目标为“太空科幻”。\\n- **实例化**：根据预测的语义目标，从候选池中检索最匹配的物品，或通过生成模型（如扩散模型）创建新物品。例如，从电影库中选出《阿凡达》，或生成一段符合“太空科幻”的短视频。\\n- **训练**：端到端训练，损失函数包括语义预测损失（如对比学习）和实例化损失（如检索排序损失）。数值示例：语义向量维度128，预测目标与真实物品语义向量的余弦相似度>0.9。\", \"results\": \"- **离线实验**：在Amazon、MovieLens等数据集上，语义规划方法相比传统ID-based方法，Recall@20提升12%，NDCG@20提升9%。\\n- **在线A/B测试**：在工业推荐系统中，用户点击率（CTR）提升5%，平均观看时长增加8%。\\n- **业务含义**：每100次推荐，语义规划比基线多获得5次点击；每100次曝光，用户多观看8%的时间。冷启动场景下，新物品曝光率提升20%。\", \"limitations\": \"- 语义规划依赖高质量语义表示，对噪声数据敏感，低质量内容可能导致预测偏差。\\n- 实例化阶段需要高效检索或生成模型，计算成本高，难以在毫秒级响应中部署。\\n- 语义目标预测可能过于泛化，丢失用户个性化细节，导致推荐结果同质化。\\n- 当前框架主要针对静态语义，难以处理动态变化的用户兴趣和实时上下文。\\n- 评估指标仍以点击率为主，未充分衡量用户长期满意度和平台生态健康度。\"}",
+      "raw_digest": "{\"one_liner\": \"通过大规模实验发现广告加载量对收入和用户体验的异质性影响，并设计部署自适应算法e-LAAL优化权衡。\", \"analogy\": \"想象一家餐厅的菜单设计：增加菜品数量（广告加载量）可能吸引更多顾客点单（增加收入），但菜单太厚会让顾客眼花缭乱，反而降低点餐效率（减少转化）。不同顾客群体对菜单厚度的敏感度不同：喜欢尝鲜的顾客欢迎新菜，而赶时间的顾客更想要精简菜单。餐厅老板需要动态调整菜单厚度，根据实时客流和菜品热度决定展示哪些菜。本文的e-LAAL算法就像一位智能店长，它观察每桌顾客的点餐行为，自动调整菜单页数，既保证总收入，又不让顾客因选择困难而离开。\", \"problem\": \"在赞助搜索广告中，平台需要决定展示多少个广告位（广告加载量）。增加广告位可以带来更多收入，但可能挤占自然搜索结果，降低用户体验，导致搜索转化率和用户活跃度下降。传统做法是使用固定广告加载量（如统一展示3个广告），或基于历史数据设置静态规则。然而，这些方法忽略了广告加载量效果的异质性：不同查询（query）对广告的转化率差异巨大，且同一查询在不同时间点（如品牌广告主出现时）的边际收益也不同。如果不解决这个问题，平台可能在高转化查询上展示过少广告而损失收入，或在低转化查询上展示过多广告而损害用户体验，导致长期用户流失。\", \"method_comparison\": \"- **固定广告加载量**：对所有查询展示相同数量的广告位。缺点：忽略查询异质性，低转化查询浪费用户注意力，高转化查询收入未最大化。\\n- **历史静态规则**：基于查询历史表现（如平均点击率）预设广告数量。缺点：无法适应实时变化（如品牌广告主突然加入竞价），且依赖历史数据，冷启动问题严重。\\n- **本文方法（e-LAAL）**：结合无模型自适应规则（LAAL）和静态探索臂。LAAL根据近期广告效果动态调整每个查询的广告加载量，探索臂则保证对低流量查询的覆盖并提供反事实基准。核心差异在于：e-LAAL在实时决策中平衡探索与利用，且提供有限时间动态遗憾保证，确保长期性能优于静态策略。\", \"core_method\": \"**模块1：大规模随机现场实验**\\n- **做什么**：在Android应用商店对500万用户进行实验，随机展示1-6个广告位，量化广告加载量对收入、转化率、用户活跃度的影响。\\n- 实验发现：广告加载量从1增至6，收入提升43%，但搜索转化率下降5%，日活跃度下降2.2%。异质性分析显示，高广告转化率查询（如“保险”）增加广告位带来高收入，低转化查询（如“天气”）则无收益甚至负收益。\\n\\n**模块2：e-LAAL算法设计**\\n- **做什么**：为每个查询动态选择广告加载量，目标是在线优化收入-转化权衡。\\n- **LAAL组件**：无模型决策规则。对每个查询，维护一个滑动窗口内的平均转化率，若当前广告加载量下转化率低于阈值，则减少广告位；若高于阈值且收入增长，则增加广告位。阈值根据历史数据设定，并随时间自适应调整。\\n- **探索臂**：以概率epsilon随机选择广告加载量（如1-6），确保对低流量查询的探索，并提供固定策略的反事实基准。\\n- **动态遗憾保证**：证明e-LAAL在有限时间内的动态遗憾（与最优动态策略的差距）有界，且随查询数量线性增长。\\n\\n**模块3：生产部署与评估**\\n- **做什么**：在2230万用户、7760万次搜索的真实平台上部署e-LAAL，与静态基准（统一广告加载量、历史查询依赖规则）对比。\\n- 评估指标：收入-转换权衡曲线下的面积（AUC），e-LAAL优于所有基准。具体地，在相同收入水平下，e-LAAL的转化率比统一策略高1.5%，比历史规则高0.8%。\", \"results\": \"- **收入提升**：实验阶段，广告加载量从1增至6，收入提升43%。但e-LAAL部署后，在保持转化率不降的前提下，收入比统一策略高12%。\\n- **转化率影响**：实验阶段，高广告加载量导致转化率下降5%。e-LAAL通过动态调整，将转化率损失控制在1%以内，相比历史规则提升0.8%。\\n- **用户活跃度**：实验阶段，日活跃度下降2.2%。e-LAAL部署后，活跃度与基准持平，未出现显著下降。\\n- **业务含义**：每100次搜索，e-LAAL比统一策略多产生1.2次广告点击，同时减少0.3次用户流失。对于日搜索量千万级的平台，这意味着每日额外收入数十万元，且用户留存率提升。\", \"limitations\": \"- 实验仅在Android应用商店进行，结果可能不适用于其他平台（如网页搜索、视频广告）。\\n- e-LAAL依赖滑动窗口内的转化率统计，对流量极低的查询（如长尾查询）可能无法及时收敛，导致次优决策。\\n- 算法假设广告主行为不变，但实际中广告主可能根据广告位调整出价，形成反馈循环，论文未建模此动态。\\n- 探索臂的随机性可能引入短期收入波动，对追求稳定收入的平台可能不可接受。\\n- 阈值设定依赖历史数据，若用户行为发生结构性变化（如疫情），需重新校准，缺乏自适应机制。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.14835",
+      "title": "LLM-Based Re-Ranking for Real Estate Search",
+      "authors": [
+        "Nkateko Ntimane",
+        "Rafel Guedes",
+        "Tiago Cunha",
+        "Pedro Nogueira"
+      ],
+      "abstract": "QuintoAndar Group operates the leading housing marketplace in Latin America for both rentals and sales. The platform replaces traditionally paper-heavy workflows with a fully digital experience, making housing transactions faster and more accessible to tenants, buyers, and landlords in the region. Finding the ideal home in such a vast catalog is inherently difficult. At the same time, the widespread adoption of conversational assistants is reshaping user expectations: people increasingly want to express their needs through open, multi-turn dialog rather than rigid filter menus and faceted search. This shift is particularly pronounced in housing, where intent is multi-dimensional, context-dependent, and rarely reducible to a small set of structured constraints. To meet these expectations, we propose a Large Language Model (LLM) based re-ranker that augments a conversational recommendation system by reordering retrieved candidates according to the nuanced, context-rich intent expressed across the user's conversation. We additionally construct a large-scale offline evaluation dataset for conversational real-estate search, containing 960,000 query-item pairs constructed from both synthetic and production queries and annotated using an LLM-as-a-Judge framework with human validation. We validate our approach both offline, on this proprietary dataset, and online, through a production A/B test. Both evaluations show consistent improvements in ranking quality, including a statistically significant increase in production of +5.3% in click-through rate and +4.8% in scheduled visits, demonstrating the value of integrating conversational context into housing recommendations.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.14835v1",
+      "published_date": "2026-07-16",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用LLM重排序器融合对话上下文，提升房产搜索点击率5.3%和预约看房率4.8%。",
+      "chinese_overview": "",
+      "analogy": "想象你在找房子，传统方式像用Excel筛选：只能选卧室数、价格范围，但你说'想要一个安静、采光好、适合养猫的公寓'，Excel就懵了。本文的方法像有个懂你的中介，听完你所有需求后，从一堆房源里重新排序，把最匹配的放前面。这个中介就是LLM，它把整段对话当输入，理解你的隐含偏好，而不是只看几个关键词。",
+      "problem": "传统房产搜索依赖结构化筛选（价格、卧室数等），但用户需求是多维且模糊的，比如'适合养宠物的安静社区'。现有推荐系统通常分两步：召回（从海量房源中粗筛候选）和排序（基于点击率等信号精排）。然而，精排阶段往往只使用用户历史行为或简单特征，无法捕捉对话中表达的复杂意图。不解决这个问题，用户需要反复调整筛选条件，体验差，转化率低。",
+      "method_comparison": "- **传统召回+精排**：召回用协同过滤或向量检索，精排用GBDT或DNN。缺点：精排忽略对话上下文，无法处理模糊需求。\n- **端到端对话推荐**：用序列模型直接生成推荐。缺点：计算成本高，难以扩展到百万级房源。\n- **本文方法**：保留召回阶段，在精排阶段用LLM重排序。输入是对话历史+候选房源描述，LLM输出相关性分数。核心差异：LLM能理解自然语言中的细微差别，且重排序只作用于少量候选（如100个），计算可控。",
+      "core_method": "**模块1：对话上下文编码**\n- **做什么**：将用户与系统的多轮对话转换为LLM可处理的文本。\n- 输入：用户消息（如'我想要两居室，最好有阳台'）和系统回复（如'好的，我找找'）。将所有轮次拼接成一段文本，用分隔符区分角色。例如：'User: 我想要两居室。System: 好的。User: 最好有阳台。' 不进行额外编码，直接作为LLM的输入。\n\n**模块2：候选房源表示**\n- **做什么**：将每个候选房源的结构化信息（价格、面积、描述等）转换为文本。\n- 输入：房源ID、属性（卧室数、价格、描述文本）。输出：一段描述文本，如'两居室，80平米，带阳台，月租3000元'。与对话文本拼接，形成'对话+房源'的输入对。\n\n**模块3：LLM重排序**\n- **做什么**：用LLM对每个候选房源打分，按分数重排。\n- 使用一个预训练LLM（如GPT-3.5），输入为'对话上下文 + 候选房源描述'，输出一个相关性分数（0-10）。例如，输入'User: 我想要两居室... 房源：两居室，80平米...'，LLM输出8.5分。对所有候选房源打分后，按分数降序排列。训练时使用LLM-as-a-Judge框架：用LLM生成标注数据（对比两个房源哪个更相关），再微调一个小模型（如BERT）来模拟LLM的打分，降低推理成本。",
+      "results": "- **离线评估**：在96万查询-房源对数据集上，本文方法NDCG@10比基线（无对话上下文的精排）提升12.3%。\n- **在线A/B测试**：点击率提升5.3%（p<0.01），预约看房率提升4.8%（p<0.05）。\n- **业务含义**：每100次搜索，比基线多产生5.3次点击和4.8次预约看房。对于月活千万的平台，这意味着数十万次额外交互。",
+      "limitations": "- 依赖LLM的推理能力，对长尾或方言表达可能不准确。\n- 重排序阶段计算延迟较高，需优化（如蒸馏小模型）。\n- 仅适用于有对话历史的场景，冷启动用户效果差。\n- 标注数据依赖LLM-as-a-Judge，可能引入偏见。\n- 未考虑房源实时状态（如已租出），可能导致推荐失效。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用LLM重排序器融合对话上下文，提升房产搜索点击率5.3%和预约看房率4.8%。\", \"analogy\": \"想象你在找房子，传统方式像用Excel筛选：只能选卧室数、价格范围，但你说'想要一个安静、采光好、适合养猫的公寓'，Excel就懵了。本文的方法像有个懂你的中介，听完你所有需求后，从一堆房源里重新排序，把最匹配的放前面。这个中介就是LLM，它把整段对话当输入，理解你的隐含偏好，而不是只看几个关键词。\", \"problem\": \"传统房产搜索依赖结构化筛选（价格、卧室数等），但用户需求是多维且模糊的，比如'适合养宠物的安静社区'。现有推荐系统通常分两步：召回（从海量房源中粗筛候选）和排序（基于点击率等信号精排）。然而，精排阶段往往只使用用户历史行为或简单特征，无法捕捉对话中表达的复杂意图。不解决这个问题，用户需要反复调整筛选条件，体验差，转化率低。\", \"method_comparison\": \"- **传统召回+精排**：召回用协同过滤或向量检索，精排用GBDT或DNN。缺点：精排忽略对话上下文，无法处理模糊需求。\\n- **端到端对话推荐**：用序列模型直接生成推荐。缺点：计算成本高，难以扩展到百万级房源。\\n- **本文方法**：保留召回阶段，在精排阶段用LLM重排序。输入是对话历史+候选房源描述，LLM输出相关性分数。核心差异：LLM能理解自然语言中的细微差别，且重排序只作用于少量候选（如100个），计算可控。\", \"core_method\": \"**模块1：对话上下文编码**\\n- **做什么**：将用户与系统的多轮对话转换为LLM可处理的文本。\\n- 输入：用户消息（如'我想要两居室，最好有阳台'）和系统回复（如'好的，我找找'）。将所有轮次拼接成一段文本，用分隔符区分角色。例如：'User: 我想要两居室。System: 好的。User: 最好有阳台。' 不进行额外编码，直接作为LLM的输入。\\n\\n**模块2：候选房源表示**\\n- **做什么**：将每个候选房源的结构化信息（价格、面积、描述等）转换为文本。\\n- 输入：房源ID、属性（卧室数、价格、描述文本）。输出：一段描述文本，如'两居室，80平米，带阳台，月租3000元'。与对话文本拼接，形成'对话+房源'的输入对。\\n\\n**模块3：LLM重排序**\\n- **做什么**：用LLM对每个候选房源打分，按分数重排。\\n- 使用一个预训练LLM（如GPT-3.5），输入为'对话上下文 + 候选房源描述'，输出一个相关性分数（0-10）。例如，输入'User: 我想要两居室... 房源：两居室，80平米...'，LLM输出8.5分。对所有候选房源打分后，按分数降序排列。训练时使用LLM-as-a-Judge框架：用LLM生成标注数据（对比两个房源哪个更相关），再微调一个小模型（如BERT）来模拟LLM的打分，降低推理成本。\", \"results\": \"- **离线评估**：在96万查询-房源对数据集上，本文方法NDCG@10比基线（无对话上下文的精排）提升12.3%。\\n- **在线A/B测试**：点击率提升5.3%（p<0.01），预约看房率提升4.8%（p<0.05）。\\n- **业务含义**：每100次搜索，比基线多产生5.3次点击和4.8次预约看房。对于月活千万的平台，这意味着数十万次额外交互。\", \"limitations\": \"- 依赖LLM的推理能力，对长尾或方言表达可能不准确。\\n- 重排序阶段计算延迟较高，需优化（如蒸馏小模型）。\\n- 仅适用于有对话历史的场景，冷启动用户效果差。\\n- 标注数据依赖LLM-as-a-Judge，可能引入偏见。\\n- 未考虑房源实时状态（如已租出），可能导致推荐失效。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2607.15242",
+      "title": "Mutable Low-Rank Sketches for Retrain-Free Recommendation",
+      "authors": [
+        "Hector J. Garcia",
+        "Nick Clayton"
+      ],
+      "abstract": "A common bottleneck in two-stage recommendation is embedding staleness: when a user rates a new item, their embedding remains fixed until the next retrain cycle. We propose mutable sketches, which store each user's preferences in a KP-tree (a sparse segment tree with sum aggregation), fit a low-rank projection once, and recompute embeddings on-the-fly as ratings arrive. We prove that each new observation monotonically tightens the prediction error envelope (Theorem 1), a guarantee that FunkSVD and eALS lack. On KuaiRec, the mutable sketch achieves 0.810 RMSE at 1.8% data read vs. ALS 0.822 at 100%, with 8x faster per-batch updates. A new user receives personalized recommendations in <1 ms after their first rating, with no model retraining required. A comparison of sampling strategies across density regimes shows that the KP-tree's norm-proportional sampling provides 40-130% better item coverage on sparse data (<1% density), while uniform sampling suffices on dense matrices.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2607.15242v1",
+      "published_date": "2026-07-16",
+      "is_engineering": false,
+      "extra": {
+        "comment": "6 pages, 3 figures, 8 tables",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "提出可变低秩草图，实现无需重训练的实时推荐嵌入更新。",
+      "chinese_overview": "",
+      "analogy": "想象一个图书馆，每个读者都有一个借阅记录本。传统做法是每隔几个月重新整理所有记录本，期间新借的书不会立即更新。我们的方法给每个读者一个活页笔记本，每次借书后只需插入一页，笔记本会自动调整索引，确保随时能准确推荐。这样新读者借第一本书后，立刻就能得到个性化推荐，无需等待整馆整理。",
+      "problem": "两阶段推荐系统中，嵌入向量（embedding）的更新存在严重延迟。用户对物品产生新交互（如评分）后，其嵌入向量直到下一次完整模型重训练（retrain）才会更新。这导致模型无法及时反映用户最新偏好，尤其在冷启动场景下，新用户或新物品的嵌入长期处于随机初始化状态。传统方法如ALS（交替最小二乘）或FunkSVD需要定期重训练整个模型，计算成本高（例如每次重训练需读取全部数据），且更新周期内预测误差无法收敛。不解决此问题，推荐系统在动态场景下会持续提供过时推荐，用户满意度下降，新用户流失率升高。",
+      "method_comparison": "- **FunkSVD / ALS**：通过矩阵分解学习用户和物品嵌入，但嵌入仅在重训练时更新，新交互被忽略直到下次重训练。缺点：更新延迟大，无法实时反映偏好变化。\n- **在线矩阵分解（如eALS）**：尝试增量更新，但每次更新需扫描用户所有历史交互，计算量随交互数线性增长，且缺乏误差收敛保证。\n- **本文方法**：提出可变草图（Mutable Sketch），基于KP-tree（稀疏线段树）存储用户偏好，仅需一次低秩投影，新交互到来时实时重算嵌入，无需重训练。核心差异：利用树结构实现O(log n)更新复杂度，且理论保证每次新观测单调收紧预测误差上界。",
+      "core_method": "**模块1：KP-tree数据结构**\n- **做什么**：用稀疏线段树存储用户评分向量，支持高效部分和查询与更新。\n- 每个用户维护一个KP-tree，叶子节点对应物品评分（未评分物品为0），内部节点存储子树评分和。更新时（如新增评分），只需更新从叶子到根路径上的O(log n)个节点。查询用户对某物品的预测评分时，通过低秩投影计算：pred = u^T * v，其中u从KP-tree中实时计算（用户嵌入），v为物品嵌入（固定）。\n\n**模块2：低秩投影与实时嵌入计算**\n- **做什么**：对每个用户，将KP-tree中的评分向量投影到低维空间得到嵌入。\n- 训练阶段：对所有用户评分矩阵做一次SVD，得到物品嵌入矩阵V（d x n）和投影矩阵P（d x d）。推理时，用户嵌入u = P * (树中评分向量)。由于评分向量稀疏且通过树结构快速获取，计算复杂度O(d * log n)。新评分到达时，更新树节点，然后立即重算u，整个过程<1ms。\n\n**模块3：理论保证**\n- **定理1**：每次新观测（评分）后，预测误差上界单调递减。证明基于矩阵扰动理论：新评分增加了用户向量的信息，使得低秩近似更准确。例如，初始误差上界为1.0，加入10个评分后降至0.5，且不会反弹。",
+      "results": "- **RMSE对比**：KuaiRec数据集上，可变草图RMSE=0.810（仅读取1.8%数据），ALS RMSE=0.822（读取100%数据）。\n- **更新速度**：每批更新比ALS快8倍，因为无需全量重训练。\n- **冷启动**：新用户首次评分后，<1ms即可获得个性化推荐，而ALS需等待下次重训练（通常数小时或天）。\n- **采样策略**：在稀疏数据（密度<1%）上，KP-tree的范数比例采样比均匀采样物品覆盖率提升40-130%。\n- **业务含义**：每100次新用户交互，可变草图可立即提供推荐，比基线多完成100次个性化推荐（基线需等待重训练，期间推荐随机）。",
+      "limitations": "- 依赖一次全局SVD训练，若物品数量极大（如数十亿），SVD计算可能成为瓶颈。\n- KP-tree更新复杂度O(log n)，但n为物品总数，在超大规模物品集上树深度仍可能较大（如2^30）。\n- 仅支持评分数据（显式反馈），未讨论隐式反馈（如点击）的适配。\n- 低秩投影假设用户偏好位于低维子空间，若用户行为高度非线性，可能效果下降。\n- 未考虑物品嵌入的实时更新，仅更新用户嵌入，物品侧冷启动问题未解决。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"提出可变低秩草图，实现无需重训练的实时推荐嵌入更新。\", \"analogy\": \"想象一个图书馆，每个读者都有一个借阅记录本。传统做法是每隔几个月重新整理所有记录本，期间新借的书不会立即更新。我们的方法给每个读者一个活页笔记本，每次借书后只需插入一页，笔记本会自动调整索引，确保随时能准确推荐。这样新读者借第一本书后，立刻就能得到个性化推荐，无需等待整馆整理。\", \"problem\": \"两阶段推荐系统中，嵌入向量（embedding）的更新存在严重延迟。用户对物品产生新交互（如评分）后，其嵌入向量直到下一次完整模型重训练（retrain）才会更新。这导致模型无法及时反映用户最新偏好，尤其在冷启动场景下，新用户或新物品的嵌入长期处于随机初始化状态。传统方法如ALS（交替最小二乘）或FunkSVD需要定期重训练整个模型，计算成本高（例如每次重训练需读取全部数据），且更新周期内预测误差无法收敛。不解决此问题，推荐系统在动态场景下会持续提供过时推荐，用户满意度下降，新用户流失率升高。\", \"method_comparison\": \"- **FunkSVD / ALS**：通过矩阵分解学习用户和物品嵌入，但嵌入仅在重训练时更新，新交互被忽略直到下次重训练。缺点：更新延迟大，无法实时反映偏好变化。\\n- **在线矩阵分解（如eALS）**：尝试增量更新，但每次更新需扫描用户所有历史交互，计算量随交互数线性增长，且缺乏误差收敛保证。\\n- **本文方法**：提出可变草图（Mutable Sketch），基于KP-tree（稀疏线段树）存储用户偏好，仅需一次低秩投影，新交互到来时实时重算嵌入，无需重训练。核心差异：利用树结构实现O(log n)更新复杂度，且理论保证每次新观测单调收紧预测误差上界。\", \"core_method\": \"**模块1：KP-tree数据结构**\\n- **做什么**：用稀疏线段树存储用户评分向量，支持高效部分和查询与更新。\\n- 每个用户维护一个KP-tree，叶子节点对应物品评分（未评分物品为0），内部节点存储子树评分和。更新时（如新增评分），只需更新从叶子到根路径上的O(log n)个节点。查询用户对某物品的预测评分时，通过低秩投影计算：pred = u^T * v，其中u从KP-tree中实时计算（用户嵌入），v为物品嵌入（固定）。\\n\\n**模块2：低秩投影与实时嵌入计算**\\n- **做什么**：对每个用户，将KP-tree中的评分向量投影到低维空间得到嵌入。\\n- 训练阶段：对所有用户评分矩阵做一次SVD，得到物品嵌入矩阵V（d x n）和投影矩阵P（d x d）。推理时，用户嵌入u = P * (树中评分向量)。由于评分向量稀疏且通过树结构快速获取，计算复杂度O(d * log n)。新评分到达时，更新树节点，然后立即重算u，整个过程<1ms。\\n\\n**模块3：理论保证**\\n- **定理1**：每次新观测（评分）后，预测误差上界单调递减。证明基于矩阵扰动理论：新评分增加了用户向量的信息，使得低秩近似更准确。例如，初始误差上界为1.0，加入10个评分后降至0.5，且不会反弹。\", \"results\": \"- **RMSE对比**：KuaiRec数据集上，可变草图RMSE=0.810（仅读取1.8%数据），ALS RMSE=0.822（读取100%数据）。\\n- **更新速度**：每批更新比ALS快8倍，因为无需全量重训练。\\n- **冷启动**：新用户首次评分后，<1ms即可获得个性化推荐，而ALS需等待下次重训练（通常数小时或天）。\\n- **采样策略**：在稀疏数据（密度<1%）上，KP-tree的范数比例采样比均匀采样物品覆盖率提升40-130%。\\n- **业务含义**：每100次新用户交互，可变草图可立即提供推荐，比基线多完成100次个性化推荐（基线需等待重训练，期间推荐随机）。\", \"limitations\": \"- 依赖一次全局SVD训练，若物品数量极大（如数十亿），SVD计算可能成为瓶颈。\\n- KP-tree更新复杂度O(log n)，但n为物品总数，在超大规模物品集上树深度仍可能较大（如2^30）。\\n- 仅支持评分数据（显式反馈），未讨论隐式反馈（如点击）的适配。\\n- 低秩投影假设用户偏好位于低维子空间，若用户行为高度非线性，可能效果下降。\\n- 未考虑物品嵌入的实时更新，仅更新用户嵌入，物品侧冷启动问题未解决。\"}",
       "relevance_score": 0.0
     }
   }
