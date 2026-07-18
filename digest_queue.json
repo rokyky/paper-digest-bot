@@ -40,7 +40,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.14835",
       "title": "LLM-Based Re-Ranking for Real Estate Search",
