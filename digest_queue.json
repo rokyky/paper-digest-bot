@@ -135,7 +135,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.26893",
       "title": "Beyond Action Imitation: Learning a Decision-Aware User Simulator for Online Advertising",
