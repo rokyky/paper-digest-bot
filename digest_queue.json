@@ -47,7 +47,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.27055",
       "title": "Learning from the Future: Privileged Self-Distillation for Sequential Recommendation",
