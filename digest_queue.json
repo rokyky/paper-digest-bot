@@ -91,7 +91,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2607.27002",
       "title": "IMFuse: Instance-Aware Multi-Layer Fusion for LLM-Enhanced Sequential Recommendation",
