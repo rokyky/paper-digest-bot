@@ -47,7 +47,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.06068",
       "title": "Cleo: A Transparent and Controllable Chatbot for Conversational Commerce",
