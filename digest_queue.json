@@ -183,7 +183,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.07035",
       "title": "MISO: Model-Internal-State-Guided Optimization for Ranking Models",
