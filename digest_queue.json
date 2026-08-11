@@ -99,7 +99,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.06792",
       "title": "Progressive Alignment of Recommender Foundation Model through Multi-Phase Post-Training",
