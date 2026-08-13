@@ -115,7 +115,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.10929",
       "title": "FedCGR: Federated Cross-Domain Generative Recommendation",
