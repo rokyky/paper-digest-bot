@@ -196,7 +196,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11061",
       "title": "Batch Size or Negatives? A Selection Rule for Memory-Constrained Recommender Training",
