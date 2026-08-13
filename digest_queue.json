@@ -157,7 +157,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11190",
       "title": "Are We Really Making Progress in Group Recommendation? Unmasking the Tie-Breaking Illusion",
