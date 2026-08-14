@@ -92,7 +92,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11675",
       "title": "FunnelCausalNet: Funnel-aware Joint Conversion-Revenue Uplift for Multi-tier Coupon Allocation",
