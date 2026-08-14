@@ -305,7 +305,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11973",
       "title": "Sci-Surf: Navigating Scientific Literature Discovery through Human Feedback and Intelligent Summarizatio",
