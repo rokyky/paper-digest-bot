@@ -223,7 +223,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11604",
       "title": "Learning from Online User Feedback for Shopping Agents",
