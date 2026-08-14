@@ -265,7 +265,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11873",
       "title": "DCM Bandits: Multiplayer Information Asymmetric Cascading Bandits for Multiple Clicks",
