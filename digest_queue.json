@@ -46,7 +46,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.11980",
       "title": "HCGRec: Hint-Conditioned Generative Recommendation with Semantic IDs",
