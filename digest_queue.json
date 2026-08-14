@@ -177,7 +177,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.12049",
       "title": "Token-Level Credit Assignment Optimization for Generative Document Retrieval",
