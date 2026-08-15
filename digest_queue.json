@@ -170,7 +170,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.13461",
       "title": "Doubly Robust Estimation of Causal Effect on CVR with Targeted Regularization",
