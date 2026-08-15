@@ -251,7 +251,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.12975",
       "title": "DTAMLP: Denoise Time-aware MLP for Session-based Recommendation",
