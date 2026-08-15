@@ -43,7 +43,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.12845",
       "title": "FSGR: Mitigating Token Frequency Bias for Fair SID-Based Generative Recommendation",
