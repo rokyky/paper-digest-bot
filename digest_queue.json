@@ -131,7 +131,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.13200",
       "title": "GEM: A Generative Embedding Model Bridging Reasoning and Retrieval",
