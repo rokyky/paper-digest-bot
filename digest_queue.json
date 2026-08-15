@@ -211,7 +211,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.12987",
       "title": "Generative Universal Multimodal Retrieval with Dual-role Identifiers",
