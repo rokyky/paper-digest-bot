@@ -179,7 +179,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.14107",
       "title": "Retrieval Grounding Latent Reasoning for Dense Retrieval",
