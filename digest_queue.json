@@ -224,7 +224,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.14021",
       "title": "Residual Dominance as a Structural Account of Last-Item Reliance in Causal Self-Attention Recommenders",
