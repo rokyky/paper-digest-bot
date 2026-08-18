@@ -266,7 +266,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.13990",
       "title": "Content Depth Matters in Short-Video Recommendation: Rethinking the Attention Economy",
