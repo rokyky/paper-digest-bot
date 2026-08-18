@@ -308,7 +308,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.13874",
       "title": "Predicting Custom-Feed Returns for New Bluesky Posts: A Prospective Study",
