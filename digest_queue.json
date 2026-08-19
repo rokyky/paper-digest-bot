@@ -45,7 +45,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.16872",
       "title": "Impression Share Prediction: An Offline Evaluation Task for Ranking Systems",
