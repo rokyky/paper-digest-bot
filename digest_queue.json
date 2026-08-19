@@ -87,7 +87,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.16824",
       "title": "GEO-Flag: Detecting and Measuring GEO-Optimized Web Content",
