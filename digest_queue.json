@@ -44,7 +44,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.17632",
       "title": "DEPT: Document Embedding Preservation Tuning for Unified Query Expansion and Retrieval",
