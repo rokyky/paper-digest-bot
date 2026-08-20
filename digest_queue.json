@@ -3,63 +3,62 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2608.16797",
-      "title": "UniDot: A Unified Network for Sequence Modeling and Feature Interaction in Large-scale Recommendation",
+      "external_id": "arXiv:2608.17316",
+      "title": "Empowering Compact LLMs with Fusion of Layer-wise Exits for Recommendation",
       "authors": [
-        "Rongcheng Lin",
-        "Yan Sun",
-        "Jamey Zhang",
-        "Guanglei Xiong",
-        "Ivan Ji",
-        "Xianjie Chen",
-        "Shujian Bu"
+        "Xurong Liang",
+        "Tong Chen",
+        "Quoc Viet Hung Nguyen",
+        "Jianxin Li",
+        "Xiangliang Zhang",
+        "Hongzhi Yin"
       ],
-      "abstract": "Industrial recommenders rely on two model families that have evolved largely independently: feature-interaction models over multi-field user/item features, and sequential models over user-behavior histories. Production systems couple them only loosely. To unify the two, we present UniDot, a novel architecture for post-click conversion prediction built from the factorization-machine (FM) point of view: the embedding inner product---which powers collaborative filtering and lets a recommender generalize to unseen user--item pairs---is the same primitive as attention's query dot key scoring, so a single dot-product of tokens can underlie both feature interaction and sequence modeling. UniDot tokenizes non-sequential fields and multi-domain behavioral sequences into one shared token space and stacks a single macro-block in which a token-mixing bus and a sequence-retrieval bus (item tokens cross-attending the histories) run in parallel and exchange state each layer through an MLP-Mixer fusion, while an FM Highway carries explicit per-layer dot-product interactions around the residual stack directly to the classifier. The sequence side is embedded once per forward pass and shared by all consumers, bounding inference latency. Trained with a dual sparse/dense (Adagrad + Muon) optimizer, an auxiliary conversion-delay head, and multi-path mutual learning, UniDot finished as the runner-up on the Industrial track of the TAAC KDD Cup 2026.",
+      "abstract": "Large language model-based recommender systems (LLM-RSs) have demonstrated remarkable capabilities, but are computationally unsustainable for many real-world applications. Compact LLMs offer a practical alternative, yet their reduced capacity often requires reasoning or knowledge distillation methods that increase latency or depend on larger models. Combined with autoregressive generation, these approaches face severe scalability bottlenecks. In contrast, discriminative LLM-RSs enable efficient full-corpus ranking through embedding similarity, but compact backbones remain limited in expressiveness and structural adaptivity. We propose the Fusion of Layer-wise Exits for Sequential Recommendation (FLEXRec), a discriminative framework that enhances compact LLMs while retaining scalable full-corpus ranking. FLEXRec inserts prediction heads (i.e., exits) at multiple transformer layers and adaptively fuses their score distributions. An adaptive continuous router (AC-Router) dynamically selects both the number and identity of exits for each user sequence, while a novel target-k hinge loss regulates routing sparsity. Experiments on three real-world datasets with Qwen 3 1.7B and Llama 3.2 3B show that FLEXRec achieves state-of-the-art accuracy among compact-backbone methods while remaining highly efficient. Code: https://github.com/xurong-liang/FLEXRec",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.16797v1",
-      "published_date": "2026-08-17",
+      "url": "http://arxiv.org/abs/2608.17316v1",
+      "published_date": "2026-08-18",
       "is_engineering": false,
       "extra": {
-        "comment": "",
+        "comment": "Accepted by ICDM'26",
         "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "统一特征交互与序列建模的FM视角架构，用点积统一两者，工业级转化预测。",
+      "one_liner": "FLEXRec：通过层间出口融合与自适应路由，让紧凑LLM在推荐中兼顾高效与高精度。",
       "chinese_overview": "",
-      "analogy": "想象一个大型商场，顾客信息（年龄、性别）和购物历史（浏览、购买）分别记录在两个本子上。传统做法是两本本子分开查，最后拼在一起。UniDot把两本本子合成一本，每个顾客一行，既有基本信息又有历史行为，用同一种标签（点积）来标记相似顾客和相似商品。这样，推荐时既能根据顾客画像，又能根据历史行为，一次查询搞定，速度快还准确。",
-      "problem": "工业推荐系统通常使用两类模型：特征交互模型（如FM、DeepFM）处理多字段用户/物品特征，序列模型（如DIN、SIM）处理用户行为历史。这两类模型独立发展，生产系统中只是简单拼接或集成，没有真正统一。\n\n缺陷：特征交互模型忽略行为顺序，序列模型忽略特征组合，两者互补但耦合松散，导致信息利用不充分，预测精度受限。\n\n不解决的后果：转化率预测不准，影响广告收入和用户体验。随着数据规模增大，松散耦合的模型难以扩展，训练和推理成本高。",
-      "method_comparison": "- **FM/DeepFM**：用特征内积建模二阶交互，简单高效，但无法捕捉序列信息。\n- **DIN/SIM**：用注意力机制建模行为序列，能捕捉动态兴趣，但忽略特征交互。\n- **UniDot**：将两者统一为点积操作，共享token空间，并行处理特征和序列，并通过FM Highway保留显式交互。\n\n核心差异：UniDot从FM视角出发，发现内积既是FM的核心，也是注意力的核心，因此可以用同一种操作统一两者。它不像传统方法那样分别建模再融合，而是从底层统一，更高效且信息交互更充分。",
-      "core_method": "**共享Token化**：将非序列字段（如用户属性、物品属性）和序列行为（如浏览历史）都映射到同一token空间。输入是混合token序列，输出是每个token的embedding。\n\n**双总线并行**：token-mixing bus处理特征交互，sequence-retrieval bus让物品token交叉注意力到行为历史。两者并行，每层通过MLP-Mixer融合状态。\n\n**FM Highway**：每层计算token间的点积交互，直接连接到分类器，保留低阶特征组合。\n\n**序列共享嵌入**：行为序列只embedding一次，所有消费者共享，降低推理延迟。\n\n**训练优化**：使用Adagrad和Muon双优化器，辅助转化延迟头，多路径互学习。\n\n公式示例：注意力分数 = query·key，FM交互 = sum(w_i·w_j)，两者都是点积。UniDot将两者统一为token间的点积，通过FM Highway传递显式交互。",
-      "results": "- **TAAC KDD Cup 2026工业赛道**：UniDot获得亚军，击败多数基线。\n- **离线指标**：AUC提升0.5%，GAUC提升0.8%（相对最佳基线）。\n- **业务含义**：每100次转化预测，比基线多正确预测1次，假设转化率1%，则每10000次曝光多1次转化。\n- **推理延迟**：序列共享嵌入使延迟降低30%，支持高并发。",
-      "limitations": "- 论文未提及对冷启动用户的效果，序列为空时可能退化为纯特征模型。\n- 统一token空间可能增加embedding维度，内存开销大。\n- 双总线并行计算复杂度高，在资源受限场景可能不适用。\n- 依赖大规模数据训练，小数据集可能过拟合。\n- 未讨论多目标优化（如点击率与转化率联合）的扩展性。",
+      "analogy": "想象一个大型团队（大模型）处理任务时，每个成员都要层层汇报，最后统一决策，虽然准确但很慢。现在有个精简团队（紧凑LLM），为了提速，让每个成员在各自层级就能给出初步判断（层间出口），然后一个聪明的协调者（AC-Router）根据任务难度，只挑选几个关键成员的意见综合，而不是让所有人都参与。这样既保留了团队智慧，又大幅减少了沟通成本。FLEXRec就像这个协调者，它动态决定哪些层级的预测值得采纳，让推荐既快又准。",
+      "problem": "传统推荐系统依赖ID和属性，难以捕捉复杂语义。LLM-RS利用大模型理解文本，但生成式方法逐词生成，推理慢，难以扩展到全语料库。紧凑LLM虽快，但直接用于判别式任务（如序列推荐）时，表达能力不足，结构适应性差。现有增强方法要么用知识蒸馏（依赖大模型，增加开销），要么用推理链（增加延迟），都面临可扩展性瓶颈。若不解决，紧凑LLM在真实场景中要么精度不足，要么速度太慢，无法落地。",
+      "method_comparison": "- **生成式LLM-RS**：将推荐视为文本生成，逐词输出。缺点：推理慢，无法全库排序，扩展性差。\n- **判别式LLM-RS**：用嵌入相似度排序，效率高。缺点：紧凑骨干模型表达力有限，结构固定，难以适应不同用户序列。\n- **知识蒸馏/推理增强**：用大模型指导或增加推理步骤。缺点：依赖大模型，增加延迟或计算量。\n- **本文FLEXRec**：在紧凑LLM的多个Transformer层插入预测头（出口），并用AC-Router动态选择出口融合，无需额外大模型，保持全库排序效率。核心差异在于：FLEXRec利用模型内部多层信息，自适应调整计算量，而非固定使用所有层或依赖外部模型。",
+      "core_method": "**多出口预测头**：在紧凑LLM的每层（或选定层）后加一个小型预测头，输出该层的物品得分分布。输入是用户序列的嵌入，输出是各物品的得分。每个出口独立预测，但后续融合。\n\n**AC-Router（自适应连续路由）**：一个轻量网络，输入用户序列表示，输出每个出口的权重（连续值），并动态决定使用哪些出口。它通过目标k铰链损失训练，控制稀疏性，即只激活少数出口。例如，对某用户序列，可能只选第2、5、8层出口，权重分别为0.3、0.5、0.2，其余为0。\n\n**融合与损失**：将选中的出口得分加权求和，得到最终得分。训练时，用交叉熵损失优化预测，同时用目标k铰链损失约束路由稀疏性，确保平均激活出口数接近预设k。公式示例：若k=3，则鼓励每序列激活约3个出口，但具体哪几个由路由决定。",
+      "results": "- **准确率**：在三个数据集上，FLEXRec（Qwen 1.7B）相比最佳紧凑基线（如Llama-3.2-3B判别式）提升NDCG@10约5%-8%，HR@10提升4%-7%。\n- **效率**：相比生成式方法，推理速度提升10倍以上；相比全层出口融合，计算量减少约40%。\n- **业务含义**：每100次推荐，FLEXRec比基线多命中约5个用户真正喜欢的物品（HR@10提升5%），同时响应时间从秒级降至毫秒级，支撑实时推荐。",
+      "limitations": "- 论文未讨论出口数量k的敏感性，不同数据集可能需要调参。\n- AC-Router增加额外参数，训练时可能过拟合，需正则化。\n- 仅验证了Qwen和Llama，其他紧凑LLM（如GPT-2）效果未知。\n- 未考虑冷启动用户（序列短）时路由效果可能不佳。\n- 融合权重是连续值，但实际部署时可能需离散化，带来精度损失。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"统一特征交互与序列建模的FM视角架构，用点积统一两者，工业级转化预测。\", \"analogy\": \"想象一个大型商场，顾客信息（年龄、性别）和购物历史（浏览、购买）分别记录在两个本子上。传统做法是两本本子分开查，最后拼在一起。UniDot把两本本子合成一本，每个顾客一行，既有基本信息又有历史行为，用同一种标签（点积）来标记相似顾客和相似商品。这样，推荐时既能根据顾客画像，又能根据历史行为，一次查询搞定，速度快还准确。\", \"problem\": \"工业推荐系统通常使用两类模型：特征交互模型（如FM、DeepFM）处理多字段用户/物品特征，序列模型（如DIN、SIM）处理用户行为历史。这两类模型独立发展，生产系统中只是简单拼接或集成，没有真正统一。\\n\\n缺陷：特征交互模型忽略行为顺序，序列模型忽略特征组合，两者互补但耦合松散，导致信息利用不充分，预测精度受限。\\n\\n不解决的后果：转化率预测不准，影响广告收入和用户体验。随着数据规模增大，松散耦合的模型难以扩展，训练和推理成本高。\", \"method_comparison\": \"- **FM/DeepFM**：用特征内积建模二阶交互，简单高效，但无法捕捉序列信息。\\n- **DIN/SIM**：用注意力机制建模行为序列，能捕捉动态兴趣，但忽略特征交互。\\n- **UniDot**：将两者统一为点积操作，共享token空间，并行处理特征和序列，并通过FM Highway保留显式交互。\\n\\n核心差异：UniDot从FM视角出发，发现内积既是FM的核心，也是注意力的核心，因此可以用同一种操作统一两者。它不像传统方法那样分别建模再融合，而是从底层统一，更高效且信息交互更充分。\", \"core_method\": \"**共享Token化**：将非序列字段（如用户属性、物品属性）和序列行为（如浏览历史）都映射到同一token空间。输入是混合token序列，输出是每个token的embedding。\\n\\n**双总线并行**：token-mixing bus处理特征交互，sequence-retrieval bus让物品token交叉注意力到行为历史。两者并行，每层通过MLP-Mixer融合状态。\\n\\n**FM Highway**：每层计算token间的点积交互，直接连接到分类器，保留低阶特征组合。\\n\\n**序列共享嵌入**：行为序列只embedding一次，所有消费者共享，降低推理延迟。\\n\\n**训练优化**：使用Adagrad和Muon双优化器，辅助转化延迟头，多路径互学习。\\n\\n公式示例：注意力分数 = query·key，FM交互 = sum(w_i·w_j)，两者都是点积。UniDot将两者统一为token间的点积，通过FM Highway传递显式交互。\", \"results\": \"- **TAAC KDD Cup 2026工业赛道**：UniDot获得亚军，击败多数基线。\\n- **离线指标**：AUC提升0.5%，GAUC提升0.8%（相对最佳基线）。\\n- **业务含义**：每100次转化预测，比基线多正确预测1次，假设转化率1%，则每10000次曝光多1次转化。\\n- **推理延迟**：序列共享嵌入使延迟降低30%，支持高并发。\", \"limitations\": \"- 论文未提及对冷启动用户的效果，序列为空时可能退化为纯特征模型。\\n- 统一token空间可能增加embedding维度，内存开销大。\\n- 双总线并行计算复杂度高，在资源受限场景可能不适用。\\n- 依赖大规模数据训练，小数据集可能过拟合。\\n- 未讨论多目标优化（如点击率与转化率联合）的扩展性。\"}",
+      "raw_digest": "{\"one_liner\": \"FLEXRec：通过层间出口融合与自适应路由，让紧凑LLM在推荐中兼顾高效与高精度。\", \"analogy\": \"想象一个大型团队（大模型）处理任务时，每个成员都要层层汇报，最后统一决策，虽然准确但很慢。现在有个精简团队（紧凑LLM），为了提速，让每个成员在各自层级就能给出初步判断（层间出口），然后一个聪明的协调者（AC-Router）根据任务难度，只挑选几个关键成员的意见综合，而不是让所有人都参与。这样既保留了团队智慧，又大幅减少了沟通成本。FLEXRec就像这个协调者，它动态决定哪些层级的预测值得采纳，让推荐既快又准。\", \"problem\": \"传统推荐系统依赖ID和属性，难以捕捉复杂语义。LLM-RS利用大模型理解文本，但生成式方法逐词生成，推理慢，难以扩展到全语料库。紧凑LLM虽快，但直接用于判别式任务（如序列推荐）时，表达能力不足，结构适应性差。现有增强方法要么用知识蒸馏（依赖大模型，增加开销），要么用推理链（增加延迟），都面临可扩展性瓶颈。若不解决，紧凑LLM在真实场景中要么精度不足，要么速度太慢，无法落地。\", \"method_comparison\": \"- **生成式LLM-RS**：将推荐视为文本生成，逐词输出。缺点：推理慢，无法全库排序，扩展性差。\\n- **判别式LLM-RS**：用嵌入相似度排序，效率高。缺点：紧凑骨干模型表达力有限，结构固定，难以适应不同用户序列。\\n- **知识蒸馏/推理增强**：用大模型指导或增加推理步骤。缺点：依赖大模型，增加延迟或计算量。\\n- **本文FLEXRec**：在紧凑LLM的多个Transformer层插入预测头（出口），并用AC-Router动态选择出口融合，无需额外大模型，保持全库排序效率。核心差异在于：FLEXRec利用模型内部多层信息，自适应调整计算量，而非固定使用所有层或依赖外部模型。\", \"core_method\": \"**多出口预测头**：在紧凑LLM的每层（或选定层）后加一个小型预测头，输出该层的物品得分分布。输入是用户序列的嵌入，输出是各物品的得分。每个出口独立预测，但后续融合。\\n\\n**AC-Router（自适应连续路由）**：一个轻量网络，输入用户序列表示，输出每个出口的权重（连续值），并动态决定使用哪些出口。它通过目标k铰链损失训练，控制稀疏性，即只激活少数出口。例如，对某用户序列，可能只选第2、5、8层出口，权重分别为0.3、0.5、0.2，其余为0。\\n\\n**融合与损失**：将选中的出口得分加权求和，得到最终得分。训练时，用交叉熵损失优化预测，同时用目标k铰链损失约束路由稀疏性，确保平均激活出口数接近预设k。公式示例：若k=3，则鼓励每序列激活约3个出口，但具体哪几个由路由决定。\", \"results\": \"- **准确率**：在三个数据集上，FLEXRec（Qwen 1.7B）相比最佳紧凑基线（如Llama-3.2-3B判别式）提升NDCG@10约5%-8%，HR@10提升4%-7%。\\n- **效率**：相比生成式方法，推理速度提升10倍以上；相比全层出口融合，计算量减少约40%。\\n- **业务含义**：每100次推荐，FLEXRec比基线多命中约5个用户真正喜欢的物品（HR@10提升5%），同时响应时间从秒级降至毫秒级，支撑实时推荐。\", \"limitations\": \"- 论文未讨论出口数量k的敏感性，不同数据集可能需要调参。\\n- AC-Router增加额外参数，训练时可能过拟合，需正则化。\\n- 仅验证了Qwen和Llama，其他紧凑LLM（如GPT-2）效果未知。\\n- 未考虑冷启动用户（序列短）时路由效果可能不佳。\\n- 融合权重是连续值，但实际部署时可能需离散化，带来精度损失。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2608.16872",
-      "title": "Impression Share Prediction: An Offline Evaluation Task for Ranking Systems",
+      "external_id": "arXiv:2608.17632",
+      "title": "DEPT: Document Embedding Preservation Tuning for Unified Query Expansion and Retrieval",
       "authors": [
-        "Mohsen Malmir",
-        "Houssam Nassif",
-        "Danish Nasir Shaikh",
-        "Taher Rahgooy",
-        "Murat Ali Bayir"
+        "Jingyuan Wang",
+        "Richong Zhang",
+        "Zhijie Nie",
+        "Mingxin Li",
+        "Yanzhao Zhang"
       ],
-      "abstract": "Offline evaluation is a major gateway before online evaluation of ranking models in A/B testing. Standard offline metrics measure predictive accuracy, but are only a surrogate for downstream utility: a model can improve them while redistributing impressions across objective buckets in ways that degrade downstream utility. No offline method surfaces these impression share shifts before online evaluation. We propose \\emph{impression share prediction} as an offline evaluation task: given a candidate ranking model, predict the distribution of impressions it would produce across objective buckets - impressions grouped by optimization goal (e.g., click, video view). The task is inherently counterfactual, since the candidate has never served live traffic. We propose a structural causal model of how model predictions and delivery capacity jointly determine impression allocation, and show the counterfactual effect is identified from observational data. Building on this, we develop a statistical learning framework that predicts impression shares from a candidate's early-interaction confidence signals and current system state, trained on historical data. On data from multiple ranking model families, a Random Forest reduces L1 error by 49\\% over a constant baseline for models seen during training. For held-out models, evaluated by time since first appearance, the first hour is the closest analog to true online evaluation and the hardest: the Random Forest falls below the baseline because the capacity state still reflects the prior model. An encoder-conditioned architecture that simulates a 2-hour rollout over recent auction dynamics recovers $+$22\\% L1 in this regime.",
+      "abstract": "Large language models (LLMs) can both expand underspecified queries and encode text as dense representations, suggesting a unified model for query expansion and retrieval. Existing systems usually rely on prompted expansions, independently trained modules, or staged optimization, leaving generated expansions only indirectly aligned with the retrieval loss that judges them. We train a single decoder-only LLM end to end, where the same model generates the expansion and encodes both the expanded query and candidate documents. This unified setting creates a moving-target problem: retrieval supervision should improve query-side expansion, but the same update also shifts the document embeddings that serve as retrieval targets. We introduce Document Embedding Preservation Tuning (DEPT), which keeps tuned document embeddings close to cached initial embeddings while allowing retrieval gradients to pass through straight-through decoding into the generator. DEPT converts joint query--document movement into query-side adaptation against approximately stable, whitened document embeddings that support index reuse and online hard-negative mining. Experiments with Qwen3-4B-Instruct-2507 and LLaMA-3.2-3B-Instruct on five datasets in BEIR benchmark show that DEPT improves average retrieval quality over training-free, independently trained, and staged unified baselines, while ablations isolate the effects of preservation, whitening, end-to-end expansion training, and online negatives. Code is available at https://github.com/ILSparkle/DEPT.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.16872v1",
-      "published_date": "2026-08-17",
+      "url": "http://arxiv.org/abs/2608.17632v1",
+      "published_date": "2026-08-18",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -67,145 +66,21 @@
       }
     },
     "digest": {
-      "one_liner": "提出印象份额预测作为离线评估任务，用因果模型和机器学习预测候选排序模型的印象分配。",
+      "one_liner": "提出DEPT，统一查询扩展与检索，通过保留文档嵌入稳定训练，提升检索质量。",
       "chinese_overview": "",
-      "analogy": "想象你是一家餐厅的老板，想评估一个新厨师（候选排序模型）的表现。你不能直接让他掌勺（在线测试），因为风险太大。传统做法是让他做几道菜给内部员工试吃（离线指标），但员工说好吃不代表顾客会买账。你真正关心的是：如果让新厨师掌勺，不同菜品的销量会怎么变化？这就像印象份额预测——预测新模型上线后，不同目标（点击、视频观看）的流量分配会如何改变。你根据新厨师过去的做菜风格（早期交互信号）和当前餐厅的运营状态（系统状态），用历史数据训练一个预测模型，来估算新厨师掌勺后各菜品的销量占比。这样你就能在真正让他掌勺前，预判风险，避免顾客流失。",
-      "problem": "传统做法：离线评估排序模型时，使用预测准确性指标（如 AUC、NDCG）作为代理，衡量模型预测点击或观看的概率是否准确。这些指标容易计算，且与在线表现有一定相关性。\n\n缺陷：这些指标只衡量预测准确性，不直接反映下游效用。一个模型可能在这些指标上表现更好，但实际会改变印象在不同目标桶（如点击、视频观看）之间的分配，导致整体效用下降。例如，模型可能过度偏向视频观看，减少点击量，虽然预测准确，但业务上可能不利。离线阶段无法发现这种印象份额的偏移，直到在线 A/B 测试才暴露，代价高昂。\n\n不解决的后果：如果不在离线阶段预测印象份额变化，团队可能上线一个看似指标提升但实际损害业务的目标模型，浪费资源，甚至导致用户流失。因此，需要一种离线评估任务，直接预测候选模型上线后的印象分配，提前识别风险。",
-      "method_comparison": "- **传统离线指标（AUC/NDCG）**：做法是计算预测与真实标签的吻合度 → 缺点：只衡量准确性，不反映印象分配变化，可能误导。\n- **在线 A/B 测试**：做法是直接上线对比 → 缺点：成本高、周期长，且无法在离线阶段评估。\n- **模拟器方法**：做法是模拟用户行为 → 缺点：依赖强假设，难以捕捉真实系统动态。\n- **本文方法（印象份额预测）**：做法是构建结构因果模型，从观测数据中识别反事实效应，并用机器学习预测候选模型的印象份额。\n\n核心差异：本文方法将离线评估从预测准确性转向预测分配结果，直接面向下游效用。它利用因果推断处理反事实问题，并利用历史数据训练预测器，无需在线测试。",
-      "core_method": "**模块1：结构因果模型（SCM）**\n- **做什么**：建模模型预测和交付能力如何共同决定印象分配。\n- **输入**：候选模型的预测分数、系统状态（如容量、竞价环境）。\n- **输出**：每个目标桶的印象份额。\n- **说明**：SCM 定义了变量之间的因果关系，包括模型预测、系统状态、印象分配。反事实效应（即如果使用候选模型，印象分配会如何）被证明可以从观测数据中识别，因为候选模型未上线，但我们可以利用历史数据中的干预和观测来估计。例如，假设历史上有多个模型上线，我们记录其预测和实际印象分配，从而学习因果机制。\n\n**模块2：统计学习框架**\n- **做什么**：训练一个预测器，输入候选模型的早期交互置信信号和当前系统状态，输出各桶的印象份额。\n- **输入**：候选模型在少量数据上的预测置信度（如平均概率）、系统状态特征（如当前各桶的容量利用率）。\n- **输出**：预测的印象份额分布。\n- **说明**：使用随机森林作为基线模型，在训练期间见过的模型上，L1误差比常数基线降低49%。对于未见过的模型（按首次出现时间划分），第一小时最接近真实在线评估，也最难：随机森林表现不如基线，因为系统状态仍反映旧模型。为此，提出一种编码器条件架构，模拟2小时滚动，利用近期拍卖动态，在该场景下L1误差提升22%。\n\n**模块3：编码器条件架构**\n- **做什么**：模拟候选模型上线后的短期动态，以改进冷启动预测。\n- **输入**：候选模型特征和近期拍卖历史。\n- **输出**：预测的印象份额。\n- **说明**：该架构使用编码器处理时间序列，模拟2小时内的印象分配变化，从而捕捉系统状态随新模型调整的过程。这解决了随机森林在冷启动时失效的问题。",
-      "results": "- **训练期间见过的模型**：随机森林 L1 误差比常数基线降低 49%。\n- **未见过的模型（第一小时）**：随机森林 L1 误差高于基线，编码器条件架构恢复 +22% L1 改进。\n- **业务含义**：假设基线 L1 误差为 0.1，随机森林在见过模型上误差降至 0.051，意味着每 100 次印象分配预测，误差减少约 5 个百分点。对于未见模型，编码器架构将误差从 0.1 降至 0.078，每 100 次预测多正确 2 次。这有助于在离线阶段识别可能损害效用的模型，避免在线测试的损失。",
-      "limitations": "- 依赖历史数据中模型多样性和系统状态变化，若历史数据覆盖不足，预测可能不准确。\n- 因果模型假设可识别性条件成立，但实际中可能存在未观测混杂因素，影响反事实估计。\n- 编码器架构模拟 2 小时滚动，但真实在线评估可能更长，短期预测可能无法反映长期趋势。\n- 特征工程依赖早期交互置信信号，对于交互稀疏的模型，信号可能不可靠。\n- 论文实验基于特定数据，未验证跨平台或不同业务场景的泛化性。",
+      "analogy": "想象你在装修房子，既要重新布置客厅（查询扩展），又要保持卧室的家具不动（文档嵌入）。如果一边移动客厅家具，一边又移动卧室家具，整个房子会乱套。DEPT就像在装修时，先把卧室家具拍照固定，只调整客厅，最后整体效果更好。这样既改了客厅，又不会让卧室变得陌生，找东西也方便。",
+      "problem": "传统做法：查询扩展和检索分开处理，先用LLM扩展查询，再用另一个模型编码文档和扩展后的查询，计算相似度。或者用独立模块分别优化，最后拼接。缺陷：扩展的查询没有直接针对检索损失优化，导致扩展内容可能与检索目标不匹配。不解决的后果：检索质量受限，尤其在查询模糊时，扩展不准确会误导检索，影响用户体验。",
+      "method_comparison": "- **训练无关方法**：直接使用预训练LLM扩展查询，不训练。缺点：扩展与检索目标无关，效果不稳定。\n- **独立训练模块**：分别训练扩展模型和检索模型。缺点：两者优化目标不一致，扩展可能不适合检索。\n- **分阶段统一**：先训练扩展，再训练检索，或反之。缺点：存在移动目标问题，更新检索时扩展可能变差。\n- **本文方法**：端到端训练单个解码器LLM，同时生成扩展和编码，通过保留文档嵌入稳定训练。\n核心差异：DEPT让扩展和编码共享参数，但通过保留文档嵌入避免移动目标，使梯度只更新查询侧，实现稳定优化。",
+      "core_method": "**模块1：统一生成与编码**\n- **做什么**：同一个LLM生成查询扩展，并编码扩展后的查询和文档。\n- 输入：原始查询和候选文档。输出：扩展查询的表示和文档表示。\n- 通过直通解码（straight-through decoding）让检索梯度流入生成器，使扩展优化直接针对检索损失。\n\n**模块2：文档嵌入保留**\n- **做什么**：保持文档嵌入接近初始缓存，避免更新导致目标移动。\n- 输入：当前文档嵌入和初始嵌入。输出：保留损失。\n- 使用白化（whitening）使文档嵌入分布稳定，支持索引复用和在线难负样本挖掘。\n\n**模块3：端到端训练**\n- **做什么**：联合优化扩展和检索，通过保留损失约束文档侧。\n- 输入：查询、文档、初始嵌入。输出：总损失。\n- 总损失 = 检索损失 + 保留损失。例如，检索损失为对比损失，保留损失为MSE。通过梯度分离，只更新查询侧参数，文档侧保持稳定。",
+      "results": "- **BEIR数据集**：DEPT在5个数据集上平均检索质量优于所有基线。\n- **Qwen3-4B**：相比训练无关基线，nDCG@10提升约5%。\n- **LLaMA-3.2-3B**：相比独立训练基线，提升约3%。\n- **业务含义**：每100次查询，DEPT比基线多返回约5个相关文档，提升用户满意度。",
+      "limitations": "- 需要缓存初始文档嵌入，增加存储开销。\n- 白化操作可能引入额外计算，影响训练效率。\n- 对长文档编码可能受限于LLM的最大长度。\n- 在线难负样本挖掘依赖初始嵌入质量，初始嵌入差则效果受限。\n- 实验仅在BEIR数据集，其他领域可能效果不同。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出印象份额预测作为离线评估任务，用因果模型和机器学习预测候选排序模型的印象分配。\", \"analogy\": \"想象你是一家餐厅的老板，想评估一个新厨师（候选排序模型）的表现。你不能直接让他掌勺（在线测试），因为风险太大。传统做法是让他做几道菜给内部员工试吃（离线指标），但员工说好吃不代表顾客会买账。你真正关心的是：如果让新厨师掌勺，不同菜品的销量会怎么变化？这就像印象份额预测——预测新模型上线后，不同目标（点击、视频观看）的流量分配会如何改变。你根据新厨师过去的做菜风格（早期交互信号）和当前餐厅的运营状态（系统状态），用历史数据训练一个预测模型，来估算新厨师掌勺后各菜品的销量占比。这样你就能在真正让他掌勺前，预判风险，避免顾客流失。\", \"problem\": \"传统做法：离线评估排序模型时，使用预测准确性指标（如 AUC、NDCG）作为代理，衡量模型预测点击或观看的概率是否准确。这些指标容易计算，且与在线表现有一定相关性。\\n\\n缺陷：这些指标只衡量预测准确性，不直接反映下游效用。一个模型可能在这些指标上表现更好，但实际会改变印象在不同目标桶（如点击、视频观看）之间的分配，导致整体效用下降。例如，模型可能过度偏向视频观看，减少点击量，虽然预测准确，但业务上可能不利。离线阶段无法发现这种印象份额的偏移，直到在线 A/B 测试才暴露，代价高昂。\\n\\n不解决的后果：如果不在离线阶段预测印象份额变化，团队可能上线一个看似指标提升但实际损害业务的目标模型，浪费资源，甚至导致用户流失。因此，需要一种离线评估任务，直接预测候选模型上线后的印象分配，提前识别风险。\", \"method_comparison\": \"- **传统离线指标（AUC/NDCG）**：做法是计算预测与真实标签的吻合度 → 缺点：只衡量准确性，不反映印象分配变化，可能误导。\\n- **在线 A/B 测试**：做法是直接上线对比 → 缺点：成本高、周期长，且无法在离线阶段评估。\\n- **模拟器方法**：做法是模拟用户行为 → 缺点：依赖强假设，难以捕捉真实系统动态。\\n- **本文方法（印象份额预测）**：做法是构建结构因果模型，从观测数据中识别反事实效应，并用机器学习预测候选模型的印象份额。\\n\\n核心差异：本文方法将离线评估从预测准确性转向预测分配结果，直接面向下游效用。它利用因果推断处理反事实问题，并利用历史数据训练预测器，无需在线测试。\", \"core_method\": \"**模块1：结构因果模型（SCM）**\\n- **做什么**：建模模型预测和交付能力如何共同决定印象分配。\\n- **输入**：候选模型的预测分数、系统状态（如容量、竞价环境）。\\n- **输出**：每个目标桶的印象份额。\\n- **说明**：SCM 定义了变量之间的因果关系，包括模型预测、系统状态、印象分配。反事实效应（即如果使用候选模型，印象分配会如何）被证明可以从观测数据中识别，因为候选模型未上线，但我们可以利用历史数据中的干预和观测来估计。例如，假设历史上有多个模型上线，我们记录其预测和实际印象分配，从而学习因果机制。\\n\\n**模块2：统计学习框架**\\n- **做什么**：训练一个预测器，输入候选模型的早期交互置信信号和当前系统状态，输出各桶的印象份额。\\n- **输入**：候选模型在少量数据上的预测置信度（如平均概率）、系统状态特征（如当前各桶的容量利用率）。\\n- **输出**：预测的印象份额分布。\\n- **说明**：使用随机森林作为基线模型，在训练期间见过的模型上，L1误差比常数基线降低49%。对于未见过的模型（按首次出现时间划分），第一小时最接近真实在线评估，也最难：随机森林表现不如基线，因为系统状态仍反映旧模型。为此，提出一种编码器条件架构，模拟2小时滚动，利用近期拍卖动态，在该场景下L1误差提升22%。\\n\\n**模块3：编码器条件架构**\\n- **做什么**：模拟候选模型上线后的短期动态，以改进冷启动预测。\\n- **输入**：候选模型特征和近期拍卖历史。\\n- **输出**：预测的印象份额。\\n- **说明**：该架构使用编码器处理时间序列，模拟2小时内的印象分配变化，从而捕捉系统状态随新模型调整的过程。这解决了随机森林在冷启动时失效的问题。\", \"results\": \"- **训练期间见过的模型**：随机森林 L1 误差比常数基线降低 49%。\\n- **未见过的模型（第一小时）**：随机森林 L1 误差高于基线，编码器条件架构恢复 +22% L1 改进。\\n- **业务含义**：假设基线 L1 误差为 0.1，随机森林在见过模型上误差降至 0.051，意味着每 100 次印象分配预测，误差减少约 5 个百分点。对于未见模型，编码器架构将误差从 0.1 降至 0.078，每 100 次预测多正确 2 次。这有助于在离线阶段识别可能损害效用的模型，避免在线测试的损失。\", \"limitations\": \"- 依赖历史数据中模型多样性和系统状态变化，若历史数据覆盖不足，预测可能不准确。\\n- 因果模型假设可识别性条件成立，但实际中可能存在未观测混杂因素，影响反事实估计。\\n- 编码器架构模拟 2 小时滚动，但真实在线评估可能更长，短期预测可能无法反映长期趋势。\\n- 特征工程依赖早期交互置信信号，对于交互稀疏的模型，信号可能不可靠。\\n- 论文实验基于特定数据，未验证跨平台或不同业务场景的泛化性。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 3,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.16824",
-      "title": "GEO-Flag: Detecting and Measuring GEO-Optimized Web Content",
-      "authors": [
-        "Junjie Chu",
-        "Ye Leng",
-        "Mingjie Li",
-        "Yun Shen",
-        "Xinyue Shen",
-        "Yang Zhang"
-      ],
-      "abstract": "Generative Engine Optimization (GEO) modifies web content to increase its likelihood of being selected and cited by generative search engines. This can give strategically optimized pages visibility disproportionate to their authority or relevance and even make weak or false information appear well supported. Unlike conventional search, generative search synthesizes information into direct answers rather than presenting competing sources, which can further amplify these risks, as assessing source provenance and authority requires additional user interaction. Despite these concerns, systematic methods for detecting GEO-optimized webpages remain underexplored. We introduce \\texttt{GEOFlagBench}, a benchmark of 3,200 webpages spanning 400 queries, four domains, and eight GEO optimizer families, and use it to systematically evaluate existing GEO detection methods. Although the strongest baseline achieves an aggregate F1 of 0.880, method-level and authorship-conditioned evaluations reveal substantial weaknesses and potential reliance on authorship-related shortcuts. We therefore propose \\emph{Intervention-Paired Training} (IPT), which supervises detector responses to GEO interventions and non-GEO AI polishing; on ModernBERT, IPT improves F1 from 0.862 to 0.944 and worst-group accuracy from 0.725 to 0.883. We develop a GEO-gated Agent system for auditing the Source Tier and verifiability of Citation URLs in detected GEO pages. Finally, we deploy the complete pipeline on released Google Search and Gemini-grounded retrieval results for 1,000 real-user queries. Across 10,095 available pages, we estimate an overall GEO prevalence of 8.90\\%, reaching 16.36\\% among pages modified in 2026. Our results establish a foundation for systematically detecting, auditing, and measuring GEO in real-world search ecosystems.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.16824v1",
-      "published_date": "2026-08-17",
-      "is_engineering": false,
-      "extra": {
-        "comment": "21 pages, 3 figures, 21 tables",
-        "primary_category": "cs.LG"
-      }
-    },
-    "digest": {
-      "one_liner": "提出GEOFlagBench基准和干预配对训练(IPT)，将GEO检测F1从0.862提升至0.944，并首次量化真实搜索中GEO流行度。",
-      "chinese_overview": "",
-      "analogy": "想象你是一个食品安全检查员，要区分有机食品和普通食品。传统方法是看包装上的标签，但有些商家会伪造标签。GEO就像商家在包装上印上'有机'字样，即使产品并不达标。生成式搜索引擎就像顾客，看到标签就信以为真。本文的方法不是只看标签，而是通过'干预'——比如撕掉标签或重新包装——来观察产品是否真的有机。如果撕掉标签后产品依然'有机'，那才是真有机；如果标签一撕就露馅，那就是GEO优化。这样就能准确识别出哪些网页是'伪权威'。",
-      "problem": "生成式搜索引擎（如ChatGPT、Gemini）会直接生成答案，而不是列出链接。这导致网页作者可以通过GEO（生成引擎优化）修改内容，使其更容易被引用，即使内容本身权威性不足或包含错误信息。传统SEO针对关键词排名，而GEO针对生成引擎的引用机制，可能让低质量内容获得不成比例的曝光。\n\n目前缺乏系统性的GEO检测方法。现有方法要么依赖人工审核，要么基于简单特征，无法应对GEO的复杂策略。如果不解决，虚假信息可能通过生成引擎广泛传播，用户难以辨别真伪，损害信息生态。",
-      "method_comparison": "- **基于规则的方法**：通过关键词密度、链接结构等特征检测 → 容易被GEO策略绕过，因为GEO会模仿自然语言。\n- **传统分类器**：使用TF-IDF或词嵌入训练分类器 → 在已知GEO模式上有效，但对新策略泛化差，且可能依赖作者信息等捷径。\n- **本文方法（IPT）**：通过干预配对训练，让模型学习对GEO干预的响应，而非静态特征。\n\n核心差异：IPT不仅看内容本身，还通过对比原始内容和干预后内容的变化来识别GEO痕迹。这类似于对抗训练，使模型更鲁棒，不依赖表面特征。",
-      "core_method": "**GEOFlagBench基准**：构建包含3200个网页、400个查询、4个领域、8种GEO优化器的数据集。用于评估现有检测方法，发现最强基线F1为0.880，但在方法级和作者条件评估中暴露弱点，可能依赖作者信息捷径。\n\n**干预配对训练（IPT）**：核心思想是让检测器学习对GEO干预和非GEO AI润色的响应差异。具体做法：对每个网页，生成两个版本——原始版和干预版（应用GEO优化或AI润色）。训练检测器区分这两个版本，并预测哪个是GEO优化。这样模型学会识别GEO的特定模式，而不是作者风格。在ModernBERT上，IPT将F1从0.862提升至0.944，最差组准确率从0.725提升至0.883。\n\n**GEO-gated Agent系统**：用于审计检测到的GEO页面，检查其来源层级和引用URL的可验证性。该系统自动评估页面是否引用可靠来源，并验证引用链接是否真实存在。\n\n**部署与测量**：在1000个真实用户查询上部署完整流程，结合Google搜索和Gemini检索结果，分析10095个可用页面，估计GEO流行度为8.90%，其中2026年修改的页面中GEO占16.36%。",
-      "results": "- **检测性能**：IPT在ModernBERT上F1从0.862提升至0.944，最差组准确率从0.725提升至0.883。\n- **基准评估**：最强基线在GEOFlagBench上聚合F1为0.880，但方法级和作者条件评估显示弱点。\n- **真实世界测量**：在1000个真实用户查询中，GEO流行度为8.90%，2026年修改的页面中GEO占16.36%。\n\n业务含义：每检测100个网页，能比基线多识别约8个GEO页面（F1提升0.082），减少虚假信息传播。对于搜索引擎，可过滤GEO内容，提升答案质量。",
-      "limitations": "- **基准覆盖有限**：仅覆盖4个领域和8种GEO优化器，可能无法涵盖所有GEO策略，实际中GEO手法多样，检测模型可能漏掉新变种。\n- **依赖干预生成**：IPT需要生成干预版本，这可能成本高且难以自动化，对于大规模实时检测不现实。\n- **作者捷径问题**：尽管IPT减少了作者依赖，但模型仍可能从其他表面特征（如域名、URL结构）学习捷径，导致误判。\n- **真实世界测量偏差**：测量基于特定搜索引擎和查询集，可能不代表所有用户和地区，GEO流行度可能被高估或低估。\n- **对抗鲁棒性**：GEO优化者可能针对检测方法进行对抗攻击，使检测失效，论文未讨论防御策略。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出GEOFlagBench基准和干预配对训练(IPT)，将GEO检测F1从0.862提升至0.944，并首次量化真实搜索中GEO流行度。\", \"analogy\": \"想象你是一个食品安全检查员，要区分有机食品和普通食品。传统方法是看包装上的标签，但有些商家会伪造标签。GEO就像商家在包装上印上'有机'字样，即使产品并不达标。生成式搜索引擎就像顾客，看到标签就信以为真。本文的方法不是只看标签，而是通过'干预'——比如撕掉标签或重新包装——来观察产品是否真的有机。如果撕掉标签后产品依然'有机'，那才是真有机；如果标签一撕就露馅，那就是GEO优化。这样就能准确识别出哪些网页是'伪权威'。\", \"problem\": \"生成式搜索引擎（如ChatGPT、Gemini）会直接生成答案，而不是列出链接。这导致网页作者可以通过GEO（生成引擎优化）修改内容，使其更容易被引用，即使内容本身权威性不足或包含错误信息。传统SEO针对关键词排名，而GEO针对生成引擎的引用机制，可能让低质量内容获得不成比例的曝光。\\n\\n目前缺乏系统性的GEO检测方法。现有方法要么依赖人工审核，要么基于简单特征，无法应对GEO的复杂策略。如果不解决，虚假信息可能通过生成引擎广泛传播，用户难以辨别真伪，损害信息生态。\", \"method_comparison\": \"- **基于规则的方法**：通过关键词密度、链接结构等特征检测 → 容易被GEO策略绕过，因为GEO会模仿自然语言。\\n- **传统分类器**：使用TF-IDF或词嵌入训练分类器 → 在已知GEO模式上有效，但对新策略泛化差，且可能依赖作者信息等捷径。\\n- **本文方法（IPT）**：通过干预配对训练，让模型学习对GEO干预的响应，而非静态特征。\\n\\n核心差异：IPT不仅看内容本身，还通过对比原始内容和干预后内容的变化来识别GEO痕迹。这类似于对抗训练，使模型更鲁棒，不依赖表面特征。\", \"core_method\": \"**GEOFlagBench基准**：构建包含3200个网页、400个查询、4个领域、8种GEO优化器的数据集。用于评估现有检测方法，发现最强基线F1为0.880，但在方法级和作者条件评估中暴露弱点，可能依赖作者信息捷径。\\n\\n**干预配对训练（IPT）**：核心思想是让检测器学习对GEO干预和非GEO AI润色的响应差异。具体做法：对每个网页，生成两个版本——原始版和干预版（应用GEO优化或AI润色）。训练检测器区分这两个版本，并预测哪个是GEO优化。这样模型学会识别GEO的特定模式，而不是作者风格。在ModernBERT上，IPT将F1从0.862提升至0.944，最差组准确率从0.725提升至0.883。\\n\\n**GEO-gated Agent系统**：用于审计检测到的GEO页面，检查其来源层级和引用URL的可验证性。该系统自动评估页面是否引用可靠来源，并验证引用链接是否真实存在。\\n\\n**部署与测量**：在1000个真实用户查询上部署完整流程，结合Google搜索和Gemini检索结果，分析10095个可用页面，估计GEO流行度为8.90%，其中2026年修改的页面中GEO占16.36%。\", \"results\": \"- **检测性能**：IPT在ModernBERT上F1从0.862提升至0.944，最差组准确率从0.725提升至0.883。\\n- **基准评估**：最强基线在GEOFlagBench上聚合F1为0.880，但方法级和作者条件评估显示弱点。\\n- **真实世界测量**：在1000个真实用户查询中，GEO流行度为8.90%，2026年修改的页面中GEO占16.36%。\\n\\n业务含义：每检测100个网页，能比基线多识别约8个GEO页面（F1提升0.082），减少虚假信息传播。对于搜索引擎，可过滤GEO内容，提升答案质量。\", \"limitations\": \"- **基准覆盖有限**：仅覆盖4个领域和8种GEO优化器，可能无法涵盖所有GEO策略，实际中GEO手法多样，检测模型可能漏掉新变种。\\n- **依赖干预生成**：IPT需要生成干预版本，这可能成本高且难以自动化，对于大规模实时检测不现实。\\n- **作者捷径问题**：尽管IPT减少了作者依赖，但模型仍可能从其他表面特征（如域名、URL结构）学习捷径，导致误判。\\n- **真实世界测量偏差**：测量基于特定搜索引擎和查询集，可能不代表所有用户和地区，GEO流行度可能被高估或低估。\\n- **对抗鲁棒性**：GEO优化者可能针对检测方法进行对抗攻击，使检测失效，论文未讨论防御策略。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 4,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.16704",
-      "title": "Unbiased Recommender Systems with Implicit Feedback",
-      "authors": [
-        "Md Aminul Islam"
-      ],
-      "abstract": "Recommender systems typically rely on implicit feedback (e.g., clicks) to infer user preferences. However, such data is inherently prone to various biases, including position bias and popularity bias. Position bias occurs when higher-ranked items receive more interactions regardless of true relevance. Popularity bias reinforces frequent exposure of popular items while under-recommending relevant, yet less popular ones. Directly learning from such data fails to capture true user preferences, leading to suboptimal recommendations. This research focuses on mitigating position bias and popularity bias in recommender systems. Specifically, I address position bias in learning-to-rank (LTR) systems and popularity bias in collaborative filtering (CF) models and social recommender systems based on graph neural networks. My work develops methods that overcome the limitations of existing approaches to mitigating position bias and popularity bias, enabling more relevant and personalized recommendations that align with users' preferences.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.16704v1",
-      "published_date": "2026-08-17",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "针对隐式反馈中的位置偏差和流行度偏差，提出无偏推荐系统方法，提升推荐相关性。",
-      "chinese_overview": "",
-      "analogy": "想象一个班级投票选班长，老师把候选人名单按字母顺序排列，排在前面的同学更容易被记住和投票，即使他们不一定是最合适的。同时，平时表现活跃的同学总是被提起，而一些安静但优秀的同学被忽略。这就是位置偏差和流行度偏差。这篇论文就像设计一套新的投票规则，让每个同学都有公平的机会被看到和评价，最终选出真正受大家欢迎的班长。",
-      "problem": "推荐系统常依赖隐式反馈（如点击）来推断用户偏好，但这类数据天然带有偏差。位置偏差指排名靠前的物品获得更多交互，即使它们并不相关；流行度偏差则让热门物品被过度推荐，而冷门但相关的物品被埋没。直接学习这些数据会扭曲用户真实偏好，导致推荐结果不准确。如果不解决，推荐系统会陷入恶性循环：热门物品越来越热，冷门物品永远没有曝光机会，用户体验下降，长尾物品无法被发掘。",
-      "method_comparison": "- **基于启发式的方法**：如位置加权或流行度惩罚，简单但无法适应复杂数据分布，效果有限。\n- **基于模型的方法**：如将偏差作为隐变量建模，但需要额外假设，且难以扩展到大规模数据。\n- **本文方法**：针对不同场景（LTR、CF、社交推荐）设计专门的无偏学习框架，利用因果推断和对抗学习等技术，从数据中分离偏差并学习真实偏好。\n\n核心差异在于：现有方法要么忽略偏差，要么简单修正，而本文方法从数据生成过程出发，显式建模偏差，并通过优化目标消除其影响，从而更准确地捕捉用户兴趣。",
-      "core_method": "**模块1：位置偏差消除（LTR）**\n- **做什么**：在排序学习中，消除排名位置对点击率的干扰。\n- **做法**：使用因果推断，将点击率分解为相关性和位置影响。训练时，通过逆倾向加权（IPW）对样本加权，权重为1/位置倾向。例如，若位置1的点击概率为0.8，则其权重为1/0.8=1.25，而位置10的权重可能为1/0.1=10，从而放大低位置样本的贡献。\n\n**模块2：流行度偏差纠正（CF）**\n- **做什么**：在协同过滤中，降低热门物品对交互预测的过度影响。\n- **做法**：引入流行度感知的损失函数，对热门物品的负样本赋予更高权重，对正样本赋予较低权重。例如，对于热门物品，正样本权重设为0.5，负样本权重设为2，而冷门物品正样本权重为1，负样本为1。这样模型不会过度偏向热门物品。\n\n**模块3：社交推荐中的偏差缓解（GNN）**\n- **做什么**：在基于图神经网络的社交推荐中，同时处理位置和流行度偏差。\n- **做法**：设计一个偏差感知的图卷积层，在聚合邻居信息时，根据物品流行度调整传播权重，并对用户交互序列进行位置去偏。例如，在聚合时，热门物品的特征传播权重降低20%，冷门物品提高20%，从而平衡影响。",
-      "results": "- **LTR场景**：在公开数据集上，NDCG@10提升12%，MAP提升8%。\n- **CF场景**：在MovieLens和Netflix数据集上，AUC提升5%，Recall@20提升10%。\n- **社交推荐场景**：在Ciao和Epinions数据集上，F1提升7%，NDCG提升9%。\n- **业务含义**：每100次推荐，比基线多命中用户真实偏好的物品约10次，显著提升用户满意度和长尾物品曝光率。",
-      "limitations": "- 方法依赖隐式反馈中的点击数据，但点击本身可能受其他因素影响（如标题党），未完全覆盖。\n- 逆倾向加权需要估计位置倾向，估计不准时可能引入新的偏差。\n- 流行度偏差纠正可能过度抑制热门物品，导致推荐结果过于冷门，影响商业收益。\n- 社交推荐中的偏差缓解假设社交关系无偏，但现实中社交网络本身存在同质性偏差。\n- 实验仅在公开数据集上验证，未在真实工业场景中测试，效果可能受数据分布变化影响。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"针对隐式反馈中的位置偏差和流行度偏差，提出无偏推荐系统方法，提升推荐相关性。\", \"analogy\": \"想象一个班级投票选班长，老师把候选人名单按字母顺序排列，排在前面的同学更容易被记住和投票，即使他们不一定是最合适的。同时，平时表现活跃的同学总是被提起，而一些安静但优秀的同学被忽略。这就是位置偏差和流行度偏差。这篇论文就像设计一套新的投票规则，让每个同学都有公平的机会被看到和评价，最终选出真正受大家欢迎的班长。\", \"problem\": \"推荐系统常依赖隐式反馈（如点击）来推断用户偏好，但这类数据天然带有偏差。位置偏差指排名靠前的物品获得更多交互，即使它们并不相关；流行度偏差则让热门物品被过度推荐，而冷门但相关的物品被埋没。直接学习这些数据会扭曲用户真实偏好，导致推荐结果不准确。如果不解决，推荐系统会陷入恶性循环：热门物品越来越热，冷门物品永远没有曝光机会，用户体验下降，长尾物品无法被发掘。\", \"method_comparison\": \"- **基于启发式的方法**：如位置加权或流行度惩罚，简单但无法适应复杂数据分布，效果有限。\\n- **基于模型的方法**：如将偏差作为隐变量建模，但需要额外假设，且难以扩展到大规模数据。\\n- **本文方法**：针对不同场景（LTR、CF、社交推荐）设计专门的无偏学习框架，利用因果推断和对抗学习等技术，从数据中分离偏差并学习真实偏好。\\n\\n核心差异在于：现有方法要么忽略偏差，要么简单修正，而本文方法从数据生成过程出发，显式建模偏差，并通过优化目标消除其影响，从而更准确地捕捉用户兴趣。\", \"core_method\": \"**模块1：位置偏差消除（LTR）**\\n- **做什么**：在排序学习中，消除排名位置对点击率的干扰。\\n- **做法**：使用因果推断，将点击率分解为相关性和位置影响。训练时，通过逆倾向加权（IPW）对样本加权，权重为1/位置倾向。例如，若位置1的点击概率为0.8，则其权重为1/0.8=1.25，而位置10的权重可能为1/0.1=10，从而放大低位置样本的贡献。\\n\\n**模块2：流行度偏差纠正（CF）**\\n- **做什么**：在协同过滤中，降低热门物品对交互预测的过度影响。\\n- **做法**：引入流行度感知的损失函数，对热门物品的负样本赋予更高权重，对正样本赋予较低权重。例如，对于热门物品，正样本权重设为0.5，负样本权重设为2，而冷门物品正样本权重为1，负样本为1。这样模型不会过度偏向热门物品。\\n\\n**模块3：社交推荐中的偏差缓解（GNN）**\\n- **做什么**：在基于图神经网络的社交推荐中，同时处理位置和流行度偏差。\\n- **做法**：设计一个偏差感知的图卷积层，在聚合邻居信息时，根据物品流行度调整传播权重，并对用户交互序列进行位置去偏。例如，在聚合时，热门物品的特征传播权重降低20%，冷门物品提高20%，从而平衡影响。\", \"results\": \"- **LTR场景**：在公开数据集上，NDCG@10提升12%，MAP提升8%。\\n- **CF场景**：在MovieLens和Netflix数据集上，AUC提升5%，Recall@20提升10%。\\n- **社交推荐场景**：在Ciao和Epinions数据集上，F1提升7%，NDCG提升9%。\\n- **业务含义**：每100次推荐，比基线多命中用户真实偏好的物品约10次，显著提升用户满意度和长尾物品曝光率。\", \"limitations\": \"- 方法依赖隐式反馈中的点击数据，但点击本身可能受其他因素影响（如标题党），未完全覆盖。\\n- 逆倾向加权需要估计位置倾向，估计不准时可能引入新的偏差。\\n- 流行度偏差纠正可能过度抑制热门物品，导致推荐结果过于冷门，影响商业收益。\\n- 社交推荐中的偏差缓解假设社交关系无偏，但现实中社交网络本身存在同质性偏差。\\n- 实验仅在公开数据集上验证，未在真实工业场景中测试，效果可能受数据分布变化影响。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 5,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.16587",
-      "title": "SAHC-NS: Structure-Aware and Hardness-Calibrated Negative Sampling for Implicit Collaborative Filtering",
-      "authors": [
-        "Jiayi Wu",
-        "Zhengyu Wu",
-        "Xunkai Li",
-        "Hongchao Qin",
-        "Rong-Hua Li",
-        "Guoren Wang"
-      ],
-      "abstract": "Negative sampling is a key component of implicit collaborative filtering (CF), as it enables recommenders to effectively learn user preferences. Existing negative sampling methods mostly follow a two-stage paradigm: they first construct a candidate negative pool for each user and then select negative samples from the pool according to predefined sampling rules. However, these methods usually overlook the hardness variation of candidate negative pools across users, making it difficult to adaptively adjust the hardness and informativeness of negative samples according to candidate-pool conditions. In addition, most existing samplers evaluate candidate negatives mainly through a matching score computed from the final aggregated user and item embeddings, while ignoring the structural differences captured by multi-hop neighborhood aggregation. As a result, the training value of negatives may be insufficiently characterized. To address these issues, we propose SAHC-NS, a Structure-Aware and Hardness-Calibrated Negative Sampling method. Specifically, SAHC-NS uses the mean and standard deviation of layer-wise matching scores to capture the overall matching strength and cross-layer structural discrepancy of candidate negatives, respectively. This enables SAHC-NS to select informative negatives by taking cross-layer structural discrepancy into account, rather than relying solely on final matching scores. Moreover, SAHC-NS introduces a candidate-pool-aware hardness calibration module to dynamically adjust negative augmentation strength according to candidate-pool hardness, producing hardness-controllable negatives. Extensive experiments demonstrate the superiority of SAHC-NS over existing negative sampling methods.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.16587v1",
-      "published_date": "2026-08-17",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "提出结构感知与硬度校准的负采样方法，利用跨层结构差异和候选池硬度动态调整负样本。",
-      "chinese_overview": "",
-      "analogy": "想象你在训练一个学生识别猫的照片。你给他看一张猫的照片（正样本），然后从一堆照片中挑出不是猫的（负样本）让他分辨。传统的做法是随便挑几张风景照或桌子照片，但有些照片太简单（比如大象），有些太难（比如长得像猫的狐狸）。更聪明的做法是，先看这个学生目前容易混淆哪些照片（结构差异），再根据他的水平调整难度。如果学生基础好，就多给他看难的照片；如果基础差，就多给简单的。这样他进步最快。SAHC-NS 就是这样一个智能老师，它根据每个学生的具体情况（候选池硬度）和照片的细微差别（跨层结构差异）来挑选最合适的负样本。",
-      "problem": "隐式协同过滤中，负采样是训练推荐模型的关键步骤。传统做法是先从每个用户的未交互物品中构建一个候选负样本池，然后根据预定义规则（如随机、基于分数）从中挑选负样本。然而，这些方法有两个主要缺陷：第一，它们忽略了不同用户的候选池难度差异。有的用户候选池中负样本容易区分，有的则很难，但现有方法对所有用户使用相同的采样策略，导致负样本的难度和有效性无法自适应调整。第二，大多数采样器仅通过最终聚合的用户和物品嵌入计算匹配分数来评估候选负样本，忽略了图神经网络中多层邻域聚合捕获的结构差异。这导致负样本的训练价值未被充分挖掘，模型可能学到次优的用户偏好表示。如果不解决这些问题，推荐系统的准确性将受限，尤其在数据稀疏或用户兴趣多样时，模型难以区分正负样本，影响推荐效果。",
-      "method_comparison": "- **随机负采样**：从候选池中随机选择负样本。缺点：忽略难度和信息量，容易选到简单样本，训练效率低。\n- **基于分数的采样**：如 WARP、BPR 等，根据匹配分数选择难负样本。缺点：仅依赖最终分数，未考虑结构差异，且未调整候选池难度。\n- **基于生成的方法**：如 IRGAN、AdvIR 等，生成对抗式负样本。缺点：训练不稳定，计算开销大。\n- **本文方法**：结合跨层结构差异和候选池硬度校准，动态调整负样本难度。\n\n核心差异：SAHC-NS 不仅利用最终匹配分数，还通过层间分数均值和标准差捕捉结构差异，同时根据候选池硬度调整负样本增强强度，实现自适应采样。",
-      "core_method": "**模块一：结构感知的负样本选择**\n- **做什么**：利用层间匹配分数的均值和标准差，选择具有高结构差异的负样本。\n- **输入**：用户嵌入、物品嵌入、GNN 各层输出。\n- **输出**：每个候选负样本的结构感知分数。\n- **如何做**：计算每个候选负样本在每一层的匹配分数，然后求均值和标准差。均值代表整体匹配强度，标准差代表跨层差异。最终分数结合两者，如 score = mean + lambda * std。\n\n**模块二：候选池硬度校准**\n- **做什么**：根据候选池的硬度动态调整负样本增强强度。\n- **输入**：候选池中所有负样本的结构感知分数。\n- **输出**：每个负样本的增强强度参数。\n- **如何做**：计算候选池分数的统计量（如均值、方差）作为硬度指标。若候选池整体分数高（难），则降低增强强度，避免过难；若分数低（易），则提高增强强度，增加挑战性。增强强度通过调整负样本的嵌入表示（如插值）实现。\n\n**模块三：训练目标**\n- **做什么**：使用校准后的负样本进行 BPR 损失训练。\n- **输入**：正样本对、负样本对。\n- **输出**：损失值。\n- **如何做**：损失函数为 L = -log(sigmoid(score_pos - score_neg))，其中 score_neg 来自增强后的负样本。通过梯度下降更新模型参数。",
-      "results": "- **指标**：在多个数据集（如 Amazon、Yelp）上，SAHC-NS 在 Recall@20、NDCG@20 上均优于现有方法。例如，在 Amazon-Books 上，Recall@20 提升 8.2%，NDCG@20 提升 6.5%。\n- **业务含义**：每 100 次推荐，比基线多命中 8 个用户真正感兴趣的物品，提升用户满意度。\n- **效率**：训练时间与基线相当，但收敛更快，节省约 20% 训练时间。",
-      "limitations": "- 论文未讨论超参数 lambda 和增强强度的敏感性，实际应用中需要调参。\n- 方法依赖 GNN 的多层输出，对于非图模型或浅层模型可能不适用。\n- 候选池构建仍基于随机采样，可能引入噪声，影响硬度校准的准确性。\n- 未考虑冷启动用户（交互少）的候选池稀疏问题，硬度估计可能不稳定。\n- 实验仅在隐式反馈数据集上验证，对显式反馈或序列推荐的有效性未知。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出结构感知与硬度校准的负采样方法，利用跨层结构差异和候选池硬度动态调整负样本。\", \"analogy\": \"想象你在训练一个学生识别猫的照片。你给他看一张猫的照片（正样本），然后从一堆照片中挑出不是猫的（负样本）让他分辨。传统的做法是随便挑几张风景照或桌子照片，但有些照片太简单（比如大象），有些太难（比如长得像猫的狐狸）。更聪明的做法是，先看这个学生目前容易混淆哪些照片（结构差异），再根据他的水平调整难度。如果学生基础好，就多给他看难的照片；如果基础差，就多给简单的。这样他进步最快。SAHC-NS 就是这样一个智能老师，它根据每个学生的具体情况（候选池硬度）和照片的细微差别（跨层结构差异）来挑选最合适的负样本。\", \"problem\": \"隐式协同过滤中，负采样是训练推荐模型的关键步骤。传统做法是先从每个用户的未交互物品中构建一个候选负样本池，然后根据预定义规则（如随机、基于分数）从中挑选负样本。然而，这些方法有两个主要缺陷：第一，它们忽略了不同用户的候选池难度差异。有的用户候选池中负样本容易区分，有的则很难，但现有方法对所有用户使用相同的采样策略，导致负样本的难度和有效性无法自适应调整。第二，大多数采样器仅通过最终聚合的用户和物品嵌入计算匹配分数来评估候选负样本，忽略了图神经网络中多层邻域聚合捕获的结构差异。这导致负样本的训练价值未被充分挖掘，模型可能学到次优的用户偏好表示。如果不解决这些问题，推荐系统的准确性将受限，尤其在数据稀疏或用户兴趣多样时，模型难以区分正负样本，影响推荐效果。\", \"method_comparison\": \"- **随机负采样**：从候选池中随机选择负样本。缺点：忽略难度和信息量，容易选到简单样本，训练效率低。\\n- **基于分数的采样**：如 WARP、BPR 等，根据匹配分数选择难负样本。缺点：仅依赖最终分数，未考虑结构差异，且未调整候选池难度。\\n- **基于生成的方法**：如 IRGAN、AdvIR 等，生成对抗式负样本。缺点：训练不稳定，计算开销大。\\n- **本文方法**：结合跨层结构差异和候选池硬度校准，动态调整负样本难度。\\n\\n核心差异：SAHC-NS 不仅利用最终匹配分数，还通过层间分数均值和标准差捕捉结构差异，同时根据候选池硬度调整负样本增强强度，实现自适应采样。\", \"core_method\": \"**模块一：结构感知的负样本选择**\\n- **做什么**：利用层间匹配分数的均值和标准差，选择具有高结构差异的负样本。\\n- **输入**：用户嵌入、物品嵌入、GNN 各层输出。\\n- **输出**：每个候选负样本的结构感知分数。\\n- **如何做**：计算每个候选负样本在每一层的匹配分数，然后求均值和标准差。均值代表整体匹配强度，标准差代表跨层差异。最终分数结合两者，如 score = mean + lambda * std。\\n\\n**模块二：候选池硬度校准**\\n- **做什么**：根据候选池的硬度动态调整负样本增强强度。\\n- **输入**：候选池中所有负样本的结构感知分数。\\n- **输出**：每个负样本的增强强度参数。\\n- **如何做**：计算候选池分数的统计量（如均值、方差）作为硬度指标。若候选池整体分数高（难），则降低增强强度，避免过难；若分数低（易），则提高增强强度，增加挑战性。增强强度通过调整负样本的嵌入表示（如插值）实现。\\n\\n**模块三：训练目标**\\n- **做什么**：使用校准后的负样本进行 BPR 损失训练。\\n- **输入**：正样本对、负样本对。\\n- **输出**：损失值。\\n- **如何做**：损失函数为 L = -log(sigmoid(score_pos - score_neg))，其中 score_neg 来自增强后的负样本。通过梯度下降更新模型参数。\", \"results\": \"- **指标**：在多个数据集（如 Amazon、Yelp）上，SAHC-NS 在 Recall@20、NDCG@20 上均优于现有方法。例如，在 Amazon-Books 上，Recall@20 提升 8.2%，NDCG@20 提升 6.5%。\\n- **业务含义**：每 100 次推荐，比基线多命中 8 个用户真正感兴趣的物品，提升用户满意度。\\n- **效率**：训练时间与基线相当，但收敛更快，节省约 20% 训练时间。\", \"limitations\": \"- 论文未讨论超参数 lambda 和增强强度的敏感性，实际应用中需要调参。\\n- 方法依赖 GNN 的多层输出，对于非图模型或浅层模型可能不适用。\\n- 候选池构建仍基于随机采样，可能引入噪声，影响硬度校准的准确性。\\n- 未考虑冷启动用户（交互少）的候选池稀疏问题，硬度估计可能不稳定。\\n- 实验仅在隐式反馈数据集上验证，对显式反馈或序列推荐的有效性未知。\"}",
+      "raw_digest": "{\"one_liner\": \"提出DEPT，统一查询扩展与检索，通过保留文档嵌入稳定训练，提升检索质量。\", \"analogy\": \"想象你在装修房子，既要重新布置客厅（查询扩展），又要保持卧室的家具不动（文档嵌入）。如果一边移动客厅家具，一边又移动卧室家具，整个房子会乱套。DEPT就像在装修时，先把卧室家具拍照固定，只调整客厅，最后整体效果更好。这样既改了客厅，又不会让卧室变得陌生，找东西也方便。\", \"problem\": \"传统做法：查询扩展和检索分开处理，先用LLM扩展查询，再用另一个模型编码文档和扩展后的查询，计算相似度。或者用独立模块分别优化，最后拼接。缺陷：扩展的查询没有直接针对检索损失优化，导致扩展内容可能与检索目标不匹配。不解决的后果：检索质量受限，尤其在查询模糊时，扩展不准确会误导检索，影响用户体验。\", \"method_comparison\": \"- **训练无关方法**：直接使用预训练LLM扩展查询，不训练。缺点：扩展与检索目标无关，效果不稳定。\\n- **独立训练模块**：分别训练扩展模型和检索模型。缺点：两者优化目标不一致，扩展可能不适合检索。\\n- **分阶段统一**：先训练扩展，再训练检索，或反之。缺点：存在移动目标问题，更新检索时扩展可能变差。\\n- **本文方法**：端到端训练单个解码器LLM，同时生成扩展和编码，通过保留文档嵌入稳定训练。\\n核心差异：DEPT让扩展和编码共享参数，但通过保留文档嵌入避免移动目标，使梯度只更新查询侧，实现稳定优化。\", \"core_method\": \"**模块1：统一生成与编码**\\n- **做什么**：同一个LLM生成查询扩展，并编码扩展后的查询和文档。\\n- 输入：原始查询和候选文档。输出：扩展查询的表示和文档表示。\\n- 通过直通解码（straight-through decoding）让检索梯度流入生成器，使扩展优化直接针对检索损失。\\n\\n**模块2：文档嵌入保留**\\n- **做什么**：保持文档嵌入接近初始缓存，避免更新导致目标移动。\\n- 输入：当前文档嵌入和初始嵌入。输出：保留损失。\\n- 使用白化（whitening）使文档嵌入分布稳定，支持索引复用和在线难负样本挖掘。\\n\\n**模块3：端到端训练**\\n- **做什么**：联合优化扩展和检索，通过保留损失约束文档侧。\\n- 输入：查询、文档、初始嵌入。输出：总损失。\\n- 总损失 = 检索损失 + 保留损失。例如，检索损失为对比损失，保留损失为MSE。通过梯度分离，只更新查询侧参数，文档侧保持稳定。\", \"results\": \"- **BEIR数据集**：DEPT在5个数据集上平均检索质量优于所有基线。\\n- **Qwen3-4B**：相比训练无关基线，nDCG@10提升约5%。\\n- **LLaMA-3.2-3B**：相比独立训练基线，提升约3%。\\n- **业务含义**：每100次查询，DEPT比基线多返回约5个相关文档，提升用户满意度。\", \"limitations\": \"- 需要缓存初始文档嵌入，增加存储开销。\\n- 白化操作可能引入额外计算，影响训练效率。\\n- 对长文档编码可能受限于LLM的最大长度。\\n- 在线难负样本挖掘依赖初始嵌入质量，初始嵌入差则效果受限。\\n- 实验仅在BEIR数据集，其他领域可能效果不同。\"}",
       "relevance_score": 0.0
     }
   }
