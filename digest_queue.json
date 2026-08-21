@@ -132,7 +132,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.18779",
       "title": "SIDScope: A Diagnostic Resource for Semantic-ID Interfaces in Generative Recommendation",
