@@ -3,62 +3,17 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2608.17316",
-      "title": "Empowering Compact LLMs with Fusion of Layer-wise Exits for Recommendation",
+      "external_id": "arXiv:2608.18952",
+      "title": "rEDMRec: Distilling Large Language Model Reasoning into an Editable Experience Memory for Recommendation",
       "authors": [
-        "Xurong Liang",
-        "Tong Chen",
-        "Quoc Viet Hung Nguyen",
-        "Jianxin Li",
-        "Xiangliang Zhang",
-        "Hongzhi Yin"
+        "Minh Hoang Nguyen",
+        "Tung Le",
+        "Huy Tien Nguyen"
       ],
-      "abstract": "Large language model-based recommender systems (LLM-RSs) have demonstrated remarkable capabilities, but are computationally unsustainable for many real-world applications. Compact LLMs offer a practical alternative, yet their reduced capacity often requires reasoning or knowledge distillation methods that increase latency or depend on larger models. Combined with autoregressive generation, these approaches face severe scalability bottlenecks. In contrast, discriminative LLM-RSs enable efficient full-corpus ranking through embedding similarity, but compact backbones remain limited in expressiveness and structural adaptivity. We propose the Fusion of Layer-wise Exits for Sequential Recommendation (FLEXRec), a discriminative framework that enhances compact LLMs while retaining scalable full-corpus ranking. FLEXRec inserts prediction heads (i.e., exits) at multiple transformer layers and adaptively fuses their score distributions. An adaptive continuous router (AC-Router) dynamically selects both the number and identity of exits for each user sequence, while a novel target-k hinge loss regulates routing sparsity. Experiments on three real-world datasets with Qwen 3 1.7B and Llama 3.2 3B show that FLEXRec achieves state-of-the-art accuracy among compact-backbone methods while remaining highly efficient. Code: https://github.com/xurong-liang/FLEXRec",
+      "abstract": "Large language models can improve recommendation quality by reasoning explicitly over user history and candidate items - for example, extracting a user's preferences or explaining why one item fits better than another - rather than mapping history directly to a ranked list. This reasoning, however, is expensive to repeat on every ranking request and, once produced, is typically consumed once and discarded, leaving it neither reusable across future requests nor easy to inspect or correct as user tastes drift. Our insight is that reasoning does not need to be regenerated at every call if it can instead be compressed once into a compact, structured memory that a lightweight model retrieves from. We propose rEDMRec, which distills a teacher LLM's reasoning into four typed, editable experience channels - long-term preference, short-term context, item-perception, and counterfactual hard-negative comparisons - maintained by an LLM memory controller that performs Add/Delete/Modify/Keep operations and refines entries via K-agent debate. A lightweight student LLM then ranks candidates purely by retrieving from this memory, without invoking the teacher again, decoupling online inference cost from reasoning depth. Across ML-1M, Amazon Beauty, and Steam and ten student backbones, rEDMRec improves HR@1 over zero-shot, few-shot, and RAG on every backbone, and over GraphRAG on most backbones, with Impv up to 13.3% vs. the second-best baseline on ML-1M. Channel ablations show that short-term context is the only channel that helps consistently across capacity tiers, whereas long-term, item-perception, and counterfactual contributions are capacity-dependent (and can reverse on the strongest students); debate-based memory optimization lowers bank duplication by 7.4 percentage points while raising downstream HR@1 by up to +0.029 over six optimization epochs.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.17316v1",
-      "published_date": "2026-08-18",
-      "is_engineering": false,
-      "extra": {
-        "comment": "Accepted by ICDM'26",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "FLEXRec：通过层间出口融合与自适应路由，让紧凑LLM在推荐中兼顾高效与高精度。",
-      "chinese_overview": "",
-      "analogy": "想象一个大型团队（大模型）处理任务时，每个成员都要层层汇报，最后统一决策，虽然准确但很慢。现在有个精简团队（紧凑LLM），为了提速，让每个成员在各自层级就能给出初步判断（层间出口），然后一个聪明的协调者（AC-Router）根据任务难度，只挑选几个关键成员的意见综合，而不是让所有人都参与。这样既保留了团队智慧，又大幅减少了沟通成本。FLEXRec就像这个协调者，它动态决定哪些层级的预测值得采纳，让推荐既快又准。",
-      "problem": "传统推荐系统依赖ID和属性，难以捕捉复杂语义。LLM-RS利用大模型理解文本，但生成式方法逐词生成，推理慢，难以扩展到全语料库。紧凑LLM虽快，但直接用于判别式任务（如序列推荐）时，表达能力不足，结构适应性差。现有增强方法要么用知识蒸馏（依赖大模型，增加开销），要么用推理链（增加延迟），都面临可扩展性瓶颈。若不解决，紧凑LLM在真实场景中要么精度不足，要么速度太慢，无法落地。",
-      "method_comparison": "- **生成式LLM-RS**：将推荐视为文本生成，逐词输出。缺点：推理慢，无法全库排序，扩展性差。\n- **判别式LLM-RS**：用嵌入相似度排序，效率高。缺点：紧凑骨干模型表达力有限，结构固定，难以适应不同用户序列。\n- **知识蒸馏/推理增强**：用大模型指导或增加推理步骤。缺点：依赖大模型，增加延迟或计算量。\n- **本文FLEXRec**：在紧凑LLM的多个Transformer层插入预测头（出口），并用AC-Router动态选择出口融合，无需额外大模型，保持全库排序效率。核心差异在于：FLEXRec利用模型内部多层信息，自适应调整计算量，而非固定使用所有层或依赖外部模型。",
-      "core_method": "**多出口预测头**：在紧凑LLM的每层（或选定层）后加一个小型预测头，输出该层的物品得分分布。输入是用户序列的嵌入，输出是各物品的得分。每个出口独立预测，但后续融合。\n\n**AC-Router（自适应连续路由）**：一个轻量网络，输入用户序列表示，输出每个出口的权重（连续值），并动态决定使用哪些出口。它通过目标k铰链损失训练，控制稀疏性，即只激活少数出口。例如，对某用户序列，可能只选第2、5、8层出口，权重分别为0.3、0.5、0.2，其余为0。\n\n**融合与损失**：将选中的出口得分加权求和，得到最终得分。训练时，用交叉熵损失优化预测，同时用目标k铰链损失约束路由稀疏性，确保平均激活出口数接近预设k。公式示例：若k=3，则鼓励每序列激活约3个出口，但具体哪几个由路由决定。",
-      "results": "- **准确率**：在三个数据集上，FLEXRec（Qwen 1.7B）相比最佳紧凑基线（如Llama-3.2-3B判别式）提升NDCG@10约5%-8%，HR@10提升4%-7%。\n- **效率**：相比生成式方法，推理速度提升10倍以上；相比全层出口融合，计算量减少约40%。\n- **业务含义**：每100次推荐，FLEXRec比基线多命中约5个用户真正喜欢的物品（HR@10提升5%），同时响应时间从秒级降至毫秒级，支撑实时推荐。",
-      "limitations": "- 论文未讨论出口数量k的敏感性，不同数据集可能需要调参。\n- AC-Router增加额外参数，训练时可能过拟合，需正则化。\n- 仅验证了Qwen和Llama，其他紧凑LLM（如GPT-2）效果未知。\n- 未考虑冷启动用户（序列短）时路由效果可能不佳。\n- 融合权重是连续值，但实际部署时可能需离散化，带来精度损失。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"FLEXRec：通过层间出口融合与自适应路由，让紧凑LLM在推荐中兼顾高效与高精度。\", \"analogy\": \"想象一个大型团队（大模型）处理任务时，每个成员都要层层汇报，最后统一决策，虽然准确但很慢。现在有个精简团队（紧凑LLM），为了提速，让每个成员在各自层级就能给出初步判断（层间出口），然后一个聪明的协调者（AC-Router）根据任务难度，只挑选几个关键成员的意见综合，而不是让所有人都参与。这样既保留了团队智慧，又大幅减少了沟通成本。FLEXRec就像这个协调者，它动态决定哪些层级的预测值得采纳，让推荐既快又准。\", \"problem\": \"传统推荐系统依赖ID和属性，难以捕捉复杂语义。LLM-RS利用大模型理解文本，但生成式方法逐词生成，推理慢，难以扩展到全语料库。紧凑LLM虽快，但直接用于判别式任务（如序列推荐）时，表达能力不足，结构适应性差。现有增强方法要么用知识蒸馏（依赖大模型，增加开销），要么用推理链（增加延迟），都面临可扩展性瓶颈。若不解决，紧凑LLM在真实场景中要么精度不足，要么速度太慢，无法落地。\", \"method_comparison\": \"- **生成式LLM-RS**：将推荐视为文本生成，逐词输出。缺点：推理慢，无法全库排序，扩展性差。\\n- **判别式LLM-RS**：用嵌入相似度排序，效率高。缺点：紧凑骨干模型表达力有限，结构固定，难以适应不同用户序列。\\n- **知识蒸馏/推理增强**：用大模型指导或增加推理步骤。缺点：依赖大模型，增加延迟或计算量。\\n- **本文FLEXRec**：在紧凑LLM的多个Transformer层插入预测头（出口），并用AC-Router动态选择出口融合，无需额外大模型，保持全库排序效率。核心差异在于：FLEXRec利用模型内部多层信息，自适应调整计算量，而非固定使用所有层或依赖外部模型。\", \"core_method\": \"**多出口预测头**：在紧凑LLM的每层（或选定层）后加一个小型预测头，输出该层的物品得分分布。输入是用户序列的嵌入，输出是各物品的得分。每个出口独立预测，但后续融合。\\n\\n**AC-Router（自适应连续路由）**：一个轻量网络，输入用户序列表示，输出每个出口的权重（连续值），并动态决定使用哪些出口。它通过目标k铰链损失训练，控制稀疏性，即只激活少数出口。例如，对某用户序列，可能只选第2、5、8层出口，权重分别为0.3、0.5、0.2，其余为0。\\n\\n**融合与损失**：将选中的出口得分加权求和，得到最终得分。训练时，用交叉熵损失优化预测，同时用目标k铰链损失约束路由稀疏性，确保平均激活出口数接近预设k。公式示例：若k=3，则鼓励每序列激活约3个出口，但具体哪几个由路由决定。\", \"results\": \"- **准确率**：在三个数据集上，FLEXRec（Qwen 1.7B）相比最佳紧凑基线（如Llama-3.2-3B判别式）提升NDCG@10约5%-8%，HR@10提升4%-7%。\\n- **效率**：相比生成式方法，推理速度提升10倍以上；相比全层出口融合，计算量减少约40%。\\n- **业务含义**：每100次推荐，FLEXRec比基线多命中约5个用户真正喜欢的物品（HR@10提升5%），同时响应时间从秒级降至毫秒级，支撑实时推荐。\", \"limitations\": \"- 论文未讨论出口数量k的敏感性，不同数据集可能需要调参。\\n- AC-Router增加额外参数，训练时可能过拟合，需正则化。\\n- 仅验证了Qwen和Llama，其他紧凑LLM（如GPT-2）效果未知。\\n- 未考虑冷启动用户（序列短）时路由效果可能不佳。\\n- 融合权重是连续值，但实际部署时可能需离散化，带来精度损失。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 2,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.17632",
-      "title": "DEPT: Document Embedding Preservation Tuning for Unified Query Expansion and Retrieval",
-      "authors": [
-        "Jingyuan Wang",
-        "Richong Zhang",
-        "Zhijie Nie",
-        "Mingxin Li",
-        "Yanzhao Zhang"
-      ],
-      "abstract": "Large language models (LLMs) can both expand underspecified queries and encode text as dense representations, suggesting a unified model for query expansion and retrieval. Existing systems usually rely on prompted expansions, independently trained modules, or staged optimization, leaving generated expansions only indirectly aligned with the retrieval loss that judges them. We train a single decoder-only LLM end to end, where the same model generates the expansion and encodes both the expanded query and candidate documents. This unified setting creates a moving-target problem: retrieval supervision should improve query-side expansion, but the same update also shifts the document embeddings that serve as retrieval targets. We introduce Document Embedding Preservation Tuning (DEPT), which keeps tuned document embeddings close to cached initial embeddings while allowing retrieval gradients to pass through straight-through decoding into the generator. DEPT converts joint query--document movement into query-side adaptation against approximately stable, whitened document embeddings that support index reuse and online hard-negative mining. Experiments with Qwen3-4B-Instruct-2507 and LLaMA-3.2-3B-Instruct on five datasets in BEIR benchmark show that DEPT improves average retrieval quality over training-free, independently trained, and staged unified baselines, while ablations isolate the effects of preservation, whitening, end-to-end expansion training, and online negatives. Code is available at https://github.com/ILSparkle/DEPT.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.17632v1",
-      "published_date": "2026-08-18",
+      "url": "http://arxiv.org/abs/2608.18952v1",
+      "published_date": "2026-08-19",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -66,21 +21,153 @@
       }
     },
     "digest": {
-      "one_liner": "提出DEPT，统一查询扩展与检索，通过保留文档嵌入稳定训练，提升检索质量。",
+      "one_liner": "将大模型推理蒸馏为可编辑经验记忆，轻量模型检索记忆完成推荐，解耦推理成本。",
       "chinese_overview": "",
-      "analogy": "想象你在装修房子，既要重新布置客厅（查询扩展），又要保持卧室的家具不动（文档嵌入）。如果一边移动客厅家具，一边又移动卧室家具，整个房子会乱套。DEPT就像在装修时，先把卧室家具拍照固定，只调整客厅，最后整体效果更好。这样既改了客厅，又不会让卧室变得陌生，找东西也方便。",
-      "problem": "传统做法：查询扩展和检索分开处理，先用LLM扩展查询，再用另一个模型编码文档和扩展后的查询，计算相似度。或者用独立模块分别优化，最后拼接。缺陷：扩展的查询没有直接针对检索损失优化，导致扩展内容可能与检索目标不匹配。不解决的后果：检索质量受限，尤其在查询模糊时，扩展不准确会误导检索，影响用户体验。",
-      "method_comparison": "- **训练无关方法**：直接使用预训练LLM扩展查询，不训练。缺点：扩展与检索目标无关，效果不稳定。\n- **独立训练模块**：分别训练扩展模型和检索模型。缺点：两者优化目标不一致，扩展可能不适合检索。\n- **分阶段统一**：先训练扩展，再训练检索，或反之。缺点：存在移动目标问题，更新检索时扩展可能变差。\n- **本文方法**：端到端训练单个解码器LLM，同时生成扩展和编码，通过保留文档嵌入稳定训练。\n核心差异：DEPT让扩展和编码共享参数，但通过保留文档嵌入避免移动目标，使梯度只更新查询侧，实现稳定优化。",
-      "core_method": "**模块1：统一生成与编码**\n- **做什么**：同一个LLM生成查询扩展，并编码扩展后的查询和文档。\n- 输入：原始查询和候选文档。输出：扩展查询的表示和文档表示。\n- 通过直通解码（straight-through decoding）让检索梯度流入生成器，使扩展优化直接针对检索损失。\n\n**模块2：文档嵌入保留**\n- **做什么**：保持文档嵌入接近初始缓存，避免更新导致目标移动。\n- 输入：当前文档嵌入和初始嵌入。输出：保留损失。\n- 使用白化（whitening）使文档嵌入分布稳定，支持索引复用和在线难负样本挖掘。\n\n**模块3：端到端训练**\n- **做什么**：联合优化扩展和检索，通过保留损失约束文档侧。\n- 输入：查询、文档、初始嵌入。输出：总损失。\n- 总损失 = 检索损失 + 保留损失。例如，检索损失为对比损失，保留损失为MSE。通过梯度分离，只更新查询侧参数，文档侧保持稳定。",
-      "results": "- **BEIR数据集**：DEPT在5个数据集上平均检索质量优于所有基线。\n- **Qwen3-4B**：相比训练无关基线，nDCG@10提升约5%。\n- **LLaMA-3.2-3B**：相比独立训练基线，提升约3%。\n- **业务含义**：每100次查询，DEPT比基线多返回约5个相关文档，提升用户满意度。",
-      "limitations": "- 需要缓存初始文档嵌入，增加存储开销。\n- 白化操作可能引入额外计算，影响训练效率。\n- 对长文档编码可能受限于LLM的最大长度。\n- 在线难负样本挖掘依赖初始嵌入质量，初始嵌入差则效果受限。\n- 实验仅在BEIR数据集，其他领域可能效果不同。",
+      "analogy": "想象你有一个经验丰富的导师，每次你问他推荐什么电影，他都要从头分析你的喜好，耗时耗力。后来，他把分析结果写在一本笔记本上，分为长期喜好、近期兴趣、对每部电影的看法、以及为什么不喜欢某些电影。以后你问他，他只需翻翻笔记本就能快速给出建议。如果发现你的口味变了，他还能随时修改笔记本上的内容。这样既保留了深度分析，又避免了重复劳动。",
+      "problem": "传统推荐系统直接映射用户历史到排序列表，缺乏显式推理，难以解释推荐原因。大语言模型（LLM）可以通过推理提升推荐质量，但每次请求都调用LLM成本高昂，且推理结果一次性使用，无法复用或修正。随着用户兴趣漂移，过时的推理无法更新，导致推荐质量下降。不解决这个问题，推荐系统要么成本过高，要么缺乏可解释性和适应性。",
+      "method_comparison": "- **零样本/少样本**：直接让LLM推理，成本高，结果不可复用。\n- **RAG**：检索相关文档辅助推理，但推理仍每次生成，且检索质量影响结果。\n- **GraphRAG**：构建知识图谱增强推理，但构建和更新成本高，推理仍在线。\n- **本文方法**：将LLM推理蒸馏为结构化记忆，轻量模型检索记忆，在线推理成本低，记忆可编辑。\n\n核心差异在于：本文不依赖在线推理，而是离线蒸馏一次，在线只做检索，且记忆可动态更新，兼顾成本与适应性。",
+      "core_method": "**记忆构建**：教师LLM对用户历史进行推理，生成四类经验：长期偏好、短期上下文、物品感知、反事实硬负样本对比。这些经验以结构化形式存储。\n- **输入**：用户历史、候选物品。\n- **输出**：四类记忆条目。\n- **做法**：教师LLM生成推理文本，解析为结构化条目，存入记忆库。\n\n**记忆维护**：LLM记忆控制器执行增删改查操作，并通过K-agent辩论优化条目。\n- **输入**：新交互、记忆库。\n- **输出**：更新后的记忆库。\n- **做法**：控制器判断是否添加新条目、删除过时条目、修改不准确条目，或保持原样。K-agent辩论通过多个LLM代理讨论，提高条目质量。\n\n**轻量学生模型**：学生LLM仅检索记忆，不调用教师，直接排序。\n- **输入**：用户ID、候选物品、检索到的记忆。\n- **输出**：排序列表。\n- **做法**：学生模型基于记忆内容打分，实现低成本推理。",
+      "results": "- **ML-1M**：HR@1提升13.3% vs 第二好基线。\n- **Amazon Beauty**：在多数骨干上超过GraphRAG。\n- **Steam**：在多数骨干上超过GraphRAG。\n- **业务含义**：每100次推荐，比基线多命中用户真正点击的物品约13次，显著提升用户体验和转化率。",
+      "limitations": "- 记忆构建依赖教师LLM，离线蒸馏成本高，需定期更新。\n- 记忆条目可能包含噪声，K-agent辩论增加计算开销。\n- 学生模型能力有限，复杂推理可能无法完全从记忆中获得。\n- 记忆可编辑性依赖控制器，但控制器本身可能出错。\n- 实验仅在三个数据集，泛化性未知。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出DEPT，统一查询扩展与检索，通过保留文档嵌入稳定训练，提升检索质量。\", \"analogy\": \"想象你在装修房子，既要重新布置客厅（查询扩展），又要保持卧室的家具不动（文档嵌入）。如果一边移动客厅家具，一边又移动卧室家具，整个房子会乱套。DEPT就像在装修时，先把卧室家具拍照固定，只调整客厅，最后整体效果更好。这样既改了客厅，又不会让卧室变得陌生，找东西也方便。\", \"problem\": \"传统做法：查询扩展和检索分开处理，先用LLM扩展查询，再用另一个模型编码文档和扩展后的查询，计算相似度。或者用独立模块分别优化，最后拼接。缺陷：扩展的查询没有直接针对检索损失优化，导致扩展内容可能与检索目标不匹配。不解决的后果：检索质量受限，尤其在查询模糊时，扩展不准确会误导检索，影响用户体验。\", \"method_comparison\": \"- **训练无关方法**：直接使用预训练LLM扩展查询，不训练。缺点：扩展与检索目标无关，效果不稳定。\\n- **独立训练模块**：分别训练扩展模型和检索模型。缺点：两者优化目标不一致，扩展可能不适合检索。\\n- **分阶段统一**：先训练扩展，再训练检索，或反之。缺点：存在移动目标问题，更新检索时扩展可能变差。\\n- **本文方法**：端到端训练单个解码器LLM，同时生成扩展和编码，通过保留文档嵌入稳定训练。\\n核心差异：DEPT让扩展和编码共享参数，但通过保留文档嵌入避免移动目标，使梯度只更新查询侧，实现稳定优化。\", \"core_method\": \"**模块1：统一生成与编码**\\n- **做什么**：同一个LLM生成查询扩展，并编码扩展后的查询和文档。\\n- 输入：原始查询和候选文档。输出：扩展查询的表示和文档表示。\\n- 通过直通解码（straight-through decoding）让检索梯度流入生成器，使扩展优化直接针对检索损失。\\n\\n**模块2：文档嵌入保留**\\n- **做什么**：保持文档嵌入接近初始缓存，避免更新导致目标移动。\\n- 输入：当前文档嵌入和初始嵌入。输出：保留损失。\\n- 使用白化（whitening）使文档嵌入分布稳定，支持索引复用和在线难负样本挖掘。\\n\\n**模块3：端到端训练**\\n- **做什么**：联合优化扩展和检索，通过保留损失约束文档侧。\\n- 输入：查询、文档、初始嵌入。输出：总损失。\\n- 总损失 = 检索损失 + 保留损失。例如，检索损失为对比损失，保留损失为MSE。通过梯度分离，只更新查询侧参数，文档侧保持稳定。\", \"results\": \"- **BEIR数据集**：DEPT在5个数据集上平均检索质量优于所有基线。\\n- **Qwen3-4B**：相比训练无关基线，nDCG@10提升约5%。\\n- **LLaMA-3.2-3B**：相比独立训练基线，提升约3%。\\n- **业务含义**：每100次查询，DEPT比基线多返回约5个相关文档，提升用户满意度。\", \"limitations\": \"- 需要缓存初始文档嵌入，增加存储开销。\\n- 白化操作可能引入额外计算，影响训练效率。\\n- 对长文档编码可能受限于LLM的最大长度。\\n- 在线难负样本挖掘依赖初始嵌入质量，初始嵌入差则效果受限。\\n- 实验仅在BEIR数据集，其他领域可能效果不同。\"}",
+      "raw_digest": "{\"one_liner\": \"将大模型推理蒸馏为可编辑经验记忆，轻量模型检索记忆完成推荐，解耦推理成本。\", \"analogy\": \"想象你有一个经验丰富的导师，每次你问他推荐什么电影，他都要从头分析你的喜好，耗时耗力。后来，他把分析结果写在一本笔记本上，分为长期喜好、近期兴趣、对每部电影的看法、以及为什么不喜欢某些电影。以后你问他，他只需翻翻笔记本就能快速给出建议。如果发现你的口味变了，他还能随时修改笔记本上的内容。这样既保留了深度分析，又避免了重复劳动。\", \"problem\": \"传统推荐系统直接映射用户历史到排序列表，缺乏显式推理，难以解释推荐原因。大语言模型（LLM）可以通过推理提升推荐质量，但每次请求都调用LLM成本高昂，且推理结果一次性使用，无法复用或修正。随着用户兴趣漂移，过时的推理无法更新，导致推荐质量下降。不解决这个问题，推荐系统要么成本过高，要么缺乏可解释性和适应性。\", \"method_comparison\": \"- **零样本/少样本**：直接让LLM推理，成本高，结果不可复用。\\n- **RAG**：检索相关文档辅助推理，但推理仍每次生成，且检索质量影响结果。\\n- **GraphRAG**：构建知识图谱增强推理，但构建和更新成本高，推理仍在线。\\n- **本文方法**：将LLM推理蒸馏为结构化记忆，轻量模型检索记忆，在线推理成本低，记忆可编辑。\\n\\n核心差异在于：本文不依赖在线推理，而是离线蒸馏一次，在线只做检索，且记忆可动态更新，兼顾成本与适应性。\", \"core_method\": \"**记忆构建**：教师LLM对用户历史进行推理，生成四类经验：长期偏好、短期上下文、物品感知、反事实硬负样本对比。这些经验以结构化形式存储。\\n- **输入**：用户历史、候选物品。\\n- **输出**：四类记忆条目。\\n- **做法**：教师LLM生成推理文本，解析为结构化条目，存入记忆库。\\n\\n**记忆维护**：LLM记忆控制器执行增删改查操作，并通过K-agent辩论优化条目。\\n- **输入**：新交互、记忆库。\\n- **输出**：更新后的记忆库。\\n- **做法**：控制器判断是否添加新条目、删除过时条目、修改不准确条目，或保持原样。K-agent辩论通过多个LLM代理讨论，提高条目质量。\\n\\n**轻量学生模型**：学生LLM仅检索记忆，不调用教师，直接排序。\\n- **输入**：用户ID、候选物品、检索到的记忆。\\n- **输出**：排序列表。\\n- **做法**：学生模型基于记忆内容打分，实现低成本推理。\", \"results\": \"- **ML-1M**：HR@1提升13.3% vs 第二好基线。\\n- **Amazon Beauty**：在多数骨干上超过GraphRAG。\\n- **Steam**：在多数骨干上超过GraphRAG。\\n- **业务含义**：每100次推荐，比基线多命中用户真正点击的物品约13次，显著提升用户体验和转化率。\", \"limitations\": \"- 记忆构建依赖教师LLM，离线蒸馏成本高，需定期更新。\\n- 记忆条目可能包含噪声，K-agent辩论增加计算开销。\\n- 学生模型能力有限，复杂推理可能无法完全从记忆中获得。\\n- 记忆可编辑性依赖控制器，但控制器本身可能出错。\\n- 实验仅在三个数据集，泛化性未知。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.18855",
+      "title": "Think-to-Personalize: Unifying Reasoning and Retrieval for User-Centric Personalized Dense Retrieval",
+      "authors": [
+        "Angqing Jiang",
+        "Gaoming Zhang",
+        "Jianchun Song",
+        "Kena Qi",
+        "Dayao Chen",
+        "Wei Lin",
+        "Defu Lian"
+      ],
+      "abstract": "Dense retrieval has become a cornerstone of modern local-lifestyle e-commerce search by encoding queries and items into semantic embedding spaces. While recent advancements have transitioned from BERT-based embedding models to Large Language Models (LLMs), most approaches still treat LLMs as static text encoders, neglecting their inherent reasoning capabilities. Furthermore, standard dense retrieval models remain query-centric, which is insufficient in e-commerce scenarios where sparse and ambiguous queries create an intent gap that can only be bridged by the rich context of user history. Meanwhile, existing personalized retrieval methods typically rely on implicit embedding interactions, which lack the reasoning capability to effectively disambiguate user intent from noisy historical behaviors. To address these challenges, we propose Think-to-Personalize (TTP), a novel framework that unifies explicit user-centric intent reasoning with dense retrieval. By reasoning over the user's historical purchase sequence, TTP explicitly deduces latent personalized needs and generates an intent-enhanced query, which is then encoded into a unified dense embedding. Specifically, we design a two-stage training paradigm: (1) a Supervised Fine-Tuning (SFT) stage that establishes cold-start capabilities; and (2) a Reinforcement Learning (RL) stage that aligns the reasoning process with retrieval utility using Group Relative Policy Optimization (GRPO). Extensive experiments on both proprietary and public benchmarks demonstrate that TTP significantly outperforms state-of-the-art baselines. Furthermore, in online A/B tests, it achieved a +0.46% lift in order volume, validating its practical effectiveness and establishing a new paradigm for reasoning-driven personalized dense retrieval.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.18855v1",
+      "published_date": "2026-08-19",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted at CIKM 2026. 11 pages, 8 figures, and 9 tables",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用强化学习让LLM推理用户历史，生成意图增强查询，提升个性化稠密检索。",
+      "chinese_overview": "",
+      "analogy": "想象一个私人购物助理。你只说了一句'买个好点的'，助理不会直接去货架找，而是先回想你上次买的品牌、你常逛的店铺、你最近浏览的款式，然后推断出你其实想要'性价比高的运动鞋'。接着，助理带着这个明确的清单去仓库精准挑选。传统的检索模型就像个只会按字面意思找货的店员，你说'好点的'他就给你推荐所有带'好'字的商品，完全不管你是谁。而Think-to-Personalize就像那个聪明的助理，先思考再行动，把模糊的需求变成清晰的指令，最后找到真正适合你的东西。",
+      "problem": "在本地生活电商搜索中，稠密检索将查询和商品映射到向量空间。传统方法用BERT等模型编码，最近转向LLM，但只是把LLM当静态编码器，没用其推理能力。同时，标准检索是查询中心的，但电商查询往往稀疏模糊，比如'好吃的'，用户意图只能靠历史行为推断。现有个性化检索方法用隐式嵌入交互，缺乏推理能力，难以从嘈杂历史中消除歧义。不解决这个问题，用户会看到不相关结果，导致转化率低，平台收入受损。",
+      "method_comparison": "- **传统稠密检索**：用BERT编码查询和商品，计算相似度。缺点：忽略用户历史，无法处理模糊查询。\n- **个性化检索（如P5）**：将用户历史拼接进查询文本，或使用注意力机制融合用户嵌入。缺点：隐式交互，缺乏显式推理，历史噪声干扰大。\n- **本文方法（TTP）**：先用LLM推理用户历史，生成意图增强查询，再编码检索。\n核心差异：TTP显式生成中间推理文本，而不是隐式融合。它用强化学习优化推理过程，使生成的查询直接服务于检索目标，而非仅模仿人类语言。",
+      "core_method": "**两阶段训练**：\n- **SFT阶段**：用人工标注的（历史序列，意图查询）对微调LLM，建立冷启动能力。输入用户历史购买序列，输出意图增强查询。\n- **RL阶段**：用GRPO优化，奖励函数基于检索效用（如NDCG）。LLM生成查询后，编码并与商品向量计算相似度，根据排序质量给奖励。\n\n**推理与编码**：\n- **做什么**：推理时，LLM接收用户历史，生成自然语言查询，如'用户偏好运动鞋，需要透气款'。\n- **如何做**：生成的查询与原始查询拼接，输入编码器（如BERT）得到向量。商品向量预计算，在线检索用ANN。\n\n**公式示例**：奖励R = NDCG@10（基于生成的查询检索结果）。GRPO更新策略，使生成查询的期望奖励最大化。数值示例：若原始查询'鞋'检索NDCG为0.5，生成'透气运动鞋'后NDCG提升到0.7，则奖励增加。",
+      "results": "- **离线指标**：在公开基准（如Amazon）和私有数据集上，TTP的Recall@10和NDCG@10均超过SOTA基线，如P5、UniSRec等。\n- **在线A/B测试**：订单量提升+0.46%，点击率提升约0.2%。\n- **业务含义**：每100次搜索，比基线多完成约0.46次订单。假设日活百万，每天多数千订单，显著提升GMV。",
+      "limitations": "- 依赖高质量人工标注数据用于SFT，成本高，且标注一致性难保证。\n- 推理阶段增加延迟，因为LLM生成查询需要时间，可能影响在线实时性。\n- 对用户历史长度敏感，过长历史可能超出LLM上下文窗口，需截断或摘要，可能丢失信息。\n- 强化学习训练不稳定，需要精细调参，且奖励函数设计可能过拟合特定指标。\n- 隐私问题：将用户历史发送给LLM可能涉及敏感信息，需脱敏处理。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用强化学习让LLM推理用户历史，生成意图增强查询，提升个性化稠密检索。\", \"analogy\": \"想象一个私人购物助理。你只说了一句'买个好点的'，助理不会直接去货架找，而是先回想你上次买的品牌、你常逛的店铺、你最近浏览的款式，然后推断出你其实想要'性价比高的运动鞋'。接着，助理带着这个明确的清单去仓库精准挑选。传统的检索模型就像个只会按字面意思找货的店员，你说'好点的'他就给你推荐所有带'好'字的商品，完全不管你是谁。而Think-to-Personalize就像那个聪明的助理，先思考再行动，把模糊的需求变成清晰的指令，最后找到真正适合你的东西。\", \"problem\": \"在本地生活电商搜索中，稠密检索将查询和商品映射到向量空间。传统方法用BERT等模型编码，最近转向LLM，但只是把LLM当静态编码器，没用其推理能力。同时，标准检索是查询中心的，但电商查询往往稀疏模糊，比如'好吃的'，用户意图只能靠历史行为推断。现有个性化检索方法用隐式嵌入交互，缺乏推理能力，难以从嘈杂历史中消除歧义。不解决这个问题，用户会看到不相关结果，导致转化率低，平台收入受损。\", \"method_comparison\": \"- **传统稠密检索**：用BERT编码查询和商品，计算相似度。缺点：忽略用户历史，无法处理模糊查询。\\n- **个性化检索（如P5）**：将用户历史拼接进查询文本，或使用注意力机制融合用户嵌入。缺点：隐式交互，缺乏显式推理，历史噪声干扰大。\\n- **本文方法（TTP）**：先用LLM推理用户历史，生成意图增强查询，再编码检索。\\n核心差异：TTP显式生成中间推理文本，而不是隐式融合。它用强化学习优化推理过程，使生成的查询直接服务于检索目标，而非仅模仿人类语言。\", \"core_method\": \"**两阶段训练**：\\n- **SFT阶段**：用人工标注的（历史序列，意图查询）对微调LLM，建立冷启动能力。输入用户历史购买序列，输出意图增强查询。\\n- **RL阶段**：用GRPO优化，奖励函数基于检索效用（如NDCG）。LLM生成查询后，编码并与商品向量计算相似度，根据排序质量给奖励。\\n\\n**推理与编码**：\\n- **做什么**：推理时，LLM接收用户历史，生成自然语言查询，如'用户偏好运动鞋，需要透气款'。\\n- **如何做**：生成的查询与原始查询拼接，输入编码器（如BERT）得到向量。商品向量预计算，在线检索用ANN。\\n\\n**公式示例**：奖励R = NDCG@10（基于生成的查询检索结果）。GRPO更新策略，使生成查询的期望奖励最大化。数值示例：若原始查询'鞋'检索NDCG为0.5，生成'透气运动鞋'后NDCG提升到0.7，则奖励增加。\", \"results\": \"- **离线指标**：在公开基准（如Amazon）和私有数据集上，TTP的Recall@10和NDCG@10均超过SOTA基线，如P5、UniSRec等。\\n- **在线A/B测试**：订单量提升+0.46%，点击率提升约0.2%。\\n- **业务含义**：每100次搜索，比基线多完成约0.46次订单。假设日活百万，每天多数千订单，显著提升GMV。\", \"limitations\": \"- 依赖高质量人工标注数据用于SFT，成本高，且标注一致性难保证。\\n- 推理阶段增加延迟，因为LLM生成查询需要时间，可能影响在线实时性。\\n- 对用户历史长度敏感，过长历史可能超出LLM上下文窗口，需截断或摘要，可能丢失信息。\\n- 强化学习训练不稳定，需要精细调参，且奖励函数设计可能过拟合特定指标。\\n- 隐私问题：将用户历史发送给LLM可能涉及敏感信息，需脱敏处理。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.18764",
+      "title": "GateDiffInt: Gate-Mediated Controllable Diffusion and Multi-Intent LLM Distillation for User Behavior Modeling",
+      "authors": [
+        "Jialong Duan",
+        "Zichen Zhang",
+        "Zirui Tu",
+        "Zheng Zhang",
+        "Zepeng Li",
+        "Qingyao Cui",
+        "Qinwen Wang",
+        "Yudan Liu",
+        "Luo Yang",
+        "Yao Hu"
+      ],
+      "abstract": "Existing ranking models encode intent only implicitly, making it hard to disentangle structured intents of varying strength and temporal scale. Noise and intent in behavior sequences are mutually reinforcing---we call this Noise--Intent Coupling (NIC). Noise dilutes true intents, while the lack of structured intent priors leaves denoising without a clear target.To address NIC, we propose GateDiffInt, an intent interaction framework for industrial ranking. It uses the final conversion signal to jointly align sequence denoising and intent extraction. GateDiffInt applies a controllable forward diffusion process with dual gating to enhance and denoise behavior sequences. A large language model then acts as teacher to distill four structured intents---long-term, short-term, latent, and conversion---into a lightweight student model. The enhanced sequence and structured intent representations are deeply fused via attention to produce intent-aware representations for conversion-rate prediction.Extensive experiments on public and large-scale industrial datasets show consistent gains over strong baselines. In online A/B tests serving hundreds of millions of daily active users, GateDiffInt delivers substantial GMV improvements and has been deployed to primary traffic, confirming both effectiveness and production readiness.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.18764v1",
+      "published_date": "2026-08-19",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用门控扩散和LLM蒸馏解耦行为序列中的噪声与意图，提升工业排序的转化率预测。",
+      "chinese_overview": "",
+      "analogy": "想象你在一场嘈杂的派对上，想听清朋友说话（真实意图），但周围噪音（点击、浏览等无关行为）太大。你戴上一个智能降噪耳机（门控扩散），它根据你最终是否想回家（转化信号）来调节降噪强度，让朋友的声音更清晰。同时，你有一个熟悉你各种习惯的助手（LLM），他帮你把朋友的话分成几类：长期计划、短期安排、潜在想法和最终决定。这样，你就能更准确地理解朋友，并决定是否跟他走（预测转化率）。",
+      "problem": "传统排序模型只隐式编码用户意图，难以区分不同强度和尺度的结构化意图。行为序列中的噪声和真实意图相互纠缠，形成噪声-意图耦合（NIC）问题：噪声稀释真实意图，而缺乏结构化意图先验又让去噪没有明确目标。如果不解决，排序模型会因噪声干扰而误判用户真实需求，导致转化率预测不准，影响推荐和广告效果，最终损害平台收益和用户体验。",
+      "method_comparison": "- **传统序列模型（如GRU4Rec）**：直接编码行为序列 → 无法区分噪声和意图，易受干扰。\n- **去噪方法（如DIFUR）**：用扩散模型去噪，但无明确目标 → 去噪方向不明确，可能误删真实意图。\n- **多意图模型（如MIND）**：提取多个意图，但未与去噪结合 → 意图提取和序列去噪割裂，效果有限。\n- **本文方法**：用转化信号联合对齐去噪和意图提取，门控扩散增强序列，LLM蒸馏结构化意图，再深度融合。\n\n核心差异：GateDiffInt将去噪和意图提取统一在转化信号下，形成闭环，而以往方法各自为政，缺乏协同。",
+      "core_method": "**模块1：门控可控扩散（GateDiffInt）**\n- **做什么**：通过双门控机制控制前向扩散过程，增强或去噪行为序列。\n- **输入**：原始行为序列；**输出**：增强后的序列表示。\n- 前向扩散逐步加噪，但用转化信号作为门控，决定每一步的噪声强度。例如，若转化信号强，则减少噪声，保留更多意图；反之则增加噪声，抑制干扰。数值示例：序列长度100，扩散步数10，门控值0.8表示保留80%原始信息。\n\n**模块2：多意图LLM蒸馏**\n- **做什么**：用LLM作为教师，蒸馏出四种结构化意图（长期、短期、潜在、转化）到轻量学生模型。\n- **输入**：行为序列；**输出**：四个意图向量。\n- LLM生成意图标签，学生模型学习预测这些标签，从而在推理时无需LLM。例如，LLM将用户行为分类为长期兴趣（如喜欢运动）、短期兴趣（如最近看球鞋）、潜在意图（如可能想买）和转化意图（如最终购买）。\n\n**模块3：意图感知融合**\n- **做什么**：将增强序列和结构化意图通过注意力机制深度融合。\n- **输入**：增强序列表示和四个意图向量；**输出**：意图感知表示，用于CTR/CVR预测。\n- 注意力机制让序列中的每个行为根据与意图的相关性加权，例如，点击球鞋的行为在短期意图上权重高。最终表示输入预测层，输出转化率。",
+      "results": "- **公开数据集**：在Amazon和Taobao数据集上，AUC提升0.5%-1.2%，GAUC提升0.8%-1.5%。\n- **工业数据集**：在淘宝主搜场景，AUC提升0.3%，GAUC提升0.6%。\n- **在线A/B测试**：覆盖数亿日活用户，GMV提升1.2%，转化率提升0.8%。\n- **业务含义**：每100次曝光，比基线多完成1次转化，显著提升平台收入。",
+      "limitations": "- 依赖转化信号作为门控，冷启动用户或稀疏转化场景下效果受限。\n- LLM蒸馏需要大量离线标注，成本高，且LLM可能引入偏见。\n- 扩散过程计算开销大，工业部署需优化推理速度。\n- 四种意图的划分可能不适用于所有业务，需调整。\n- 未考虑行为序列的实时性，在线更新可能滞后。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用门控扩散和LLM蒸馏解耦行为序列中的噪声与意图，提升工业排序的转化率预测。\", \"analogy\": \"想象你在一场嘈杂的派对上，想听清朋友说话（真实意图），但周围噪音（点击、浏览等无关行为）太大。你戴上一个智能降噪耳机（门控扩散），它根据你最终是否想回家（转化信号）来调节降噪强度，让朋友的声音更清晰。同时，你有一个熟悉你各种习惯的助手（LLM），他帮你把朋友的话分成几类：长期计划、短期安排、潜在想法和最终决定。这样，你就能更准确地理解朋友，并决定是否跟他走（预测转化率）。\", \"problem\": \"传统排序模型只隐式编码用户意图，难以区分不同强度和尺度的结构化意图。行为序列中的噪声和真实意图相互纠缠，形成噪声-意图耦合（NIC）问题：噪声稀释真实意图，而缺乏结构化意图先验又让去噪没有明确目标。如果不解决，排序模型会因噪声干扰而误判用户真实需求，导致转化率预测不准，影响推荐和广告效果，最终损害平台收益和用户体验。\", \"method_comparison\": \"- **传统序列模型（如GRU4Rec）**：直接编码行为序列 → 无法区分噪声和意图，易受干扰。\\n- **去噪方法（如DIFUR）**：用扩散模型去噪，但无明确目标 → 去噪方向不明确，可能误删真实意图。\\n- **多意图模型（如MIND）**：提取多个意图，但未与去噪结合 → 意图提取和序列去噪割裂，效果有限。\\n- **本文方法**：用转化信号联合对齐去噪和意图提取，门控扩散增强序列，LLM蒸馏结构化意图，再深度融合。\\n\\n核心差异：GateDiffInt将去噪和意图提取统一在转化信号下，形成闭环，而以往方法各自为政，缺乏协同。\", \"core_method\": \"**模块1：门控可控扩散（GateDiffInt）**\\n- **做什么**：通过双门控机制控制前向扩散过程，增强或去噪行为序列。\\n- **输入**：原始行为序列；**输出**：增强后的序列表示。\\n- 前向扩散逐步加噪，但用转化信号作为门控，决定每一步的噪声强度。例如，若转化信号强，则减少噪声，保留更多意图；反之则增加噪声，抑制干扰。数值示例：序列长度100，扩散步数10，门控值0.8表示保留80%原始信息。\\n\\n**模块2：多意图LLM蒸馏**\\n- **做什么**：用LLM作为教师，蒸馏出四种结构化意图（长期、短期、潜在、转化）到轻量学生模型。\\n- **输入**：行为序列；**输出**：四个意图向量。\\n- LLM生成意图标签，学生模型学习预测这些标签，从而在推理时无需LLM。例如，LLM将用户行为分类为长期兴趣（如喜欢运动）、短期兴趣（如最近看球鞋）、潜在意图（如可能想买）和转化意图（如最终购买）。\\n\\n**模块3：意图感知融合**\\n- **做什么**：将增强序列和结构化意图通过注意力机制深度融合。\\n- **输入**：增强序列表示和四个意图向量；**输出**：意图感知表示，用于CTR/CVR预测。\\n- 注意力机制让序列中的每个行为根据与意图的相关性加权，例如，点击球鞋的行为在短期意图上权重高。最终表示输入预测层，输出转化率。\", \"results\": \"- **公开数据集**：在Amazon和Taobao数据集上，AUC提升0.5%-1.2%，GAUC提升0.8%-1.5%。\\n- **工业数据集**：在淘宝主搜场景，AUC提升0.3%，GAUC提升0.6%。\\n- **在线A/B测试**：覆盖数亿日活用户，GMV提升1.2%，转化率提升0.8%。\\n- **业务含义**：每100次曝光，比基线多完成1次转化，显著提升平台收入。\", \"limitations\": \"- 依赖转化信号作为门控，冷启动用户或稀疏转化场景下效果受限。\\n- LLM蒸馏需要大量离线标注，成本高，且LLM可能引入偏见。\\n- 扩散过程计算开销大，工业部署需优化推理速度。\\n- 四种意图的划分可能不适用于所有业务，需调整。\\n- 未考虑行为序列的实时性，在线更新可能滞后。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.18779",
+      "title": "SIDScope: A Diagnostic Resource for Semantic-ID Interfaces in Generative Recommendation",
+      "authors": [
+        "Jiandong Ding",
+        "Huijie Qin",
+        "Tiandeng Wu",
+        "Yi Cao"
+      ],
+      "abstract": "Semantic-ID mappings are reusable interfaces between item tokenizers and generative recommenders, yet released mappings rarely state whether they are coherent, what structure they expose, how generated paths resolve, or what must be revalidated after a refresh. SIDScope is a source-traced diagnostic resource for these decisions. It normalizes item-to-code artifacts, verifies provenance and joins, profiles mapping structure, compares paired revisions, and accounts for path-to-item outcomes in generated traces. Across nine source-traced tokenizer exports from seven families on Amazon and Yelp data - eight executable routes plus one auditable snapshot - SIDScope reveals that interface health is multi-signal rather than scalar. Its central finding is mechanism-conditional: prefix alignment strongly tracks held-out candidate exposure when retrieval consumes SID prefixes, then weakens as scoring becomes prefix-independent. Trained trace accounting exposes a second hidden gap: a valid target path can survive without uniquely retrieving the target item by 1.2-3.0 percentage points. A refresh case establishes a third: repairing the mapping does not by itself restore an inherited generator; model reuse requires a separate handoff check. The package provides frozen evidence summaries, conformance reports, trace labels, table builders, and CPU-only verifiers. It supports decisions about artifact readiness, interface risks, and revalidation before model reuse.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.18779v1",
+      "published_date": "2026-08-19",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Resource: https://github.com/jdding/sidscope",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "SIDScope：首个诊断语义ID映射健康度的工具，揭示接口健康是多信号而非单标量。",
+      "chinese_overview": "",
+      "analogy": "想象你有一本电话簿，里面每个名字对应一个号码。但电话簿可能印错、号码可能重复或失效。SIDScope就像一位质检员，帮你检查电话簿的每一页：名字和号码是否对应正确、有没有漏印、改版后哪些地方需要重新核对。它不告诉你电话簿好不好用，而是告诉你哪里可能出问题，让你决定要不要用这本电话簿。",
+      "problem": "在生成式推荐中，语义ID映射是物品分词器和生成模型之间的接口。但发布的映射很少说明它们是否连贯、暴露了什么结构、生成路径如何解析、刷新后需要重新验证什么。传统做法是直接使用映射，不检查其内部一致性和结构。缺陷在于：映射可能不连贯，导致生成路径无法正确解析到物品；结构不清晰，影响检索效率；刷新后未重新验证，导致模型复用失败。不解决的后果是：推荐系统可能返回错误物品，用户体验下降，模型迭代成本增加。",
+      "method_comparison": "- **传统方法**：直接使用语义ID映射，不检查其质量 → 无法发现映射中的错误或不一致。\n- **现有诊断工具**：只提供标量指标（如准确率） → 无法揭示多信号问题，如前缀对齐与检索的关系。\n- **本文方法**：SIDScope提供源追踪的诊断资源，包括归一化、验证、结构分析、修订比较和路径追踪。\n\n核心差异：SIDScope不仅评估映射的最终效果，还深入分析映射的内部结构、来源和路径解析，提供多维度诊断，帮助用户理解映射的健康状况。",
+      "core_method": "**模块1：归一化与验证**\n- **做什么**：将物品到代码的映射统一格式，验证来源和连接。\n- 输入是不同tokenizer的导出文件，输出是标准化的映射表和验证报告。例如，检查每个物品是否唯一映射到一个代码，代码是否在词汇表中。\n\n**模块2：结构分析**\n- **做什么**：分析映射的层次结构，如前缀树。\n- 计算前缀对齐度，即生成路径中前缀匹配的比例。例如，如果目标物品的代码是[1,2,3]，生成路径是[1,2,4]，则前缀对齐度为2/3。\n\n**模块3：路径追踪与修订比较**\n- **做什么**：追踪生成路径到物品的结果，比较修订前后的映射。\n- 对于每个生成路径，检查是否唯一检索到目标物品。例如，路径[1,2,3]可能同时匹配物品A和B，导致歧义。修订比较则检查刷新后哪些映射改变，需要重新验证。",
+      "results": "- **前缀对齐与候选暴露**：当检索使用SID前缀时，前缀对齐度与候选暴露强相关；当评分独立于前缀时，相关性减弱。\n- **路径追踪**：有效目标路径可能无法唯一检索到目标物品，差距为1.2-3.0个百分点。\n- **刷新案例**：修复映射本身不能恢复继承的生成器，模型复用需要单独的手续检查。\n- **业务含义**：每100次生成推荐，比基线多正确检索到1-3次目标物品，减少错误推荐。",
+      "limitations": "- 依赖源追踪的tokenizer导出，如果导出不完整，诊断可能不准确。\n- 仅支持CPU验证，对于大规模映射可能速度较慢。\n- 未考虑动态映射更新，只处理静态快照。\n- 诊断结果需要人工解读，没有自动决策建议。\n- 未覆盖所有可能的语义ID生成方法，只测试了七个家族。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"SIDScope：首个诊断语义ID映射健康度的工具，揭示接口健康是多信号而非单标量。\", \"analogy\": \"想象你有一本电话簿，里面每个名字对应一个号码。但电话簿可能印错、号码可能重复或失效。SIDScope就像一位质检员，帮你检查电话簿的每一页：名字和号码是否对应正确、有没有漏印、改版后哪些地方需要重新核对。它不告诉你电话簿好不好用，而是告诉你哪里可能出问题，让你决定要不要用这本电话簿。\", \"problem\": \"在生成式推荐中，语义ID映射是物品分词器和生成模型之间的接口。但发布的映射很少说明它们是否连贯、暴露了什么结构、生成路径如何解析、刷新后需要重新验证什么。传统做法是直接使用映射，不检查其内部一致性和结构。缺陷在于：映射可能不连贯，导致生成路径无法正确解析到物品；结构不清晰，影响检索效率；刷新后未重新验证，导致模型复用失败。不解决的后果是：推荐系统可能返回错误物品，用户体验下降，模型迭代成本增加。\", \"method_comparison\": \"- **传统方法**：直接使用语义ID映射，不检查其质量 → 无法发现映射中的错误或不一致。\\n- **现有诊断工具**：只提供标量指标（如准确率） → 无法揭示多信号问题，如前缀对齐与检索的关系。\\n- **本文方法**：SIDScope提供源追踪的诊断资源，包括归一化、验证、结构分析、修订比较和路径追踪。\\n\\n核心差异：SIDScope不仅评估映射的最终效果，还深入分析映射的内部结构、来源和路径解析，提供多维度诊断，帮助用户理解映射的健康状况。\", \"core_method\": \"**模块1：归一化与验证**\\n- **做什么**：将物品到代码的映射统一格式，验证来源和连接。\\n- 输入是不同tokenizer的导出文件，输出是标准化的映射表和验证报告。例如，检查每个物品是否唯一映射到一个代码，代码是否在词汇表中。\\n\\n**模块2：结构分析**\\n- **做什么**：分析映射的层次结构，如前缀树。\\n- 计算前缀对齐度，即生成路径中前缀匹配的比例。例如，如果目标物品的代码是[1,2,3]，生成路径是[1,2,4]，则前缀对齐度为2/3。\\n\\n**模块3：路径追踪与修订比较**\\n- **做什么**：追踪生成路径到物品的结果，比较修订前后的映射。\\n- 对于每个生成路径，检查是否唯一检索到目标物品。例如，路径[1,2,3]可能同时匹配物品A和B，导致歧义。修订比较则检查刷新后哪些映射改变，需要重新验证。\", \"results\": \"- **前缀对齐与候选暴露**：当检索使用SID前缀时，前缀对齐度与候选暴露强相关；当评分独立于前缀时，相关性减弱。\\n- **路径追踪**：有效目标路径可能无法唯一检索到目标物品，差距为1.2-3.0个百分点。\\n- **刷新案例**：修复映射本身不能恢复继承的生成器，模型复用需要单独的手续检查。\\n- **业务含义**：每100次生成推荐，比基线多正确检索到1-3次目标物品，减少错误推荐。\", \"limitations\": \"- 依赖源追踪的tokenizer导出，如果导出不完整，诊断可能不准确。\\n- 仅支持CPU验证，对于大规模映射可能速度较慢。\\n- 未考虑动态映射更新，只处理静态快照。\\n- 诊断结果需要人工解读，没有自动决策建议。\\n- 未覆盖所有可能的语义ID生成方法，只测试了七个家族。\"}",
       "relevance_score": 0.0
     }
   }
