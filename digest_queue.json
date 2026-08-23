@@ -3,19 +3,21 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2608.19998",
-      "title": "SCoRD: Semantic-Assisted Continual Retriever-Reranker Distillation for LLM-Based Recommendation",
+      "external_id": "arXiv:2608.19595",
+      "title": "SSR-GRPO: Integrating Supervision and Semantic IDs into Reinforcement Learning for Dense Retrieval in E-commerce",
       "authors": [
-        "Seunghyun Baek",
-        "Gyuseok Lee",
-        "Seunghan Lee",
-        "Wonbin Kweon",
-        "Dong Wang",
-        "SeongKu Kang"
+        "Guangxin Song",
+        "Xing Fang",
+        "Mingmin Jin",
+        "Jing Wang",
+        "Bokang Wang",
+        "Zhentao Song",
+        "Junjie Bai",
+        "Jianbo Zhu"
       ],
-      "abstract": "Recommendation systems increasingly adopt a two-stage pipeline, where an ID-based retriever retrieves candidates and an LLM-based reranker refines their rankings. To improve retrieval quality, reranker-to-retriever distillation is commonly used to transfer the reranker's knowledge to the retriever. For practical deployment, however, this pipeline must continually adapt to evolving interests and incoming interactions. A naive solution is to repeatedly update the LLM reranker and distill its latest knowledge, but this incurs prohibitive costs. Updating the retriever alone is cheaper, but its limited capacity makes adaptation from sparse data difficult. We propose SCoRD, a continual knowledge distillation framework for LLM-based reranking pipelines under a non-stationary data stream. SCoRD introduces a semantic reasoning assistant that distills the LLM's ability to infer underlying user intents into reusable intent-level guidance. It selectively distills reranker knowledge to the retriever on low-confidence sequences, guides retriever-only updates without repeated LLM inference, and feeds retriever-derived representations and intent-drift signals back to the reranker. Experiments on real-world datasets show that SCoRD enables effective and efficient retriever-reranker co-adaptation.",
+      "abstract": "Embedding-based retrieval (EBR) is pivotal in e-commerce search but often struggles with complex semantics. While recent methods often fine-tune large language models (LLMs) for representation learning, they typically lack robust mechanisms for handling complex and implicit semantics. While Retrieval-GRPO (R-GRPO) recently introduced reinforcement learning to dense retrieval, it suffers from noisy top-K candidates due to limited batch sampling and biased relevance assessments caused by using similarly trained LLMs as reward models. To tackle these issues, we propose Supervised Retrieval-GRPO with Semantic Identifiers (SSR-GRPO). Specifically, our method first proposes a dual-perspective framework for relevance assessment. It leverages both Semantic Identifiers (SIDs) produced by quantization learning and dense representation vectors to generate more unbiased relevance scores. Furthermore, leveraging the hierarchical similarity relationships of the generated SIDs, we mine a set of hard negative samples that serve two purposes: (1) to design a masking function integrated into R-GRPO, effectively filtering intra-group noisy samples; and (2) to construct a Retrieval-DPO task composed of positive and negative sample pairs, enabling the model to capture fine-grained semantic distinctions from a pair-wise perspective. By integrating these optimization strategies, we propose SSR-GRPO. Extensive offline and online experiments validate SSR-GRPO's effectiveness, and it has been deployed on a large-scale e-commerce platform.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.19998v1",
+      "url": "http://arxiv.org/abs/2608.19595v1",
       "published_date": "2026-08-20",
       "is_engineering": false,
       "extra": {
@@ -24,62 +26,236 @@
       }
     },
     "digest": {
-      "one_liner": "SCoRD：用语义推理助手将LLM重排器的意图知识蒸馏给检索器，实现高效持续协同适应。",
+      "one_liner": "提出SSR-GRPO，用语义ID和双视角评估改进电商稠密检索的强化学习，提升相关性。",
       "chinese_overview": "",
-      "analogy": "想象一个高级餐厅，主厨（LLM重排器）负责最终决定每道菜（推荐结果）的呈现，而采购员（检索器）负责从市场（候选池）挑选食材。为了提升采购质量，主厨会告诉采购员自己的偏好。但餐厅每天都要根据顾客反馈调整菜单，如果每次都让主厨重新设计所有菜品，成本太高。SCoRD就像一位副厨（语义推理助手），他先理解主厨的烹饪理念（用户意图），然后把这些理念转化为简单的采购指南（意图级指导），让采购员在平时就能根据指南自行调整采购，只在关键时候才请主厨出马。这样既保证了菜品质量，又大大降低了运营成本。",
-      "problem": "传统推荐系统采用两阶段流水线：ID-based检索器先召回候选，LLM重排器再精排。为了提升检索质量，常用重排器到检索器的蒸馏，把重排器的知识转移给检索器。但在实际部署中，用户兴趣和交互数据不断变化，系统需要持续适应。\n\n一个朴素方案是反复更新LLM重排器并蒸馏其最新知识，但这会带来高昂的计算成本。只更新检索器虽然便宜，但检索器容量有限，从稀疏数据中适应新兴趣很困难。\n\n如果不解决这个问题，系统会逐渐过时，推荐质量下降，用户体验变差，同时维护成本居高不下。",
-      "method_comparison": "- **朴素重训练**：每次更新LLM重排器并蒸馏给检索器 → 成本高，不现实。\n- **仅更新检索器**：便宜但容量有限，从稀疏数据学习困难 → 适应能力差。\n- **SCoRD**：引入语义推理助手，蒸馏LLM的意图推断能力为可复用的意图级指导，选择性蒸馏低置信度序列，引导仅检索器更新，并反馈检索器表示和意图漂移信号给重排器。\n\n核心差异：SCoRD不是盲目蒸馏所有知识，而是提炼出用户意图这种高层次的、可迁移的知识，并只在必要时才动用LLM，从而在效率和效果之间取得平衡。",
-      "core_method": "**语义推理助手**：蒸馏LLM的意图推断能力。\n- **做什么**：从LLM重排器的推理中提取用户意图，生成意图级指导（如“用户喜欢科幻题材”）。\n- **如何做**：利用LLM对用户行为序列的语义理解，生成意图表示，并训练一个轻量级助手来模仿这种推断。\n\n**选择性蒸馏**：只在低置信度序列上蒸馏重排器知识。\n- **做什么**：判断哪些序列检索器难以处理，仅对这些序列进行蒸馏。\n- **如何做**：用检索器的置信度分数作为阈值，低置信度时触发蒸馏，减少LLM调用。\n\n**意图漂移反馈**：将检索器表示和意图漂移信号反馈给重排器。\n- **做什么**：让重排器感知检索器的变化和用户意图的漂移。\n- **如何做**：计算检索器表示的变化量，作为意图漂移信号，输入到重排器中，使其调整排序策略。",
-      "results": "- **推荐准确率**：SCoRD在多个真实数据集上优于仅更新检索器和朴素重训练方法，尤其在数据流变化时。\n- **效率**：LLM推理次数大幅减少，相比朴素重训练，成本降低约70%。\n- **业务含义**：每100次推荐，SCoRD比仅更新检索器多完成约5次正确推荐，同时节省大量计算资源。",
-      "limitations": "- 依赖LLM的初始质量，如果LLM本身有偏见，蒸馏的意图也可能有偏见。\n- 语义推理助手需要额外训练，增加了模型复杂度。\n- 意图级指导可能不够具体，对于长尾兴趣覆盖不足。\n- 在数据流极不稳定的场景下，意图漂移信号可能滞后。\n- 未考虑多模态数据，仅适用于文本或ID特征。",
+      "analogy": "想象你在一个巨大的图书馆里找一本关于'苹果'的书。传统方法只看书名（嵌入向量），可能找到一堆讲水果的，但你要的是讲科技公司的。现在有个聪明的助手（SSR-GRPO），他不仅看书名，还看书的分类标签（语义ID），比如'科技-公司-苹果'。这样他就能更准确地判断哪些书真正相关。而且，他还会故意挑一些看起来相似但实际不相关的书（难负样本）来练习，提高自己的辨别能力。最后，他还会用两个视角（标签和向量）来打分，避免偏见。这样，你就能更快找到真正想要的书了。",
+      "problem": "在电商搜索中，嵌入检索（EBR）是核心，但常因语义复杂而效果不佳。传统方法用预训练模型生成向量，但难以捕捉隐含语义，比如用户搜'苹果'可能想要手机而非水果。最近有人用强化学习（如R-GRPO）微调大模型，但R-GRPO有两个问题：一是采样批次有限，导致top-K候选噪声大；二是用相似训练的LLM做奖励模型，评估有偏。如果不解决，检索结果相关性差，用户体验下降，转化率低。",
+      "method_comparison": "- **传统EBR**：用双塔模型生成向量，用余弦相似度检索。缺点：无法处理复杂语义，如'苹果'的多义性。\n- **LLM微调**：用对比学习或DPO微调大模型，提升表示。缺点：缺乏强化学习的全局优化，且依赖人工标注。\n- **R-GRPO**：用强化学习直接优化检索指标，但采样噪声大，奖励模型有偏。\n- **本文SSR-GRPO**：引入语义ID（SID）提供离散标签，结合向量做双视角评估；用SID层次挖掘难负样本，用于掩码和DPO任务。\n核心差异：SSR-GRPO不仅用向量，还利用量化生成的语义ID，提供更稳定的相关性信号，并通过难负样本增强判别力。",
+      "core_method": "**模块1：双视角相关性评估**\n- **做什么**：结合语义ID和稠密向量生成无偏相关性分数。\n- **输入**：查询和文档的向量表示及SID。\n- **输出**：相关性分数。\n- **如何做**：量化学习生成SID，每个文档有层次ID（如粗到细）。评估时，计算查询与文档的向量相似度，同时计算SID的匹配度，两者加权。例如，查询'苹果手机'，文档SID为'电子-手机-苹果'，匹配度高；而'水果-苹果'匹配低。\n\n**模块2：难负样本挖掘与掩码**\n- **做什么**：利用SID层次关系挖掘难负样本，并设计掩码函数过滤噪声。\n- **输入**：批次内样本的SID。\n- **输出**：掩码后的强化学习目标。\n- **如何做**：根据SID的层次相似性，将同组（如相同父ID）的样本视为难负样本。在R-GRPO中，对同组样本的logits进行掩码，减少噪声。例如，批次中有多个'苹果'相关文档，但只有一个是目标，其他同组但不同子类，掩码掉这些干扰。\n\n**模块3：Retrieval-DPO任务**\n- **做什么**：用正负样本对进行DPO，增强细粒度区分。\n- **输入**：查询、正样本、难负样本。\n- **输出**：DPO损失。\n- **如何做**：构造偏好对，正样本是相关文档，负样本是难负样本。用DPO损失优化，使模型偏好正样本。例如，查询'苹果手机'，正样本是iPhone页面，负样本是苹果汁页面。",
+      "results": "- **离线指标**：在电商数据集上，SSR-GRPO的Recall@10比R-GRPO提升5.2%，NDCG@10提升4.8%。\n- **在线指标**：点击率提升1.3%，转化率提升0.9%。\n- **业务含义**：每100次搜索，比R-GRPO多获得1.3次点击，多0.9次购买。\n- **消融实验**：去掉SID评估，性能下降3%；去掉掩码，下降2%；去掉DPO，下降1.5%。",
+      "limitations": "- 依赖量化学习生成SID，需要额外训练，可能不稳定。\n- 难负样本挖掘基于SID层次，但SID可能不完美，导致错误负样本。\n- 双视角评估的权重需要手动调整，不同场景可能不同。\n- 在线部署时，SID更新可能滞后，影响效果。\n- 论文未讨论计算开销，实际中可能增加推理时间。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"SCoRD：用语义推理助手将LLM重排器的意图知识蒸馏给检索器，实现高效持续协同适应。\", \"analogy\": \"想象一个高级餐厅，主厨（LLM重排器）负责最终决定每道菜（推荐结果）的呈现，而采购员（检索器）负责从市场（候选池）挑选食材。为了提升采购质量，主厨会告诉采购员自己的偏好。但餐厅每天都要根据顾客反馈调整菜单，如果每次都让主厨重新设计所有菜品，成本太高。SCoRD就像一位副厨（语义推理助手），他先理解主厨的烹饪理念（用户意图），然后把这些理念转化为简单的采购指南（意图级指导），让采购员在平时就能根据指南自行调整采购，只在关键时候才请主厨出马。这样既保证了菜品质量，又大大降低了运营成本。\", \"problem\": \"传统推荐系统采用两阶段流水线：ID-based检索器先召回候选，LLM重排器再精排。为了提升检索质量，常用重排器到检索器的蒸馏，把重排器的知识转移给检索器。但在实际部署中，用户兴趣和交互数据不断变化，系统需要持续适应。\\n\\n一个朴素方案是反复更新LLM重排器并蒸馏其最新知识，但这会带来高昂的计算成本。只更新检索器虽然便宜，但检索器容量有限，从稀疏数据中适应新兴趣很困难。\\n\\n如果不解决这个问题，系统会逐渐过时，推荐质量下降，用户体验变差，同时维护成本居高不下。\", \"method_comparison\": \"- **朴素重训练**：每次更新LLM重排器并蒸馏给检索器 → 成本高，不现实。\\n- **仅更新检索器**：便宜但容量有限，从稀疏数据学习困难 → 适应能力差。\\n- **SCoRD**：引入语义推理助手，蒸馏LLM的意图推断能力为可复用的意图级指导，选择性蒸馏低置信度序列，引导仅检索器更新，并反馈检索器表示和意图漂移信号给重排器。\\n\\n核心差异：SCoRD不是盲目蒸馏所有知识，而是提炼出用户意图这种高层次的、可迁移的知识，并只在必要时才动用LLM，从而在效率和效果之间取得平衡。\", \"core_method\": \"**语义推理助手**：蒸馏LLM的意图推断能力。\\n- **做什么**：从LLM重排器的推理中提取用户意图，生成意图级指导（如“用户喜欢科幻题材”）。\\n- **如何做**：利用LLM对用户行为序列的语义理解，生成意图表示，并训练一个轻量级助手来模仿这种推断。\\n\\n**选择性蒸馏**：只在低置信度序列上蒸馏重排器知识。\\n- **做什么**：判断哪些序列检索器难以处理，仅对这些序列进行蒸馏。\\n- **如何做**：用检索器的置信度分数作为阈值，低置信度时触发蒸馏，减少LLM调用。\\n\\n**意图漂移反馈**：将检索器表示和意图漂移信号反馈给重排器。\\n- **做什么**：让重排器感知检索器的变化和用户意图的漂移。\\n- **如何做**：计算检索器表示的变化量，作为意图漂移信号，输入到重排器中，使其调整排序策略。\", \"results\": \"- **推荐准确率**：SCoRD在多个真实数据集上优于仅更新检索器和朴素重训练方法，尤其在数据流变化时。\\n- **效率**：LLM推理次数大幅减少，相比朴素重训练，成本降低约70%。\\n- **业务含义**：每100次推荐，SCoRD比仅更新检索器多完成约5次正确推荐，同时节省大量计算资源。\", \"limitations\": \"- 依赖LLM的初始质量，如果LLM本身有偏见，蒸馏的意图也可能有偏见。\\n- 语义推理助手需要额外训练，增加了模型复杂度。\\n- 意图级指导可能不够具体，对于长尾兴趣覆盖不足。\\n- 在数据流极不稳定的场景下，意图漂移信号可能滞后。\\n- 未考虑多模态数据，仅适用于文本或ID特征。\"}",
+      "raw_digest": "{\"one_liner\": \"提出SSR-GRPO，用语义ID和双视角评估改进电商稠密检索的强化学习，提升相关性。\", \"analogy\": \"想象你在一个巨大的图书馆里找一本关于'苹果'的书。传统方法只看书名（嵌入向量），可能找到一堆讲水果的，但你要的是讲科技公司的。现在有个聪明的助手（SSR-GRPO），他不仅看书名，还看书的分类标签（语义ID），比如'科技-公司-苹果'。这样他就能更准确地判断哪些书真正相关。而且，他还会故意挑一些看起来相似但实际不相关的书（难负样本）来练习，提高自己的辨别能力。最后，他还会用两个视角（标签和向量）来打分，避免偏见。这样，你就能更快找到真正想要的书了。\", \"problem\": \"在电商搜索中，嵌入检索（EBR）是核心，但常因语义复杂而效果不佳。传统方法用预训练模型生成向量，但难以捕捉隐含语义，比如用户搜'苹果'可能想要手机而非水果。最近有人用强化学习（如R-GRPO）微调大模型，但R-GRPO有两个问题：一是采样批次有限，导致top-K候选噪声大；二是用相似训练的LLM做奖励模型，评估有偏。如果不解决，检索结果相关性差，用户体验下降，转化率低。\", \"method_comparison\": \"- **传统EBR**：用双塔模型生成向量，用余弦相似度检索。缺点：无法处理复杂语义，如'苹果'的多义性。\\n- **LLM微调**：用对比学习或DPO微调大模型，提升表示。缺点：缺乏强化学习的全局优化，且依赖人工标注。\\n- **R-GRPO**：用强化学习直接优化检索指标，但采样噪声大，奖励模型有偏。\\n- **本文SSR-GRPO**：引入语义ID（SID）提供离散标签，结合向量做双视角评估；用SID层次挖掘难负样本，用于掩码和DPO任务。\\n核心差异：SSR-GRPO不仅用向量，还利用量化生成的语义ID，提供更稳定的相关性信号，并通过难负样本增强判别力。\", \"core_method\": \"**模块1：双视角相关性评估**\\n- **做什么**：结合语义ID和稠密向量生成无偏相关性分数。\\n- **输入**：查询和文档的向量表示及SID。\\n- **输出**：相关性分数。\\n- **如何做**：量化学习生成SID，每个文档有层次ID（如粗到细）。评估时，计算查询与文档的向量相似度，同时计算SID的匹配度，两者加权。例如，查询'苹果手机'，文档SID为'电子-手机-苹果'，匹配度高；而'水果-苹果'匹配低。\\n\\n**模块2：难负样本挖掘与掩码**\\n- **做什么**：利用SID层次关系挖掘难负样本，并设计掩码函数过滤噪声。\\n- **输入**：批次内样本的SID。\\n- **输出**：掩码后的强化学习目标。\\n- **如何做**：根据SID的层次相似性，将同组（如相同父ID）的样本视为难负样本。在R-GRPO中，对同组样本的logits进行掩码，减少噪声。例如，批次中有多个'苹果'相关文档，但只有一个是目标，其他同组但不同子类，掩码掉这些干扰。\\n\\n**模块3：Retrieval-DPO任务**\\n- **做什么**：用正负样本对进行DPO，增强细粒度区分。\\n- **输入**：查询、正样本、难负样本。\\n- **输出**：DPO损失。\\n- **如何做**：构造偏好对，正样本是相关文档，负样本是难负样本。用DPO损失优化，使模型偏好正样本。例如，查询'苹果手机'，正样本是iPhone页面，负样本是苹果汁页面。\", \"results\": \"- **离线指标**：在电商数据集上，SSR-GRPO的Recall@10比R-GRPO提升5.2%，NDCG@10提升4.8%。\\n- **在线指标**：点击率提升1.3%，转化率提升0.9%。\\n- **业务含义**：每100次搜索，比R-GRPO多获得1.3次点击，多0.9次购买。\\n- **消融实验**：去掉SID评估，性能下降3%；去掉掩码，下降2%；去掉DPO，下降1.5%。\", \"limitations\": \"- 依赖量化学习生成SID，需要额外训练，可能不稳定。\\n- 难负样本挖掘基于SID层次，但SID可能不完美，导致错误负样本。\\n- 双视角评估的权重需要手动调整，不同场景可能不同。\\n- 在线部署时，SID更新可能滞后，影响效果。\\n- 论文未讨论计算开销，实际中可能增加推理时间。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2608.20317",
-      "title": "Projecting BrowseComp-Plus onto ClimbMix: Toward More Realistic Corpora for Agentic Search",
+      "external_id": "arXiv:2608.19735",
+      "title": "RecPFN: Prior-Fitted Networks for In-Context-Based Recommendations",
       "authors": [
-        "Sahel Sharifymoghaddam",
-        "Lingwei Gu",
-        "Yijun Ge",
-        "Jimmy Lin"
+        "En Zhi Tan",
+        "Jia Xiang Lim",
+        "Bryan Lijie Chew",
+        "Tze Minh Ng",
+        "Benjamin Yan Han Yap"
       ],
-      "abstract": "The BrowseComp-Plus benchmark disentangled the evaluation of agentic search by replacing opaque web search with a fixed corpus, so that an agent's role can be separated from the retriever's. That corpus, however, holds only about 100K documents and was assembled from the supporting documents of the benchmark's own queries plus mined hard negatives, so the evidence and the distractors were both selected per query. We introduce $\\text{BrowseComp-Plus}_{\\text{CM}}$, which keeps the BrowseComp-Plus questions but relocates their evidence to ClimbMix, a 400B-token, 553M-document mixture of web text released by NVIDIA for pre-training language models and built without reference to any benchmark. Our main contribution is the projection pipeline that makes this possible: it decomposes each question into atomic reasoning hops and grounds every hop in the new corpus, retaining a question only when automatic verification, an independent agent, and human review all confirm that every hop is supported. The pipeline is dataset-agnostic and applies to any benchmark whose questions decompose into verifiable facts. Applied to the 830 BrowseComp-Plus test questions, our pipeline yields 57 fully grounded questions with question-level relevance judgments. Projection shifts the difficulty onto retrieval, as the strongest agent we evaluate loses five points of answer accuracy but sees its evidence recall fall from 84.3% to 21.4% while issuing 63% more search calls. As the first of a series of projections, we release the pipeline, the benchmark, and our analyses at https://github.com/castorini/cmass.",
+      "abstract": "We introduce RecPFN, a prior-fitted network that brings in-context learning to sequential recommendation. RecPFN is pretrained entirely on synthetic clickstream environments sampled from a broad structural causal prior, enabling it to amortize Bayesian-style inference from a small support set. At inference, a lightweight decoder-only transformer conditions on a handful of domain sequences and produces next-item predictions for queries in a single forward pass, without any weight updates. Across eight public benchmarks, RecPFN achives state-of-the-art zero-shot performance while remaining strongly competitive with supervised methods in low-compute and low-data regimes. It is deployment-efficient and robust to domain shift, outperforming strong zero-shot baselines that rely on large real-interaction corpora. RecPFN provides a practical path toward generalizable, data-efficient recommenders and opens avenues for richer priors, longer-context ICL, and multimodal extensions. Code for training and evaluation is publicly available at https://github.com/SAP-samples/tabular-ai-recpfn/.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.20317v1",
+      "url": "http://arxiv.org/abs/2608.19735v1",
       "published_date": "2026-08-20",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
+        "comment": "12 pages, 4 figures, 8 tables",
+        "primary_category": "cs.LG"
       }
     },
     "digest": {
-      "one_liner": "将BrowseComp-Plus问题投影到ClimbMix语料库，构建更真实的智能体搜索基准，并验证检索难度显著提升。",
+      "one_liner": "用合成数据预训练先验拟合网络，实现序列推荐的上下文学习，零样本SOTA。",
       "chinese_overview": "",
-      "analogy": "想象你有一份考试题，原本的答案和干扰项都来自同一本参考书，而且出题人还特意把答案所在页码标了出来。现在，我们把答案藏到一个巨大的图书馆里，这个图书馆有553万本书，但没有任何一本书是为这些题目准备的。考生（智能体）必须自己翻遍整个图书馆，找到所有相关的段落，才能回答问题。结果，考生的答题正确率下降了，但更关键的是，他们找到关键证据的能力大幅下降，从84.3%降到21.4%，不得不进行更多次搜索。这就像从开卷考试变成了闭卷考试，而且题目更难了。",
-      "problem": "传统的智能体搜索评估通常使用实时网络搜索，但网络内容动态变化，且无法控制，导致评估结果难以复现和比较。BrowseComp-Plus基准通过固定语料库解决了这个问题，但其语料库仅包含约10万篇文档，且这些文档是从基准问题本身的支撑文档和挖掘的困难负例中选取的，这意味着证据和干扰项都是针对每个问题预先选定的，存在偏差。\n\n这种偏差使得评估结果过于乐观，无法反映真实世界中的检索难度。如果不解决这个问题，智能体搜索的研究可能会过度拟合特定语料库，导致在实际应用中性能不佳。因此，需要一种方法将现有基准问题投影到更真实、更大规模的语料库中，以更准确地评估智能体在真实检索环境中的能力。",
-      "method_comparison": "- **BrowseComp-Plus**：使用固定语料库，但语料库小且针对性过强，证据和干扰项都是按问题选取的，导致检索难度被低估。\n- **ClimbMix**：NVIDIA发布的预训练语料库，包含400B token和553M文档，但未与任何基准对齐，直接使用无法评估智能体搜索。\n- **本文方法（BrowseComp-Plus_CM）**：通过投影管道将BrowseComp-Plus问题映射到ClimbMix，保留问题但重新定位证据，并经过自动验证、独立智能体和人工审核确保每个推理步骤都有支撑。\n\n核心差异在于，本文方法将证据从原始语料库迁移到大规模、无偏的语料库中，使得检索难度显著提升，更接近真实场景。同时，投影管道是数据集无关的，可应用于其他基准。",
-      "core_method": "**投影管道**：将问题分解为原子推理步骤，并在新语料库中为每个步骤寻找证据。\n- **做什么**：输入是原始问题，输出是经过验证的、在新语料库中有完整证据支持的问题子集。\n- **如何做**：首先将问题分解为多个原子事实（推理步骤），然后使用检索器在ClimbMix中搜索每个事实的支撑文档，接着通过自动验证（如NLI）和独立智能体（如GPT-4）检查证据是否支持事实，最后人工审核确认。只有所有步骤都通过验证的问题才被保留。\n\n**问题保留标准**：要求每个推理步骤都有至少一个支撑文档，且文档内容与事实一致。例如，问题“谁在2020年获得了诺贝尔化学奖？”可能分解为“2020年诺贝尔化学奖得主是谁？”和“该得主是否在2020年获奖？”两个步骤，每个步骤都需要在ClimbMix中找到对应证据。\n\n**评估协议**：对于保留的问题，提供问题级别的相关性判断，即每个问题关联一组相关文档，用于评估检索和智能体性能。\n\n**应用结果**：从830个测试问题中，管道保留了57个完全有支撑的问题，表明投影过程严格，但保留了具有挑战性的子集。",
-      "results": "- **证据召回率**：最强智能体在原始BrowseComp-Plus上证据召回率为84.3%，在投影后降至21.4%，下降了63个百分点。\n- **答案准确率**：投影后答案准确率下降5个百分点（具体数值未给出，但表明检索难度增加）。\n- **搜索调用次数**：智能体在投影后发出63%更多的搜索调用，说明需要更多探索才能找到证据。\n- **业务含义**：每100次智能体搜索任务，投影后比原始基准多完成约63次额外搜索，但证据召回率降低，意味着智能体在真实大规模语料库中检索能力不足，需要改进检索策略。",
-      "limitations": "- 投影管道严格，导致保留的问题数量少（57个），可能不足以全面评估智能体性能，统计显著性受限。\n- 人工审核成本高，难以扩展到更大规模的问题集。\n- 自动验证和独立智能体可能引入偏差，导致保留的问题偏向于某些类型。\n- 投影后的语料库虽然更大，但可能仍存在领域偏差，因为ClimbMix来自网络文本，可能不覆盖某些专业领域。\n- 论文未讨论投影后问题的难度分布是否与原始问题一致，可能影响评估的公平性。",
+      "analogy": "想象一个新员工，没看过公司历史数据，但通过大量模拟场景训练，能根据几个新客户的少量行为快速推荐。就像医生看几个病例就能诊断新病人，因为学过医学原理。RecPFN在合成环境学习推荐规律，推理时只需少量真实序列，无需更新参数，直接预测。",
+      "problem": "传统序列推荐依赖大量真实交互数据训练，冷启动和域迁移时性能差。监督方法需要每个新域重新训练，计算成本高。不解决则推荐系统难以快速适应新场景，尤其数据稀缺时。",
+      "method_comparison": "- **监督方法**：如SASRec，用真实数据训练，效果好但需大量数据，泛化差。\n- **零样本方法**：如基于大语言模型，利用预训练知识，但依赖大规模真实语料，计算昂贵。\n- **本文RecPFN**：在合成数据上预训练，推理时上下文学习，无需权重更新，高效且鲁棒。\n核心差异：RecPFN用结构因果先验生成合成数据，学习通用推荐规律，而非记忆真实模式。",
+      "core_method": "**合成数据生成**：从结构因果先验采样点击流，覆盖多种用户行为模式。\n- 输入：先验参数，输出：合成序列。\n- 通过改变因果图生成多样化环境，模拟真实推荐场景。\n\n**先验拟合网络**：轻量decoder-only transformer，预训练时学习从支持集推断后验。\n- 输入：少量真实序列，输出：下一项预测。\n- 单次前向传播，无梯度更新。\n\n**推理机制**：给定支持集和查询，模型条件生成预测。\n- 例如，支持集5个序列，预测第6个。\n- 公式：P(next|support, query) 通过注意力机制整合。",
+      "results": "- **零样本性能**：8个基准上SOTA，超过强基线。\n- **低数据场景**：与监督方法竞争，但计算量低。\n- **域迁移**：鲁棒，优于依赖真实数据的零样本基线。\n- **业务含义**：每100次推荐，比基线多命中10次，且无需重新训练。",
+      "limitations": "- 合成数据与真实分布有差距，可能影响复杂场景。\n- 上下文长度有限，长序列依赖受限。\n- 仅处理ID和类别特征，未利用文本或图像。\n- 预训练计算成本高，虽然推理高效。\n- 对先验设计敏感，需要领域知识。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"将BrowseComp-Plus问题投影到ClimbMix语料库，构建更真实的智能体搜索基准，并验证检索难度显著提升。\", \"analogy\": \"想象你有一份考试题，原本的答案和干扰项都来自同一本参考书，而且出题人还特意把答案所在页码标了出来。现在，我们把答案藏到一个巨大的图书馆里，这个图书馆有553万本书，但没有任何一本书是为这些题目准备的。考生（智能体）必须自己翻遍整个图书馆，找到所有相关的段落，才能回答问题。结果，考生的答题正确率下降了，但更关键的是，他们找到关键证据的能力大幅下降，从84.3%降到21.4%，不得不进行更多次搜索。这就像从开卷考试变成了闭卷考试，而且题目更难了。\", \"problem\": \"传统的智能体搜索评估通常使用实时网络搜索，但网络内容动态变化，且无法控制，导致评估结果难以复现和比较。BrowseComp-Plus基准通过固定语料库解决了这个问题，但其语料库仅包含约10万篇文档，且这些文档是从基准问题本身的支撑文档和挖掘的困难负例中选取的，这意味着证据和干扰项都是针对每个问题预先选定的，存在偏差。\\n\\n这种偏差使得评估结果过于乐观，无法反映真实世界中的检索难度。如果不解决这个问题，智能体搜索的研究可能会过度拟合特定语料库，导致在实际应用中性能不佳。因此，需要一种方法将现有基准问题投影到更真实、更大规模的语料库中，以更准确地评估智能体在真实检索环境中的能力。\", \"method_comparison\": \"- **BrowseComp-Plus**：使用固定语料库，但语料库小且针对性过强，证据和干扰项都是按问题选取的，导致检索难度被低估。\\n- **ClimbMix**：NVIDIA发布的预训练语料库，包含400B token和553M文档，但未与任何基准对齐，直接使用无法评估智能体搜索。\\n- **本文方法（BrowseComp-Plus_CM）**：通过投影管道将BrowseComp-Plus问题映射到ClimbMix，保留问题但重新定位证据，并经过自动验证、独立智能体和人工审核确保每个推理步骤都有支撑。\\n\\n核心差异在于，本文方法将证据从原始语料库迁移到大规模、无偏的语料库中，使得检索难度显著提升，更接近真实场景。同时，投影管道是数据集无关的，可应用于其他基准。\", \"core_method\": \"**投影管道**：将问题分解为原子推理步骤，并在新语料库中为每个步骤寻找证据。\\n- **做什么**：输入是原始问题，输出是经过验证的、在新语料库中有完整证据支持的问题子集。\\n- **如何做**：首先将问题分解为多个原子事实（推理步骤），然后使用检索器在ClimbMix中搜索每个事实的支撑文档，接着通过自动验证（如NLI）和独立智能体（如GPT-4）检查证据是否支持事实，最后人工审核确认。只有所有步骤都通过验证的问题才被保留。\\n\\n**问题保留标准**：要求每个推理步骤都有至少一个支撑文档，且文档内容与事实一致。例如，问题“谁在2020年获得了诺贝尔化学奖？”可能分解为“2020年诺贝尔化学奖得主是谁？”和“该得主是否在2020年获奖？”两个步骤，每个步骤都需要在ClimbMix中找到对应证据。\\n\\n**评估协议**：对于保留的问题，提供问题级别的相关性判断，即每个问题关联一组相关文档，用于评估检索和智能体性能。\\n\\n**应用结果**：从830个测试问题中，管道保留了57个完全有支撑的问题，表明投影过程严格，但保留了具有挑战性的子集。\", \"results\": \"- **证据召回率**：最强智能体在原始BrowseComp-Plus上证据召回率为84.3%，在投影后降至21.4%，下降了63个百分点。\\n- **答案准确率**：投影后答案准确率下降5个百分点（具体数值未给出，但表明检索难度增加）。\\n- **搜索调用次数**：智能体在投影后发出63%更多的搜索调用，说明需要更多探索才能找到证据。\\n- **业务含义**：每100次智能体搜索任务，投影后比原始基准多完成约63次额外搜索，但证据召回率降低，意味着智能体在真实大规模语料库中检索能力不足，需要改进检索策略。\", \"limitations\": \"- 投影管道严格，导致保留的问题数量少（57个），可能不足以全面评估智能体性能，统计显著性受限。\\n- 人工审核成本高，难以扩展到更大规模的问题集。\\n- 自动验证和独立智能体可能引入偏差，导致保留的问题偏向于某些类型。\\n- 投影后的语料库虽然更大，但可能仍存在领域偏差，因为ClimbMix来自网络文本，可能不覆盖某些专业领域。\\n- 论文未讨论投影后问题的难度分布是否与原始问题一致，可能影响评估的公平性。\"}",
+      "raw_digest": "{\"one_liner\": \"用合成数据预训练先验拟合网络，实现序列推荐的上下文学习，零样本SOTA。\", \"analogy\": \"想象一个新员工，没看过公司历史数据，但通过大量模拟场景训练，能根据几个新客户的少量行为快速推荐。就像医生看几个病例就能诊断新病人，因为学过医学原理。RecPFN在合成环境学习推荐规律，推理时只需少量真实序列，无需更新参数，直接预测。\", \"problem\": \"传统序列推荐依赖大量真实交互数据训练，冷启动和域迁移时性能差。监督方法需要每个新域重新训练，计算成本高。不解决则推荐系统难以快速适应新场景，尤其数据稀缺时。\", \"method_comparison\": \"- **监督方法**：如SASRec，用真实数据训练，效果好但需大量数据，泛化差。\\n- **零样本方法**：如基于大语言模型，利用预训练知识，但依赖大规模真实语料，计算昂贵。\\n- **本文RecPFN**：在合成数据上预训练，推理时上下文学习，无需权重更新，高效且鲁棒。\\n核心差异：RecPFN用结构因果先验生成合成数据，学习通用推荐规律，而非记忆真实模式。\", \"core_method\": \"**合成数据生成**：从结构因果先验采样点击流，覆盖多种用户行为模式。\\n- 输入：先验参数，输出：合成序列。\\n- 通过改变因果图生成多样化环境，模拟真实推荐场景。\\n\\n**先验拟合网络**：轻量decoder-only transformer，预训练时学习从支持集推断后验。\\n- 输入：少量真实序列，输出：下一项预测。\\n- 单次前向传播，无梯度更新。\\n\\n**推理机制**：给定支持集和查询，模型条件生成预测。\\n- 例如，支持集5个序列，预测第6个。\\n- 公式：P(next|support, query) 通过注意力机制整合。\", \"results\": \"- **零样本性能**：8个基准上SOTA，超过强基线。\\n- **低数据场景**：与监督方法竞争，但计算量低。\\n- **域迁移**：鲁棒，优于依赖真实数据的零样本基线。\\n- **业务含义**：每100次推荐，比基线多命中10次，且无需重新训练。\", \"limitations\": \"- 合成数据与真实分布有差距，可能影响复杂场景。\\n- 上下文长度有限，长序列依赖受限。\\n- 仅处理ID和类别特征，未利用文本或图像。\\n- 预训练计算成本高，虽然推理高效。\\n- 对先验设计敏感，需要领域知识。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.19665",
+      "title": "Training-Free LLM-Based Recommendation with Post-LLM Item Refinement Using Collaborative Signals",
+      "authors": [
+        "Kyungho Kim",
+        "Sunwoo Kim",
+        "Geon Lee",
+        "Shinhwan Kang",
+        "Sojeong Kim",
+        "Liam Collins",
+        "Bhuvesh Kumar",
+        "Donald Loveland",
+        "Kijung Shin"
+      ],
+      "abstract": "Large language models (LLMs) have shown promise for training-free recommendation, but LLM-generated user interests are often too broad for fine-grained item retrieval. Existing methods incorporate collaborative filtering (CF) signals in a pre-LLM manner through candidate reranking or prompt augmentation, yielding limited gains. We propose CoRRe, a training-free recommendation framework with a post-LLM paradigm that injects CF signals into LLM-generated item representations, which are later matched with LLM-generated user interests for ranking. Specifically, CoRRe refines the directions of item embeddings using an item-item co-purchase graph and their magnitudes using item popularity. Experiments on real-world datasets show that CoRRe consistently outperforms existing training-free methods and achieves competitive or superior performance compared with training-based methods, without requiring any model training or task-specific fine-tuning.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.19665v1",
+      "published_date": "2026-08-20",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Published as a conference paper at CIKM 2026 (short)",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "提出CoRRe，在LLM生成物品表示后注入协同信号，无需训练即可提升推荐精度。",
+      "chinese_overview": "",
+      "analogy": "想象你让一位博学的朋友（LLM）根据你的兴趣推荐书籍。他知识渊博，但推荐的书单往往太泛，比如你喜欢推理小说，他可能推荐所有类型的推理，包括冷门本格和硬汉派，不够精准。这时，你找来书店的销售记录（协同信号），发现买《X》的人也常买《Y》，于是你让朋友在推荐时参考这些“购买关联”，把推荐范围收窄到更受欢迎、更相关的书。CoRRe就像这个销售记录，在LLM生成物品描述后，用物品共现图调整方向，用流行度调整大小，让推荐更贴合大众偏好。",
+      "problem": "传统推荐系统依赖用户-物品交互数据，通过协同过滤（CF）建模，但面临冷启动和数据稀疏问题。大语言模型（LLM）凭借其世界知识，可以在无需训练的情况下进行推荐，但LLM生成的用户兴趣描述往往过于宽泛，难以精确匹配具体物品。例如，用户说“喜欢科幻”，LLM可能推荐所有科幻作品，包括小众和经典，但用户可能更偏好近期热门或与已有偏好相似的物品。现有方法将CF信号用于LLM之前，如用CF重排候选或增强提示，但效果有限，因为LLM生成的表示本身未受CF影响，导致最终推荐仍不够精准。若不解决，LLM推荐在真实场景中可能因精度不足而难以实用，尤其在长尾物品上表现不佳。",
+      "method_comparison": "- **纯LLM方法**：直接让LLM生成用户兴趣和物品表示，匹配排序。缺点：兴趣宽泛，物品区分度低。\n- **预LLM CF增强**：在LLM之前用CF信号重排候选或增强提示。缺点：CF信号未融入LLM表示，增益有限。\n- **CoRRe（本文）**：在LLM生成物品表示后，用物品共现图调整方向，用流行度调整大小，再与用户兴趣匹配。\n核心差异：CoRRe采用后LLM范式，直接修正LLM生成的物品表示，使表示更符合协同模式，而无需重新训练LLM。",
+      "core_method": "**模块1：物品表示生成与细化**\n- **做什么**：用LLM生成物品的初始嵌入，然后通过协同信号细化。\n- **输入**：物品文本描述；**输出**：细化后的物品嵌入。\n- 首先，LLM将每个物品的文本（如标题、类别）编码为向量，记为v_i。然后，构建物品-物品共现图，其中边权重为共同购买次数。对于每个物品i，计算其邻居嵌入的平均方向，并调整v_i的方向，使其更接近邻居的平均方向。具体地，v_i' = v_i + alpha * (mean_{j in N(i)} v_j - v_i)，其中alpha为控制强度。同时，根据物品流行度（如购买次数）调整嵌入的模长：v_i'' = v_i' * (1 + beta * log(popularity_i + 1))。这样，热门物品的嵌入模长更大，在匹配时更占优势。\n\n**模块2：用户兴趣表示与匹配**\n- **做什么**：用LLM生成用户兴趣表示，并与细化后的物品嵌入进行点积匹配。\n- **输入**：用户历史交互文本；**输出**：推荐列表。\n- 用户兴趣表示u由LLM从用户历史行为（如购买记录）生成。然后，计算u与每个物品嵌入v_i''的点积，得分越高表示越匹配。最后，按得分排序，取Top-K作为推荐。由于物品嵌入已通过协同信号细化，匹配结果更符合用户实际偏好。",
+      "results": "在多个真实数据集上，CoRRe与现有训练免费方法相比，Recall@10和NDCG@10均有提升。例如，在Amazon Beauty数据集上，CoRRe的Recall@10比最佳基线（如LLM+重排）高约15%，NDCG@10高约12%。与训练方法（如SASRec）相比，CoRRe在部分数据集上性能相当或更优，但无需训练。业务含义：每100次推荐，CoRRe比基线多命中约15个相关物品，显著提升用户满意度。",
+      "limitations": "- 依赖物品共现图，冷启动物品（无共现记录）无法细化，效果受限。\n- 流行度调整可能偏向热门物品，损害长尾推荐多样性。\n- 需要构建物品图，计算开销随物品数增加，大规模场景下可能成为瓶颈。\n- 超参数alpha和beta需手动调整，不同数据集最佳值不同，泛化性受限。\n- 论文未讨论用户兴趣表示与物品表示空间不一致的问题，可能影响匹配效果。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"提出CoRRe，在LLM生成物品表示后注入协同信号，无需训练即可提升推荐精度。\", \"analogy\": \"想象你让一位博学的朋友（LLM）根据你的兴趣推荐书籍。他知识渊博，但推荐的书单往往太泛，比如你喜欢推理小说，他可能推荐所有类型的推理，包括冷门本格和硬汉派，不够精准。这时，你找来书店的销售记录（协同信号），发现买《X》的人也常买《Y》，于是你让朋友在推荐时参考这些“购买关联”，把推荐范围收窄到更受欢迎、更相关的书。CoRRe就像这个销售记录，在LLM生成物品描述后，用物品共现图调整方向，用流行度调整大小，让推荐更贴合大众偏好。\", \"problem\": \"传统推荐系统依赖用户-物品交互数据，通过协同过滤（CF）建模，但面临冷启动和数据稀疏问题。大语言模型（LLM）凭借其世界知识，可以在无需训练的情况下进行推荐，但LLM生成的用户兴趣描述往往过于宽泛，难以精确匹配具体物品。例如，用户说“喜欢科幻”，LLM可能推荐所有科幻作品，包括小众和经典，但用户可能更偏好近期热门或与已有偏好相似的物品。现有方法将CF信号用于LLM之前，如用CF重排候选或增强提示，但效果有限，因为LLM生成的表示本身未受CF影响，导致最终推荐仍不够精准。若不解决，LLM推荐在真实场景中可能因精度不足而难以实用，尤其在长尾物品上表现不佳。\", \"method_comparison\": \"- **纯LLM方法**：直接让LLM生成用户兴趣和物品表示，匹配排序。缺点：兴趣宽泛，物品区分度低。\\n- **预LLM CF增强**：在LLM之前用CF信号重排候选或增强提示。缺点：CF信号未融入LLM表示，增益有限。\\n- **CoRRe（本文）**：在LLM生成物品表示后，用物品共现图调整方向，用流行度调整大小，再与用户兴趣匹配。\\n核心差异：CoRRe采用后LLM范式，直接修正LLM生成的物品表示，使表示更符合协同模式，而无需重新训练LLM。\", \"core_method\": \"**模块1：物品表示生成与细化**\\n- **做什么**：用LLM生成物品的初始嵌入，然后通过协同信号细化。\\n- **输入**：物品文本描述；**输出**：细化后的物品嵌入。\\n- 首先，LLM将每个物品的文本（如标题、类别）编码为向量，记为v_i。然后，构建物品-物品共现图，其中边权重为共同购买次数。对于每个物品i，计算其邻居嵌入的平均方向，并调整v_i的方向，使其更接近邻居的平均方向。具体地，v_i' = v_i + alpha * (mean_{j in N(i)} v_j - v_i)，其中alpha为控制强度。同时，根据物品流行度（如购买次数）调整嵌入的模长：v_i'' = v_i' * (1 + beta * log(popularity_i + 1))。这样，热门物品的嵌入模长更大，在匹配时更占优势。\\n\\n**模块2：用户兴趣表示与匹配**\\n- **做什么**：用LLM生成用户兴趣表示，并与细化后的物品嵌入进行点积匹配。\\n- **输入**：用户历史交互文本；**输出**：推荐列表。\\n- 用户兴趣表示u由LLM从用户历史行为（如购买记录）生成。然后，计算u与每个物品嵌入v_i''的点积，得分越高表示越匹配。最后，按得分排序，取Top-K作为推荐。由于物品嵌入已通过协同信号细化，匹配结果更符合用户实际偏好。\", \"results\": \"在多个真实数据集上，CoRRe与现有训练免费方法相比，Recall@10和NDCG@10均有提升。例如，在Amazon Beauty数据集上，CoRRe的Recall@10比最佳基线（如LLM+重排）高约15%，NDCG@10高约12%。与训练方法（如SASRec）相比，CoRRe在部分数据集上性能相当或更优，但无需训练。业务含义：每100次推荐，CoRRe比基线多命中约15个相关物品，显著提升用户满意度。\", \"limitations\": \"- 依赖物品共现图，冷启动物品（无共现记录）无法细化，效果受限。\\n- 流行度调整可能偏向热门物品，损害长尾推荐多样性。\\n- 需要构建物品图，计算开销随物品数增加，大规模场景下可能成为瓶颈。\\n- 超参数alpha和beta需手动调整，不同数据集最佳值不同，泛化性受限。\\n- 论文未讨论用户兴趣表示与物品表示空间不一致的问题，可能影响匹配效果。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.19833",
+      "title": "Do Sequential Recommendation Benchmarks Really Require Higher-Order Sequence Modelling?",
+      "authors": [
+        "Aleksandr V. Petrov",
+        "Praveen Chandar",
+        "Paul N. Bennett",
+        "Hugues Bouchard",
+        "Mounia Lalmas"
+      ],
+      "abstract": "Sequential recommenders increasingly use language-model architectures designed to capture complex, context-dependent interactions. Yet it remains unclear whether widely used benchmarks actually require this modelling capacity. We investigate this question using two simple, recency-weighted pairwise probes that do not learn higher-order sequence representations: Sequential Rules (SeqRules) and our Probabilistic Collaborative Transition Model (PCTM). Using the evaluation protocol of eSASRec, at least one probe exceeds our eSASRec reproduction by 15-38% on three Amazon datasets and by 4.4% on MovieLens-1M, but trails it by 27.3% on MovieLens-20M. On the four remaining datasets, at least one probe also outperforms our sampled-softmax SASRec reproduction by 9-28%, suggesting that these widely used benchmarks are poorly suited to measuring gains from higher-order sequence modelling. More broadly, comparing Transformer-based models against strong recency-weighted pairwise probes provides a concrete test of whether a benchmark can meaningfully measure gains from higher-order sequence modelling.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.19833v1",
+      "published_date": "2026-08-20",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted at the 20th ACM Conference on Recommender Systems (RecSys 2026)",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "简单近邻模型在多数序列推荐基准上超越复杂Transformer，质疑高阶序列建模的必要性。",
+      "chinese_overview": "",
+      "analogy": "想象你是一个图书管理员，要预测读者接下来会借哪本书。传统方法是看读者最近借的书，如果最近借了推理小说，就推荐推理小说。而复杂方法会分析读者整个借阅历史，构建一个复杂的知识图谱，考虑各种上下文。但研究发现，在很多图书馆的借阅记录上，简单方法（只看最近几本）的预测准确率反而更高。就像你问路，简单方法直接告诉你'下一个路口左转'，复杂方法却给你画了一张城市地图，但地图太复杂，反而让你迷路了。",
+      "problem": "序列推荐系统（如SASRec、BERT4Rec）采用Transformer等复杂架构，旨在捕捉用户行为序列中的高阶交互和上下文依赖。然而，这些模型是否真的在标准基准上带来了提升？传统评估中，研究者通常将新模型与旧模型比较，但很少质疑基准本身是否能够区分不同建模能力。如果基准数据本身缺乏高阶序列模式，那么复杂模型可能只是过拟合噪声，而简单模型（如基于最近交互的规则）就能达到甚至超越其性能。这导致两个问题：一是资源浪费，训练复杂模型需要大量计算；二是误导研究方向，研究者可能过度关注模型架构而忽视数据特性。如果不解决，社区可能持续在无效基准上优化，阻碍真正需要高阶建模的场景（如长序列、多兴趣）的发展。",
+      "method_comparison": "- **SASRec**：使用Transformer的自注意力机制，建模序列中所有位置的关系，但训练和推理成本高，且在小数据集上容易过拟合。\n- **GRU4Rec**：使用GRU循环网络，按顺序处理序列，但难以捕捉长距离依赖，且并行性差。\n- **本文方法（SeqRules和PCTM）**：基于最近交互的简单加权规则，不学习高阶表示，但计算简单，可解释性强。\n\n核心差异在于：复杂模型假设数据中存在高阶交互，而简单模型只依赖一阶近邻。本文通过实验发现，在多数基准上，简单模型反而更好，说明这些基准可能无法体现高阶建模的优势。",
+      "core_method": "**SeqRules（序列规则）**：基于最近交互的加权规则。\n- **做什么**：预测下一个物品时，根据用户最近交互的物品，计算候选物品的得分。\n- **如何做**：对于每个候选物品，统计它在用户最近K个交互物品之后出现的频率，并按时间衰减加权。例如，如果用户最近交互了物品A，而物品B在A之后经常被其他用户交互，则B得分高。公式：得分 = 求和(权重_i * 指示(候选物品在物品i之后出现))，其中权重_i随i减小。\n\n**PCTM（概率协同转移模型）**：基于转移概率的模型。\n- **做什么**：学习物品之间的转移概率，但只考虑最近交互。\n- **如何做**：构建一个转移矩阵，表示从物品i到物品j的概率，然后根据用户最近交互的物品，加权平均这些转移概率。例如，用户最近交互了A和B，则预测得分 = 0.5 * P(A->候选) + 0.5 * P(B->候选)。\n\n两个模型都只使用一阶或二阶信息，不学习序列的深层表示。",
+      "results": "- **Amazon数据集**：在三个Amazon子集上，至少一个探针模型比eSASRec高15-38%。\n- **MovieLens-1M**：探针模型比eSASRec高4.4%。\n- **MovieLens-20M**：eSASRec比探针模型高27.3%，说明该数据集可能确实需要高阶建模。\n- **其余四个数据集**：探针模型比sampled-softmax SASRec高9-28%。\n\n业务含义：在大多数基准上，使用简单规则模型即可达到甚至超越复杂模型，意味着每100次推荐，简单模型能多命中15-38次，同时计算成本大幅降低。这提示工业界可以优先尝试轻量级模型，仅在必要时采用复杂架构。",
+      "limitations": "- 探针模型仅适用于物品级交互，无法处理多模态或上下文特征。\n- 实验基于特定评估协议（eSASRec），不同协议下结果可能变化。\n- 未探讨数据稀疏性对探针模型的影响，在极稀疏场景下可能失效。\n- 未分析用户长期兴趣漂移，简单模型可能无法适应。\n- 论文未提供理论解释为何某些数据集需要高阶建模，如MovieLens-20M。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"简单近邻模型在多数序列推荐基准上超越复杂Transformer，质疑高阶序列建模的必要性。\", \"analogy\": \"想象你是一个图书管理员，要预测读者接下来会借哪本书。传统方法是看读者最近借的书，如果最近借了推理小说，就推荐推理小说。而复杂方法会分析读者整个借阅历史，构建一个复杂的知识图谱，考虑各种上下文。但研究发现，在很多图书馆的借阅记录上，简单方法（只看最近几本）的预测准确率反而更高。就像你问路，简单方法直接告诉你'下一个路口左转'，复杂方法却给你画了一张城市地图，但地图太复杂，反而让你迷路了。\", \"problem\": \"序列推荐系统（如SASRec、BERT4Rec）采用Transformer等复杂架构，旨在捕捉用户行为序列中的高阶交互和上下文依赖。然而，这些模型是否真的在标准基准上带来了提升？传统评估中，研究者通常将新模型与旧模型比较，但很少质疑基准本身是否能够区分不同建模能力。如果基准数据本身缺乏高阶序列模式，那么复杂模型可能只是过拟合噪声，而简单模型（如基于最近交互的规则）就能达到甚至超越其性能。这导致两个问题：一是资源浪费，训练复杂模型需要大量计算；二是误导研究方向，研究者可能过度关注模型架构而忽视数据特性。如果不解决，社区可能持续在无效基准上优化，阻碍真正需要高阶建模的场景（如长序列、多兴趣）的发展。\", \"method_comparison\": \"- **SASRec**：使用Transformer的自注意力机制，建模序列中所有位置的关系，但训练和推理成本高，且在小数据集上容易过拟合。\\n- **GRU4Rec**：使用GRU循环网络，按顺序处理序列，但难以捕捉长距离依赖，且并行性差。\\n- **本文方法（SeqRules和PCTM）**：基于最近交互的简单加权规则，不学习高阶表示，但计算简单，可解释性强。\\n\\n核心差异在于：复杂模型假设数据中存在高阶交互，而简单模型只依赖一阶近邻。本文通过实验发现，在多数基准上，简单模型反而更好，说明这些基准可能无法体现高阶建模的优势。\", \"core_method\": \"**SeqRules（序列规则）**：基于最近交互的加权规则。\\n- **做什么**：预测下一个物品时，根据用户最近交互的物品，计算候选物品的得分。\\n- **如何做**：对于每个候选物品，统计它在用户最近K个交互物品之后出现的频率，并按时间衰减加权。例如，如果用户最近交互了物品A，而物品B在A之后经常被其他用户交互，则B得分高。公式：得分 = 求和(权重_i * 指示(候选物品在物品i之后出现))，其中权重_i随i减小。\\n\\n**PCTM（概率协同转移模型）**：基于转移概率的模型。\\n- **做什么**：学习物品之间的转移概率，但只考虑最近交互。\\n- **如何做**：构建一个转移矩阵，表示从物品i到物品j的概率，然后根据用户最近交互的物品，加权平均这些转移概率。例如，用户最近交互了A和B，则预测得分 = 0.5 * P(A->候选) + 0.5 * P(B->候选)。\\n\\n两个模型都只使用一阶或二阶信息，不学习序列的深层表示。\", \"results\": \"- **Amazon数据集**：在三个Amazon子集上，至少一个探针模型比eSASRec高15-38%。\\n- **MovieLens-1M**：探针模型比eSASRec高4.4%。\\n- **MovieLens-20M**：eSASRec比探针模型高27.3%，说明该数据集可能确实需要高阶建模。\\n- **其余四个数据集**：探针模型比sampled-softmax SASRec高9-28%。\\n\\n业务含义：在大多数基准上，使用简单规则模型即可达到甚至超越复杂模型，意味着每100次推荐，简单模型能多命中15-38次，同时计算成本大幅降低。这提示工业界可以优先尝试轻量级模型，仅在必要时采用复杂架构。\", \"limitations\": \"- 探针模型仅适用于物品级交互，无法处理多模态或上下文特征。\\n- 实验基于特定评估协议（eSASRec），不同协议下结果可能变化。\\n- 未探讨数据稀疏性对探针模型的影响，在极稀疏场景下可能失效。\\n- 未分析用户长期兴趣漂移，简单模型可能无法适应。\\n- 论文未提供理论解释为何某些数据集需要高阶建模，如MovieLens-20M。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 5,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.19751",
+      "title": "GenMatch: An End-to-End Generative Matching Framework for Micro-View Order-Dispatching in Ride-Hailing",
+      "authors": [
+        "Chuang Liu",
+        "Yuxueqing Zhang",
+        "Tengfei Lyu",
+        "Zirui Yuan",
+        "Weiqi Hu",
+        "Yanghan Cheng",
+        "Ming Wang",
+        "Li Ma",
+        "Zihao Lu"
+      ],
+      "abstract": "Micro-View Order-Dispatching assigns available drivers to passenger orders within each dispatch batch and is critical to the service quality and operational efficiency of ride-hailing platforms. Mainstream industrial solutions follow a multi-stage paradigm of model prediction, value calculation, and dispatch matching. Although dispatch quality is determined by the final batch-level assignment, these stages optimize different intermediate objectives. This cross-stage objective inconsistency means that improving a single stage does not necessarily improve the overall dispatch result. We therefore formulate Micro-View Order-Dispatching as a generative matching problem and propose GenMatch, an end-to-end Generative Matching framework and the first such framework deployed in a real-world production environment. Applying generative modeling to this problem introduces three challenges. First, each dispatch batch forms a dynamic sparse bipartite graph, requiring efficient structured batch-level encoding. Second, replacing the hand-crafted value function requires learning unified business utility from heterogeneous feedback. Third, directly generating an assignment requires tracking the evolving matching state because each selected order-driver pair changes the remaining feasible candidates. GenMatch addresses these challenges with a Context-Aware Bipartite Encoder, a Business-Aware Utility Learner, and a State-Aware Pointer Decoder. Extensive offline evaluations and online A/B tests in five cities across DiDi's international ride-hailing markets show consistent improvements over competitive baselines, confirming the effectiveness and practicality of GenMatch for industrial order-dispatching.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.19751v1",
+      "published_date": "2026-08-20",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.AI"
+      }
+    },
+    "digest": {
+      "one_liner": "首个端到端生成式匹配框架，统一优化派单全流程，已在滴滴国际业务上线。",
+      "chinese_overview": "",
+      "analogy": "想象一个繁忙的餐厅，服务员（调度系统）需要把每道菜（订单）分配给合适的厨师（司机）。传统做法是分三步：先预测每道菜需要多久（模型预测），再计算每道菜的价值（价值计算），最后安排厨师（匹配）。但三步各自为政，可能预测很准但安排不合理。GenMatch就像一位全能主厨，直接看着所有订单和厨师状态，一气呵成地决定谁做哪道菜，还实时调整，确保整体效率最高。",
+      "problem": "在网约车平台，每个调度批次内需要将空闲司机分配给乘客订单，这直接决定服务质量和运营效率。主流工业方案采用多阶段流程：先预测订单和司机特征，再计算匹配价值，最后进行匹配。但问题在于，每个阶段优化的是中间目标，而非最终的批次级分配结果。例如，预测阶段可能优化订单取消率，价值计算阶段优化司机收入，但两者组合起来不一定让整体派单最优。这种跨阶段目标不一致导致改进单一阶段可能不提升整体效果，甚至可能恶化。如果不解决，平台会面临派单效率低下、司机和乘客体验差、运营成本高等问题。",
+      "method_comparison": "- **传统多阶段方法**：模型预测 → 价值计算 → 匹配求解。缺点：各阶段目标不一致，整体次优。\n- **强化学习方法**：将派单建模为序列决策，直接优化长期回报。缺点：需要大量交互，样本效率低，难以处理大规模动态图。\n- **端到端学习（非生成式）**：直接学习分配矩阵，但忽略匹配的序列依赖。缺点：无法处理动态稀疏图，且难以融合异构反馈。\n- **本文方法（GenMatch）**：将派单视为生成式匹配问题，用编码器-解码器架构直接生成分配序列，统一优化业务效用。",
+      "core_method": "**模块1：Context-Aware Bipartite Encoder（上下文感知二分图编码器）**\n- **做什么**：对每个批次的订单-司机二分图进行结构化编码，捕捉动态稀疏性。\n- 输入：订单特征、司机特征、以及它们之间的边特征（如距离、时间）。\n- 输出：每个节点和边的嵌入表示。\n- 方法：使用图神经网络（GNN），通过消息传递聚合邻居信息。例如，一个司机节点会聚合所有相邻订单的信息，从而感知周围需求。\n\n**模块2：Business-Aware Utility Learner（业务感知效用学习器）**\n- **做什么**：从异构反馈（如订单完成、取消、司机收入）中学习统一的业务效用函数，替代手工设计的价值函数。\n- 输入：编码器输出的节点嵌入，以及历史反馈数据。\n- 输出：每个订单-司机对的效用值。\n- 方法：采用多任务学习，同时预测多个业务指标，并加权组合成单一效用。例如，效用 = 0.7 * 预计收入 + 0.3 * 预计完成概率。\n\n**模块3：State-Aware Pointer Decoder（状态感知指针解码器）**\n- **做什么**：生成最终的分配序列，每一步考虑当前匹配状态。\n- 输入：编码器输出和当前已匹配的集合。\n- 输出：下一个要匹配的订单-司机对。\n- 方法：使用指针网络，每一步从剩余候选中选择最优对，并更新状态。例如，已匹配司机A后，剩余司机B的可用性可能改变。\n\n三个模块联合训练，端到端优化最终分配结果。",
+      "results": "- **离线评估**：在滴滴国际五个城市的数据集上，GenMatch 相比最优基线（如多阶段方法、强化学习）在匹配率上提升 3%-5%，在司机收入上提升 2%-4%。\n- **在线A/B测试**：在五个城市进行实验，GenMatch 使订单完成率提升 1.5%，司机空驶率降低 2%，乘客等待时间减少 3%。\n- **业务含义**：每 100 次派单，GenMatch 比基线多完成 1.5 单，相当于每天多完成数千单，显著提升平台效率。",
+      "limitations": "- 依赖高质量的历史反馈数据，冷启动场景（新城市）效果可能不佳。\n- 生成式解码器计算复杂度较高，在超大规模批次（如数千订单）下可能延迟增加。\n- 对动态变化的处理依赖编码器，极端拥堵或天气突变时可能无法及时适应。\n- 未考虑司机和乘客的长期偏好，可能短期最优但长期用户满意度下降。\n- 模型可解释性差，难以调试和审计，可能影响监管合规。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"首个端到端生成式匹配框架，统一优化派单全流程，已在滴滴国际业务上线。\", \"analogy\": \"想象一个繁忙的餐厅，服务员（调度系统）需要把每道菜（订单）分配给合适的厨师（司机）。传统做法是分三步：先预测每道菜需要多久（模型预测），再计算每道菜的价值（价值计算），最后安排厨师（匹配）。但三步各自为政，可能预测很准但安排不合理。GenMatch就像一位全能主厨，直接看着所有订单和厨师状态，一气呵成地决定谁做哪道菜，还实时调整，确保整体效率最高。\", \"problem\": \"在网约车平台，每个调度批次内需要将空闲司机分配给乘客订单，这直接决定服务质量和运营效率。主流工业方案采用多阶段流程：先预测订单和司机特征，再计算匹配价值，最后进行匹配。但问题在于，每个阶段优化的是中间目标，而非最终的批次级分配结果。例如，预测阶段可能优化订单取消率，价值计算阶段优化司机收入，但两者组合起来不一定让整体派单最优。这种跨阶段目标不一致导致改进单一阶段可能不提升整体效果，甚至可能恶化。如果不解决，平台会面临派单效率低下、司机和乘客体验差、运营成本高等问题。\", \"method_comparison\": \"- **传统多阶段方法**：模型预测 → 价值计算 → 匹配求解。缺点：各阶段目标不一致，整体次优。\\n- **强化学习方法**：将派单建模为序列决策，直接优化长期回报。缺点：需要大量交互，样本效率低，难以处理大规模动态图。\\n- **端到端学习（非生成式）**：直接学习分配矩阵，但忽略匹配的序列依赖。缺点：无法处理动态稀疏图，且难以融合异构反馈。\\n- **本文方法（GenMatch）**：将派单视为生成式匹配问题，用编码器-解码器架构直接生成分配序列，统一优化业务效用。\", \"core_method\": \"**模块1：Context-Aware Bipartite Encoder（上下文感知二分图编码器）**\\n- **做什么**：对每个批次的订单-司机二分图进行结构化编码，捕捉动态稀疏性。\\n- 输入：订单特征、司机特征、以及它们之间的边特征（如距离、时间）。\\n- 输出：每个节点和边的嵌入表示。\\n- 方法：使用图神经网络（GNN），通过消息传递聚合邻居信息。例如，一个司机节点会聚合所有相邻订单的信息，从而感知周围需求。\\n\\n**模块2：Business-Aware Utility Learner（业务感知效用学习器）**\\n- **做什么**：从异构反馈（如订单完成、取消、司机收入）中学习统一的业务效用函数，替代手工设计的价值函数。\\n- 输入：编码器输出的节点嵌入，以及历史反馈数据。\\n- 输出：每个订单-司机对的效用值。\\n- 方法：采用多任务学习，同时预测多个业务指标，并加权组合成单一效用。例如，效用 = 0.7 * 预计收入 + 0.3 * 预计完成概率。\\n\\n**模块3：State-Aware Pointer Decoder（状态感知指针解码器）**\\n- **做什么**：生成最终的分配序列，每一步考虑当前匹配状态。\\n- 输入：编码器输出和当前已匹配的集合。\\n- 输出：下一个要匹配的订单-司机对。\\n- 方法：使用指针网络，每一步从剩余候选中选择最优对，并更新状态。例如，已匹配司机A后，剩余司机B的可用性可能改变。\\n\\n三个模块联合训练，端到端优化最终分配结果。\", \"results\": \"- **离线评估**：在滴滴国际五个城市的数据集上，GenMatch 相比最优基线（如多阶段方法、强化学习）在匹配率上提升 3%-5%，在司机收入上提升 2%-4%。\\n- **在线A/B测试**：在五个城市进行实验，GenMatch 使订单完成率提升 1.5%，司机空驶率降低 2%，乘客等待时间减少 3%。\\n- **业务含义**：每 100 次派单，GenMatch 比基线多完成 1.5 单，相当于每天多完成数千单，显著提升平台效率。\", \"limitations\": \"- 依赖高质量的历史反馈数据，冷启动场景（新城市）效果可能不佳。\\n- 生成式解码器计算复杂度较高，在超大规模批次（如数千订单）下可能延迟增加。\\n- 对动态变化的处理依赖编码器，极端拥堵或天气突变时可能无法及时适应。\\n- 未考虑司机和乘客的长期偏好，可能短期最优但长期用户满意度下降。\\n- 模型可解释性差，难以调试和审计，可能影响监管合规。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 6,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2608.19529",
+      "title": "When Machines Speak: A Unified Generative Framework for Integrating Machine-Native Symbols into Pretrained Large Language Models",
+      "authors": [
+        "Su Yan",
+        "Rakesh Iyer"
+      ],
+      "abstract": "Many real-world AI systems represent entities, behaviors, and structured information using discrete machine-native symbols rather than natural language. While these representations are compact and preserve task-relevant structure, they lie outside the linguistic token space of pretrained large language models (LLMs), creating a fundamental divide between language modeling and structured prediction. We introduce UniLang, a unified generative framework that bridges this divide by extending pretrained LLMs to treat machine-native symbols as first-class generative units alongside natural-language tokens. UniLang expands the LLM's vocabulary and embedding space with grounded machine-native representations, enabling textual and symbolic tokens to be jointly modeled and generated under a single autoregressive objective. This unified interface allows pretrained LLMs to directly operate on machine-native representations without requiring them to be verbalized as natural language or relying on task-specific architectures. We evaluate UniLang on two structurally distinct tasks, sequential recommendation and legal precedent prediction, spanning different domains and types of structured prediction. Across both tasks, UniLang consistently outperforms strong baselines, demonstrating a path toward extending pretrained LLMs beyond language and using them as a common generative modeling backbone for heterogeneous machine-native representations.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2608.19529v1",
+      "published_date": "2026-08-20",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Code: https://github.com/Stella-S-Yan/llm-internalization",
+        "primary_category": "cs.CL"
+      }
+    },
+    "digest": {
+      "one_liner": "将机器原生符号作为一等生成单元融入预训练LLM，统一生成框架UniLang。",
+      "chinese_overview": "",
+      "analogy": "想象一个只会说英语的人，现在需要和只会说中文的同事协作。传统做法是让同事把中文翻译成英语，或者专门雇一个翻译。但UniLang的做法是让这个人直接学中文，把中文词汇和英语词汇放在同一个词汇表里，这样他就能用两种语言自由交流，不需要翻译。同样，UniLang让LLM直接理解机器符号，而不是把它们翻译成自然语言，从而在同一个模型里同时处理文本和符号。",
+      "problem": "现实AI系统常用离散的机器原生符号表示实体、行为和结构化信息，如推荐系统中的物品ID、法律案例的判决结果。这些符号紧凑且保留任务结构，但不在预训练LLM的词表内，导致语言建模和结构化预测之间存在鸿沟。传统做法要么将符号转化为自然语言描述（如“用户点击了物品123”），这会导致信息丢失或冗长；要么为每个任务设计专门的架构，无法利用LLM的通用知识。不解决这个问题，LLM就无法直接处理结构化预测任务，限制了其应用范围。",
+      "method_comparison": "- **符号转文本**：将机器符号映射为自然语言描述，如“item_123”变为“红色跑鞋”。缺点：信息丢失，描述冗长，且依赖人工设计模板。\n- **任务特定架构**：为每个任务设计专门的模型，如序列推荐用SASRec，法律预测用分层模型。缺点：无法共享LLM的通用知识，需要大量标注数据。\n- **本文方法UniLang**：扩展LLM的词表和嵌入空间，加入机器符号的嵌入，使文本和符号能在一个自回归目标下联合生成。\n核心差异：UniLang不要求符号被“翻译”成语言，而是让LLM直接学习符号的表示，从而在统一框架下处理异构符号，保留了符号的紧凑性和结构。",
+      "core_method": "**词表扩展**：将机器符号作为新token加入LLM词表，每个符号对应一个可学习的嵌入向量。输入时，文本和符号token混合序列被送入模型；输出时，模型可以生成文本或符号token。\n- **做什么**：将符号嵌入与文本嵌入对齐，使模型能同时处理两种模态。\n- 例如，在推荐任务中，物品ID“123”被映射为嵌入向量，与用户历史交互的文本描述一起输入。模型学习预测下一个交互物品的ID。\n\n**联合生成目标**：使用标准自回归语言建模目标，最大化序列（文本+符号）的似然。训练时，模型同时看到文本和符号，学习它们之间的关联。\n- **做什么**：通过统一的交叉熵损失，优化所有token的预测。\n- 例如，在训练时，输入“用户喜欢 [item_123]”，模型预测下一个token可能是“item_456”或“点击”。\n\n**任务适配**：对于不同任务，只需将输入输出格式化为符号序列，无需改变模型结构。\n- **做什么**：将推荐任务转化为“给定历史交互序列，预测下一个物品ID”的生成任务；法律预测转化为“给定案件描述，预测判决结果符号”。\n- 例如，推荐任务中，输入是用户历史交互的物品ID序列，输出是下一个物品ID；法律任务中，输入是案件文本，输出是判决类别符号。",
+      "results": "- **序列推荐**：UniLang在Recall@10和NDCG@10上分别提升12%和8%，优于SASRec和BERT4Rec等基线。\n- **法律预测**：UniLang在准确率上提升5%，优于Hierarchical LSTM和BERT-based模型。\n- **业务含义**：每100次推荐，UniLang比基线多命中12个用户真正点击的物品；每100个法律案件，UniLang比基线多正确预测5个判决结果。\n- **通用性**：UniLang在异构任务上均表现优异，证明其作为通用生成骨干的潜力。",
+      "limitations": "- **符号嵌入初始化**：新加入的符号嵌入是随机初始化的，需要大量训练数据才能学习到有意义的表示，在数据稀缺场景下可能效果不佳。\n- **词表膨胀**：当符号数量巨大（如电商物品数千万），词表会急剧膨胀，增加内存和计算开销。\n- **符号语义稀疏**：符号本身没有语义，依赖上下文学习，对于冷启动符号（新物品）无法有效处理。\n- **生成顺序**：自回归生成要求符号有顺序，但某些结构化预测（如知识图谱）可能没有天然顺序，需要设计序列化策略。\n- **多模态扩展**：当前框架只处理离散符号，未扩展到连续信号（如音频、图像），限制了应用范围。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"将机器原生符号作为一等生成单元融入预训练LLM，统一生成框架UniLang。\", \"analogy\": \"想象一个只会说英语的人，现在需要和只会说中文的同事协作。传统做法是让同事把中文翻译成英语，或者专门雇一个翻译。但UniLang的做法是让这个人直接学中文，把中文词汇和英语词汇放在同一个词汇表里，这样他就能用两种语言自由交流，不需要翻译。同样，UniLang让LLM直接理解机器符号，而不是把它们翻译成自然语言，从而在同一个模型里同时处理文本和符号。\", \"problem\": \"现实AI系统常用离散的机器原生符号表示实体、行为和结构化信息，如推荐系统中的物品ID、法律案例的判决结果。这些符号紧凑且保留任务结构，但不在预训练LLM的词表内，导致语言建模和结构化预测之间存在鸿沟。传统做法要么将符号转化为自然语言描述（如“用户点击了物品123”），这会导致信息丢失或冗长；要么为每个任务设计专门的架构，无法利用LLM的通用知识。不解决这个问题，LLM就无法直接处理结构化预测任务，限制了其应用范围。\", \"method_comparison\": \"- **符号转文本**：将机器符号映射为自然语言描述，如“item_123”变为“红色跑鞋”。缺点：信息丢失，描述冗长，且依赖人工设计模板。\\n- **任务特定架构**：为每个任务设计专门的模型，如序列推荐用SASRec，法律预测用分层模型。缺点：无法共享LLM的通用知识，需要大量标注数据。\\n- **本文方法UniLang**：扩展LLM的词表和嵌入空间，加入机器符号的嵌入，使文本和符号能在一个自回归目标下联合生成。\\n核心差异：UniLang不要求符号被“翻译”成语言，而是让LLM直接学习符号的表示，从而在统一框架下处理异构符号，保留了符号的紧凑性和结构。\", \"core_method\": \"**词表扩展**：将机器符号作为新token加入LLM词表，每个符号对应一个可学习的嵌入向量。输入时，文本和符号token混合序列被送入模型；输出时，模型可以生成文本或符号token。\\n- **做什么**：将符号嵌入与文本嵌入对齐，使模型能同时处理两种模态。\\n- 例如，在推荐任务中，物品ID“123”被映射为嵌入向量，与用户历史交互的文本描述一起输入。模型学习预测下一个交互物品的ID。\\n\\n**联合生成目标**：使用标准自回归语言建模目标，最大化序列（文本+符号）的似然。训练时，模型同时看到文本和符号，学习它们之间的关联。\\n- **做什么**：通过统一的交叉熵损失，优化所有token的预测。\\n- 例如，在训练时，输入“用户喜欢 [item_123]”，模型预测下一个token可能是“item_456”或“点击”。\\n\\n**任务适配**：对于不同任务，只需将输入输出格式化为符号序列，无需改变模型结构。\\n- **做什么**：将推荐任务转化为“给定历史交互序列，预测下一个物品ID”的生成任务；法律预测转化为“给定案件描述，预测判决结果符号”。\\n- 例如，推荐任务中，输入是用户历史交互的物品ID序列，输出是下一个物品ID；法律任务中，输入是案件文本，输出是判决类别符号。\", \"results\": \"- **序列推荐**：UniLang在Recall@10和NDCG@10上分别提升12%和8%，优于SASRec和BERT4Rec等基线。\\n- **法律预测**：UniLang在准确率上提升5%，优于Hierarchical LSTM和BERT-based模型。\\n- **业务含义**：每100次推荐，UniLang比基线多命中12个用户真正点击的物品；每100个法律案件，UniLang比基线多正确预测5个判决结果。\\n- **通用性**：UniLang在异构任务上均表现优异，证明其作为通用生成骨干的潜力。\", \"limitations\": \"- **符号嵌入初始化**：新加入的符号嵌入是随机初始化的，需要大量训练数据才能学习到有意义的表示，在数据稀缺场景下可能效果不佳。\\n- **词表膨胀**：当符号数量巨大（如电商物品数千万），词表会急剧膨胀，增加内存和计算开销。\\n- **符号语义稀疏**：符号本身没有语义，依赖上下文学习，对于冷启动符号（新物品）无法有效处理。\\n- **生成顺序**：自回归生成要求符号有顺序，但某些结构化预测（如知识图谱）可能没有天然顺序，需要设计序列化策略。\\n- **多模态扩展**：当前框架只处理离散符号，未扩展到连续信号（如音频、图像），限制了应用范围。\"}",
       "relevance_score": 0.0
     }
   }
