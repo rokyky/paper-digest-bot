@@ -88,7 +88,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.19665",
       "title": "Training-Free LLM-Based Recommendation with Post-LLM Item Refinement Using Collaborative Signals",
