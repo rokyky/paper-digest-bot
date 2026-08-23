@@ -176,7 +176,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.19751",
       "title": "GenMatch: An End-to-End Generative Matching Framework for Micro-View Order-Dispatching in Ride-Hailing",
