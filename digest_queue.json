@@ -46,7 +46,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.19735",
       "title": "RecPFN: Prior-Fitted Networks for In-Context-Based Recommendations",
