@@ -134,7 +134,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.19833",
       "title": "Do Sequential Recommendation Benchmarks Really Require Higher-Order Sequence Modelling?",
