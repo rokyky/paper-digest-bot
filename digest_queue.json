@@ -184,7 +184,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.20707",
       "title": "Towards Faithful Simulation of Human Shopping Behavior",
