@@ -49,7 +49,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.20611",
       "title": "Difficulty-Aware Semantic-ID Optimization for Generative Recommendation",
