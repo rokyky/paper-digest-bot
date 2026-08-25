@@ -319,7 +319,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.20886",
       "title": "EviRank: Structured Relevance Evidence for Multimodal Image Re-ranking",
