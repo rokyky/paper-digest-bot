@@ -142,7 +142,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.20801",
       "title": "Profiling What Matters: Context-Aware Item Profiles from Large-Scale Metadata for LLM Recommenders",
