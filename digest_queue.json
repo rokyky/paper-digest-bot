@@ -233,7 +233,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.20844",
       "title": "TRACE: Agentic Catalog Enrichment with Multi-source Evidence Grounding",
