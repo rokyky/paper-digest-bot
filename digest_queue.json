@@ -47,7 +47,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.22979",
       "title": "SA-RSQ: A Versatile Sparse Representation Framework for Multi-modal Recommender Systems",
