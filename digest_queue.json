@@ -134,7 +134,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.23484",
       "title": "Multi-Modal Semantic Expansion with Constrained LLM Reranking for Conversational Music Recommendation",
