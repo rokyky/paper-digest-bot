@@ -258,7 +258,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.23356",
       "title": "Hierarchical Exponential-Gaussian Mixtures for Watch-Time Distribution Prediction",
