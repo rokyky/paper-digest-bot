@@ -92,7 +92,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.22973",
       "title": "Cascading Relevance-driven Recommendation Network for CTR Prediction in Trigger-Introduced Recommendation",
