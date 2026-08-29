@@ -166,7 +166,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.27287",
       "title": "Astar: Learning to Propose Evolution Directions for Self-Evolving Industrial AI Systems",
