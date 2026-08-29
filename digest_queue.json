@@ -218,7 +218,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.27017",
       "title": "ProRetrieval: Learning to Orchestrate Hybrid Search via Executable Program Synthesis",
