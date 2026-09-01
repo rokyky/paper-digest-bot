@@ -308,7 +308,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.27950",
       "title": "Information-Guided Selective Modality-Interest Alignment for Multimodal Recommendation",
