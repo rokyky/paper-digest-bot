@@ -225,7 +225,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.28503",
       "title": "SG-UMP: Sequence-Guided Universal Multimodal Prioritization Calculation Framework",
