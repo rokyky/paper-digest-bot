@@ -139,7 +139,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.27912",
       "title": "ITER: Interaction-Aware Retrieval for Agentic Search",
