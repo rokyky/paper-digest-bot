@@ -265,7 +265,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2608.28359",
       "title": "Every Article Deserves a Video: Contextual Video Matching for Digital Publishers",
