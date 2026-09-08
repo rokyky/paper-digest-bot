@@ -42,7 +42,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.05063",
       "title": "Beyond Co-purchase Relation: Evolution of Complementary Recommendations at Allegro",
