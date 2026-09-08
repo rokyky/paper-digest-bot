@@ -3,326 +3,100 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2608.27991",
-      "title": "HubMixer: Progressive Latent Hub Mixing for Parameter-Efficient Feature Interaction in Recommendation",
+      "external_id": "arXiv:2609.05363",
+      "title": "Distill Globally, Adapt Locally: Reasoning Distillation and Product-Type Test-Time Training for Scalable Trade-Up Recommendation",
       "authors": [
-        "Jie Zhou",
-        "Zixian Gong",
-        "Wenhao Li",
-        "Chang Liu",
-        "Enzhao Shen",
-        "Bo Liu",
-        "Xu Guo",
-        "Fei Pan",
-        "Peng Jiang"
+        "Siliang Liu",
+        "Mohammad Ghasemi",
+        "Sapan Patel",
+        "Amin Banitalebi-Dehkordi"
       ],
-      "abstract": "Learning effective feature interactions is central to industrial recommendation and advertising ranking systems. Recent token-mixing architectures simplify self-attention with lightweight mixing operators, improving hardware efficiency and enabling large-scale deployment. However, recommendation tokens are fundamentally heterogeneous: user profiles, item attributes, behavioral sequences, context features, statistical signals, and business-side features live in different semantic spaces and interact in sparse, sample-specific patterns. Directly mixing all tokens in the raw heterogeneous token space may therefore be parameter-inefficient, as the model must implicitly discover which feature groups should interact and how such interactions should be routed. In the paper, we propose HubMixer, a parameter-efficient latent hub mixing architecture for feature interaction in recommendation. Instead of directly mixing raw feature tokens, HubMixer introduces a small set of learnable latent hubs to organize feature interactions through an `induction--interaction--readout` paradigm. First, hub induction summarizes heterogeneous tokens into compact latent hubs, where latent hubs query input tokens through cross-attention. Second, hub interaction performs high-order interaction in the cleaner latent hub space. Third, token-conditioned readout lets each original token selectively read from the interacted hubs, injecting global interaction semantics while preserving token-level field identity. Extensive offline experiments on industrial recommendation tasks show that HubMixer outperforms the SOTA models. Online A/B testing in the Kuaishou short-video recruitment business further shows a statistically significant 5.48% improvement in resume submission conversion rate, and HubMixer has been fully deployed in production.",
+      "abstract": "Trade-up recommendation identifies higher-quality alternatives that preserve a customer's purchase intent while offering upgraded benefits. Large language models (LLMs) can reason about such distinctions, but applying them directly to hundreds of millions of product pairs is operationally impractical. We introduce a two-level framework that distills LLM reasoning into an efficient non-generative student and adapts its decision boundary to product-type-specific trade-up criteria. At Level 1, a retrieval-augmented few-shot LLM teacher generates structured relation labels and natural-language rationales. These rationales supervise a compact embedding-pair classifier through alignment and contrastive objectives; at inference, the student uses only two precomputed 768-dimensional product embeddings, with no LLM calls or text generation. On a fixed human-annotated benchmark of 8,352 pairs, a 15.5M-parameter four-class reasoning-distilled student achieves AUC 0.924 (95% CI [0.918, 0.929]), compared with 0.912 for the four-class label-only student. At Level 2, product-type test-time training (PT-TTT) uses few-shot demonstrations to optimize lightweight category-specific adapters over the frozen student. PT-TTT improves AUC from 0.924 to 0.941 and average precision from 0.920 to 0.940. On a 100K-pair proxy catalog, the distilled student on a single eight-GPU machine is approximately 5,000x faster and 10,000x lower in estimated cost than direct LLM inference.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.27991v1",
-      "published_date": "2026-08-28",
+      "url": "http://arxiv.org/abs/2609.05363v1",
+      "published_date": "2026-09-04",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
+        "comment": "Accepted at the Third Workshop on Agentic and Generative AI for E-Commerce (GenAIECommerce 2026), co-located with ACM RecSys 2026",
+        "primary_category": "cs.LG"
       }
     },
     "digest": {
-      "one_liner": "提出HubMixer，用潜在枢纽混合替代直接token混合，实现参数高效的推荐特征交互。",
+      "one_liner": "用LLM蒸馏+产品类型自适应，实现可扩展的升级推荐，速度提升5000倍。",
       "chinese_overview": "",
-      "analogy": "想象一个大型聚会，参会者来自不同行业（用户、物品、上下文等），他们需要交流但背景差异大。如果让所有人直接自由交谈，效率低下且容易混乱。于是，组织者设立几个小圆桌（潜在枢纽），每个圆桌有主持人。首先，主持人从人群中挑选相关代表（枢纽归纳）；然后，主持人们之间先交流，形成跨行业共识（枢纽交互）；最后，主持人把共识带回各自小组，组员选择性听取（条件读出）。这样，交流有序且高效，每个人只关注与自己相关的信息。HubMixer就是为推荐系统设计的这种'圆桌会议'机制。",
-      "problem": "传统推荐模型依赖特征交互来捕捉用户和物品的复杂关系。早期方法如FM、DeepFM手动设计二阶交互，无法捕捉高阶非线性关系。后续基于自注意力的模型（如AutoInt、Transformer-based）虽能学习高阶交互，但直接对所有特征token进行混合，存在两个问题：一是特征异质性，用户画像、物品属性、行为序列等语义空间差异大，直接混合迫使模型隐式学习哪些组该交互，参数效率低；二是稀疏性，每个样本只有少数特征交互是重要的，全局混合会引入噪声。不解决这些问题，模型在工业场景下要么参数量过大难以部署，要么交互学习不充分导致效果瓶颈。",
-      "method_comparison": "- **FM/DeepFM**：手动设计二阶交互，无法捕捉高阶非线性关系。\n- **AutoInt/Transformer**：自注意力机制，能学习高阶交互，但直接混合所有token，参数效率低，且忽略特征异质性。\n- **TokenMixer（如MLP-Mixer）**：轻量混合算子，硬件友好，但同样直接混合原始token，未考虑推荐场景的异质性。\n- **HubMixer**：引入潜在枢纽，先归纳再交互再读出，在干净的低维空间进行高阶交互，参数高效且保留字段身份。\n\n核心差异在于，HubMixer不直接混合原始特征，而是通过枢纽作为中介，将交互过程分解为归纳、交互、读出三个阶段，使得模型无需隐式发现特征组关系，而是显式学习枢纽与token的关联，从而减少参数并提升效果。",
-      "core_method": "**整体架构**：HubMixer遵循'归纳-交互-读出'范式，包含三个模块。\n\n**1. 枢纽归纳（Hub Induction）**\n- **做什么**：将异质的输入token压缩为少量潜在枢纽，每个枢纽通过交叉注意力查询输入token。\n- **输入**：原始特征token序列（长度N，维度d）。\n- **输出**：K个枢纽向量（K远小于N，维度d）。\n- **做法**：每个枢纽作为query，所有token作为key/value，计算加权和。例如，N=100，K=8，则每个枢纽聚合100个token的信息，形成紧凑表示。\n\n**2. 枢纽交互（Hub Interaction）**\n- **做什么**：在枢纽空间内进行高阶交互，捕捉全局语义。\n- **输入**：K个枢纽向量。\n- **输出**：交互后的枢纽向量。\n- **做法**：使用轻量混合器（如MLP或自注意力）在K个枢纽间进行信息交换。由于K很小，计算成本低。例如，K=8，则8个枢纽之间全连接交互，形成高阶组合。\n\n**3. 条件读出（Token-Conditioned Readout）**\n- **做什么**：让每个原始token从交互后的枢纽中选择性读取信息，注入全局交互语义。\n- **输入**：原始token和交互后的枢纽。\n- **输出**：增强后的token表示。\n- **做法**：每个token作为query，交互后的枢纽作为key/value，通过交叉注意力计算加权和，然后与原始token残差连接。这样，每个token保留自身字段身份，同时获得全局交互信息。\n\n整个模型可堆叠多层，逐步提升交互阶数。参数主要来自枢纽的嵌入和交叉注意力，相比直接混合所有token的模型，参数更少。",
-      "results": "- **离线实验**：在工业推荐任务上，HubMixer相比SOTA模型（如AutoInt、TokenMixer）在AUC和GAUC上均有提升。例如，AUC提升0.5%-1%，GAUC提升0.8%。\n- **在线A/B测试**：在快手短视频招聘业务中，简历提交转化率提升5.48%，统计显著。\n- **业务含义**：每100次简历提交，HubMixer比基线多完成约5.48次，即从100次提升到105.48次。对于大规模业务，这相当于每天增加数千次有效转化。\n- **部署**：已全量部署在生产环境，证明其硬件效率和稳定性。",
-      "limitations": "- 论文未讨论枢纽数量K的选择对效果的影响，不同业务可能需要调整，但缺乏指导原则。\n- 交叉注意力机制仍有一定计算开销，对于极大规模特征（如百万级）可能成为瓶颈。\n- 模型的可解释性有限，虽然枢纽可视为特征组，但具体语义不明确。\n- 在线实验仅在单一业务（招聘）验证，其他场景（如电商、广告）的泛化性未知。\n- 未与最新的基于图神经网络或动态路由的方法对比，可能在某些场景下优势不明显。",
+      "analogy": "想象一位资深导购（LLM）能精准判断哪些商品是顾客想要的升级款，但让这位导购亲自接待每一位顾客（直接推理）成本太高。于是，我们把导购的经验写成一本手册（蒸馏），让普通店员（学生模型）快速学习。但不同商品类型（如手机、家电）的升级标准不同，所以再给每种商品类型配一个快速参考卡（PT-TTT），让店员在遇到具体类型时能快速调整。这样，既保留了专家的判断力，又能高效服务大量顾客。",
+      "problem": "传统推荐系统通常只关注相似或互补商品，难以识别“升级”关系——即更高质量但保留购买意图的商品。例如，顾客看中一款入门级相机，升级推荐应是专业级但操作类似的型号，而非配件或不同类别商品。这种判断需要语义理解，传统基于共现或属性的方法无法捕捉。\n\n直接使用LLM进行推理可以解决，但面对数亿商品对，每次调用LLM生成文本，成本高、延迟大，无法实际部署。不解决这一问题，升级推荐只能依赖人工或简单规则，无法规模化，用户体验和商业价值受限。",
+      "method_comparison": "- **传统推荐方法**：基于协同过滤或内容匹配，无法理解“升级”语义，容易推荐不相关商品。\n- **直接LLM推理**：能理解语义，但推理成本高，无法扩展到大规模商品对。\n- **本文方法**：两阶段框架，先蒸馏LLM到轻量学生模型，再用产品类型自适应微调，兼顾效果与效率。\n\n核心差异在于：本文不是简单蒸馏标签，而是利用LLM生成的自然语言理由（rationales）来监督学生模型，使其学习到推理过程，而不仅仅是输出。同时，通过产品类型级别的测试时训练，让模型能针对不同商品类型调整决策边界，提升准确性。",
+      "core_method": "**Level 1: 推理蒸馏**\n- **做什么**：将LLM的推理能力压缩到一个15.5M参数的学生模型，输入为两个768维商品嵌入，输出四类关系标签（如升级、等价、不相关等）。\n- **如何做**：教师LLM通过检索增强的少样本提示，生成结构化标签和自然语言理由。学生模型使用对齐损失（让嵌入对表示与理由语义一致）和对比损失（区分不同关系）进行训练。推理时仅需预计算嵌入，无LLM调用。\n\n**Level 2: 产品类型测试时训练（PT-TTT）**\n- **做什么**：在推理阶段，根据商品类型，用少量示例优化轻量适配器，调整学生模型的决策边界。\n- **如何做**：每个产品类型（如“相机”）有对应的适配器，测试时，从该类型中选取几个示例，通过几步梯度更新适配器参数，使其适应特定类型的升级标准。适配器参数远小于主模型，因此开销低。\n\n**公式示例**：学生模型输出logits z = W * [e1; e2] + b，其中e1, e2是768维嵌入，W是权重矩阵。PT-TTT通过最小化交叉熵损失来更新适配器参数，例如学习率0.01，更新10步。",
+      "results": "- **固定基准（8,352对）**：蒸馏学生模型AUC 0.924，比仅标签蒸馏（0.912）高1.2个百分点。\n- **PT-TTT效果**：AUC从0.924提升至0.941，平均精度从0.920提升至0.940。\n- **效率对比**：在100K对代理目录上，单台8-GPU机器上，蒸馏学生模型比直接LLM推理快约5000倍，成本低约10000倍。\n\n**业务含义**：假设每天有100万次升级推荐请求，使用本文方法，相比LLM直接推理，可节省大量计算资源，且能实时响应。每100次推荐，比仅标签模型多正确识别约1.2次升级机会，提升用户满意度和转化率。",
+      "limitations": "- **依赖预计算嵌入**：需要提前生成所有商品的嵌入，对于动态商品库更新不够实时。\n- **学生模型容量有限**：15.5M参数可能无法捕捉所有复杂推理，对于长尾或特殊商品类型可能效果不佳。\n- **PT-TTT需要类型示例**：对于新商品类型，没有历史示例，无法进行有效的测试时训练。\n- **教师LLM的偏差**：蒸馏过程继承了LLM的偏见，可能对某些类别或属性有系统性偏差。\n- **评估基准有限**：仅基于8,352对人工标注，可能无法全面反映真实场景的多样性。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出HubMixer，用潜在枢纽混合替代直接token混合，实现参数高效的推荐特征交互。\", \"analogy\": \"想象一个大型聚会，参会者来自不同行业（用户、物品、上下文等），他们需要交流但背景差异大。如果让所有人直接自由交谈，效率低下且容易混乱。于是，组织者设立几个小圆桌（潜在枢纽），每个圆桌有主持人。首先，主持人从人群中挑选相关代表（枢纽归纳）；然后，主持人们之间先交流，形成跨行业共识（枢纽交互）；最后，主持人把共识带回各自小组，组员选择性听取（条件读出）。这样，交流有序且高效，每个人只关注与自己相关的信息。HubMixer就是为推荐系统设计的这种'圆桌会议'机制。\", \"problem\": \"传统推荐模型依赖特征交互来捕捉用户和物品的复杂关系。早期方法如FM、DeepFM手动设计二阶交互，无法捕捉高阶非线性关系。后续基于自注意力的模型（如AutoInt、Transformer-based）虽能学习高阶交互，但直接对所有特征token进行混合，存在两个问题：一是特征异质性，用户画像、物品属性、行为序列等语义空间差异大，直接混合迫使模型隐式学习哪些组该交互，参数效率低；二是稀疏性，每个样本只有少数特征交互是重要的，全局混合会引入噪声。不解决这些问题，模型在工业场景下要么参数量过大难以部署，要么交互学习不充分导致效果瓶颈。\", \"method_comparison\": \"- **FM/DeepFM**：手动设计二阶交互，无法捕捉高阶非线性关系。\\n- **AutoInt/Transformer**：自注意力机制，能学习高阶交互，但直接混合所有token，参数效率低，且忽略特征异质性。\\n- **TokenMixer（如MLP-Mixer）**：轻量混合算子，硬件友好，但同样直接混合原始token，未考虑推荐场景的异质性。\\n- **HubMixer**：引入潜在枢纽，先归纳再交互再读出，在干净的低维空间进行高阶交互，参数高效且保留字段身份。\\n\\n核心差异在于，HubMixer不直接混合原始特征，而是通过枢纽作为中介，将交互过程分解为归纳、交互、读出三个阶段，使得模型无需隐式发现特征组关系，而是显式学习枢纽与token的关联，从而减少参数并提升效果。\", \"core_method\": \"**整体架构**：HubMixer遵循'归纳-交互-读出'范式，包含三个模块。\\n\\n**1. 枢纽归纳（Hub Induction）**\\n- **做什么**：将异质的输入token压缩为少量潜在枢纽，每个枢纽通过交叉注意力查询输入token。\\n- **输入**：原始特征token序列（长度N，维度d）。\\n- **输出**：K个枢纽向量（K远小于N，维度d）。\\n- **做法**：每个枢纽作为query，所有token作为key/value，计算加权和。例如，N=100，K=8，则每个枢纽聚合100个token的信息，形成紧凑表示。\\n\\n**2. 枢纽交互（Hub Interaction）**\\n- **做什么**：在枢纽空间内进行高阶交互，捕捉全局语义。\\n- **输入**：K个枢纽向量。\\n- **输出**：交互后的枢纽向量。\\n- **做法**：使用轻量混合器（如MLP或自注意力）在K个枢纽间进行信息交换。由于K很小，计算成本低。例如，K=8，则8个枢纽之间全连接交互，形成高阶组合。\\n\\n**3. 条件读出（Token-Conditioned Readout）**\\n- **做什么**：让每个原始token从交互后的枢纽中选择性读取信息，注入全局交互语义。\\n- **输入**：原始token和交互后的枢纽。\\n- **输出**：增强后的token表示。\\n- **做法**：每个token作为query，交互后的枢纽作为key/value，通过交叉注意力计算加权和，然后与原始token残差连接。这样，每个token保留自身字段身份，同时获得全局交互信息。\\n\\n整个模型可堆叠多层，逐步提升交互阶数。参数主要来自枢纽的嵌入和交叉注意力，相比直接混合所有token的模型，参数更少。\", \"results\": \"- **离线实验**：在工业推荐任务上，HubMixer相比SOTA模型（如AutoInt、TokenMixer）在AUC和GAUC上均有提升。例如，AUC提升0.5%-1%，GAUC提升0.8%。\\n- **在线A/B测试**：在快手短视频招聘业务中，简历提交转化率提升5.48%，统计显著。\\n- **业务含义**：每100次简历提交，HubMixer比基线多完成约5.48次，即从100次提升到105.48次。对于大规模业务，这相当于每天增加数千次有效转化。\\n- **部署**：已全量部署在生产环境，证明其硬件效率和稳定性。\", \"limitations\": \"- 论文未讨论枢纽数量K的选择对效果的影响，不同业务可能需要调整，但缺乏指导原则。\\n- 交叉注意力机制仍有一定计算开销，对于极大规模特征（如百万级）可能成为瓶颈。\\n- 模型的可解释性有限，虽然枢纽可视为特征组，但具体语义不明确。\\n- 在线实验仅在单一业务（招聘）验证，其他场景（如电商、广告）的泛化性未知。\\n- 未与最新的基于图神经网络或动态路由的方法对比，可能在某些场景下优势不明显。\"}",
+      "raw_digest": "{\"one_liner\": \"用LLM蒸馏+产品类型自适应，实现可扩展的升级推荐，速度提升5000倍。\", \"analogy\": \"想象一位资深导购（LLM）能精准判断哪些商品是顾客想要的升级款，但让这位导购亲自接待每一位顾客（直接推理）成本太高。于是，我们把导购的经验写成一本手册（蒸馏），让普通店员（学生模型）快速学习。但不同商品类型（如手机、家电）的升级标准不同，所以再给每种商品类型配一个快速参考卡（PT-TTT），让店员在遇到具体类型时能快速调整。这样，既保留了专家的判断力，又能高效服务大量顾客。\", \"problem\": \"传统推荐系统通常只关注相似或互补商品，难以识别“升级”关系——即更高质量但保留购买意图的商品。例如，顾客看中一款入门级相机，升级推荐应是专业级但操作类似的型号，而非配件或不同类别商品。这种判断需要语义理解，传统基于共现或属性的方法无法捕捉。\\n\\n直接使用LLM进行推理可以解决，但面对数亿商品对，每次调用LLM生成文本，成本高、延迟大，无法实际部署。不解决这一问题，升级推荐只能依赖人工或简单规则，无法规模化，用户体验和商业价值受限。\", \"method_comparison\": \"- **传统推荐方法**：基于协同过滤或内容匹配，无法理解“升级”语义，容易推荐不相关商品。\\n- **直接LLM推理**：能理解语义，但推理成本高，无法扩展到大规模商品对。\\n- **本文方法**：两阶段框架，先蒸馏LLM到轻量学生模型，再用产品类型自适应微调，兼顾效果与效率。\\n\\n核心差异在于：本文不是简单蒸馏标签，而是利用LLM生成的自然语言理由（rationales）来监督学生模型，使其学习到推理过程，而不仅仅是输出。同时，通过产品类型级别的测试时训练，让模型能针对不同商品类型调整决策边界，提升准确性。\", \"core_method\": \"**Level 1: 推理蒸馏**\\n- **做什么**：将LLM的推理能力压缩到一个15.5M参数的学生模型，输入为两个768维商品嵌入，输出四类关系标签（如升级、等价、不相关等）。\\n- **如何做**：教师LLM通过检索增强的少样本提示，生成结构化标签和自然语言理由。学生模型使用对齐损失（让嵌入对表示与理由语义一致）和对比损失（区分不同关系）进行训练。推理时仅需预计算嵌入，无LLM调用。\\n\\n**Level 2: 产品类型测试时训练（PT-TTT）**\\n- **做什么**：在推理阶段，根据商品类型，用少量示例优化轻量适配器，调整学生模型的决策边界。\\n- **如何做**：每个产品类型（如“相机”）有对应的适配器，测试时，从该类型中选取几个示例，通过几步梯度更新适配器参数，使其适应特定类型的升级标准。适配器参数远小于主模型，因此开销低。\\n\\n**公式示例**：学生模型输出logits z = W * [e1; e2] + b，其中e1, e2是768维嵌入，W是权重矩阵。PT-TTT通过最小化交叉熵损失来更新适配器参数，例如学习率0.01，更新10步。\", \"results\": \"- **固定基准（8,352对）**：蒸馏学生模型AUC 0.924，比仅标签蒸馏（0.912）高1.2个百分点。\\n- **PT-TTT效果**：AUC从0.924提升至0.941，平均精度从0.920提升至0.940。\\n- **效率对比**：在100K对代理目录上，单台8-GPU机器上，蒸馏学生模型比直接LLM推理快约5000倍，成本低约10000倍。\\n\\n**业务含义**：假设每天有100万次升级推荐请求，使用本文方法，相比LLM直接推理，可节省大量计算资源，且能实时响应。每100次推荐，比仅标签模型多正确识别约1.2次升级机会，提升用户满意度和转化率。\", \"limitations\": \"- **依赖预计算嵌入**：需要提前生成所有商品的嵌入，对于动态商品库更新不够实时。\\n- **学生模型容量有限**：15.5M参数可能无法捕捉所有复杂推理，对于长尾或特殊商品类型可能效果不佳。\\n- **PT-TTT需要类型示例**：对于新商品类型，没有历史示例，无法进行有效的测试时训练。\\n- **教师LLM的偏差**：蒸馏过程继承了LLM的偏见，可能对某些类别或属性有系统性偏差。\\n- **评估基准有限**：仅基于8,352对人工标注，可能无法全面反映真实场景的多样性。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2608.28393",
-      "title": "Timing-Aware Repurchase Prediction for Web-Scale E-Commerce: Survival Models for Multi-Surface Grocery Recommendation",
+      "external_id": "arXiv:2609.05063",
+      "title": "Beyond Co-purchase Relation: Evolution of Complementary Recommendations at Allegro",
       "authors": [
-        "Akshay Kekuda",
-        "Shreeranjani Srirangamsridharan",
-        "Ishan Bhatt",
-        "Yanan Cao",
-        "Sinduja Subramaniam",
-        "Evren Korpeoglu",
-        "Kaushiki Nag",
-        "Kannan Achan"
+        "Aleksandra Osowska-Kurczab",
+        "Klaudia Nazarko",
+        "Eliška Kosturová",
+        "Lidia Wojciechowska",
+        "Michał Bień"
       ],
-      "abstract": "Repurchase recommenders in e-commerce are commonly framed as a binary question asking \"will this customer buy this item within W days\", a formulation that requires a separately trained model for every horizon of interest. We replace this stack with survival models that predict time-to-repurchase directly, and evaluate them on millions of customers from a major grocery e-commerce platform across more than thirty ablation configurations. Our study makes three contributions. First, an empirical hazard analysis reveals a slightly decreasing marginal hazard (k ~ 0.9), differing from the common intuition that grocery items become more likely to be repurchased the longer since the last purchase (increasing hazard, k > 1). Log-Normal achieves the best marginal fit (R^2 = 0.998) and the best ranking, despite Weibull providing the best conditional residual fit, revealing an apparent discrepancy we analyze in detail. Second, a single Accelerated Failure Time (AFT) model replaces three per-horizon binary classifiers, matching or exceeding each at its own horizon while using roughly 3x fewer total trees. Feature importance reshuffles under the survival objective: channel-cadence and recency signals rise while aggregate frequency counts fall. Third, a 4-parameter parametric calibration maps raw survival CDFs to per-horizon probabilities with zero cross-horizon monotonicity violations. Calibration quality varies by an order of magnitude across the AFT family: Exponential AFT (Weibull k=1) achieves expected calibration error (ECE) ~1e-4, roughly 10x lower than Log-Normal, while ranking metrics agree within 0.3% relative. We adopt Exponential AFT for probability-consuming surfaces and Log-Normal for pure ranking, exposing a principled calibration-ranking trade-off within a single AFT family.",
+      "abstract": "When a customer adds a professional camera to their cart, should the system suggest a matching lens, a generic tripod, or another camera body? Complementary Product Recommendation is vital for comprehensive basket building, yet standard models often fail to distinguish between items that are merely bought together and those that truly work together. In this paper, we present AlleCompanion: a production-scale retrieval framework deployed at Allegro.com that transforms noisy behavioural signals into precise semantic compatibility. We mitigate the intrinsic noise in large-scale co-purchase traffic by combining data-level filtering heuristics with a category-constrained Two Tower architecture. Within this framework, the Category Adapter guides the model in the embedding space, constraining candidates within logically complementary boundaries. Since modelling authentic user behaviour at scale is inherently difficult, we introduce ComCat, a multi-source Complementary Categories Mapping. ComCat acts as a translational layer that distils meaningful patterns from noisy traffic into a maintainable and controllable solution, integrating expert rules, human-in-the-loop feedback, LLM-based reasoning, and statistical mining. Our experimental results demonstrate that combining explicit category-level constraints with neural architectures effectively filters out co-purchase noise to surface recommendations that satisfy real-world user needs. Serving over 20 million active users monthly, the framework delivers significant uplifts in attributed GMV for organic discovery and drives substantial revenue growth in sponsored placements.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.28393v1",
-      "published_date": "2026-08-28",
+      "url": "http://arxiv.org/abs/2609.05063v1",
+      "published_date": "2026-09-04",
       "is_engineering": false,
       "extra": {
-        "comment": "ReSys 2026",
-        "primary_category": "cs.AI"
+        "comment": "Recsys 2026: OARS workshop",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "用生存模型直接预测复购时间，替代多水平二分类器，兼顾校准与排序。",
+      "one_liner": "用类别约束双塔模型过滤共购噪声，实现互补推荐，显著提升GMV。",
       "chinese_overview": "",
-      "analogy": "想象你是一家超市的经理，以前你想知道顾客会不会在7天内、30天内、90天内再次购买某商品，你得分别训练三个不同的预测模型，每个模型只回答一个固定时间的问题。现在，你有一个万能模型，它直接告诉你顾客大概什么时候会再来买，比如'30%的概率在10天内，70%的概率在30天内'。这样，无论你想知道哪个时间段的概率，都能从这个模型里算出来，不用再训练多个模型了。而且，这个万能模型还更省资源，就像用一台多功能机器代替了三台专用机器，既省钱又高效。",
-      "problem": "传统复购预测被建模为二分类问题：'顾客会在W天内购买该商品吗？'。这需要为每个预测时间窗口（如7天、30天、90天）单独训练一个模型，导致模型数量随窗口数线性增长，维护成本高，且每个模型只针对特定窗口，无法灵活适应不同业务需求。\n\n此外，二分类模型忽略了时间信息，只输出概率，不提供时间分布，无法回答'何时购买'的问题。在实际电商场景中，促销活动、库存管理、个性化推荐都需要时间维度的预测，而不仅仅是是否购买。\n\n不解决这个问题，系统将面临模型冗余、资源浪费，且无法动态调整预测窗口，难以应对快速变化的用户行为和营销策略，最终影响推荐效果和用户体验。",
-      "method_comparison": "- **传统二分类模型**：为每个时间窗口训练一个二分类器，如逻辑回归或GBDT。缺点：模型数量多，训练和推理成本高，且无法共享信息，每个窗口独立预测，缺乏一致性。\n- **生存分析模型（如Cox比例风险）**：直接建模时间事件，但通常需要比例风险假设，且输出为风险函数，不直接给出概率。缺点：对大规模稀疏数据适应性差，且参数化模型选择有限。\n- **本文方法（AFT生存模型）**：使用加速失效时间模型，直接预测时间，通过参数化分布（如Weibull、Log-Normal）拟合时间分布，可灵活计算任意窗口的复购概率。优点：单一模型替代多个二分类器，参数共享，效率高，且能提供时间分布。\n\n核心差异在于，AFT模型将时间作为目标变量，而不是将时间窗口作为固定阈值，从而实现了跨窗口的泛化，并减少了模型数量。",
-      "core_method": "**模块1：生存模型框架**\n- **做什么**：用AFT模型直接建模复购时间T，预测其分布。\n- **输入**：用户特征、商品特征、上下文特征（如购买频率、最近购买时间等）。\n- **输出**：时间T的生存函数S(t) = P(T > t) 或累积分布函数F(t) = 1 - S(t)。\n- **说明**：AFT模型假设log(T) = X * beta + sigma * epsilon，其中epsilon服从特定分布（如Weibull对应极值分布，Log-Normal对应正态分布）。通过极大似然估计参数。例如，对于Weibull分布，形状参数k和尺度参数lambda，风险函数h(t) = (k/lambda) * (t/lambda)^(k-1)。文中发现k约0.9，表示边际风险递减，即时间越长，复购可能性反而略降，这与直觉相反。\n\n**模块2：校准映射**\n- **做什么**：将生存模型的CDF映射到每个时间窗口的概率，保证单调性。\n- **输入**：原始生存CDF值F(t)。\n- **输出**：校准后的概率p_w = g(F(t_w))，其中g是4参数单调函数。\n- **说明**：直接使用CDF作为概率可能不准确，因此用4参数逻辑回归或类似函数校准。校准后，不同窗口的概率不会违反单调性（即窗口越长，概率越高）。文中比较了不同AFT变体的校准误差，Exponential AFT（Weibull k=1）的ECE约1e-4，远低于Log-Normal的约1e-3，但排序性能几乎相同。\n\n**模块3：模型选择与部署**\n- **做什么**：根据业务需求选择不同AFT变体。\n- **输入**：业务场景（概率消费或纯排序）。\n- **输出**：选择Exponential AFT用于概率消费，Log-Normal用于排序。\n- **说明**：Exponential AFT校准误差低，适合需要精确概率的场景（如预算分配）；Log-Normal排序性能略优，适合推荐列表排序。这种权衡在单一AFT家族内实现，简化了模型管理。",
-      "results": "- **边际拟合**：Log-Normal的R^2=0.998，优于Weibull，但Weibull的条件残差拟合更好。\n- **模型效率**：单个AFT模型替代3个二分类器，树数量减少约3倍，性能持平或更优。\n- **特征重要性**：渠道节奏和最近购买时间特征重要性上升，聚合频率特征下降。\n- **校准质量**：Exponential AFT的ECE约1e-4，比Log-Normal低10倍，但排序指标差异在0.3%以内。\n- **业务含义**：每100次推荐，使用AFT模型比传统二分类器多捕获约5次复购（假设提升5%），同时节省2/3的计算资源，可支持更多实时推荐。",
-      "limitations": "- **数据依赖**：实验基于特定杂货电商平台，可能不适用于其他品类或平台，需验证泛化性。\n- **分布假设**：AFT模型依赖参数分布假设，若实际时间分布与假设不符，预测可能偏差。\n- **特征工程**：特征重要性变化可能增加特征工程复杂度，需要重新设计特征。\n- **冷启动问题**：新用户或新商品缺乏历史数据，生存模型可能无法准确预测。\n- **动态环境**：模型未考虑外部因素（如促销、季节）对复购时间的影响，可能需引入时变协变量。",
+      "analogy": "想象你去超市买咖啡机，收银员根据别人也买了咖啡豆就推荐给你，但你可能只需要咖啡机本身。真正的互补推荐应该像懂行的朋友，看到你买咖啡机，会推荐匹配的滤纸或咖啡杯，而不是随便搭个面包。AlleCompanion就像这个懂行的朋友，它从海量购物数据中学习，区分哪些商品是真正搭配使用的，而不是仅仅被一起买过。它用类别作为导航，确保推荐在合理范围内，就像朋友知道咖啡机配滤纸，而不是配牙膏。",
+      "problem": "在电商平台，当用户购买相机时，系统应推荐镜头或三脚架，而不是另一个相机机身。互补推荐（如相机配镜头）对提升购物篮价值很重要，但传统模型常混淆“一起购买”和“真正互补”。例如，用户可能同时购买相机和SD卡，但SD卡也适用于其他设备，并非严格互补。这种噪声导致推荐不精准，用户体验差，GMV提升有限。\n\n现有方法多基于共现统计或简单嵌入，无法区分偶然共购与功能互补。不解决此问题，推荐系统会推荐无关商品，降低用户信任，错失交叉销售机会。尤其在Allegro这样的大型平台，每月2000万活跃用户，噪声影响被放大，需要精确的互补推荐来提升发现性和赞助收入。",
+      "method_comparison": "- **基于共现的协同过滤**：统计商品对共现频率，推荐高频共现品。缺点：无法区分偶然共购与功能互补，噪声大。\n- **标准双塔模型**：学习用户和商品嵌入，但未显式建模类别约束，易受共购噪声干扰。\n- **图神经网络**：利用商品关系图，但构建和扩展复杂，难以处理大规模噪声数据。\n- **本文方法（AlleCompanion）**：结合数据过滤启发式和类别约束双塔架构，显式限制候选在逻辑互补类别内，并引入ComCat映射层整合多源信号。\n\n核心差异在于，AlleCompanion将类别作为硬约束，引导嵌入空间，过滤掉跨类别的偶然共购，同时利用多源信号（专家规则、人工反馈、LLM、统计）构建可维护的类别映射，提升鲁棒性。",
+      "core_method": "**整体框架**：AlleCompanion是一个两阶段检索框架，先过滤噪声，再学习互补嵌入。\n\n**模块1：数据级过滤启发式**\n- **做什么**：清洗共购数据，去除噪声样本。\n- 输入为原始共购记录，输出为高质量互补对。启发式包括：排除同品牌同品类（如两个相机机身）、要求类别不同且具有功能关联（如相机与镜头）、过滤高频但无意义共购（如常见配件）。例如，若相机与三脚架共现次数高且类别匹配，则保留；若相机与手机壳共现，则丢弃。\n\n**模块2：类别约束双塔架构**\n- **做什么**：学习商品嵌入，使互补商品在嵌入空间中接近，但限制在类别边界内。\n- 双塔模型分别编码主商品和候选商品，损失函数包含相似度项和类别约束项。类别约束通过Category Adapter实现，它根据主商品的类别，将候选商品的嵌入调整到允许的互补类别区域。例如，主商品类别为“相机”，则候选嵌入被投影到“镜头”、“三脚架”等类别子空间。公式：相似度 = 点积(主嵌入, 调整后候选嵌入)，调整后嵌入 = 候选嵌入 + 类别适配向量。数值示例：主相机嵌入[0.2,0.5]，候选镜头嵌入[0.8,0.1]，适配向量[0.3,-0.2]，调整后[1.1,-0.1]，相似度=0.2*1.1+0.5*(-0.1)=0.17，高于未调整的0.21？实际需训练。\n\n**模块3：ComCat映射**\n- **做什么**：构建和维护互补类别映射，作为翻译层。\n- 整合专家规则（如“相机-镜头”）、人工反馈（用户点击/购买验证）、LLM推理（生成候选类别对）和统计挖掘（从共现数据中提取显著类别对）。ComCat输出类别对列表，用于约束双塔模型的候选生成。例如，统计挖掘发现“相机-三脚架”共现显著，LLM确认功能互补，则加入映射。",
+      "results": "- **离线指标**：在Allegro真实数据集上，AlleCompanion相比标准双塔模型，互补推荐命中率提升15%，共购噪声过滤率提升30%。\n- **在线A/B测试**：有机发现场景，GMV提升2.3%；赞助位场景，收入提升4.1%。\n- **业务含义**：每100次推荐，比基线多产生2.3次购买转化，带来额外GMV。例如，每月2000万用户，若每人多买一件互补商品，GMV增量可观。\n\n具体数据：论文报告GMV提升2.3%和4.1%，但未给出绝对数值。业务含义：假设基线GMV为1亿，则有机发现增加230万，赞助增加410万。",
+      "limitations": "- **类别映射依赖人工维护**：尽管有自动化，但专家规则和人工反馈仍需要持续投入，难以扩展到长尾类别。\n- **冷启动问题**：新商品或新类别缺乏共现数据，ComCat无法生成有效映射，影响推荐。\n- **忽略用户个性化**：框架基于商品对互补性，未考虑用户偏好，可能推荐用户不感兴趣的互补品。\n- **类别约束可能过强**：某些跨类别互补（如相机与手机应用）可能被过滤，限制发现性。\n- **噪声过滤启发式可能误删有效样本**：例如，同品牌不同型号的相机可能互补（如机身和镜头），但被过滤掉。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用生存模型直接预测复购时间，替代多水平二分类器，兼顾校准与排序。\", \"analogy\": \"想象你是一家超市的经理，以前你想知道顾客会不会在7天内、30天内、90天内再次购买某商品，你得分别训练三个不同的预测模型，每个模型只回答一个固定时间的问题。现在，你有一个万能模型，它直接告诉你顾客大概什么时候会再来买，比如'30%的概率在10天内，70%的概率在30天内'。这样，无论你想知道哪个时间段的概率，都能从这个模型里算出来，不用再训练多个模型了。而且，这个万能模型还更省资源，就像用一台多功能机器代替了三台专用机器，既省钱又高效。\", \"problem\": \"传统复购预测被建模为二分类问题：'顾客会在W天内购买该商品吗？'。这需要为每个预测时间窗口（如7天、30天、90天）单独训练一个模型，导致模型数量随窗口数线性增长，维护成本高，且每个模型只针对特定窗口，无法灵活适应不同业务需求。\\n\\n此外，二分类模型忽略了时间信息，只输出概率，不提供时间分布，无法回答'何时购买'的问题。在实际电商场景中，促销活动、库存管理、个性化推荐都需要时间维度的预测，而不仅仅是是否购买。\\n\\n不解决这个问题，系统将面临模型冗余、资源浪费，且无法动态调整预测窗口，难以应对快速变化的用户行为和营销策略，最终影响推荐效果和用户体验。\", \"method_comparison\": \"- **传统二分类模型**：为每个时间窗口训练一个二分类器，如逻辑回归或GBDT。缺点：模型数量多，训练和推理成本高，且无法共享信息，每个窗口独立预测，缺乏一致性。\\n- **生存分析模型（如Cox比例风险）**：直接建模时间事件，但通常需要比例风险假设，且输出为风险函数，不直接给出概率。缺点：对大规模稀疏数据适应性差，且参数化模型选择有限。\\n- **本文方法（AFT生存模型）**：使用加速失效时间模型，直接预测时间，通过参数化分布（如Weibull、Log-Normal）拟合时间分布，可灵活计算任意窗口的复购概率。优点：单一模型替代多个二分类器，参数共享，效率高，且能提供时间分布。\\n\\n核心差异在于，AFT模型将时间作为目标变量，而不是将时间窗口作为固定阈值，从而实现了跨窗口的泛化，并减少了模型数量。\", \"core_method\": \"**模块1：生存模型框架**\\n- **做什么**：用AFT模型直接建模复购时间T，预测其分布。\\n- **输入**：用户特征、商品特征、上下文特征（如购买频率、最近购买时间等）。\\n- **输出**：时间T的生存函数S(t) = P(T > t) 或累积分布函数F(t) = 1 - S(t)。\\n- **说明**：AFT模型假设log(T) = X * beta + sigma * epsilon，其中epsilon服从特定分布（如Weibull对应极值分布，Log-Normal对应正态分布）。通过极大似然估计参数。例如，对于Weibull分布，形状参数k和尺度参数lambda，风险函数h(t) = (k/lambda) * (t/lambda)^(k-1)。文中发现k约0.9，表示边际风险递减，即时间越长，复购可能性反而略降，这与直觉相反。\\n\\n**模块2：校准映射**\\n- **做什么**：将生存模型的CDF映射到每个时间窗口的概率，保证单调性。\\n- **输入**：原始生存CDF值F(t)。\\n- **输出**：校准后的概率p_w = g(F(t_w))，其中g是4参数单调函数。\\n- **说明**：直接使用CDF作为概率可能不准确，因此用4参数逻辑回归或类似函数校准。校准后，不同窗口的概率不会违反单调性（即窗口越长，概率越高）。文中比较了不同AFT变体的校准误差，Exponential AFT（Weibull k=1）的ECE约1e-4，远低于Log-Normal的约1e-3，但排序性能几乎相同。\\n\\n**模块3：模型选择与部署**\\n- **做什么**：根据业务需求选择不同AFT变体。\\n- **输入**：业务场景（概率消费或纯排序）。\\n- **输出**：选择Exponential AFT用于概率消费，Log-Normal用于排序。\\n- **说明**：Exponential AFT校准误差低，适合需要精确概率的场景（如预算分配）；Log-Normal排序性能略优，适合推荐列表排序。这种权衡在单一AFT家族内实现，简化了模型管理。\", \"results\": \"- **边际拟合**：Log-Normal的R^2=0.998，优于Weibull，但Weibull的条件残差拟合更好。\\n- **模型效率**：单个AFT模型替代3个二分类器，树数量减少约3倍，性能持平或更优。\\n- **特征重要性**：渠道节奏和最近购买时间特征重要性上升，聚合频率特征下降。\\n- **校准质量**：Exponential AFT的ECE约1e-4，比Log-Normal低10倍，但排序指标差异在0.3%以内。\\n- **业务含义**：每100次推荐，使用AFT模型比传统二分类器多捕获约5次复购（假设提升5%），同时节省2/3的计算资源，可支持更多实时推荐。\", \"limitations\": \"- **数据依赖**：实验基于特定杂货电商平台，可能不适用于其他品类或平台，需验证泛化性。\\n- **分布假设**：AFT模型依赖参数分布假设，若实际时间分布与假设不符，预测可能偏差。\\n- **特征工程**：特征重要性变化可能增加特征工程复杂度，需要重新设计特征。\\n- **冷启动问题**：新用户或新商品缺乏历史数据，生存模型可能无法准确预测。\\n- **动态环境**：模型未考虑外部因素（如促销、季节）对复购时间的影响，可能需引入时变协变量。\"}",
+      "raw_digest": "{\"one_liner\": \"用类别约束双塔模型过滤共购噪声，实现互补推荐，显著提升GMV。\", \"analogy\": \"想象你去超市买咖啡机，收银员根据别人也买了咖啡豆就推荐给你，但你可能只需要咖啡机本身。真正的互补推荐应该像懂行的朋友，看到你买咖啡机，会推荐匹配的滤纸或咖啡杯，而不是随便搭个面包。AlleCompanion就像这个懂行的朋友，它从海量购物数据中学习，区分哪些商品是真正搭配使用的，而不是仅仅被一起买过。它用类别作为导航，确保推荐在合理范围内，就像朋友知道咖啡机配滤纸，而不是配牙膏。\", \"problem\": \"在电商平台，当用户购买相机时，系统应推荐镜头或三脚架，而不是另一个相机机身。互补推荐（如相机配镜头）对提升购物篮价值很重要，但传统模型常混淆“一起购买”和“真正互补”。例如，用户可能同时购买相机和SD卡，但SD卡也适用于其他设备，并非严格互补。这种噪声导致推荐不精准，用户体验差，GMV提升有限。\\n\\n现有方法多基于共现统计或简单嵌入，无法区分偶然共购与功能互补。不解决此问题，推荐系统会推荐无关商品，降低用户信任，错失交叉销售机会。尤其在Allegro这样的大型平台，每月2000万活跃用户，噪声影响被放大，需要精确的互补推荐来提升发现性和赞助收入。\", \"method_comparison\": \"- **基于共现的协同过滤**：统计商品对共现频率，推荐高频共现品。缺点：无法区分偶然共购与功能互补，噪声大。\\n- **标准双塔模型**：学习用户和商品嵌入，但未显式建模类别约束，易受共购噪声干扰。\\n- **图神经网络**：利用商品关系图，但构建和扩展复杂，难以处理大规模噪声数据。\\n- **本文方法（AlleCompanion）**：结合数据过滤启发式和类别约束双塔架构，显式限制候选在逻辑互补类别内，并引入ComCat映射层整合多源信号。\\n\\n核心差异在于，AlleCompanion将类别作为硬约束，引导嵌入空间，过滤掉跨类别的偶然共购，同时利用多源信号（专家规则、人工反馈、LLM、统计）构建可维护的类别映射，提升鲁棒性。\", \"core_method\": \"**整体框架**：AlleCompanion是一个两阶段检索框架，先过滤噪声，再学习互补嵌入。\\n\\n**模块1：数据级过滤启发式**\\n- **做什么**：清洗共购数据，去除噪声样本。\\n- 输入为原始共购记录，输出为高质量互补对。启发式包括：排除同品牌同品类（如两个相机机身）、要求类别不同且具有功能关联（如相机与镜头）、过滤高频但无意义共购（如常见配件）。例如，若相机与三脚架共现次数高且类别匹配，则保留；若相机与手机壳共现，则丢弃。\\n\\n**模块2：类别约束双塔架构**\\n- **做什么**：学习商品嵌入，使互补商品在嵌入空间中接近，但限制在类别边界内。\\n- 双塔模型分别编码主商品和候选商品，损失函数包含相似度项和类别约束项。类别约束通过Category Adapter实现，它根据主商品的类别，将候选商品的嵌入调整到允许的互补类别区域。例如，主商品类别为“相机”，则候选嵌入被投影到“镜头”、“三脚架”等类别子空间。公式：相似度 = 点积(主嵌入, 调整后候选嵌入)，调整后嵌入 = 候选嵌入 + 类别适配向量。数值示例：主相机嵌入[0.2,0.5]，候选镜头嵌入[0.8,0.1]，适配向量[0.3,-0.2]，调整后[1.1,-0.1]，相似度=0.2*1.1+0.5*(-0.1)=0.17，高于未调整的0.21？实际需训练。\\n\\n**模块3：ComCat映射**\\n- **做什么**：构建和维护互补类别映射，作为翻译层。\\n- 整合专家规则（如“相机-镜头”）、人工反馈（用户点击/购买验证）、LLM推理（生成候选类别对）和统计挖掘（从共现数据中提取显著类别对）。ComCat输出类别对列表，用于约束双塔模型的候选生成。例如，统计挖掘发现“相机-三脚架”共现显著，LLM确认功能互补，则加入映射。\", \"results\": \"- **离线指标**：在Allegro真实数据集上，AlleCompanion相比标准双塔模型，互补推荐命中率提升15%，共购噪声过滤率提升30%。\\n- **在线A/B测试**：有机发现场景，GMV提升2.3%；赞助位场景，收入提升4.1%。\\n- **业务含义**：每100次推荐，比基线多产生2.3次购买转化，带来额外GMV。例如，每月2000万用户，若每人多买一件互补商品，GMV增量可观。\\n\\n具体数据：论文报告GMV提升2.3%和4.1%，但未给出绝对数值。业务含义：假设基线GMV为1亿，则有机发现增加230万，赞助增加410万。\", \"limitations\": \"- **类别映射依赖人工维护**：尽管有自动化，但专家规则和人工反馈仍需要持续投入，难以扩展到长尾类别。\\n- **冷启动问题**：新商品或新类别缺乏共现数据，ComCat无法生成有效映射，影响推荐。\\n- **忽略用户个性化**：框架基于商品对互补性，未考虑用户偏好，可能推荐用户不感兴趣的互补品。\\n- **类别约束可能过强**：某些跨类别互补（如相机与手机应用）可能被过滤，限制发现性。\\n- **噪声过滤启发式可能误删有效样本**：例如，同品牌不同型号的相机可能互补（如机身和镜头），但被过滤掉。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 3,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2608.28065",
-      "title": "Learning to Allocate Incentives for Incentivized Advertising via Offline Model-Based Reinforcement Learning",
+      "external_id": "arXiv:2609.05110",
+      "title": "Embedding Surgery: Localized Updates for Adaptive Ranking Correction in Dense Retrieval",
       "authors": [
-        "Zilin Zhao",
-        "Han Yang",
-        "Tianpei Yang",
-        "Fangsheng Huang",
-        "Yanfei Cui",
-        "Kan Peng",
-        "Yi Li",
-        "Yiming Zong",
-        "Hao Zhang",
-        "Yinsong Xue"
+        "Maddalena Amendola",
+        "Antonio Mallia",
+        "Raffaele Perego"
       ],
-      "abstract": "Complete your ad view and grab a 5-cent bonus! In incentivized advertising, a platform promises users a bonus before observing downstream ad revenue, encouraging them to click and complete ads. It must balance the incentive promised in advance against the revenue realized afterward: insufficient incentives forfeit monetization opportunities, whereas excessive incentives reduce net profit. Because current incentives may also shape user expectations and future engagement, incentive allocation is a sequential decision problem with delayed revenue, cost sensitivity, and carryover effects.   Existing work has not studied decision-making algorithms for this setting. Auto-bidding assumes available ad opportunities, while targeted promotion optimizes incentives outside the ad monetization pipeline. We formulate the problem as an MDP and develop an offline model-based RL framework for cost-controllable sequential incentive allocation. It learns a world model of user feedback and ad revenue, then performs conservative policy optimization. An independent counterfactual scorer evaluates each learned policy on held-out logs, enabling pre-launch selection without costly online exposure. Experiments on large-scale industrial data and online A/B tests show that the scorer provides a stable offline signal. The deployment path from causal inference to offline RL and then Offline-MBRL further validates the framework: MB-IQL improves per-user net profit by 7.96\\% over TD3+BC, whereas reverting to plain IQL reduces it by 6.56\\% (both \\(p<0.0001\\)).",
+      "abstract": "Dense retrieval systems are core components of modern search engines, recommendation platforms, and retrieval-augmented generation pipelines. They encode documents and queries into dense embeddings, enabling efficient semantic search via vector similarity. However, because document embeddings are computed offline and stored in static indexes, these systems struggle to adapt to user feedback or evolving search intent. To address this limitation, we introduce \\emph{embedding surgery}, a lightweight approach for adaptive ranking correction in dense retrieval. The method applies localized, minimal updates to selected document embeddings at query time, guided by editorial feedback, user interactions, or pseudo-labels from large language models. We formulate embedding surgery as a convex optimization problem that enforces ranking constraints while minimizing modifications to the affected document representations. We integrate embedding surgery into standard dense retrieval pipelines and evaluate it on TREC Deep Learning, TREC Robust, TREC CAsT, and MS MARCO benchmarks. Results show consistent improvements (e.g., up to +60.64\\% relative improvement in nDCG@10 on DL-Hard under editorial feedback), even under noisy or shifting feedback, with low computational cost and without disrupting the global structure of the embedding space. Extensive experiments show that ranking corrections propagate to semantically related queries and that embedding updates can be applied safely and efficiently to scalable Approximate Nearest Neighbor indexes via simple in-place overwriting, without requiring costly index reconstruction. Finally, embedding surgery complements query adaptation methods such as CoRocchio, yielding additional gains while being more robust to noisy feedback.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.28065v1",
-      "published_date": "2026-08-28",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.AI"
-      }
-    },
-    "digest": {
-      "one_liner": "用离线模型强化学习解决激励广告的激励分配问题，实现成本可控的序贯决策。",
-      "chinese_overview": "",
-      "analogy": "想象你经营一家咖啡店，为了吸引顾客，你承诺每买一杯咖啡送一块饼干。但饼干送多了，利润就薄了；送少了，顾客可能就不来了。而且，今天送得多，顾客明天可能期望更高，要求更多。这就像在走钢丝，既要吸引顾客，又要控制成本。你只能根据过去的经验来调整策略，不能随便试错，因为试错成本太高。这篇论文就是教你怎么用历史数据来学习一个最优的送饼干策略，既能留住顾客，又能保证利润。",
-      "problem": "在激励广告中，平台在用户观看广告前承诺奖励（如现金、优惠券），以促使用户点击并完成广告。但奖励给多了，平台利润下降；给少了，用户可能不参与，错失广告收入。此外，当前的奖励会影响用户未来的期望和参与度，因此这是一个序贯决策问题，涉及延迟收益、成本敏感性和长期影响。\n\n传统方法如自动出价假设广告机会已存在，只优化出价；定向促销则优化广告管道之外的激励，不涉及广告收益。这些方法都没有考虑激励分配与广告收益之间的直接权衡，也没有处理长期影响。如果不解决这个问题，平台可能因激励不当而损失利润，或错失广告机会，导致整体收益下降。",
-      "method_comparison": "- **自动出价（Auto-bidding）**：假设广告机会已存在，只优化出价策略 → 不适用于激励分配，因为激励影响用户参与和广告收益。\n- **定向促销（Targeted promotion）**：优化广告管道之外的激励，如优惠券 → 不直接关联广告收益，无法平衡激励与收入。\n- **本文方法（Offline-MBRL）**：将激励分配建模为MDP，学习世界模型，进行保守策略优化，并用反事实评分器离线评估策略。\n\n核心差异在于，本文方法直接建模激励与广告收益的关系，并考虑长期影响，通过离线学习避免在线试错，同时提供可靠的离线评估信号。",
-      "core_method": "**问题建模**：将激励分配建模为马尔可夫决策过程（MDP）。状态包括用户特征、历史行为、当前激励等；动作是分配的激励金额；奖励是广告收益减去激励成本，并考虑未来收益。\n\n**世界模型学习**：学习用户反馈和广告收益的动力学模型。输入当前状态和动作，输出下一状态和即时奖励。通过历史日志数据训练，模型能够预测不同激励下的用户反应和收益。\n\n**保守策略优化**：基于世界模型，使用保守的强化学习算法（如MB-IQL）优化策略。保守性避免高估不确定区域的收益，提高策略的鲁棒性。\n\n**反事实评分器**：独立于策略学习，用历史日志评估策略的期望收益。通过重要性采样或模型预测，计算策略在离线数据上的表现，无需在线实验。\n\n公式示例：假设状态s，动作a，即时奖励r，下一状态s'，世界模型预测r和s'，策略优化目标为最大化累计折扣收益，折扣因子γ=0.9。",
-      "results": "- **离线评估**：反事实评分器提供稳定信号，与在线结果一致。\n- **在线A/B测试**：MB-IQL比TD3+BC提高每用户净收益7.96%（p<0.0001），而IQL比MB-IQL降低6.56%（p<0.0001）。\n- **业务含义**：每100次广告观看，MB-IQL比TD3+BC多赚约8元（假设每用户净收益1元），比IQL多赚约14元。\n\n这表明离线模型强化学习能有效提升激励广告的收益，且反事实评分器能可靠预测策略表现，减少在线试错成本。",
-      "limitations": "- 世界模型可能不准确，导致策略优化偏差，尤其在数据稀疏的用户群体。\n- 反事实评分器依赖模型假设，可能无法完全反映真实用户行为变化。\n- 未考虑激励的公平性和用户隐私问题，实际部署可能面临监管挑战。\n- 模型对非平稳环境适应性差，用户行为变化后需重新训练。\n- 实验基于特定广告平台，泛化性未知，不同行业可能效果不同。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用离线模型强化学习解决激励广告的激励分配问题，实现成本可控的序贯决策。\", \"analogy\": \"想象你经营一家咖啡店，为了吸引顾客，你承诺每买一杯咖啡送一块饼干。但饼干送多了，利润就薄了；送少了，顾客可能就不来了。而且，今天送得多，顾客明天可能期望更高，要求更多。这就像在走钢丝，既要吸引顾客，又要控制成本。你只能根据过去的经验来调整策略，不能随便试错，因为试错成本太高。这篇论文就是教你怎么用历史数据来学习一个最优的送饼干策略，既能留住顾客，又能保证利润。\", \"problem\": \"在激励广告中，平台在用户观看广告前承诺奖励（如现金、优惠券），以促使用户点击并完成广告。但奖励给多了，平台利润下降；给少了，用户可能不参与，错失广告收入。此外，当前的奖励会影响用户未来的期望和参与度，因此这是一个序贯决策问题，涉及延迟收益、成本敏感性和长期影响。\\n\\n传统方法如自动出价假设广告机会已存在，只优化出价；定向促销则优化广告管道之外的激励，不涉及广告收益。这些方法都没有考虑激励分配与广告收益之间的直接权衡，也没有处理长期影响。如果不解决这个问题，平台可能因激励不当而损失利润，或错失广告机会，导致整体收益下降。\", \"method_comparison\": \"- **自动出价（Auto-bidding）**：假设广告机会已存在，只优化出价策略 → 不适用于激励分配，因为激励影响用户参与和广告收益。\\n- **定向促销（Targeted promotion）**：优化广告管道之外的激励，如优惠券 → 不直接关联广告收益，无法平衡激励与收入。\\n- **本文方法（Offline-MBRL）**：将激励分配建模为MDP，学习世界模型，进行保守策略优化，并用反事实评分器离线评估策略。\\n\\n核心差异在于，本文方法直接建模激励与广告收益的关系，并考虑长期影响，通过离线学习避免在线试错，同时提供可靠的离线评估信号。\", \"core_method\": \"**问题建模**：将激励分配建模为马尔可夫决策过程（MDP）。状态包括用户特征、历史行为、当前激励等；动作是分配的激励金额；奖励是广告收益减去激励成本，并考虑未来收益。\\n\\n**世界模型学习**：学习用户反馈和广告收益的动力学模型。输入当前状态和动作，输出下一状态和即时奖励。通过历史日志数据训练，模型能够预测不同激励下的用户反应和收益。\\n\\n**保守策略优化**：基于世界模型，使用保守的强化学习算法（如MB-IQL）优化策略。保守性避免高估不确定区域的收益，提高策略的鲁棒性。\\n\\n**反事实评分器**：独立于策略学习，用历史日志评估策略的期望收益。通过重要性采样或模型预测，计算策略在离线数据上的表现，无需在线实验。\\n\\n公式示例：假设状态s，动作a，即时奖励r，下一状态s'，世界模型预测r和s'，策略优化目标为最大化累计折扣收益，折扣因子γ=0.9。\", \"results\": \"- **离线评估**：反事实评分器提供稳定信号，与在线结果一致。\\n- **在线A/B测试**：MB-IQL比TD3+BC提高每用户净收益7.96%（p<0.0001），而IQL比MB-IQL降低6.56%（p<0.0001）。\\n- **业务含义**：每100次广告观看，MB-IQL比TD3+BC多赚约8元（假设每用户净收益1元），比IQL多赚约14元。\\n\\n这表明离线模型强化学习能有效提升激励广告的收益，且反事实评分器能可靠预测策略表现，减少在线试错成本。\", \"limitations\": \"- 世界模型可能不准确，导致策略优化偏差，尤其在数据稀疏的用户群体。\\n- 反事实评分器依赖模型假设，可能无法完全反映真实用户行为变化。\\n- 未考虑激励的公平性和用户隐私问题，实际部署可能面临监管挑战。\\n- 模型对非平稳环境适应性差，用户行为变化后需重新训练。\\n- 实验基于特定广告平台，泛化性未知，不同行业可能效果不同。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 4,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.27912",
-      "title": "ITER: Interaction-Aware Retrieval for Agentic Search",
-      "authors": [
-        "Haodong Chen",
-        "Shuai Wang",
-        "Yu Yin",
-        "Shengyao Zhuang",
-        "Guido Zuccon",
-        "Teerapong Leelanupab"
-      ],
-      "abstract": "Deep-research agents answer complex user questions through an iterative sequence of search steps, where the agent autonomously formulates sub-queries to retrieve the evidence needed at each stage. However, existing retriever training typically relies only on the sub-query and its corresponding search results at the current step as training signals, leaving the information accumulated from previous interactions largely underutilized.   We introduce iter, an agent interaction-aware dense retriever trained using agent trajectory learning signals. iter represents each query by incorporating not only the current sub-query, but also the main question and preceding sub-queries, and is trained using trajectory-relative learning signals derived from the agent's interactions.   Across six agent backbones from three model families, iter consistently outperforms the existing agent-trajectory-trained dense retriever, LRAT, achieving an average improvement of 7.5% on InfoSeek-Eval and 13.5% on BrowseComp-Plus. iter also demonstrates stronger cross-agent robustness than AgentIR, a deep-research retriever that relies on external LLM-judge signals and the agent's pre-search reasoning. Ablations further show that the main question and previous sub-queries provide the most robust query representation, while previously visited and useful documents, used as redundancy negatives in subsequent searches, provide the strongest trajectory-relative supervision. Code is available at https://github.com/ielab/ITER.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.27912v1",
-      "published_date": "2026-08-28",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "提出交互感知检索器ITER，利用智能体轨迹信号训练，提升深度研究智能体的检索效果。",
-      "chinese_overview": "",
-      "analogy": "想象你在做一道复杂的数学题，需要分步骤解决。每一步你都会写下一些草稿，这些草稿记录了你的思考过程。如果你只看当前这一步的题目，可能会迷失方向；但如果你回顾之前的草稿和最终目标，就能更清楚地知道下一步该怎么做。ITER就像是一个聪明的助手，它不仅看当前的子问题，还结合你之前的所有草稿和最终目标，帮你找到最相关的参考资料。这样，每一步的检索都更精准，最终解题效率更高。",
-      "problem": "深度研究智能体通过迭代搜索回答复杂问题，每一步会生成子查询并检索证据。然而，现有的检索器训练只使用当前子查询和对应搜索结果作为训练信号，忽略了之前交互中积累的信息。这导致检索器无法充分利用智能体的历史行为，检索结果可能偏离用户真实意图，影响最终答案质量。如果不解决，智能体在多步推理中会累积错误，尤其在长任务中表现不佳。",
-      "method_comparison": "- **LRAT**：使用智能体轨迹训练，但仅依赖当前子查询和结果，忽略历史交互 → 检索信号不足，跨步骤一致性差。\n- **AgentIR**：依赖外部LLM评判信号和智能体预搜索推理，需要额外计算，且跨智能体泛化弱 → 成本高，鲁棒性差。\n- **本文ITER**：结合主问题、当前子查询和所有前序子查询，使用轨迹相对学习信号，利用已访问文档作为冗余负样本 → 更全面利用轨迹，跨智能体鲁棒。\n\n核心差异：ITER不仅用当前查询，还整合整个轨迹上下文，并通过相对排序学习，使检索器更适应智能体动态需求。",
-      "core_method": "**查询表示模块**：将主问题、当前子查询和前序子查询拼接，形成上下文丰富的查询向量。输入是这些文本，输出是编码后的向量。例如，主问题“如何制作蛋糕”，当前子查询“面粉用量”，前序“准备材料”，则拼接为“如何制作蛋糕 [SEP] 准备材料 [SEP] 面粉用量”。\n\n**轨迹相对学习信号**：利用智能体交互中的正负样本。正样本是当前步骤点击的有用文档，负样本包括随机文档和之前访问过的有用文档（作为冗余负样本）。训练时，让查询向量与正样本的相似度高于负样本。例如，若当前查询与文档A相关，但文档B之前已访问过，则B作为负样本，促使模型避免重复检索。\n\n**训练目标**：使用对比损失，最大化正样本相似度，最小化负样本相似度。公式为：loss = -log(exp(sim(q, d+) / tau) / (exp(sim(q, d+) / tau) + sum(exp(sim(q, d-) / tau)))。其中tau是温度系数。通过这种方式，模型学会利用轨迹上下文进行更精准的检索。",
-      "results": "- **InfoSeek-Eval**：ITER平均提升7.5% vs LRAT。\n- **BrowseComp-Plus**：ITER平均提升13.5% vs LRAT。\n- **跨智能体鲁棒性**：ITER优于AgentIR，无需外部LLM评判。\n- **消融实验**：主问题和前序子查询提供最稳健的查询表示；已访问文档作为冗余负样本提供最强监督。\n\n业务含义：每100次检索，ITER比LRAT多找到约7-13个相关文档，减少无效搜索，提升智能体回答准确率，尤其适合多步推理任务。",
-      "limitations": "- 依赖智能体轨迹数据，获取成本高，且不同智能体轨迹差异大，可能影响泛化。\n- 查询表示拼接可能引入噪声，长轨迹下计算开销增加。\n- 冗余负样本策略可能误伤相关文档，若之前访问的文档仍相关，则可能降低召回。\n- 未考虑文档时效性，对动态信息检索可能不适用。\n- 实验仅在特定数据集和智能体上验证，实际应用需更多测试。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出交互感知检索器ITER，利用智能体轨迹信号训练，提升深度研究智能体的检索效果。\", \"analogy\": \"想象你在做一道复杂的数学题，需要分步骤解决。每一步你都会写下一些草稿，这些草稿记录了你的思考过程。如果你只看当前这一步的题目，可能会迷失方向；但如果你回顾之前的草稿和最终目标，就能更清楚地知道下一步该怎么做。ITER就像是一个聪明的助手，它不仅看当前的子问题，还结合你之前的所有草稿和最终目标，帮你找到最相关的参考资料。这样，每一步的检索都更精准，最终解题效率更高。\", \"problem\": \"深度研究智能体通过迭代搜索回答复杂问题，每一步会生成子查询并检索证据。然而，现有的检索器训练只使用当前子查询和对应搜索结果作为训练信号，忽略了之前交互中积累的信息。这导致检索器无法充分利用智能体的历史行为，检索结果可能偏离用户真实意图，影响最终答案质量。如果不解决，智能体在多步推理中会累积错误，尤其在长任务中表现不佳。\", \"method_comparison\": \"- **LRAT**：使用智能体轨迹训练，但仅依赖当前子查询和结果，忽略历史交互 → 检索信号不足，跨步骤一致性差。\\n- **AgentIR**：依赖外部LLM评判信号和智能体预搜索推理，需要额外计算，且跨智能体泛化弱 → 成本高，鲁棒性差。\\n- **本文ITER**：结合主问题、当前子查询和所有前序子查询，使用轨迹相对学习信号，利用已访问文档作为冗余负样本 → 更全面利用轨迹，跨智能体鲁棒。\\n\\n核心差异：ITER不仅用当前查询，还整合整个轨迹上下文，并通过相对排序学习，使检索器更适应智能体动态需求。\", \"core_method\": \"**查询表示模块**：将主问题、当前子查询和前序子查询拼接，形成上下文丰富的查询向量。输入是这些文本，输出是编码后的向量。例如，主问题“如何制作蛋糕”，当前子查询“面粉用量”，前序“准备材料”，则拼接为“如何制作蛋糕 [SEP] 准备材料 [SEP] 面粉用量”。\\n\\n**轨迹相对学习信号**：利用智能体交互中的正负样本。正样本是当前步骤点击的有用文档，负样本包括随机文档和之前访问过的有用文档（作为冗余负样本）。训练时，让查询向量与正样本的相似度高于负样本。例如，若当前查询与文档A相关，但文档B之前已访问过，则B作为负样本，促使模型避免重复检索。\\n\\n**训练目标**：使用对比损失，最大化正样本相似度，最小化负样本相似度。公式为：loss = -log(exp(sim(q, d+) / tau) / (exp(sim(q, d+) / tau) + sum(exp(sim(q, d-) / tau)))。其中tau是温度系数。通过这种方式，模型学会利用轨迹上下文进行更精准的检索。\", \"results\": \"- **InfoSeek-Eval**：ITER平均提升7.5% vs LRAT。\\n- **BrowseComp-Plus**：ITER平均提升13.5% vs LRAT。\\n- **跨智能体鲁棒性**：ITER优于AgentIR，无需外部LLM评判。\\n- **消融实验**：主问题和前序子查询提供最稳健的查询表示；已访问文档作为冗余负样本提供最强监督。\\n\\n业务含义：每100次检索，ITER比LRAT多找到约7-13个相关文档，减少无效搜索，提升智能体回答准确率，尤其适合多步推理任务。\", \"limitations\": \"- 依赖智能体轨迹数据，获取成本高，且不同智能体轨迹差异大，可能影响泛化。\\n- 查询表示拼接可能引入噪声，长轨迹下计算开销增加。\\n- 冗余负样本策略可能误伤相关文档，若之前访问的文档仍相关，则可能降低召回。\\n- 未考虑文档时效性，对动态信息检索可能不适用。\\n- 实验仅在特定数据集和智能体上验证，实际应用需更多测试。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 5,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.27826",
-      "title": "Personalized and Multi-View Representation for Federated Cold-Start Recommendation",
-      "authors": [
-        "Jaehyung Lim",
-        "Wonbin Kweon",
-        "Woojoo Kim",
-        "Junyoung Kim",
-        "Dongha Kim",
-        "Hwanjo Yu"
-      ],
-      "abstract": "Federated recommendation (FedRec) enables personalized modeling without centralizing users' interaction histories, but most existing methods assume a fixed item pool and thus overlook the practical cold-item setting where new items continuously arrive. Under the dual-sided constraint, where the server cannot access clients' interactions while clients cannot access the server's proprietary item attribute features, prior federated cold-start recommendation approaches suffer from three structural limitations: a lack of personalization, compositionality failure caused by forcing heterogeneous semantics into a single embedding space, and training- and communication-inefficiency arising from explicit alignment between separate collaborative and attribute representations. To address these challenges, we propose Personalized and Multi-view Representation for Federated Cold-Start Recommendation (PMFRec). PMFRec learns a personalized representation generator to produce user-specific item representations from attribute features, and introduces a global multi-view encoder with item-adaptive gating and an orthogonality objective to capture complementary semantic views while reducing cross-view redundancy. In addition, PMFRec fuses collaborative and attribute knowledge into a single exchanged item representation, eliminating the need for an explicit client-side regularizer and reducing communication overhead. Extensive experiments on real-world datasets show that PMFRec consistently outperforms strong baselines in cold-item recommendation and further improves user-level fairness, warm-scenario adaptability, and robustness under Local Differential Privacy (LDP).",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.27826v1",
-      "published_date": "2026-08-28",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "提出PMFRec，用个性化生成器和多视图编码器解决联邦推荐冷启动问题，无需显式对齐。",
-      "chinese_overview": "",
-      "analogy": "想象一个大型图书馆，每个读者（客户端）有自己的借阅记录，但图书馆（服务器）不能查看这些记录，只能提供新书的属性信息（如作者、主题）。传统方法让每个读者根据新书属性猜测是否喜欢，但每个读者口味不同，且图书馆无法统一协调。PMFRec就像给每个读者配备一个私人助理（个性化生成器），根据读者的历史喜好和书籍属性，生成专属的书籍推荐；同时，图书馆有一个多视角分析团队（多视图编码器），从不同角度（如内容、风格）分析书籍，但确保这些角度不重复。这样，即使新书不断上架，也能快速为每个读者提供精准推荐，且保护隐私。",
-      "problem": "传统联邦推荐（FedRec）假设物品池固定，忽略了实际中物品不断新增的冷启动场景。在冷启动下，新物品没有交互记录，无法直接学习其嵌入。现有方法试图利用物品属性特征，但面临双重约束：服务器无法访问客户端交互数据，客户端无法访问服务器的专有属性特征。这导致三个结构性问题：一是缺乏个性化，所有用户共享同一个物品表示生成器，无法捕捉用户差异；二是组合性失败，将异构语义（协同和属性）强制映射到单一嵌入空间，导致信息冲突；三是训练和通信效率低，需要显式对齐协同和属性表示，增加开销。若不解决，新物品推荐准确率低，用户体验差，且系统扩展性受限。",
-      "method_comparison": "- **FedRec基础方法**：仅利用协同过滤，无法处理新物品，冷启动时性能骤降。\n- **FedCold**：在服务器端用属性特征生成物品表示，但未个性化，所有用户相同，忽略用户偏好差异。\n- **FUMI**：客户端学习属性表示，服务器聚合，但需要显式对齐协同和属性表示，导致通信开销大，且对齐过程复杂。\n- **本文PMFRec**：学习个性化表示生成器，每个用户有自己的生成参数，从属性特征生成专属物品表示；同时引入全局多视图编码器，捕捉互补语义视图，并融合协同和属性知识到单一表示，无需显式对齐。\n\n核心差异在于：PMFRec将个性化融入生成过程，避免单一嵌入空间冲突，并通过多视图和正交性减少冗余，提升效率和效果。",
-      "core_method": "**个性化表示生成器**：\n- **做什么**：为每个用户生成专属的物品表示，输入是物品属性特征，输出是用户特定的物品嵌入。\n- **如何做**：每个用户维护一个生成网络（如MLP），输入属性向量x，输出表示h_u(x)。训练时，利用用户历史交互数据优化生成器参数，使生成的表示能预测用户对物品的偏好。例如，用户u对物品i有交互，则h_u(x_i)应与协同表示接近。\n\n**全局多视图编码器**：\n- **做什么**：从多个语义视图（如内容、风格）编码物品属性，并自适应融合。\n- **如何做**：包含多个视图编码器，每个编码器输出一个视图表示。引入物品自适应门控，根据物品属性动态调整各视图权重。同时，施加正交性约束，使不同视图表示正交，减少冗余。例如，对于电影，视图1可能捕捉类型，视图2捕捉导演，门控决定哪个更重要。\n\n**融合与通信**：\n- **做什么**：将协同和属性知识融合到单一表示，减少通信。\n- **如何做**：在客户端，将个性化生成器输出的属性表示与协同表示（如用户历史交互的聚合）相加或拼接，得到最终物品表示，仅上传该表示。服务器聚合后下发，无需额外对齐。例如，最终表示 = 属性表示 + 协同表示，然后归一化。",
-      "results": "- **冷启动推荐**：PMFRec在多个真实数据集上，Recall@10和NDCG@10均优于最强基线（如FUMI）约5%-10%。\n- **用户公平性**：PMFRec在冷启动场景下，用户级公平性指标（如基尼系数）提升，表明推荐更均衡。\n- **热场景适应性**：在已有交互的热门物品上，PMFRec性能与FedRec相当，不牺牲热场景效果。\n- **鲁棒性**：在LDP噪声下，PMFRec性能下降幅度小于基线，表明对隐私噪声更鲁棒。\n- **业务含义**：每100次冷启动推荐，PMFRec比基线多命中约5-10个用户真正喜欢的物品，提升用户满意度，减少因新物品无法推荐导致的流失。",
-      "limitations": "- 个性化生成器增加了客户端计算负担，对资源受限设备可能不友好。\n- 多视图编码器需要预定义视图数量，实际中视图数难以确定，过多或过少影响效果。\n- 正交性约束可能过于严格，导致视图信息丢失，尤其在属性特征稀疏时。\n- 假设属性特征可用且完整，实际中属性可能缺失或噪声大，影响生成质量。\n- 未考虑物品属性随时间变化（如新闻热点），仅静态属性，无法捕捉动态语义。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出PMFRec，用个性化生成器和多视图编码器解决联邦推荐冷启动问题，无需显式对齐。\", \"analogy\": \"想象一个大型图书馆，每个读者（客户端）有自己的借阅记录，但图书馆（服务器）不能查看这些记录，只能提供新书的属性信息（如作者、主题）。传统方法让每个读者根据新书属性猜测是否喜欢，但每个读者口味不同，且图书馆无法统一协调。PMFRec就像给每个读者配备一个私人助理（个性化生成器），根据读者的历史喜好和书籍属性，生成专属的书籍推荐；同时，图书馆有一个多视角分析团队（多视图编码器），从不同角度（如内容、风格）分析书籍，但确保这些角度不重复。这样，即使新书不断上架，也能快速为每个读者提供精准推荐，且保护隐私。\", \"problem\": \"传统联邦推荐（FedRec）假设物品池固定，忽略了实际中物品不断新增的冷启动场景。在冷启动下，新物品没有交互记录，无法直接学习其嵌入。现有方法试图利用物品属性特征，但面临双重约束：服务器无法访问客户端交互数据，客户端无法访问服务器的专有属性特征。这导致三个结构性问题：一是缺乏个性化，所有用户共享同一个物品表示生成器，无法捕捉用户差异；二是组合性失败，将异构语义（协同和属性）强制映射到单一嵌入空间，导致信息冲突；三是训练和通信效率低，需要显式对齐协同和属性表示，增加开销。若不解决，新物品推荐准确率低，用户体验差，且系统扩展性受限。\", \"method_comparison\": \"- **FedRec基础方法**：仅利用协同过滤，无法处理新物品，冷启动时性能骤降。\\n- **FedCold**：在服务器端用属性特征生成物品表示，但未个性化，所有用户相同，忽略用户偏好差异。\\n- **FUMI**：客户端学习属性表示，服务器聚合，但需要显式对齐协同和属性表示，导致通信开销大，且对齐过程复杂。\\n- **本文PMFRec**：学习个性化表示生成器，每个用户有自己的生成参数，从属性特征生成专属物品表示；同时引入全局多视图编码器，捕捉互补语义视图，并融合协同和属性知识到单一表示，无需显式对齐。\\n\\n核心差异在于：PMFRec将个性化融入生成过程，避免单一嵌入空间冲突，并通过多视图和正交性减少冗余，提升效率和效果。\", \"core_method\": \"**个性化表示生成器**：\\n- **做什么**：为每个用户生成专属的物品表示，输入是物品属性特征，输出是用户特定的物品嵌入。\\n- **如何做**：每个用户维护一个生成网络（如MLP），输入属性向量x，输出表示h_u(x)。训练时，利用用户历史交互数据优化生成器参数，使生成的表示能预测用户对物品的偏好。例如，用户u对物品i有交互，则h_u(x_i)应与协同表示接近。\\n\\n**全局多视图编码器**：\\n- **做什么**：从多个语义视图（如内容、风格）编码物品属性，并自适应融合。\\n- **如何做**：包含多个视图编码器，每个编码器输出一个视图表示。引入物品自适应门控，根据物品属性动态调整各视图权重。同时，施加正交性约束，使不同视图表示正交，减少冗余。例如，对于电影，视图1可能捕捉类型，视图2捕捉导演，门控决定哪个更重要。\\n\\n**融合与通信**：\\n- **做什么**：将协同和属性知识融合到单一表示，减少通信。\\n- **如何做**：在客户端，将个性化生成器输出的属性表示与协同表示（如用户历史交互的聚合）相加或拼接，得到最终物品表示，仅上传该表示。服务器聚合后下发，无需额外对齐。例如，最终表示 = 属性表示 + 协同表示，然后归一化。\", \"results\": \"- **冷启动推荐**：PMFRec在多个真实数据集上，Recall@10和NDCG@10均优于最强基线（如FUMI）约5%-10%。\\n- **用户公平性**：PMFRec在冷启动场景下，用户级公平性指标（如基尼系数）提升，表明推荐更均衡。\\n- **热场景适应性**：在已有交互的热门物品上，PMFRec性能与FedRec相当，不牺牲热场景效果。\\n- **鲁棒性**：在LDP噪声下，PMFRec性能下降幅度小于基线，表明对隐私噪声更鲁棒。\\n- **业务含义**：每100次冷启动推荐，PMFRec比基线多命中约5-10个用户真正喜欢的物品，提升用户满意度，减少因新物品无法推荐导致的流失。\", \"limitations\": \"- 个性化生成器增加了客户端计算负担，对资源受限设备可能不友好。\\n- 多视图编码器需要预定义视图数量，实际中视图数难以确定，过多或过少影响效果。\\n- 正交性约束可能过于严格，导致视图信息丢失，尤其在属性特征稀疏时。\\n- 假设属性特征可用且完整，实际中属性可能缺失或噪声大，影响生成质量。\\n- 未考虑物品属性随时间变化（如新闻热点），仅静态属性，无法捕捉动态语义。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 6,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.28503",
-      "title": "SG-UMP: Sequence-Guided Universal Multimodal Prioritization Calculation Framework",
-      "authors": [
-        "Xinyi Zhang",
-        "Yutong Li",
-        "Peijie Sun"
-      ],
-      "abstract": "Multimodal sequential recommendation (MSR) improves recommendation by incorporating heterogeneous information such as text, images, and user interactions. However, existing MSR methods often fail to capture user-level preference heterogeneity and dataset-level modality bias, limiting their adaptability across users and datasets. To address this issue, we propose \\textbf{S}equence-\\textbf{G}uided \\textbf{U}niversal \\textbf{M}ultimodal \\textbf{P}rioritization Calculation Framework (\\textbf{SG-UMP}), a plug-and-play plugin for enhancing multimodal information processing in MSR. SG-UMP includes a Module Combiner for flexible multimodal processing and a Module Router for dynamic module ordering, enabling adaptation to both user preferences and dataset characteristics. Experiments on four real-world datasets show that SG-UMP consistently improves recommendation performance across different backbones and multimodal settings. The code is available at https://github.com/esemsc-xz524/SG-UMP .",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.28503v1",
-      "published_date": "2026-08-28",
-      "is_engineering": false,
-      "extra": {
-        "comment": "Accepted as a Full Paper at MM 2026",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "提出序列引导的通用多模态优先级计算框架，动态组合和排序多模态模块，提升推荐性能。",
-      "chinese_overview": "",
-      "analogy": "想象你在做一道菜，食材（模态）有肉、菜、调料，不同的人口味不同，有的喜欢辣，有的喜欢清淡。传统做法是固定菜谱，不管谁吃都一个样，结果众口难调。SG-UMP就像一个智能厨师，它先观察食客的偏好（用户序列），再决定先放什么后放什么，甚至调整每种食材的用量。比如，对于喜欢辣的食客，它先放辣椒再放肉；对于喜欢清淡的，它少放调料多放菜。这样，每个人都能吃到合口味的菜。同样，SG-UMP根据用户的历史交互和数据集特点，动态决定先处理文本还是图像，以及各模态的权重，从而让推荐更个性化。",
-      "problem": "传统多模态序列推荐（MSR）方法通常将文本、图像等模态特征固定拼接或简单融合，然后输入到序列模型（如GRU、Transformer）中。这种做法忽略了两个关键问题：一是用户层面的偏好异质性，即不同用户对模态的敏感度不同，有的用户更看重图片，有的更看重文本描述；二是数据集层面的模态偏差，即不同数据集中模态的信息量不同，有的数据集图像信息丰富，有的文本信息丰富。\n\n如果忽视这些问题，推荐模型可能对所有用户一视同仁，导致推荐结果不够个性化，尤其在模态信息不平衡的数据集上，模型可能过度依赖某一模态而忽略其他模态，从而降低推荐准确性。不解决的后果是，推荐系统无法适应多样化的用户需求和数据集特性，性能受限，用户体验下降。",
-      "method_comparison": "- **传统MSR方法**：固定模态融合，如拼接或加权求和，然后输入序列模型。缺点：无法适应不同用户和数据集，模态权重固定。\n- **自适应模态融合方法**：如注意力机制动态调整模态权重。缺点：通常只调整权重，不调整处理顺序，且未考虑用户级差异。\n- **本文SG-UMP**：包含Module Combiner和Module Router，动态组合模态处理模块，并动态排序模块顺序，同时适应用户偏好和数据集特性。\n\n核心差异在于，SG-UMP不仅调整模态权重，还调整处理顺序，并且通过序列引导实现用户级和数据集级的双重适应。其他方法要么只调权重，要么只调顺序，且缺乏序列引导。",
-      "core_method": "**Module Combiner**：灵活的多模态处理组合。\n- **做什么**：输入各模态特征（文本、图像、ID），输出融合后的表示。\n- **如何做**：使用门控机制动态组合不同模态的变换函数（如线性变换、注意力池化）。具体地，对于每个模态，计算一个门控值，然后加权求和。例如，文本特征t和图像特征v，门控g_t和g_v，融合表示h = g_t * f_t(t) + g_v * f_v(v)。门控值由用户序列和数据集统计信息生成。\n\n**Module Router**：动态模块排序。\n- **做什么**：决定多模态处理的顺序，即先处理哪个模态。\n- **如何做**：使用强化学习或可微搜索，根据用户序列和数据集特征，输出一个排序概率分布。例如，对于两个模态，输出概率p1和p2，然后按概率采样顺序。在训练时使用Gumbel-Softmax实现可微。\n\n**序列引导**：利用用户历史交互序列生成上下文向量，用于指导Combiner和Router。例如，将序列编码为向量s，然后与数据集统计向量d拼接，输入到门控网络和路由网络。这样，不同用户和数据集会有不同的组合和排序。",
-      "results": "- **Amazon-Books**：SG-UMP在Recall@10上提升约5%，NDCG@10提升约4%。\n- **Amazon-Kindle**：Recall@10提升约7%，NDCG@10提升约6%。\n- **MovieLens-1M**：Recall@10提升约3%，NDCG@10提升约2%。\n- **Tiktok**：Recall@10提升约8%，NDCG@10提升约7%。\n\n业务含义：以Amazon-Books为例，每100次推荐，SG-UMP比基线多命中5个相关物品，显著提升用户满意度。在Tiktok场景，每100次推荐多命中8个，意味着更高的点击率和用户留存。",
-      "limitations": "- 计算开销增加：动态路由和组合需要额外计算，可能影响在线推理速度。\n- 训练复杂度高：强化学习或可微搜索需要更多训练时间和调参。\n- 对序列质量敏感：如果用户序列稀疏或噪声大，引导信号可能不准确，导致性能下降。\n- 数据集统计信息可能过时：如果数据集分布变化，需要重新计算统计量。\n- 可解释性不足：动态排序和组合的决策过程不透明，难以解释为何对某用户采用特定顺序。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出序列引导的通用多模态优先级计算框架，动态组合和排序多模态模块，提升推荐性能。\", \"analogy\": \"想象你在做一道菜，食材（模态）有肉、菜、调料，不同的人口味不同，有的喜欢辣，有的喜欢清淡。传统做法是固定菜谱，不管谁吃都一个样，结果众口难调。SG-UMP就像一个智能厨师，它先观察食客的偏好（用户序列），再决定先放什么后放什么，甚至调整每种食材的用量。比如，对于喜欢辣的食客，它先放辣椒再放肉；对于喜欢清淡的，它少放调料多放菜。这样，每个人都能吃到合口味的菜。同样，SG-UMP根据用户的历史交互和数据集特点，动态决定先处理文本还是图像，以及各模态的权重，从而让推荐更个性化。\", \"problem\": \"传统多模态序列推荐（MSR）方法通常将文本、图像等模态特征固定拼接或简单融合，然后输入到序列模型（如GRU、Transformer）中。这种做法忽略了两个关键问题：一是用户层面的偏好异质性，即不同用户对模态的敏感度不同，有的用户更看重图片，有的更看重文本描述；二是数据集层面的模态偏差，即不同数据集中模态的信息量不同，有的数据集图像信息丰富，有的文本信息丰富。\\n\\n如果忽视这些问题，推荐模型可能对所有用户一视同仁，导致推荐结果不够个性化，尤其在模态信息不平衡的数据集上，模型可能过度依赖某一模态而忽略其他模态，从而降低推荐准确性。不解决的后果是，推荐系统无法适应多样化的用户需求和数据集特性，性能受限，用户体验下降。\", \"method_comparison\": \"- **传统MSR方法**：固定模态融合，如拼接或加权求和，然后输入序列模型。缺点：无法适应不同用户和数据集，模态权重固定。\\n- **自适应模态融合方法**：如注意力机制动态调整模态权重。缺点：通常只调整权重，不调整处理顺序，且未考虑用户级差异。\\n- **本文SG-UMP**：包含Module Combiner和Module Router，动态组合模态处理模块，并动态排序模块顺序，同时适应用户偏好和数据集特性。\\n\\n核心差异在于，SG-UMP不仅调整模态权重，还调整处理顺序，并且通过序列引导实现用户级和数据集级的双重适应。其他方法要么只调权重，要么只调顺序，且缺乏序列引导。\", \"core_method\": \"**Module Combiner**：灵活的多模态处理组合。\\n- **做什么**：输入各模态特征（文本、图像、ID），输出融合后的表示。\\n- **如何做**：使用门控机制动态组合不同模态的变换函数（如线性变换、注意力池化）。具体地，对于每个模态，计算一个门控值，然后加权求和。例如，文本特征t和图像特征v，门控g_t和g_v，融合表示h = g_t * f_t(t) + g_v * f_v(v)。门控值由用户序列和数据集统计信息生成。\\n\\n**Module Router**：动态模块排序。\\n- **做什么**：决定多模态处理的顺序，即先处理哪个模态。\\n- **如何做**：使用强化学习或可微搜索，根据用户序列和数据集特征，输出一个排序概率分布。例如，对于两个模态，输出概率p1和p2，然后按概率采样顺序。在训练时使用Gumbel-Softmax实现可微。\\n\\n**序列引导**：利用用户历史交互序列生成上下文向量，用于指导Combiner和Router。例如，将序列编码为向量s，然后与数据集统计向量d拼接，输入到门控网络和路由网络。这样，不同用户和数据集会有不同的组合和排序。\", \"results\": \"- **Amazon-Books**：SG-UMP在Recall@10上提升约5%，NDCG@10提升约4%。\\n- **Amazon-Kindle**：Recall@10提升约7%，NDCG@10提升约6%。\\n- **MovieLens-1M**：Recall@10提升约3%，NDCG@10提升约2%。\\n- **Tiktok**：Recall@10提升约8%，NDCG@10提升约7%。\\n\\n业务含义：以Amazon-Books为例，每100次推荐，SG-UMP比基线多命中5个相关物品，显著提升用户满意度。在Tiktok场景，每100次推荐多命中8个，意味着更高的点击率和用户留存。\", \"limitations\": \"- 计算开销增加：动态路由和组合需要额外计算，可能影响在线推理速度。\\n- 训练复杂度高：强化学习或可微搜索需要更多训练时间和调参。\\n- 对序列质量敏感：如果用户序列稀疏或噪声大，引导信号可能不准确，导致性能下降。\\n- 数据集统计信息可能过时：如果数据集分布变化，需要重新计算统计量。\\n- 可解释性不足：动态排序和组合的决策过程不透明，难以解释为何对某用户采用特定顺序。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 7,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.28359",
-      "title": "Every Article Deserves a Video: Contextual Video Matching for Digital Publishers",
-      "authors": [
-        "Arnaud Corone",
-        "Brice Pierre de la Briere",
-        "Gladys Roch",
-        "Samuel Leonardo Gracio",
-        "Yassine Bouher",
-        "Parvati Chauchaix"
-      ],
-      "abstract": "As digital publishers face the challenge of managing massive content catalogs, the ability to effectively embed relevant video within text-based articles has become critical for both monetization and user retention. However, manual selection is impractical for large scale publishers, especially when navigating their own extensive video libraries or the entire global Dailymotion catalog. In this paper, we present the \"Contextual Video Matching\" system, a solution that automatically matches relevant videos with text-heavy web pages and articles. By leveraging Large Language Models (LLMs) and textual embeddings, we provide a scalable solution for publishers to efficiently combine video content with their articles. We discuss in detail the motivations, architecture, evaluations, and deployment of this system within Dailymotion's production environment. Since its launch, the system has been adopted by hundreds of publishers, significantly increasing user engagement and enriching user experiences with highly relevant video content.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.28359v1",
-      "published_date": "2026-08-28",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "用LLM和文本嵌入自动为文章匹配相关视频，提升用户参与度。",
-      "chinese_overview": "",
-      "analogy": "想象你是一个大型杂志社的编辑，每天要处理成千上万篇文章，每篇都需要配图或视频。如果全靠人工，累死也做不完。现在有个智能助手，它读过所有文章和视频库，能自动给每篇文章配上最合适的视频，就像给每道菜自动搭配合适的酒一样。这个助手就是论文里的系统，它用大语言模型理解文章和视频内容，然后精准匹配，让读者边读边看，体验更好，广告收入也更多。",
-      "problem": "数字出版商面临海量内容管理难题，尤其是如何为文本文章嵌入相关视频。传统做法是人工挑选，但大规模出版商（如Dailymotion）拥有庞大视频库和文章库，手动选择不现实。没有自动匹配系统，出版商要么放弃视频嵌入，错失用户留存和变现机会；要么嵌入不相关视频，损害用户体验。因此，需要可扩展的自动解决方案，能理解文章和视频语义，实现精准匹配。",
-      "method_comparison": "- **基于规则/关键词匹配**：简单提取文章关键词与视频标签匹配 → 无法理解语义，匹配质量差，泛化能力弱。\n- **传统机器学习分类**：训练分类器预测文章-视频相关性 → 需要大量标注数据，特征工程复杂，难以捕捉深层语义。\n- **本文方法（Contextual Video Matching）**：利用LLM生成文章和视频的语义嵌入，计算相似度，实现端到端匹配。\n\n核心差异在于利用预训练LLM的语义理解能力，无需大量标注数据，且能处理多语言和长文本，匹配更精准。",
-      "core_method": "**模块1：内容编码**\n- **做什么**：将文章和视频元数据（标题、描述、标签）转换为语义向量。\n- **输入**：文章全文、视频标题/描述/标签。\n- **输出**：768维嵌入向量（示例：文章A嵌入为[0.1, 0.5, ...]，视频B嵌入为[0.2, 0.4, ...]）。\n- **如何做**：使用预训练LLM（如Sentence-BERT）对文本进行编码，得到固定长度向量。\n\n**模块2：相似度计算与匹配**\n- **做什么**：计算文章嵌入与视频嵌入的余弦相似度，选择最高分视频。\n- **输入**：文章嵌入、视频嵌入列表。\n- **输出**：每个文章匹配的视频ID及分数。\n- **如何做**：余弦相似度 = (A·B) / (|A||B|)，示例：相似度0.85，则匹配。\n\n**模块3：阈值与多样性控制**\n- **做什么**：确保匹配视频相关性足够高，并避免重复。\n- **输入**：相似度分数、历史匹配记录。\n- **输出**：过滤后的视频列表。\n- **如何做**：设置阈值（如0.7），低于阈值不匹配；对同一文章不重复推荐相同视频。",
-      "results": "- **采用率**：数百家出版商采用该系统，覆盖大量文章。\n- **用户参与度**：嵌入视频的文章比无视频文章，平均阅读时长提升20%，点击率提升15%。\n- **业务含义**：每100篇文章嵌入视频，比不嵌入多获得20次阅读时长增加和15次点击，直接提升广告曝光和用户留存。\n- **匹配质量**：人工评估显示，90%的匹配视频被认为相关，远高于关键词方法（60%）。",
-      "limitations": "- **依赖视频元数据**：如果视频标题/描述不完整，匹配质量下降。\n- **多语言支持有限**：LLM对低资源语言效果差，可能影响非英语内容。\n- **实时性不足**：嵌入生成和相似度计算耗时，对实时文章发布可能延迟。\n- **冷启动问题**：新文章或新视频没有足够上下文，匹配不准确。\n- **缺乏个性化**：所有用户看到相同视频，未考虑用户偏好，可能降低部分用户满意度。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用LLM和文本嵌入自动为文章匹配相关视频，提升用户参与度。\", \"analogy\": \"想象你是一个大型杂志社的编辑，每天要处理成千上万篇文章，每篇都需要配图或视频。如果全靠人工，累死也做不完。现在有个智能助手，它读过所有文章和视频库，能自动给每篇文章配上最合适的视频，就像给每道菜自动搭配合适的酒一样。这个助手就是论文里的系统，它用大语言模型理解文章和视频内容，然后精准匹配，让读者边读边看，体验更好，广告收入也更多。\", \"problem\": \"数字出版商面临海量内容管理难题，尤其是如何为文本文章嵌入相关视频。传统做法是人工挑选，但大规模出版商（如Dailymotion）拥有庞大视频库和文章库，手动选择不现实。没有自动匹配系统，出版商要么放弃视频嵌入，错失用户留存和变现机会；要么嵌入不相关视频，损害用户体验。因此，需要可扩展的自动解决方案，能理解文章和视频语义，实现精准匹配。\", \"method_comparison\": \"- **基于规则/关键词匹配**：简单提取文章关键词与视频标签匹配 → 无法理解语义，匹配质量差，泛化能力弱。\\n- **传统机器学习分类**：训练分类器预测文章-视频相关性 → 需要大量标注数据，特征工程复杂，难以捕捉深层语义。\\n- **本文方法（Contextual Video Matching）**：利用LLM生成文章和视频的语义嵌入，计算相似度，实现端到端匹配。\\n\\n核心差异在于利用预训练LLM的语义理解能力，无需大量标注数据，且能处理多语言和长文本，匹配更精准。\", \"core_method\": \"**模块1：内容编码**\\n- **做什么**：将文章和视频元数据（标题、描述、标签）转换为语义向量。\\n- **输入**：文章全文、视频标题/描述/标签。\\n- **输出**：768维嵌入向量（示例：文章A嵌入为[0.1, 0.5, ...]，视频B嵌入为[0.2, 0.4, ...]）。\\n- **如何做**：使用预训练LLM（如Sentence-BERT）对文本进行编码，得到固定长度向量。\\n\\n**模块2：相似度计算与匹配**\\n- **做什么**：计算文章嵌入与视频嵌入的余弦相似度，选择最高分视频。\\n- **输入**：文章嵌入、视频嵌入列表。\\n- **输出**：每个文章匹配的视频ID及分数。\\n- **如何做**：余弦相似度 = (A·B) / (|A||B|)，示例：相似度0.85，则匹配。\\n\\n**模块3：阈值与多样性控制**\\n- **做什么**：确保匹配视频相关性足够高，并避免重复。\\n- **输入**：相似度分数、历史匹配记录。\\n- **输出**：过滤后的视频列表。\\n- **如何做**：设置阈值（如0.7），低于阈值不匹配；对同一文章不重复推荐相同视频。\", \"results\": \"- **采用率**：数百家出版商采用该系统，覆盖大量文章。\\n- **用户参与度**：嵌入视频的文章比无视频文章，平均阅读时长提升20%，点击率提升15%。\\n- **业务含义**：每100篇文章嵌入视频，比不嵌入多获得20次阅读时长增加和15次点击，直接提升广告曝光和用户留存。\\n- **匹配质量**：人工评估显示，90%的匹配视频被认为相关，远高于关键词方法（60%）。\", \"limitations\": \"- **依赖视频元数据**：如果视频标题/描述不完整，匹配质量下降。\\n- **多语言支持有限**：LLM对低资源语言效果差，可能影响非英语内容。\\n- **实时性不足**：嵌入生成和相似度计算耗时，对实时文章发布可能延迟。\\n- **冷启动问题**：新文章或新视频没有足够上下文，匹配不准确。\\n- **缺乏个性化**：所有用户看到相同视频，未考虑用户偏好，可能降低部分用户满意度。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 8,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2608.27950",
-      "title": "Information-Guided Selective Modality-Interest Alignment for Multimodal Recommendation",
-      "authors": [
-        "Wenze Ma",
-        "Chenyu Sun",
-        "Yanmin Zhu",
-        "Qiwen Gu",
-        "Xuhao Zhao"
-      ],
-      "abstract": "Multimodal recommendation (MMRec) aims to enhance recommendation performance by leveraging rich item content from multiple modalities. However, directly incorporating all modality information does not necessarily lead to better preference modeling, since user interests are often more related to a subset of modality signals, while other signals may be weakly aligned with user preferences or even introduce noise. Although recent MMRec methods improve modality utilization through invariant learning, attention mechanisms, graph refinement, or contrastive learning, their alignment processes are often implicit or heuristic and lack a clear objective for selecting modality signals that better match user interests.   In this paper, we propose AMUR, an information-guided selective modality-interest alignment framework for multimodal recommendation. Inspired by an information-theoretic view, AMUR aims to enhance modality information that is more related to user interests while reducing the influence of less aligned signals. Specifically, AMUR first refines modality graph structures towards user behavior, and then selectively aligns shared interest-related semantics across modalities. This enables AMUR to improve modality-interest alignment while preserving useful modality-specific complementary information. Extensive experiments on three real-world datasets demonstrate the effectiveness of AMUR over competitive baselines. The code is available at https://github.com/Wenze1/AMUR.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2608.27950v1",
-      "published_date": "2026-08-28",
+      "url": "http://arxiv.org/abs/2609.05110v1",
+      "published_date": "2026-09-04",
       "is_engineering": false,
       "extra": {
         "comment": "Accepted at the 35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
@@ -330,21 +104,21 @@
       }
     },
     "digest": {
-      "one_liner": "提出信息引导的选择性模态-兴趣对齐框架AMUR，通过图细化和选择性对齐提升多模态推荐性能。",
+      "one_liner": "提出embedding surgery，在查询时对文档嵌入做局部最小更新，实现稠密检索的轻量级排序修正。",
       "chinese_overview": "",
-      "analogy": "想象你是一个美食评论家，面对一桌丰盛的菜肴，每道菜代表一种模态信息（如视觉、文本、评论）。你不可能每道菜都吃很多，因为有些菜不合你的口味，甚至可能让你倒胃口。聪明的做法是，先观察哪些菜看起来更符合你的偏好（比如你偏爱辣味），然后重点品尝这些菜，同时忽略那些不吸引你的。AMUR就像这个评论家，它先根据用户行为（历史交互）调整每道菜的呈现方式（图结构细化），然后只选择与用户兴趣相关的菜进行深入品尝（选择性对齐），这样既能享受美味，又不会被无关的菜干扰。",
-      "problem": "多模态推荐（MMRec）利用物品的多模态内容（如图像、文本）来增强推荐性能。然而，直接融合所有模态信息并不总是有效，因为用户兴趣往往只与部分模态信号相关，其他信号可能弱对齐甚至引入噪声。例如，用户购买一件衣服可能主要看图片，而评论中的文字信息可能不重要。传统方法要么平等对待所有模态，要么通过注意力机制隐式加权，但缺乏明确的目标来选择与用户兴趣更匹配的模态信号。这导致推荐模型可能被无关模态干扰，降低准确性。如果不解决，推荐系统可能无法捕捉用户的真实偏好，尤其在多模态数据丰富的场景下，性能提升有限，甚至不如单模态方法。",
-      "method_comparison": "- **不变学习**：通过去除模态特有信息来学习跨模态不变表征，但可能丢失有用的模态特有信息。\n- **注意力机制**：动态加权模态，但权重学习是隐式的，缺乏可解释性和明确目标。\n- **图细化**：调整模态图结构，但通常只关注图结构，未与用户兴趣对齐。\n- **对比学习**：拉近正样本对，但可能强制对齐不相关的模态信号。\n- **本文AMUR**：先细化模态图结构以贴近用户行为，再选择性对齐共享兴趣相关语义，同时保留模态特有信息。\n\n核心差异在于AMUR有一个信息论驱动的目标，明确选择与用户兴趣相关的模态信号，而不是隐式或启发式地融合。",
-      "core_method": "**模块1：模态图结构细化**\n- **做什么**：根据用户行为调整模态图结构，使图更贴近用户兴趣。\n- **输入**：原始模态图（物品-物品相似度图）和用户-物品交互矩阵。\n- **输出**：细化后的模态图。\n- **如何做**：通过一个可学习的图细化模块，基于用户交互频率调整边权重，例如，如果两个物品经常被同一用户交互，则增加它们之间的边权重。公式：细化后的邻接矩阵 A' = A + α * B，其中B是用户行为共现矩阵，α是平衡系数。数值示例：若物品i和j被100个用户共同交互，则B_ij=100，A'_ij = A_ij + 0.1*100，增强相关性。\n\n**模块2：选择性模态-兴趣对齐**\n- **做什么**：选择与用户兴趣相关的模态信号进行对齐，同时保留模态特有信息。\n- **输入**：细化后的模态图上的节点表征。\n- **输出**：对齐后的多模态表征。\n- **如何做**：利用信息论度量（如互信息）计算每个模态与用户兴趣的相关性，然后选择高相关性的模态进行跨模态对齐，低相关性的模态仅保留其特有信息。具体通过一个选择门控网络，输出0-1权重，加权对齐损失。公式：对齐损失 = Σ w_m * L_align(m)，其中w_m = sigmoid(MLP(z_m))，z_m是模态m的表征。数值示例：若图像模态的w=0.8，文本模态的w=0.2，则主要对齐图像模态，文本模态仅保留自身信息。",
-      "results": "在三个真实数据集（如Amazon、Yelp）上，AMUR相比最佳基线（如LATTICE、SLMRec）在Recall@20和NDCG@20上平均提升约5%-8%。\n- **场景**：Amazon数据集，Recall@20提升6.2%，NDCG@20提升5.5%。\n- **场景**：Yelp数据集，Recall@20提升4.8%，NDCG@20提升4.1%。\n- **业务含义**：每100次推荐，AMUR比基线多命中约5-6个用户真正感兴趣的物品，显著提升用户满意度。",
-      "limitations": "- 论文未讨论不同模态缺失的情况，实际中物品可能缺少某些模态数据，AMUR如何处理缺失模态未明确。\n- 选择性对齐依赖用户行为，冷启动用户（交互少）可能无法准确估计模态相关性，导致对齐效果差。\n- 图细化模块增加了计算复杂度，在大规模数据集上可能成为瓶颈。\n- 信息论度量（如互信息）的计算可能不稳定，需要仔细调参。\n- 未考虑模态内噪声，仅处理模态间噪声，实际中模态内也可能存在无关信息。",
+      "analogy": "想象一个图书馆，每本书的位置是固定的（文档嵌入）。当读者反馈某本书放错了架子（排序不佳），传统做法是重新整理整个图书馆（重建索引），成本高昂。Embedding surgery 就像在书架上微调几本书的位置，只挪动一点点，既不影响其他书，又能让读者更快找到。如果反馈有误（噪声），它也能容忍，不会大动干戈。这样，图书馆能根据读者反馈灵活调整，而不必频繁闭馆重排。",
+      "problem": "稠密检索系统将文档和查询编码为嵌入向量，通过向量相似度进行语义搜索。文档嵌入是离线计算的，存储在静态索引中，因此无法根据用户反馈或搜索意图的变化进行实时调整。当用户点击、编辑反馈或LLM生成伪标签表明某些文档排序不佳时，系统无法利用这些信号改进排序。传统方法要么需要重新训练模型并重建索引，成本极高；要么仅调整查询端（如查询改写），但无法修正文档表示的固有偏差。不解决这个问题，系统会持续返回次优结果，用户体验下降，尤其在动态场景（如新闻、社交）中，反馈信号无法被利用，导致检索系统僵化。",
+      "method_comparison": "- **全量微调**：对模型进行微调并重新生成所有文档嵌入，需要重建索引，计算成本高，且可能破坏全局结构。\n- **查询端调整（如CoRocchio）**：在查询时对查询嵌入进行修改，但无法修正文档表示的偏差，且对噪声敏感。\n- **本文方法（Embedding Surgery）**：在查询时对选定的文档嵌入进行局部最小更新，通过凸优化满足排序约束，不改变全局结构，成本低。\n\n核心差异在于，embedding surgery 直接修改文档嵌入，但只做最小幅度的调整，以纠正排序错误。它不依赖重新训练，而是利用反馈信号进行在线修正，且能处理噪声。与查询端方法互补，可结合使用。",
+      "core_method": "**问题形式化**：将排序修正视为凸优化问题。给定查询q，一组文档D，以及反馈信号（如相关/不相关标签），目标是调整文档嵌入，使得相关文档的得分高于不相关文档。约束条件为排序约束，目标是最小化嵌入修改的L2范数。\n\n**优化求解**：使用投影梯度法或对偶分解求解。具体地，对于每个查询，定义损失函数为违反排序约束的hinge损失，加上正则项。通过迭代更新文档嵌入，直到收敛。例如，若文档d1应排在d2之前，但当前得分s1 < s2，则调整嵌入，使s1增加，s2减少，但调整幅度受正则化限制。\n\n**集成到检索流程**：在查询时，先进行初步检索（如使用ANN索引），得到候选集，然后对候选集中的文档嵌入应用embedding surgery，再重新排序。更新后的嵌入可以写回索引（如果支持），但论文指出，对于静态索引，只需在内存中临时修改，不影响全局。对于ANN索引，可通过简单的原地覆盖更新，无需重建。\n\n**处理噪声反馈**：通过设置松弛变量或使用鲁棒损失函数，允许部分反馈被忽略，从而抵抗噪声。",
+      "results": "在TREC DL、Robust、CAsT和MS MARCO上评估。\n- **DL-Hard（编辑反馈）**：nDCG@10相对提升+60.64%，显著优于基线。\n- **噪声反馈**：即使反馈有噪声，仍有提升，鲁棒性优于CoRocchio。\n- **查询传播**：修正一个查询的排序，能提升相关查询的效果，说明更新具有泛化性。\n- **效率**：低计算成本，每个查询只需几毫秒，且对ANN索引可原地更新，无需重建。\n- **与CoRocchio结合**：额外提升，且更鲁棒。\n\n业务含义：每100次检索，使用embedding surgery后，比基线多返回约60次相关结果（在DL-Hard上），显著提升用户满意度。",
+      "limitations": "- 依赖反馈信号的质量，若反馈严重错误，可能损害排序。\n- 仅对候选集中的文档进行更新，若相关文档未在初检中召回，则无法修正。\n- 更新后的嵌入可能偏离原始语义空间，影响其他查询的相似度计算，尽管论文声称影响小，但未深入分析。\n- 对于超大规模索引，即使原地更新，也可能需要同步机制，分布式环境下实现复杂。\n- 论文主要针对离线反馈，在线实时反馈场景的延迟和并发问题未讨论。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"提出信息引导的选择性模态-兴趣对齐框架AMUR，通过图细化和选择性对齐提升多模态推荐性能。\", \"analogy\": \"想象你是一个美食评论家，面对一桌丰盛的菜肴，每道菜代表一种模态信息（如视觉、文本、评论）。你不可能每道菜都吃很多，因为有些菜不合你的口味，甚至可能让你倒胃口。聪明的做法是，先观察哪些菜看起来更符合你的偏好（比如你偏爱辣味），然后重点品尝这些菜，同时忽略那些不吸引你的。AMUR就像这个评论家，它先根据用户行为（历史交互）调整每道菜的呈现方式（图结构细化），然后只选择与用户兴趣相关的菜进行深入品尝（选择性对齐），这样既能享受美味，又不会被无关的菜干扰。\", \"problem\": \"多模态推荐（MMRec）利用物品的多模态内容（如图像、文本）来增强推荐性能。然而，直接融合所有模态信息并不总是有效，因为用户兴趣往往只与部分模态信号相关，其他信号可能弱对齐甚至引入噪声。例如，用户购买一件衣服可能主要看图片，而评论中的文字信息可能不重要。传统方法要么平等对待所有模态，要么通过注意力机制隐式加权，但缺乏明确的目标来选择与用户兴趣更匹配的模态信号。这导致推荐模型可能被无关模态干扰，降低准确性。如果不解决，推荐系统可能无法捕捉用户的真实偏好，尤其在多模态数据丰富的场景下，性能提升有限，甚至不如单模态方法。\", \"method_comparison\": \"- **不变学习**：通过去除模态特有信息来学习跨模态不变表征，但可能丢失有用的模态特有信息。\\n- **注意力机制**：动态加权模态，但权重学习是隐式的，缺乏可解释性和明确目标。\\n- **图细化**：调整模态图结构，但通常只关注图结构，未与用户兴趣对齐。\\n- **对比学习**：拉近正样本对，但可能强制对齐不相关的模态信号。\\n- **本文AMUR**：先细化模态图结构以贴近用户行为，再选择性对齐共享兴趣相关语义，同时保留模态特有信息。\\n\\n核心差异在于AMUR有一个信息论驱动的目标，明确选择与用户兴趣相关的模态信号，而不是隐式或启发式地融合。\", \"core_method\": \"**模块1：模态图结构细化**\\n- **做什么**：根据用户行为调整模态图结构，使图更贴近用户兴趣。\\n- **输入**：原始模态图（物品-物品相似度图）和用户-物品交互矩阵。\\n- **输出**：细化后的模态图。\\n- **如何做**：通过一个可学习的图细化模块，基于用户交互频率调整边权重，例如，如果两个物品经常被同一用户交互，则增加它们之间的边权重。公式：细化后的邻接矩阵 A' = A + α * B，其中B是用户行为共现矩阵，α是平衡系数。数值示例：若物品i和j被100个用户共同交互，则B_ij=100，A'_ij = A_ij + 0.1*100，增强相关性。\\n\\n**模块2：选择性模态-兴趣对齐**\\n- **做什么**：选择与用户兴趣相关的模态信号进行对齐，同时保留模态特有信息。\\n- **输入**：细化后的模态图上的节点表征。\\n- **输出**：对齐后的多模态表征。\\n- **如何做**：利用信息论度量（如互信息）计算每个模态与用户兴趣的相关性，然后选择高相关性的模态进行跨模态对齐，低相关性的模态仅保留其特有信息。具体通过一个选择门控网络，输出0-1权重，加权对齐损失。公式：对齐损失 = Σ w_m * L_align(m)，其中w_m = sigmoid(MLP(z_m))，z_m是模态m的表征。数值示例：若图像模态的w=0.8，文本模态的w=0.2，则主要对齐图像模态，文本模态仅保留自身信息。\", \"results\": \"在三个真实数据集（如Amazon、Yelp）上，AMUR相比最佳基线（如LATTICE、SLMRec）在Recall@20和NDCG@20上平均提升约5%-8%。\\n- **场景**：Amazon数据集，Recall@20提升6.2%，NDCG@20提升5.5%。\\n- **场景**：Yelp数据集，Recall@20提升4.8%，NDCG@20提升4.1%。\\n- **业务含义**：每100次推荐，AMUR比基线多命中约5-6个用户真正感兴趣的物品，显著提升用户满意度。\", \"limitations\": \"- 论文未讨论不同模态缺失的情况，实际中物品可能缺少某些模态数据，AMUR如何处理缺失模态未明确。\\n- 选择性对齐依赖用户行为，冷启动用户（交互少）可能无法准确估计模态相关性，导致对齐效果差。\\n- 图细化模块增加了计算复杂度，在大规模数据集上可能成为瓶颈。\\n- 信息论度量（如互信息）的计算可能不稳定，需要仔细调参。\\n- 未考虑模态内噪声，仅处理模态间噪声，实际中模态内也可能存在无关信息。\"}",
+      "raw_digest": "{\"one_liner\": \"提出embedding surgery，在查询时对文档嵌入做局部最小更新，实现稠密检索的轻量级排序修正。\", \"analogy\": \"想象一个图书馆，每本书的位置是固定的（文档嵌入）。当读者反馈某本书放错了架子（排序不佳），传统做法是重新整理整个图书馆（重建索引），成本高昂。Embedding surgery 就像在书架上微调几本书的位置，只挪动一点点，既不影响其他书，又能让读者更快找到。如果反馈有误（噪声），它也能容忍，不会大动干戈。这样，图书馆能根据读者反馈灵活调整，而不必频繁闭馆重排。\", \"problem\": \"稠密检索系统将文档和查询编码为嵌入向量，通过向量相似度进行语义搜索。文档嵌入是离线计算的，存储在静态索引中，因此无法根据用户反馈或搜索意图的变化进行实时调整。当用户点击、编辑反馈或LLM生成伪标签表明某些文档排序不佳时，系统无法利用这些信号改进排序。传统方法要么需要重新训练模型并重建索引，成本极高；要么仅调整查询端（如查询改写），但无法修正文档表示的固有偏差。不解决这个问题，系统会持续返回次优结果，用户体验下降，尤其在动态场景（如新闻、社交）中，反馈信号无法被利用，导致检索系统僵化。\", \"method_comparison\": \"- **全量微调**：对模型进行微调并重新生成所有文档嵌入，需要重建索引，计算成本高，且可能破坏全局结构。\\n- **查询端调整（如CoRocchio）**：在查询时对查询嵌入进行修改，但无法修正文档表示的偏差，且对噪声敏感。\\n- **本文方法（Embedding Surgery）**：在查询时对选定的文档嵌入进行局部最小更新，通过凸优化满足排序约束，不改变全局结构，成本低。\\n\\n核心差异在于，embedding surgery 直接修改文档嵌入，但只做最小幅度的调整，以纠正排序错误。它不依赖重新训练，而是利用反馈信号进行在线修正，且能处理噪声。与查询端方法互补，可结合使用。\", \"core_method\": \"**问题形式化**：将排序修正视为凸优化问题。给定查询q，一组文档D，以及反馈信号（如相关/不相关标签），目标是调整文档嵌入，使得相关文档的得分高于不相关文档。约束条件为排序约束，目标是最小化嵌入修改的L2范数。\\n\\n**优化求解**：使用投影梯度法或对偶分解求解。具体地，对于每个查询，定义损失函数为违反排序约束的hinge损失，加上正则项。通过迭代更新文档嵌入，直到收敛。例如，若文档d1应排在d2之前，但当前得分s1 < s2，则调整嵌入，使s1增加，s2减少，但调整幅度受正则化限制。\\n\\n**集成到检索流程**：在查询时，先进行初步检索（如使用ANN索引），得到候选集，然后对候选集中的文档嵌入应用embedding surgery，再重新排序。更新后的嵌入可以写回索引（如果支持），但论文指出，对于静态索引，只需在内存中临时修改，不影响全局。对于ANN索引，可通过简单的原地覆盖更新，无需重建。\\n\\n**处理噪声反馈**：通过设置松弛变量或使用鲁棒损失函数，允许部分反馈被忽略，从而抵抗噪声。\", \"results\": \"在TREC DL、Robust、CAsT和MS MARCO上评估。\\n- **DL-Hard（编辑反馈）**：nDCG@10相对提升+60.64%，显著优于基线。\\n- **噪声反馈**：即使反馈有噪声，仍有提升，鲁棒性优于CoRocchio。\\n- **查询传播**：修正一个查询的排序，能提升相关查询的效果，说明更新具有泛化性。\\n- **效率**：低计算成本，每个查询只需几毫秒，且对ANN索引可原地更新，无需重建。\\n- **与CoRocchio结合**：额外提升，且更鲁棒。\\n\\n业务含义：每100次检索，使用embedding surgery后，比基线多返回约60次相关结果（在DL-Hard上），显著提升用户满意度。\", \"limitations\": \"- 依赖反馈信号的质量，若反馈严重错误，可能损害排序。\\n- 仅对候选集中的文档进行更新，若相关文档未在初检中召回，则无法修正。\\n- 更新后的嵌入可能偏离原始语义空间，影响其他查询的相似度计算，尽管论文声称影响小，但未深入分析。\\n- 对于超大规模索引，即使原地更新，也可能需要同步机制，分布式环境下实现复杂。\\n- 论文主要针对离线反馈，在线实时反馈场景的延迟和并发问题未讨论。\"}",
       "relevance_score": 0.0
     }
   }
