@@ -84,7 +84,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.05110",
       "title": "Embedding Surgery: Localized Updates for Adaptive Ranking Correction in Dense Retrieval",
