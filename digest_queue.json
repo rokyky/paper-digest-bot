@@ -254,7 +254,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.08180",
       "title": "Less Is Personal: Learning Minimal Sufficient User Profiles for Personalized Language Models",
