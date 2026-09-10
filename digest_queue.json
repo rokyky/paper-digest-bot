@@ -173,7 +173,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.08762",
       "title": "PDMR: Passage-Driven Multi-ID Document Retrieval",
