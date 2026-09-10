@@ -212,7 +212,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.08310",
       "title": "Exploring Bottom-Up Clustering for Creating Semantic IDs",
