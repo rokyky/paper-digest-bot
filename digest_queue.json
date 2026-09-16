@@ -94,7 +94,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.15578",
       "title": "The Magnitude Mirage: Rethinking Confidence for Reasoning-Intensive Retrieval",
