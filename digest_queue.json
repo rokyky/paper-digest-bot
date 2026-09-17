@@ -79,7 +79,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.16625",
       "title": "AURA: Agentic Diagnosis and Refinement for Production Recommender Systems at Scale",
