@@ -46,7 +46,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.18148",
       "title": "LIGE-GR: A Smooth Leap from Ranking to Generative Recommendation in the LLM Era",
