@@ -232,7 +232,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.18249",
       "title": "Re2A: Situated Conversational Recommendation via Rubric-based Preference Reasoning and Alignment",
