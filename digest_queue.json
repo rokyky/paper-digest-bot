@@ -145,7 +145,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.18695",
       "title": "SURF: Subtractive Updates for Recommender Forgetting",
