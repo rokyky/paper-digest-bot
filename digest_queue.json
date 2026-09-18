@@ -186,7 +186,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.18461",
       "title": "Disentangling Long-Term Memory via Latent Neuro-Symbolic Reasoning",
