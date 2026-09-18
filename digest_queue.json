@@ -273,7 +273,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.18203",
       "title": "Behavior2Value: Benchmarking and Empowering LLMs for Consumer Value Measurement from E-commerce Behaviors",
