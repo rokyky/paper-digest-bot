@@ -40,7 +40,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.20563",
       "title": "Reasoning Quality Matters: Combating Reasoning Collapse in LLM-based Embedding Learning",
