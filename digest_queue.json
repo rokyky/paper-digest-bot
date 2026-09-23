@@ -43,7 +43,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.24152",
       "title": "Graded-Relevance Composed Multimodal Retrieval for E-commerce Visual Search at Scale",
