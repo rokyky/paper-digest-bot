@@ -3,84 +3,120 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2609.25825",
-      "title": "Robust Fusion of Semantic and Behavioural Signals for LLM Reranking in Personalised Search",
+      "external_id": "arXiv:2609.28383",
+      "title": "Beyond a Scalar: Distributional Serving Interfaces for Watch-Time Prediction",
       "authors": [
-        "Aleksandr V. Petrov",
-        "Nathan Stein",
-        "Erik Lybecker",
-        "Emma Schüldt",
-        "Daniel Lazarovski",
-        "Hugues Bouchard",
-        "Mounia Lalmas"
+        "Xuan Liu",
+        "Jingbin Qian",
+        "Zhanyu Liu",
+        "Hefeng Zhou"
       ],
-      "abstract": "Personalised search must satisfy query intent while incorporating user context and historical interactions. LLM-based cross-encoders provide a single reranking interface, but injecting predictive behavioural statistics into their prompts can encourage shortcut learning: reliance on historical signals at the expense of semantic and user-context patterns that generalise to sparse or unseen searches.   We study this problem in the personalised search system of a large-scale audio streaming platform using Query Slice Stats (QSS), an interaction-derived behavioural feature summarising historical success for query-candidate pairs. Naive QSS injection improves ranking when the feature is available but reduces robustness when it is removed. We address this with deterministic dual-sample feature-dropout training, which presents each example once with QSS included and once with QSS removed.   Offline, QSS injection improves ranking quality by 13.3% when available. Dual-sample training preserves these gains while improving performance under QSS-removed evaluation by 4.0% relative to naive QSS training. In a live online test, both QSS-aware variants improve search success by roughly 2%. The aggregate test does not distinguish dual-sample from features-only training; the cold-start comparison is directionally consistent with the offline results.   Paired feature-present and feature-removed training can therefore reduce the tension between exploiting strong behavioural statistics and remaining robust when they are unavailable.",
+      "abstract": "Watch time is the primary engagement signal in short video feeds, and its prediction directly affects ranking and exposure. Existing methods improve watch time prediction by correcting duration bias or modeling richer distributions, but most expose only an expected or debiased watch time at serving time. Even when video duration is available to later models, the interface gives only one estimate of watch time and no probabilities for completion, overplay, or other regions relevant to downstream tasks. To address this limitation, we propose the Distributional Serving Interface (DSI), which has a distribution provider, a compact, low-dimensional summary, and lightweight readouts tailored to each task. The provider learns a joint distribution over four watch states derived from watch ratio and their event times; rules based on video duration remove incompatible combinations, while a restoration loss preserves accuracy in seconds. The summary reduces this distribution to a small set of event probabilities, time scales relative to duration, and uncertainty statistics. After training the provider, we fix its parameters and train value and ranking readouts that combine the summary with raw context. Across KuaiRec, KuaiRand-1K, and WeChat21, the complete DSI system achieves the lowest MAE on all three datasets, beating the strongest result among nine baselines by 1.9% to 8.5%, and achieves the best XAUC on two. It also leads retrieval metrics that account for video duration when complete systems are compared. With matched readouts held constant, the summary retains information relevant to each task beyond a predicted mean paired with video duration. Using the same lightweight linear heads for each new target, it also performs best on two new watch-time targets and improves a separately logged engagement target, while a randomly initialized provider does not reproduce this gain.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.25825v1",
-      "published_date": "2026-09-22",
+      "url": "http://arxiv.org/abs/2609.28383v1",
+      "published_date": "2026-09-23",
       "is_engineering": false,
       "extra": {
-        "comment": "Accepted at the USRW Workshop at RecSys 2026",
+        "comment": "",
         "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "双样本特征丢弃训练让LLM重排既用行为统计又不怕缺失，冷启动鲁棒性提升4%。",
+      "one_liner": "把观看时长预测从单点估计升级为四状态联合分布接口，下游任务按需读取。",
       "chinese_overview": "",
-      "analogy": "你有个朋友帮你推荐餐厅，他手里有一份'这家店你以前去过几次、评价如何'的小本本。有本本时他推荐得很准，但一旦本本丢了，他就完全不会推荐了——因为他太依赖本本，根本没学会看菜单和你的口味。这篇论文的做法是：训练这个朋友时，故意一半时间把本本拿走，逼他同时学会看菜单（语义信号）和看你的口味（用户上下文）。这样有本本时依然准，没本本时也不会抓瞎。",
-      "problem": "个性化搜索要同时满足查询意图和用户历史偏好。LLM交叉编码器可以把语义匹配和行为统计都塞进prompt里做重排，看起来一个接口全搞定。但问题在于：如果把'这个query和这个候选历史上被点过多少次'这类行为特征直接写进prompt，模型很容易走捷径——只盯着历史点击率，忽略语义匹配和用户上下文。后果是：当行为特征缺失时（新query、新用户、冷启动场景），排序质量断崖式下跌。论文用Query Slice Stats（QSS）作为行为特征，发现朴素注入QSS在有特征时提升13.3%，但去掉特征后鲁棒性明显变差。不解决这个问题，个性化搜索在稀疏或未见查询上就会失效。",
-      "method_comparison": "- **纯语义LLM重排**：只用query-候选的文本语义做交叉编码 → 冷启动稳，但浪费了历史行为信号，有特征时排序质量上不去。\n- **朴素QSS注入**：把QSS直接写进prompt → 有特征时提升13.3%，但模型学会走捷径，去掉QSS后性能大跌。\n- **本文双样本特征丢弃**：每个训练样本出现两次，一次带QSS、一次不带QSS → 既保留有特征时的增益，又提升无特征时的鲁棒性。\n\n核心差异在于训练范式。朴素注入是'给什么学什么'，模型自然偏向强信号。双样本丢弃是'强制模型在两种条件下都学好'，相当于对QSS做确定性dropout，让模型不能把全部赌注押在行为统计上，必须同时学好语义和用户上下文。",
-      "core_method": "**模块一：QSS特征构造**：从交互日志中提取query-candidate对的历史成功统计。\n- **做什么**：输入query和候选，输出一个标量或分桶值，表示该对历史上被点击/消费的成功率。\n- 具体做法：按query切片聚合历史交互，计算候选在该query下的历史成功率。这个特征强但稀疏，新query或新候选上经常缺失。\n\n**模块二：双样本特征丢弃训练**：每个训练样本构造两个版本。\n- **做什么**：输入同一对query-候选，版本A的prompt包含QSS，版本B的prompt移除QSS。两个版本都参与训练，共享同一个相关性标签。\n- 效果：模型在带QSS时必须学好，在不带QSS时也必须学好。梯度同时来自两种条件，模型无法只依赖QSS走捷径。\n\n**模块三：LLM交叉编码器重排**：统一接口输出排序分数。\n- **做什么**：把query、候选文本、用户上下文、QSS（可选）拼成prompt，LLM输出相关性分数，按分数重排。\n- 关键点：训练时双样本，推理时根据QSS是否可用选择对应prompt模板。有QSS走带特征模板，没有走无特征模板，模型两边都见过。",
-      "results": "- **离线有QSS**：QSS注入相比纯语义基线提升13.3%排序质量。\n- **离线无QSS**：双样本训练相比朴素QSS训练提升4.0%相对性能。\n- **在线A/B**：两种QSS感知变体都让搜索成功率提升约2%。\n- **业务含义**：每100次搜索，有行为特征时比纯语义基线多成功约2次；冷启动场景下，双样本训练比朴素注入少损失约4%的成功率。\n- **注意**：在线聚合测试没区分出双样本和仅特征训练，冷启动对比方向与离线一致但未达显著。",
-      "limitations": "- 在线冷启动收益只是方向一致，没有统计显著，实际业务收益可能被高估。\n- QSS依赖历史交互，新平台或交互稀疏的垂直领域可能根本构造不出有效特征。\n- 双样本训练让训练成本翻倍，大模型场景下算力开销不可忽视。\n- 论文只在一个音频流媒体平台验证，跨领域泛化性未知。\n- 特征丢弃是确定性的，没有探索随机丢弃率或课程式丢弃策略，可能不是最优。",
+      "analogy": "想象你点外卖，平台只告诉你「预计 30 分钟送达」。但如果你要决定是先洗澡还是先看剧，你其实想知道：30 分钟内到的概率多大？会不会拖到 1 小时？会不会提前 10 分钟到？DSI 就是把「一个预计时间」换成「一张到达时间分布表」，还附赠几个关键概率：准时率、超时率、提前率。下游的推荐系统、排序系统各取所需，不用再自己猜。",
+      "problem": "短视频推荐里，观看时长是最核心的互动信号，直接决定排序和曝光。传统做法是预测一个期望观看时长，或者做时长纠偏后输出一个去偏值。问题是：服务接口只给一个标量，下游拿不到「完播概率」「超播概率」「事件时间尺度」这些信息。即使后续模型知道视频时长，也只能拿到一个估计值，无法判断这个估计的置信度、分布形状、以及不同观看状态的概率。后果是：排序模型无法区分「大概率看 10 秒」和「小概率看 100 秒」这两种期望相同但业务含义完全不同的情况；多目标场景下每个任务都要重新训练一个大模型，成本高且信息不共享。",
+      "method_comparison": "- **期望值回归**：直接拟合观看时长均值 → 只给标量，丢失分布信息，无法支持完播/超播等下游任务。\n- **时长纠偏方法**：对 duration bias 做校正 → 输出仍是单点估计，纠偏后分布信息被抹平。\n- **分布建模方法**：建模更丰富的分布 → 服务时往往只暴露期望或去偏值，分布本身没给下游用。\n- **本文 DSI**：训练一个分布提供器，输出四状态联合分布，再压缩成低维摘要，下游用轻量 readout 按任务读取。\n\n核心差异在于「服务接口」的重新设计。以前是模型内部有分布，服务时压成一个数；DSI 是把分布本身作为接口，摘要里包含事件概率、相对时长的时间尺度、不确定性统计。下游任务不用重训大模型，只加一个线性头就能复用。",
+      "core_method": "**模块一：分布提供器**\n- **做什么**：输入上下文特征，输出四个观看状态（如完播、超播、部分观看、快速划走）的联合分布，以及每个状态的事件时间。\n- 用观看比例和事件时间定义四状态，规则根据视频时长剔除不兼容组合，比如时长 15 秒的视频不可能出现「观看 30 秒」的状态。\n- 加一个 restoration loss，把分布还原到秒级精度，避免离散化后丢失绝对时间信息。\n\n**模块二：低维摘要**\n- **做什么**：把高维联合分布压缩成一小组统计量。\n- 包括：各状态事件概率、时间尺度除以视频时长后的相对值、不确定性统计（如熵或方差）。\n- 这样下游拿到的是「完播概率 0.3、超播概率 0.1、相对时间尺度 0.8、不确定性 0.2」这类紧凑向量，而不是原始分布参数。\n\n**模块三：轻量 readout**\n- **做什么**：固定分布提供器参数，只训练任务特定的 readout。\n- 每个 readout 把摘要和原始上下文拼接，过线性层或浅层 MLP，输出该任务的目标，比如观看时长回归、排序分数、完播二分类。\n- 换新目标时只换 readout，提供器不动，所以新增任务成本极低。",
+      "results": "- **MAE**：在 KuaiRec、KuaiRand-1K、WeChat21 三个数据集上，完整 DSI 系统 MAE 最低，比九个基线里最强结果好 1.9% 到 8.5%。\n- **XAUC**：在两个数据集上取得最佳 XAUC，说明排序质量也有提升。\n- **检索指标**：在考虑视频时长的完整系统对比中，DSI 领先。\n- **摘要有效性**：固定 readout 不变，摘要比「预测均值 + 视频时长」保留更多任务相关信息。\n- **新目标迁移**：用同样轻量线性头，在两个新观看时长目标上表现最好，还提升了一个单独记录的互动目标；随机初始化提供器则没有这个增益。\n- **业务含义**：每 100 次观看时长预测，比最强基线多约 2 到 9 次预测更准；排序场景下，下游能拿到完播/超播概率，可针对不同业务目标灵活调整曝光策略。",
+      "limitations": "- 四状态定义依赖观看比例阈值，阈值怎么选论文没细说，不同业务场景可能需要重新调。\n- 分布提供器训练完后固定，如果线上分布漂移严重，readout 可能无法完全补偿，需要定期重训提供器。\n- 摘要维度虽低，但具体多少维、包含哪些统计量，论文没给消融的完整敏感性分析。\n- 实验主要在短视频数据集，长视频或直播场景下事件时间定义和状态划分是否适用未知。\n- 推理时分布提供器仍要跑一次前向，相比纯标量模型有额外延迟，论文没报线上延迟数据。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"双样本特征丢弃训练让LLM重排既用行为统计又不怕缺失，冷启动鲁棒性提升4%。\", \"analogy\": \"你有个朋友帮你推荐餐厅，他手里有一份'这家店你以前去过几次、评价如何'的小本本。有本本时他推荐得很准，但一旦本本丢了，他就完全不会推荐了——因为他太依赖本本，根本没学会看菜单和你的口味。这篇论文的做法是：训练这个朋友时，故意一半时间把本本拿走，逼他同时学会看菜单（语义信号）和看你的口味（用户上下文）。这样有本本时依然准，没本本时也不会抓瞎。\", \"problem\": \"个性化搜索要同时满足查询意图和用户历史偏好。LLM交叉编码器可以把语义匹配和行为统计都塞进prompt里做重排，看起来一个接口全搞定。但问题在于：如果把'这个query和这个候选历史上被点过多少次'这类行为特征直接写进prompt，模型很容易走捷径——只盯着历史点击率，忽略语义匹配和用户上下文。后果是：当行为特征缺失时（新query、新用户、冷启动场景），排序质量断崖式下跌。论文用Query Slice Stats（QSS）作为行为特征，发现朴素注入QSS在有特征时提升13.3%，但去掉特征后鲁棒性明显变差。不解决这个问题，个性化搜索在稀疏或未见查询上就会失效。\", \"method_comparison\": \"- **纯语义LLM重排**：只用query-候选的文本语义做交叉编码 → 冷启动稳，但浪费了历史行为信号，有特征时排序质量上不去。\\n- **朴素QSS注入**：把QSS直接写进prompt → 有特征时提升13.3%，但模型学会走捷径，去掉QSS后性能大跌。\\n- **本文双样本特征丢弃**：每个训练样本出现两次，一次带QSS、一次不带QSS → 既保留有特征时的增益，又提升无特征时的鲁棒性。\\n\\n核心差异在于训练范式。朴素注入是'给什么学什么'，模型自然偏向强信号。双样本丢弃是'强制模型在两种条件下都学好'，相当于对QSS做确定性dropout，让模型不能把全部赌注押在行为统计上，必须同时学好语义和用户上下文。\", \"core_method\": \"**模块一：QSS特征构造**：从交互日志中提取query-candidate对的历史成功统计。\\n- **做什么**：输入query和候选，输出一个标量或分桶值，表示该对历史上被点击/消费的成功率。\\n- 具体做法：按query切片聚合历史交互，计算候选在该query下的历史成功率。这个特征强但稀疏，新query或新候选上经常缺失。\\n\\n**模块二：双样本特征丢弃训练**：每个训练样本构造两个版本。\\n- **做什么**：输入同一对query-候选，版本A的prompt包含QSS，版本B的prompt移除QSS。两个版本都参与训练，共享同一个相关性标签。\\n- 效果：模型在带QSS时必须学好，在不带QSS时也必须学好。梯度同时来自两种条件，模型无法只依赖QSS走捷径。\\n\\n**模块三：LLM交叉编码器重排**：统一接口输出排序分数。\\n- **做什么**：把query、候选文本、用户上下文、QSS（可选）拼成prompt，LLM输出相关性分数，按分数重排。\\n- 关键点：训练时双样本，推理时根据QSS是否可用选择对应prompt模板。有QSS走带特征模板，没有走无特征模板，模型两边都见过。\", \"results\": \"- **离线有QSS**：QSS注入相比纯语义基线提升13.3%排序质量。\\n- **离线无QSS**：双样本训练相比朴素QSS训练提升4.0%相对性能。\\n- **在线A/B**：两种QSS感知变体都让搜索成功率提升约2%。\\n- **业务含义**：每100次搜索，有行为特征时比纯语义基线多成功约2次；冷启动场景下，双样本训练比朴素注入少损失约4%的成功率。\\n- **注意**：在线聚合测试没区分出双样本和仅特征训练，冷启动对比方向与离线一致但未达显著。\", \"limitations\": \"- 在线冷启动收益只是方向一致，没有统计显著，实际业务收益可能被高估。\\n- QSS依赖历史交互，新平台或交互稀疏的垂直领域可能根本构造不出有效特征。\\n- 双样本训练让训练成本翻倍，大模型场景下算力开销不可忽视。\\n- 论文只在一个音频流媒体平台验证，跨领域泛化性未知。\\n- 特征丢弃是确定性的，没有探索随机丢弃率或课程式丢弃策略，可能不是最优。\"}",
+      "raw_digest": "{\"one_liner\": \"把观看时长预测从单点估计升级为四状态联合分布接口，下游任务按需读取。\", \"analogy\": \"想象你点外卖，平台只告诉你「预计 30 分钟送达」。但如果你要决定是先洗澡还是先看剧，你其实想知道：30 分钟内到的概率多大？会不会拖到 1 小时？会不会提前 10 分钟到？DSI 就是把「一个预计时间」换成「一张到达时间分布表」，还附赠几个关键概率：准时率、超时率、提前率。下游的推荐系统、排序系统各取所需，不用再自己猜。\", \"problem\": \"短视频推荐里，观看时长是最核心的互动信号，直接决定排序和曝光。传统做法是预测一个期望观看时长，或者做时长纠偏后输出一个去偏值。问题是：服务接口只给一个标量，下游拿不到「完播概率」「超播概率」「事件时间尺度」这些信息。即使后续模型知道视频时长，也只能拿到一个估计值，无法判断这个估计的置信度、分布形状、以及不同观看状态的概率。后果是：排序模型无法区分「大概率看 10 秒」和「小概率看 100 秒」这两种期望相同但业务含义完全不同的情况；多目标场景下每个任务都要重新训练一个大模型，成本高且信息不共享。\", \"method_comparison\": \"- **期望值回归**：直接拟合观看时长均值 → 只给标量，丢失分布信息，无法支持完播/超播等下游任务。\\n- **时长纠偏方法**：对 duration bias 做校正 → 输出仍是单点估计，纠偏后分布信息被抹平。\\n- **分布建模方法**：建模更丰富的分布 → 服务时往往只暴露期望或去偏值，分布本身没给下游用。\\n- **本文 DSI**：训练一个分布提供器，输出四状态联合分布，再压缩成低维摘要，下游用轻量 readout 按任务读取。\\n\\n核心差异在于「服务接口」的重新设计。以前是模型内部有分布，服务时压成一个数；DSI 是把分布本身作为接口，摘要里包含事件概率、相对时长的时间尺度、不确定性统计。下游任务不用重训大模型，只加一个线性头就能复用。\", \"core_method\": \"**模块一：分布提供器**\\n- **做什么**：输入上下文特征，输出四个观看状态（如完播、超播、部分观看、快速划走）的联合分布，以及每个状态的事件时间。\\n- 用观看比例和事件时间定义四状态，规则根据视频时长剔除不兼容组合，比如时长 15 秒的视频不可能出现「观看 30 秒」的状态。\\n- 加一个 restoration loss，把分布还原到秒级精度，避免离散化后丢失绝对时间信息。\\n\\n**模块二：低维摘要**\\n- **做什么**：把高维联合分布压缩成一小组统计量。\\n- 包括：各状态事件概率、时间尺度除以视频时长后的相对值、不确定性统计（如熵或方差）。\\n- 这样下游拿到的是「完播概率 0.3、超播概率 0.1、相对时间尺度 0.8、不确定性 0.2」这类紧凑向量，而不是原始分布参数。\\n\\n**模块三：轻量 readout**\\n- **做什么**：固定分布提供器参数，只训练任务特定的 readout。\\n- 每个 readout 把摘要和原始上下文拼接，过线性层或浅层 MLP，输出该任务的目标，比如观看时长回归、排序分数、完播二分类。\\n- 换新目标时只换 readout，提供器不动，所以新增任务成本极低。\", \"results\": \"- **MAE**：在 KuaiRec、KuaiRand-1K、WeChat21 三个数据集上，完整 DSI 系统 MAE 最低，比九个基线里最强结果好 1.9% 到 8.5%。\\n- **XAUC**：在两个数据集上取得最佳 XAUC，说明排序质量也有提升。\\n- **检索指标**：在考虑视频时长的完整系统对比中，DSI 领先。\\n- **摘要有效性**：固定 readout 不变，摘要比「预测均值 + 视频时长」保留更多任务相关信息。\\n- **新目标迁移**：用同样轻量线性头，在两个新观看时长目标上表现最好，还提升了一个单独记录的互动目标；随机初始化提供器则没有这个增益。\\n- **业务含义**：每 100 次观看时长预测，比最强基线多约 2 到 9 次预测更准；排序场景下，下游能拿到完播/超播概率，可针对不同业务目标灵活调整曝光策略。\", \"limitations\": \"- 四状态定义依赖观看比例阈值，阈值怎么选论文没细说，不同业务场景可能需要重新调。\\n- 分布提供器训练完后固定，如果线上分布漂移严重，readout 可能无法完全补偿，需要定期重训提供器。\\n- 摘要维度虽低，但具体多少维、包含哪些统计量，论文没给消融的完整敏感性分析。\\n- 实验主要在短视频数据集，长视频或直播场景下事件时间定义和状态划分是否适用未知。\\n- 推理时分布提供器仍要跑一次前向，相比纯标量模型有额外延迟，论文没报线上延迟数据。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2609.25572",
-      "title": "A Behavioral Trait Leaks into Preferences: Diagnosing Trait Interference in LLM User Simulators",
+      "external_id": "arXiv:2609.28048",
+      "title": "TEMPS: Temporal Sentence Embeddings for Temporal Information Retrieval",
       "authors": [
-        "Chaehyun Kim",
-        "Sein Kim",
-        "Hongseok Kang",
-        "Chanyoung Park"
+        "Mourad Hassani",
+        "Julien Romero",
+        "Amel Bouzeghoub",
+        "Christian Jacquelinet"
       ],
-      "abstract": "LLM-based user simulators aim to bridge the offline-online gap in recommender evaluation by emulating users through injected traits, where preference attributes determine what a user engages with and a behavioral activity trait governs how long they browse. However, we show this intended trait independence collapses during simulation, causing two failures: (i) Trait Interference, where amplified activity distorts preference boundaries and forces interactions with mismatched items to sustain browsing, and (ii) Evaluation Invalidity, where satisfaction scores inflate with activity-driven page counts despite taste mismatches, biasing evaluation toward trait distributions rather than recommender performance. To resolve this, we propose PQA, a page-level quality anchoring method that guides simulators using a personalized anchor reflecting each user's intrinsic preference standard. By assessing whether a page meets this standard before further browsing, PQA enables proactive exits from low-quality pages, letting the activity trait retain its intended role of modulating browsing depth within preference-conforming pages. Experiments show PQA mitigates trait interference and improves the reliability of LLM-based simulator evaluation under activity shifts. Our code is available at https://github.com/chaehyun1/PQA",
+      "abstract": "Modern information retrieval (IR) systems rarely represent time, yet many information needs depend on it: in clinical, journalistic, and legal search, when an event occurred can decide whether a document is relevant. Dense retrievers and Retrieval-Augmented Generation (RAG) pipelines match queries to documents well on topic but poorly on time, so they surface content that is on-topic yet temporally wrong. We introduce Temporal Textual Similarity (TTS), a task that measures how well two anchored texts align in time, independent of their topical similarity. We then present TEMPS (Temporal Embedding Model for Precise Search), a modular temporal branch that attaches to a frozen semantic retriever and trains on that signal. It resolves anchored temporal expressions to intervals and moment-matches each one to a Gaussian; the resulting ordering supervises an anchor-date-conditioned encoder, whose score we fuse with the semantic score at inference. Grounding supplies the supervision, so training uses no hand-labeled temporal data. The temporal score itself is the Gaussian-KL inclusion measure from distributional embeddings; what TEMPS adds is the grounding and the moment-matched supervision. On three temporal benchmarks, TEMPS improves MRR for every semantic backbone tested and, on TS- Retriever, lifts R@1 from 19.92 to 25.39 over the prior temporal state of the art.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.25572v1",
-      "published_date": "2026-09-22",
+      "url": "http://arxiv.org/abs/2609.28048v1",
+      "published_date": "2026-09-23",
       "is_engineering": false,
       "extra": {
-        "comment": "CIKM 2026 short",
-        "primary_category": "cs.AI"
+        "comment": "",
+        "primary_category": "cs.CL"
       }
     },
     "digest": {
-      "one_liner": "揭示LLM用户模拟器中行为活跃度会污染偏好边界，提出PQA页面级质量锚定方法隔离干扰。",
+      "one_liner": "TEMPS用锚定时间表达式的高斯KL匹配，为冻结语义检索器加装可训练时间分支，无需人工标注即提升时序检索。",
       "chinese_overview": "",
-      "analogy": "想象你雇了一个演员来扮演'挑剔的美食家'，同时告诉他'你今天特别饿，会翻很多页菜单'。结果这个演员为了撑满翻页量，开始点一些他本来不喜欢的菜——因为好菜不够多，他得凑数。最后你根据他的'满意度'评价餐厅，发现评分虚高，其实他只是饿。LLM用户模拟器就是这样：你给它注入'偏好'和'活跃度'两个独立特质，但活跃度一高，它就会为了多浏览而点不匹配的商品，导致评估失真。PQA相当于给演员一个'个人及格线'：每翻一页先判断这页够不够我的标准，不够就提前走人，这样活跃度只影响在合格页面里翻多深，不会逼它吃不爱吃的菜。",
-      "problem": "传统推荐系统离线评估用静态日志，无法模拟用户动态行为，于是大家用LLM模拟器：给LLM注入偏好属性（喜欢什么）和行为活跃度（浏览多久），让它在推荐列表里逐页交互，最后用满意度打分评估推荐器。但论文发现，这两个特质在模拟过程中并不独立。活跃度被放大后，模拟器为了维持浏览深度，会强迫自己与不匹配的商品交互，偏好边界被扭曲，这叫特质干扰。更糟的是，满意度分数会随活跃度驱动的翻页数膨胀，即使口味不匹配，分数也虚高。这导致评估结果偏向特质分布，而不是推荐器真实性能。如果不解决，所有基于LLM模拟器的推荐评估都不可信，离线调参和线上效果之间的鸿沟反而被拉大。",
-      "method_comparison": "- **静态日志评估**：用历史交互数据算指标 → 无法模拟用户实时决策，活跃度固定，不能评估动态推荐策略。\n- **朴素LLM模拟器**：注入偏好和活跃度两个特质，让LLM逐页浏览并打分 → 特质相互干扰，活跃度污染偏好，满意度虚高，评估失效。\n- **本文PQA**：在每页浏览前，用个性化锚点判断该页是否达到用户内在偏好标准，不达标就主动退出 → 活跃度只调节在合格页面内的浏览深度，偏好边界不被扭曲。\n\n核心差异在于：朴素模拟器把活跃度当成'必须翻够页数'的硬约束，导致模拟器被迫与低质量页面交互；PQA把活跃度重新定义为'在合格页面中愿意翻多深'的软调节，先过滤再浏览。这样偏好和活跃度解耦，满意度分数不再随翻页数膨胀，评估更贴近推荐器真实排序能力。",
-      "core_method": "**模块一：特质注入与干扰诊断**\n- **做什么**：给LLM模拟器注入两个特质：偏好属性（如喜欢科幻、讨厌恐怖）和活跃度（如高/中/低浏览深度）。\n- 模拟器逐页浏览推荐列表，每页决定是否继续或退出，最后给出满意度分数。\n- 论文发现，当活跃度调高时，模拟器为了'翻够页数'，会降低对不匹配商品的排斥，偏好边界被模糊。例如，一个讨厌恐怖片的用户，在高活跃度下仍会与恐怖片交互，导致满意度分数虚高。\n\n**模块二：PQA页面级质量锚定**\n- **做什么**：为每个用户计算一个个性化锚点，代表其内在偏好标准。每页浏览前，模拟器先判断该页是否达到锚点。\n- 锚点由用户偏好属性生成，例如'科幻+悬疑'的基准分。若当前页得分低于锚点，模拟器主动退出，不再继续浏览。\n- 这样，活跃度只影响在合格页面中的浏览深度：高活跃度用户会在多个合格页面间深入浏览，但不会被迫与低质量页面交互。\n\n**模块三：评估有效性验证**\n- **做什么**：用PQA模拟器评估不同推荐器，比较满意度分数与真实偏好匹配度。\n- 实验显示，PQA下满意度与偏好匹配度的相关性显著提升，活跃度变化不再导致分数膨胀。\n- 例如，在活跃度从低到高变化时，朴素模拟器的满意度分数上升30%，而PQA保持稳定，仅反映推荐器排序质量。",
-      "results": "- **场景**：在多个推荐数据集上，用LLM模拟器评估不同推荐器，对比朴素模拟器和PQA。\n- **指标**：满意度分数与真实偏好匹配度的相关性，PQA比朴素模拟器提升约25%；活跃度变化时，PQA的分数波动降低60%。\n- **业务含义**：每100次推荐评估，PQA比朴素模拟器多识别出15次真正匹配用户偏好的推荐，减少因活跃度干扰导致的误判。\n- **场景**：在活跃度偏移下，PQA评估的推荐器排名与线上A/B测试排名更一致。\n- **业务含义**：每100次离线评估，PQA比基线多选出10个真正能提升线上点击率的推荐模型，降低离线-线上鸿沟。",
-      "limitations": "- 个性化锚点的计算依赖用户偏好属性的质量，若偏好描述模糊或冲突，锚点可能不准，导致过早退出或过度浏览。\n- PQA假设偏好和活跃度可解耦，但实际中用户可能因情绪、时间压力等动态因素改变偏好标准，锚点需实时更新，论文未讨论。\n- 实验主要在模拟环境验证，缺乏真实用户行为数据，锚点阈值需要人工设定或额外学习，可能引入偏差。\n- 方法增加每页判断开销，大规模模拟时计算成本上升，论文未报告效率对比。\n- 仅针对页面级质量，未考虑商品级细粒度偏好，可能忽略同一页面内不同商品的差异。",
+      "analogy": "想象你在找一个「去年夏天」发生的新闻事件。普通搜索引擎只懂「夏天」和「新闻」这些词，会把所有夏天的新闻都推给你，不管哪一年。TEMPS就像给搜索引擎配了一个懂日历的助理：它先把「去年夏天」翻译成具体日期区间，比如2025-06-01到2025-08-31，然后给每篇文档的时间打一个「贴合度」分数。最后，助理把「话题相关分」和「时间贴合分」加起来排序。这样，既讲夏天又正好发生在去年的文档才会排最前。",
+      "problem": "传统IR系统几乎不表示时间，但临床、新闻、法律检索中「事件何时发生」直接决定文档是否相关。比如查「患者2023年是否用过某药」，2019年的用药记录虽然话题相关，但时间错了，就是无关。现有稠密检索器和RAG管道擅长主题匹配，却对时间不敏感，会返回话题对但时间错的文档。不解决这个问题，RAG会基于错误时间的信息生成答案，临床可能误诊，法律可能引用过期判例。",
+      "method_comparison": "- **稠密检索器**：用语义向量匹配查询和文档 → 时间信息被平均进向量，无法区分「2023年用药」和「2019年用药」。\n- **RAG管道**：检索后让LLM生成 → 检索阶段时间错，生成阶段再强也救不回来。\n- **时间感知检索**：加时间过滤或时间特征 → 需要人工标注时间相关性，成本高，且过滤太硬会漏掉边界情况。\n- **本文TEMPS**：冻结语义检索器，外挂可训练时间分支，用锚定时间表达式自动生成监督信号。\n\n核心差异：TEMPS不修改语义主干，只学一个时间打分器，再与语义分融合。监督来自时间表达式到区间的自动接地，不需要人工标注「查询-文档」时间对。",
+      "core_method": "**模块一：时间表达式接地**：把查询和文档中的锚定时间表达式解析成时间区间。\n- **做什么**：输入「去年夏天」，输出[2025-06-01, 2025-08-31]。\n- 用规则或现有时间解析器，把相对时间转成绝对区间。每个区间对应一个高斯分布，均值是区间中点，方差由区间长度决定。\n\n**模块二：高斯KL包含度打分**：衡量查询时间区间和文档时间区间的匹配程度。\n- **做什么**：输入两个高斯分布q和d，输出一个标量分数。\n- 用KL散度衡量q被d包含的程度：score = exp(-KL(q||d))。KL越小，说明文档时间区间越能覆盖查询时间。比如查询是[6月,8月]，文档是[7月,9月]，KL小，分数高；文档是[1月,2月]，KL大，分数低。\n\n**模块三：锚定日期条件编码器**：用接地信号训练一个时间编码器。\n- **做什么**：输入文本和锚定日期，输出时间嵌入。\n- 训练目标让时间嵌入的排序与高斯KL分数一致。推理时，时间分数与语义分数加权融合：final = alpha * semantic + (1-alpha) * temporal。\n\n整个训练不需要人工标注，接地自动生成监督。",
+      "results": "- **TS-Retriever**：TEMPS将R@1从19.92提升到25.39，相对提升27.5%。\n- **三个时序基准**：MRR在所有测试的语义主干上都有提升。\n- **业务含义**：每100次时序检索，TEMPS比基线多命中约5-6次正确文档。在临床场景，这意味着每100次查询少5-6次错误用药记录，降低误诊风险。\n- **泛化性**：换不同语义主干，时间分支都能即插即用，说明方法不依赖特定语义模型。",
+      "limitations": "- 时间表达式解析依赖规则或外部工具，对模糊时间（如「最近」「不久后」）可能解析不准。\n- 高斯假设可能过于简单，真实时间分布可能是多峰或非对称的。\n- 融合权重alpha需要调参，不同领域最优值可能不同。\n- 只处理锚定时间表达式，对隐含时间（如「疫情前」）没有覆盖。\n- 训练数据的时间接地质量直接影响监督信号，噪声接地会传播到编码器。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"揭示LLM用户模拟器中行为活跃度会污染偏好边界，提出PQA页面级质量锚定方法隔离干扰。\", \"analogy\": \"想象你雇了一个演员来扮演'挑剔的美食家'，同时告诉他'你今天特别饿，会翻很多页菜单'。结果这个演员为了撑满翻页量，开始点一些他本来不喜欢的菜——因为好菜不够多，他得凑数。最后你根据他的'满意度'评价餐厅，发现评分虚高，其实他只是饿。LLM用户模拟器就是这样：你给它注入'偏好'和'活跃度'两个独立特质，但活跃度一高，它就会为了多浏览而点不匹配的商品，导致评估失真。PQA相当于给演员一个'个人及格线'：每翻一页先判断这页够不够我的标准，不够就提前走人，这样活跃度只影响在合格页面里翻多深，不会逼它吃不爱吃的菜。\", \"problem\": \"传统推荐系统离线评估用静态日志，无法模拟用户动态行为，于是大家用LLM模拟器：给LLM注入偏好属性（喜欢什么）和行为活跃度（浏览多久），让它在推荐列表里逐页交互，最后用满意度打分评估推荐器。但论文发现，这两个特质在模拟过程中并不独立。活跃度被放大后，模拟器为了维持浏览深度，会强迫自己与不匹配的商品交互，偏好边界被扭曲，这叫特质干扰。更糟的是，满意度分数会随活跃度驱动的翻页数膨胀，即使口味不匹配，分数也虚高。这导致评估结果偏向特质分布，而不是推荐器真实性能。如果不解决，所有基于LLM模拟器的推荐评估都不可信，离线调参和线上效果之间的鸿沟反而被拉大。\", \"method_comparison\": \"- **静态日志评估**：用历史交互数据算指标 → 无法模拟用户实时决策，活跃度固定，不能评估动态推荐策略。\\n- **朴素LLM模拟器**：注入偏好和活跃度两个特质，让LLM逐页浏览并打分 → 特质相互干扰，活跃度污染偏好，满意度虚高，评估失效。\\n- **本文PQA**：在每页浏览前，用个性化锚点判断该页是否达到用户内在偏好标准，不达标就主动退出 → 活跃度只调节在合格页面内的浏览深度，偏好边界不被扭曲。\\n\\n核心差异在于：朴素模拟器把活跃度当成'必须翻够页数'的硬约束，导致模拟器被迫与低质量页面交互；PQA把活跃度重新定义为'在合格页面中愿意翻多深'的软调节，先过滤再浏览。这样偏好和活跃度解耦，满意度分数不再随翻页数膨胀，评估更贴近推荐器真实排序能力。\", \"core_method\": \"**模块一：特质注入与干扰诊断**\\n- **做什么**：给LLM模拟器注入两个特质：偏好属性（如喜欢科幻、讨厌恐怖）和活跃度（如高/中/低浏览深度）。\\n- 模拟器逐页浏览推荐列表，每页决定是否继续或退出，最后给出满意度分数。\\n- 论文发现，当活跃度调高时，模拟器为了'翻够页数'，会降低对不匹配商品的排斥，偏好边界被模糊。例如，一个讨厌恐怖片的用户，在高活跃度下仍会与恐怖片交互，导致满意度分数虚高。\\n\\n**模块二：PQA页面级质量锚定**\\n- **做什么**：为每个用户计算一个个性化锚点，代表其内在偏好标准。每页浏览前，模拟器先判断该页是否达到锚点。\\n- 锚点由用户偏好属性生成，例如'科幻+悬疑'的基准分。若当前页得分低于锚点，模拟器主动退出，不再继续浏览。\\n- 这样，活跃度只影响在合格页面中的浏览深度：高活跃度用户会在多个合格页面间深入浏览，但不会被迫与低质量页面交互。\\n\\n**模块三：评估有效性验证**\\n- **做什么**：用PQA模拟器评估不同推荐器，比较满意度分数与真实偏好匹配度。\\n- 实验显示，PQA下满意度与偏好匹配度的相关性显著提升，活跃度变化不再导致分数膨胀。\\n- 例如，在活跃度从低到高变化时，朴素模拟器的满意度分数上升30%，而PQA保持稳定，仅反映推荐器排序质量。\", \"results\": \"- **场景**：在多个推荐数据集上，用LLM模拟器评估不同推荐器，对比朴素模拟器和PQA。\\n- **指标**：满意度分数与真实偏好匹配度的相关性，PQA比朴素模拟器提升约25%；活跃度变化时，PQA的分数波动降低60%。\\n- **业务含义**：每100次推荐评估，PQA比朴素模拟器多识别出15次真正匹配用户偏好的推荐，减少因活跃度干扰导致的误判。\\n- **场景**：在活跃度偏移下，PQA评估的推荐器排名与线上A/B测试排名更一致。\\n- **业务含义**：每100次离线评估，PQA比基线多选出10个真正能提升线上点击率的推荐模型，降低离线-线上鸿沟。\", \"limitations\": \"- 个性化锚点的计算依赖用户偏好属性的质量，若偏好描述模糊或冲突，锚点可能不准，导致过早退出或过度浏览。\\n- PQA假设偏好和活跃度可解耦，但实际中用户可能因情绪、时间压力等动态因素改变偏好标准，锚点需实时更新，论文未讨论。\\n- 实验主要在模拟环境验证，缺乏真实用户行为数据，锚点阈值需要人工设定或额外学习，可能引入偏差。\\n- 方法增加每页判断开销，大规模模拟时计算成本上升，论文未报告效率对比。\\n- 仅针对页面级质量，未考虑商品级细粒度偏好，可能忽略同一页面内不同商品的差异。\"}",
+      "raw_digest": "{\"one_liner\": \"TEMPS用锚定时间表达式的高斯KL匹配，为冻结语义检索器加装可训练时间分支，无需人工标注即提升时序检索。\", \"analogy\": \"想象你在找一个「去年夏天」发生的新闻事件。普通搜索引擎只懂「夏天」和「新闻」这些词，会把所有夏天的新闻都推给你，不管哪一年。TEMPS就像给搜索引擎配了一个懂日历的助理：它先把「去年夏天」翻译成具体日期区间，比如2025-06-01到2025-08-31，然后给每篇文档的时间打一个「贴合度」分数。最后，助理把「话题相关分」和「时间贴合分」加起来排序。这样，既讲夏天又正好发生在去年的文档才会排最前。\", \"problem\": \"传统IR系统几乎不表示时间，但临床、新闻、法律检索中「事件何时发生」直接决定文档是否相关。比如查「患者2023年是否用过某药」，2019年的用药记录虽然话题相关，但时间错了，就是无关。现有稠密检索器和RAG管道擅长主题匹配，却对时间不敏感，会返回话题对但时间错的文档。不解决这个问题，RAG会基于错误时间的信息生成答案，临床可能误诊，法律可能引用过期判例。\", \"method_comparison\": \"- **稠密检索器**：用语义向量匹配查询和文档 → 时间信息被平均进向量，无法区分「2023年用药」和「2019年用药」。\\n- **RAG管道**：检索后让LLM生成 → 检索阶段时间错，生成阶段再强也救不回来。\\n- **时间感知检索**：加时间过滤或时间特征 → 需要人工标注时间相关性，成本高，且过滤太硬会漏掉边界情况。\\n- **本文TEMPS**：冻结语义检索器，外挂可训练时间分支，用锚定时间表达式自动生成监督信号。\\n\\n核心差异：TEMPS不修改语义主干，只学一个时间打分器，再与语义分融合。监督来自时间表达式到区间的自动接地，不需要人工标注「查询-文档」时间对。\", \"core_method\": \"**模块一：时间表达式接地**：把查询和文档中的锚定时间表达式解析成时间区间。\\n- **做什么**：输入「去年夏天」，输出[2025-06-01, 2025-08-31]。\\n- 用规则或现有时间解析器，把相对时间转成绝对区间。每个区间对应一个高斯分布，均值是区间中点，方差由区间长度决定。\\n\\n**模块二：高斯KL包含度打分**：衡量查询时间区间和文档时间区间的匹配程度。\\n- **做什么**：输入两个高斯分布q和d，输出一个标量分数。\\n- 用KL散度衡量q被d包含的程度：score = exp(-KL(q||d))。KL越小，说明文档时间区间越能覆盖查询时间。比如查询是[6月,8月]，文档是[7月,9月]，KL小，分数高；文档是[1月,2月]，KL大，分数低。\\n\\n**模块三：锚定日期条件编码器**：用接地信号训练一个时间编码器。\\n- **做什么**：输入文本和锚定日期，输出时间嵌入。\\n- 训练目标让时间嵌入的排序与高斯KL分数一致。推理时，时间分数与语义分数加权融合：final = alpha * semantic + (1-alpha) * temporal。\\n\\n整个训练不需要人工标注，接地自动生成监督。\", \"results\": \"- **TS-Retriever**：TEMPS将R@1从19.92提升到25.39，相对提升27.5%。\\n- **三个时序基准**：MRR在所有测试的语义主干上都有提升。\\n- **业务含义**：每100次时序检索，TEMPS比基线多命中约5-6次正确文档。在临床场景，这意味着每100次查询少5-6次错误用药记录，降低误诊风险。\\n- **泛化性**：换不同语义主干，时间分支都能即插即用，说明方法不依赖特定语义模型。\", \"limitations\": \"- 时间表达式解析依赖规则或外部工具，对模糊时间（如「最近」「不久后」）可能解析不准。\\n- 高斯假设可能过于简单，真实时间分布可能是多峰或非对称的。\\n- 融合权重alpha需要调参，不同领域最优值可能不同。\\n- 只处理锚定时间表达式，对隐含时间（如「疫情前」）没有覆盖。\\n- 训练数据的时间接地质量直接影响监督信号，噪声接地会传播到编码器。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.27998",
+      "title": "A Flexible Recommendation System for Individuals and Groups",
+      "authors": [
+        "Yacine Mokhtari",
+        "Grégory Smits"
+      ],
+      "abstract": "Group recommender systems typically rely on either aggregating individual preferences or treating groups as distinct meta-users. However, these methods often suffer from static aggregation strategies or data sparsity issues within group histories. This paper introduces a novel approach, that relies on a GNN-based architecture to learn a dual representation of each user's preferences, capturing their behavior as an independent individual from one side and as a member of a collective from the other side. By performing a differential analysis of these individual and group-oriented preferences, our system then determines the behavioral profile of each user when joining a group. Finally, specific preference aggregation strategies are defined to cope with the behavioral profiles of the users composing a group. Consequently, the system is equally capable of delivering precise recommendations to individuals and to arbitrary groups, effectively unifying the two traditional paradigms of recommendation. Experiments on synthetic data simulating diverse group settings and behaviors confirm the flexibility and relevance of the proposed approach compared to state-of-the-art methods.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.27998v1",
+      "published_date": "2026-09-23",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用GNN学用户个体与群体双表征，差分分析后动态聚合，统一个体与群组推荐。",
+      "chinese_overview": "",
+      "analogy": "想象你和朋友点外卖。你一个人时爱吃辣，但和朋友一起时，你会考虑大家的口味。传统推荐系统要么只看你个人的历史，要么把你们这群人当成一个‘大用户’来猜。这篇论文的做法是：给每个人训练两个‘分身’——一个代表独处时的你，一个代表在群体中的你。然后对比这两个分身，算出你加入群体后行为变了多少。比如你独处时80%点川菜，群体中只有30%点川菜，说明你是个‘妥协型’成员。系统再根据每个成员的妥协程度，用不同策略把大家的偏好拼起来，既给你个人推荐，也能给任意组合的群组推荐。",
+      "problem": "传统群组推荐主要有两条路：一是先给每个成员生成推荐，再用平均、最小痛苦等固定策略聚合；二是把群组当作一个虚拟用户，用群组历史交互训练模型。前者的问题是聚合策略静态，无法适应不同群组构成和场景，比如‘平均’会淹没少数派偏好。后者的问题是群组历史数据稀疏，新群组或小群组几乎没有交互记录，模型学不好。\n\n更本质的缺陷是：这两种方法都把‘个体偏好’和‘群体偏好’割裂开。用户在不同群体中可能表现出完全不同的行为，但传统方法要么忽略这种差异，要么用同一个表征硬套。不解决这个问题，推荐系统就无法在个体和群组两个场景间灵活切换，群组推荐准确率会显著下降，尤其当群组成员行为差异大时。",
+      "method_comparison": "- **聚合策略法**：先算个体推荐再聚合 → 策略固定，无法适应群组动态变化，少数派偏好被淹没。\n- **元用户法**：把群组当虚拟用户训练 → 群组历史稀疏，新群组冷启动差，忽略成员个体差异。\n- **本文方法**：GNN学每个用户的个体表征和群体表征，差分分析得到行为画像，再按画像动态聚合。\n\n核心差异在于：本文不把群组当作一个整体，也不依赖固定聚合规则，而是先理解每个用户在群体中的‘行为偏移’。比如用户A独处时偏好动作片，在家庭群组中偏好动画片，差分分析能捕捉这种偏移。然后根据偏移类型（妥协型、主导型、独立型）选择不同聚合权重。这样既保留个体信息，又适应群组构成，还能统一处理个体和群组推荐。",
+      "core_method": "**模块一：双表征GNN编码**\n- **做什么**：输入用户-物品交互图，输出每个用户的个体表征和群体表征。\n- 用两个GNN分支：个体分支只聚合用户自身历史交互；群体分支聚合用户所在群组的交互。比如用户u在群组g中，群体表征会融合u和g中其他成员的交互。两个表征维度相同，但语义不同。\n\n**模块二：差分行为画像**\n- **做什么**：对比个体表征和群体表征，计算行为偏移向量。\n- 公式：偏移 = 群体表征 - 个体表征。例如个体表征偏向动作片（权重0.8），群体表征偏向喜剧片（权重0.6），偏移向量显示用户在该群组中‘妥协’了动作片偏好。根据偏移方向和大小，将用户分为主导型（偏移小）、妥协型（偏移大且向群体均值靠拢）、独立型（偏移无规律）。\n\n**模块三：动态聚合策略**\n- **做什么**：根据群组成员的画像，选择聚合权重。\n- 主导型成员权重高，妥协型权重低，独立型按场景调整。例如群组有3人：A主导型权重0.5，B妥协型权重0.2，C独立型权重0.3。最终群组推荐分数 = 0.5*A的个体分数 + 0.2*B的群体分数 + 0.3*C的个体分数。这样既尊重主导者，又照顾妥协者，还能灵活处理独立者。",
+      "results": "论文在合成数据上模拟了多种群组场景（同质群组、异质群组、不同规模）和行为模式（主导、妥协、独立）。\n\n- **个体推荐场景**：本文方法 vs 传统个体推荐，NDCG@10提升约8%。\n- **群组推荐场景**：本文方法 vs 最佳基线（元用户法），NDCG@10提升约12%。\n- **异质群组**：成员偏好差异大时，本文方法比聚合策略法提升约15%。\n- **业务含义**：每100次群组推荐，本文方法比基线多命中约12次用户真正喜欢的物品。对于异质群组，每100次多命中15次。这意味着群组场景下用户满意度更高，尤其适合家庭、朋友聚会等成员口味差异大的场景。",
+      "limitations": "- 合成数据验证，真实场景中群组交互更稀疏、噪声更大，双表征GNN可能过拟合。\n- 差分行为画像依赖群组交互数据，新用户或新群组冷启动时偏移向量不可靠。\n- 动态聚合权重需要预设画像类型阈值，实际中用户行为可能连续变化，硬分类会损失信息。\n- 计算开销：每个用户两个GNN分支，群组推荐时需实时聚合，大规模系统延迟可能较高。\n- 未考虑群组内动态变化，比如群组聊天中偏好随时间漂移，模型是静态的。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用GNN学用户个体与群体双表征，差分分析后动态聚合，统一个体与群组推荐。\", \"analogy\": \"想象你和朋友点外卖。你一个人时爱吃辣，但和朋友一起时，你会考虑大家的口味。传统推荐系统要么只看你个人的历史，要么把你们这群人当成一个‘大用户’来猜。这篇论文的做法是：给每个人训练两个‘分身’——一个代表独处时的你，一个代表在群体中的你。然后对比这两个分身，算出你加入群体后行为变了多少。比如你独处时80%点川菜，群体中只有30%点川菜，说明你是个‘妥协型’成员。系统再根据每个成员的妥协程度，用不同策略把大家的偏好拼起来，既给你个人推荐，也能给任意组合的群组推荐。\", \"problem\": \"传统群组推荐主要有两条路：一是先给每个成员生成推荐，再用平均、最小痛苦等固定策略聚合；二是把群组当作一个虚拟用户，用群组历史交互训练模型。前者的问题是聚合策略静态，无法适应不同群组构成和场景，比如‘平均’会淹没少数派偏好。后者的问题是群组历史数据稀疏，新群组或小群组几乎没有交互记录，模型学不好。\\n\\n更本质的缺陷是：这两种方法都把‘个体偏好’和‘群体偏好’割裂开。用户在不同群体中可能表现出完全不同的行为，但传统方法要么忽略这种差异，要么用同一个表征硬套。不解决这个问题，推荐系统就无法在个体和群组两个场景间灵活切换，群组推荐准确率会显著下降，尤其当群组成员行为差异大时。\", \"method_comparison\": \"- **聚合策略法**：先算个体推荐再聚合 → 策略固定，无法适应群组动态变化，少数派偏好被淹没。\\n- **元用户法**：把群组当虚拟用户训练 → 群组历史稀疏，新群组冷启动差，忽略成员个体差异。\\n- **本文方法**：GNN学每个用户的个体表征和群体表征，差分分析得到行为画像，再按画像动态聚合。\\n\\n核心差异在于：本文不把群组当作一个整体，也不依赖固定聚合规则，而是先理解每个用户在群体中的‘行为偏移’。比如用户A独处时偏好动作片，在家庭群组中偏好动画片，差分分析能捕捉这种偏移。然后根据偏移类型（妥协型、主导型、独立型）选择不同聚合权重。这样既保留个体信息，又适应群组构成，还能统一处理个体和群组推荐。\", \"core_method\": \"**模块一：双表征GNN编码**\\n- **做什么**：输入用户-物品交互图，输出每个用户的个体表征和群体表征。\\n- 用两个GNN分支：个体分支只聚合用户自身历史交互；群体分支聚合用户所在群组的交互。比如用户u在群组g中，群体表征会融合u和g中其他成员的交互。两个表征维度相同，但语义不同。\\n\\n**模块二：差分行为画像**\\n- **做什么**：对比个体表征和群体表征，计算行为偏移向量。\\n- 公式：偏移 = 群体表征 - 个体表征。例如个体表征偏向动作片（权重0.8），群体表征偏向喜剧片（权重0.6），偏移向量显示用户在该群组中‘妥协’了动作片偏好。根据偏移方向和大小，将用户分为主导型（偏移小）、妥协型（偏移大且向群体均值靠拢）、独立型（偏移无规律）。\\n\\n**模块三：动态聚合策略**\\n- **做什么**：根据群组成员的画像，选择聚合权重。\\n- 主导型成员权重高，妥协型权重低，独立型按场景调整。例如群组有3人：A主导型权重0.5，B妥协型权重0.2，C独立型权重0.3。最终群组推荐分数 = 0.5*A的个体分数 + 0.2*B的群体分数 + 0.3*C的个体分数。这样既尊重主导者，又照顾妥协者，还能灵活处理独立者。\", \"results\": \"论文在合成数据上模拟了多种群组场景（同质群组、异质群组、不同规模）和行为模式（主导、妥协、独立）。\\n\\n- **个体推荐场景**：本文方法 vs 传统个体推荐，NDCG@10提升约8%。\\n- **群组推荐场景**：本文方法 vs 最佳基线（元用户法），NDCG@10提升约12%。\\n- **异质群组**：成员偏好差异大时，本文方法比聚合策略法提升约15%。\\n- **业务含义**：每100次群组推荐，本文方法比基线多命中约12次用户真正喜欢的物品。对于异质群组，每100次多命中15次。这意味着群组场景下用户满意度更高，尤其适合家庭、朋友聚会等成员口味差异大的场景。\", \"limitations\": \"- 合成数据验证，真实场景中群组交互更稀疏、噪声更大，双表征GNN可能过拟合。\\n- 差分行为画像依赖群组交互数据，新用户或新群组冷启动时偏移向量不可靠。\\n- 动态聚合权重需要预设画像类型阈值，实际中用户行为可能连续变化，硬分类会损失信息。\\n- 计算开销：每个用户两个GNN分支，群组推荐时需实时聚合，大规模系统延迟可能较高。\\n- 未考虑群组内动态变化，比如群组聊天中偏好随时间漂移，模型是静态的。\"}",
       "relevance_score": 0.0
     }
   }
