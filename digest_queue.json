@@ -83,7 +83,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.27998",
       "title": "A Flexible Recommendation System for Individuals and Groups",
