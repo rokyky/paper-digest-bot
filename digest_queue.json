@@ -42,7 +42,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.28048",
       "title": "TEMPS: Temporal Sentence Embeddings for Temporal Information Retrieval",
