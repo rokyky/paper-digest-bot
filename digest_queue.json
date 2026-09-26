@@ -182,7 +182,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.30001",
       "title": "Advancing Model Research in AgentX: Long-Horizon Autonomy for Industrial Recommender Systems",
