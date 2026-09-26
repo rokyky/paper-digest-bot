@@ -242,7 +242,7 @@
   },
   {
     "position": 6,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.29815",
       "title": "LSF-SR: Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders",
