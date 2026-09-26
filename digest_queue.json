@@ -3,18 +3,22 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2609.28383",
-      "title": "Beyond a Scalar: Distributional Serving Interfaces for Watch-Time Prediction",
+      "external_id": "arXiv:2609.29973",
+      "title": "Learning Better Reasoning for Generative Recommendation with Semantic IDs",
       "authors": [
-        "Xuan Liu",
-        "Jingbin Qian",
-        "Zhanyu Liu",
-        "Hefeng Zhou"
+        "Mengdan Zhu",
+        "Yufan Zhao",
+        "Sophie Di",
+        "Yao Zhao",
+        "Tao Di",
+        "Yulan Yan",
+        "Sridhar Iyer",
+        "Liang Zhao"
       ],
-      "abstract": "Watch time is the primary engagement signal in short video feeds, and its prediction directly affects ranking and exposure. Existing methods improve watch time prediction by correcting duration bias or modeling richer distributions, but most expose only an expected or debiased watch time at serving time. Even when video duration is available to later models, the interface gives only one estimate of watch time and no probabilities for completion, overplay, or other regions relevant to downstream tasks. To address this limitation, we propose the Distributional Serving Interface (DSI), which has a distribution provider, a compact, low-dimensional summary, and lightweight readouts tailored to each task. The provider learns a joint distribution over four watch states derived from watch ratio and their event times; rules based on video duration remove incompatible combinations, while a restoration loss preserves accuracy in seconds. The summary reduces this distribution to a small set of event probabilities, time scales relative to duration, and uncertainty statistics. After training the provider, we fix its parameters and train value and ranking readouts that combine the summary with raw context. Across KuaiRec, KuaiRand-1K, and WeChat21, the complete DSI system achieves the lowest MAE on all three datasets, beating the strongest result among nine baselines by 1.9% to 8.5%, and achieves the best XAUC on two. It also leads retrieval metrics that account for video duration when complete systems are compared. With matched readouts held constant, the summary retains information relevant to each task beyond a predicted mean paired with video duration. Using the same lightweight linear heads for each new target, it also performs best on two new watch-time targets and improves a separately logged engagement target, while a randomly initialized provider does not reproduce this gain.",
+      "abstract": "Generative recommendation reformulates item retrieval as sequence generation, allowing a unified model to directly generate the next item from a user's interaction history. Semantic IDs further make this paradigm effective and scalable by representing each item as discrete codes, enabling knowledge sharing among semantically related items. Recent studies introduce explicit reasoning before Semantic-ID generation, helping models summarize user interests and infer possible preference transitions. However, reasoning is not inherently beneficial: Inaccurate or uninformative reasoning may mislead subsequent item generation and ultimately degrade recommendation performance. This raises a central challenge: how can a recommender select and learn effective reasoning traces and progressively evolve toward better reasoning from its own generations? In this work, we propose Evo-Rec, a three-stage framework for learning better reasoning and further enhancing it through reinforcement learning. First, we align Semantic IDs with their textual and behavioral contexts, enabling the model to understand and generate item identifiers. Second, we sample multiple candidate reasoning traces and retain those that improve the prediction of the ground-truth item, providing a stronger reasoning initialization through supervised fine-tuning. Third, we further optimize the reasoning policy through reinforcement learning with catalog-constrained item generation and ranking-aware recommendation feedback. Experiments on three Amazon Review benchmarks show that Evo-Rec consistently outperforms discriminative, generative, and reasoning-enhanced recommenders across all evaluation metrics. These results demonstrate the effectiveness of our framework in learning better reasoning for SID-based generative recommendation.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.28383v1",
-      "published_date": "2026-09-23",
+      "url": "http://arxiv.org/abs/2609.29973v1",
+      "published_date": "2026-09-24",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -22,79 +26,44 @@
       }
     },
     "digest": {
-      "one_liner": "把观看时长预测从单点估计升级为四状态联合分布接口，下游任务按需读取。",
+      "one_liner": "Evo-Rec 用三阶段框架筛选有效推理轨迹，再用强化学习优化，让生成式推荐从自身生成中进化出更好的推理。",
       "chinese_overview": "",
-      "analogy": "想象你点外卖，平台只告诉你「预计 30 分钟送达」。但如果你要决定是先洗澡还是先看剧，你其实想知道：30 分钟内到的概率多大？会不会拖到 1 小时？会不会提前 10 分钟到？DSI 就是把「一个预计时间」换成「一张到达时间分布表」，还附赠几个关键概率：准时率、超时率、提前率。下游的推荐系统、排序系统各取所需，不用再自己猜。",
-      "problem": "短视频推荐里，观看时长是最核心的互动信号，直接决定排序和曝光。传统做法是预测一个期望观看时长，或者做时长纠偏后输出一个去偏值。问题是：服务接口只给一个标量，下游拿不到「完播概率」「超播概率」「事件时间尺度」这些信息。即使后续模型知道视频时长，也只能拿到一个估计值，无法判断这个估计的置信度、分布形状、以及不同观看状态的概率。后果是：排序模型无法区分「大概率看 10 秒」和「小概率看 100 秒」这两种期望相同但业务含义完全不同的情况；多目标场景下每个任务都要重新训练一个大模型，成本高且信息不共享。",
-      "method_comparison": "- **期望值回归**：直接拟合观看时长均值 → 只给标量，丢失分布信息，无法支持完播/超播等下游任务。\n- **时长纠偏方法**：对 duration bias 做校正 → 输出仍是单点估计，纠偏后分布信息被抹平。\n- **分布建模方法**：建模更丰富的分布 → 服务时往往只暴露期望或去偏值，分布本身没给下游用。\n- **本文 DSI**：训练一个分布提供器，输出四状态联合分布，再压缩成低维摘要，下游用轻量 readout 按任务读取。\n\n核心差异在于「服务接口」的重新设计。以前是模型内部有分布，服务时压成一个数；DSI 是把分布本身作为接口，摘要里包含事件概率、相对时长的时间尺度、不确定性统计。下游任务不用重训大模型，只加一个线性头就能复用。",
-      "core_method": "**模块一：分布提供器**\n- **做什么**：输入上下文特征，输出四个观看状态（如完播、超播、部分观看、快速划走）的联合分布，以及每个状态的事件时间。\n- 用观看比例和事件时间定义四状态，规则根据视频时长剔除不兼容组合，比如时长 15 秒的视频不可能出现「观看 30 秒」的状态。\n- 加一个 restoration loss，把分布还原到秒级精度，避免离散化后丢失绝对时间信息。\n\n**模块二：低维摘要**\n- **做什么**：把高维联合分布压缩成一小组统计量。\n- 包括：各状态事件概率、时间尺度除以视频时长后的相对值、不确定性统计（如熵或方差）。\n- 这样下游拿到的是「完播概率 0.3、超播概率 0.1、相对时间尺度 0.8、不确定性 0.2」这类紧凑向量，而不是原始分布参数。\n\n**模块三：轻量 readout**\n- **做什么**：固定分布提供器参数，只训练任务特定的 readout。\n- 每个 readout 把摘要和原始上下文拼接，过线性层或浅层 MLP，输出该任务的目标，比如观看时长回归、排序分数、完播二分类。\n- 换新目标时只换 readout，提供器不动，所以新增任务成本极低。",
-      "results": "- **MAE**：在 KuaiRec、KuaiRand-1K、WeChat21 三个数据集上，完整 DSI 系统 MAE 最低，比九个基线里最强结果好 1.9% 到 8.5%。\n- **XAUC**：在两个数据集上取得最佳 XAUC，说明排序质量也有提升。\n- **检索指标**：在考虑视频时长的完整系统对比中，DSI 领先。\n- **摘要有效性**：固定 readout 不变，摘要比「预测均值 + 视频时长」保留更多任务相关信息。\n- **新目标迁移**：用同样轻量线性头，在两个新观看时长目标上表现最好，还提升了一个单独记录的互动目标；随机初始化提供器则没有这个增益。\n- **业务含义**：每 100 次观看时长预测，比最强基线多约 2 到 9 次预测更准；排序场景下，下游能拿到完播/超播概率，可针对不同业务目标灵活调整曝光策略。",
-      "limitations": "- 四状态定义依赖观看比例阈值，阈值怎么选论文没细说，不同业务场景可能需要重新调。\n- 分布提供器训练完后固定，如果线上分布漂移严重，readout 可能无法完全补偿，需要定期重训提供器。\n- 摘要维度虽低，但具体多少维、包含哪些统计量，论文没给消融的完整敏感性分析。\n- 实验主要在短视频数据集，长视频或直播场景下事件时间定义和状态划分是否适用未知。\n- 推理时分布提供器仍要跑一次前向，相比纯标量模型有额外延迟，论文没报线上延迟数据。",
+      "analogy": "想象你带一个实习生做推荐。他每次给用户推商品前，先写一段'我猜用户接下来想买什么'的推理草稿。问题是：草稿写得好，推荐就准；草稿瞎写，推荐就崩。Evo-Rec 的做法分三步：第一步先教他看懂商品编码（Semantic ID）和对应的文字、行为；第二步让他一次写好几份草稿，只留下那些真能猜中正确答案的，用这些好草稿做示范训练；第三步让他自己多练，猜对了给奖励、猜错了扣分，而且只能在真实商品库里选，不能凭空编。这样他慢慢学会写有用的推理，而不是为了推理而推理。",
+      "problem": "生成式推荐把推荐当成序列生成任务：模型直接根据用户历史生成下一个物品。Semantic ID 把每个物品表示成离散编码，让语义相近的物品共享知识，效果和扩展性都不错。近期工作进一步在生成 Semantic ID 之前加一段显式推理，先总结用户兴趣、推断偏好转移，再生成物品。\n\n但推理不是天然有益的。如果推理不准确或没信息量，反而会误导后续的物品生成，推荐效果不升反降。核心矛盾在于：模型自己生成的推理轨迹质量参差不齐，而现有训练方式没有机制去区分'好推理'和'坏推理'，更没法让模型从自己的生成中逐步进化。\n\n不解决这个问题，推理模块就成了双刃剑：加了可能比不加还差，而且无法持续迭代提升。论文要回答的是：推荐系统如何自动筛选并学习有效推理轨迹，并在此基础上持续进化。",
+      "method_comparison": "- **判别式推荐**：直接对物品打分排序 → 无法利用语义知识共享，冷门物品泛化差。\n- **生成式推荐（无推理）**：直接生成 Semantic ID → 缺少对用户兴趣的显式归纳，偏好转移建模弱。\n- **推理增强推荐**：先生成推理再生成物品 → 推理质量不可控，坏推理会误导生成，且没有筛选和进化机制。\n- **本文 Evo-Rec**：三阶段——对齐 Semantic ID、筛选有效推理做 SFT、再用 RL 优化推理策略。\n\n核心差异有两点。第一，推理轨迹不是照单全收，而是采样多条后只保留能提升真实物品预测的那些，相当于用结果反推过程质量，给模型一个干净的推理初始化。第二，在 SFT 之后继续用强化学习优化，奖励来自目录约束下的物品生成和排序反馈，让模型在真实商品空间里试错，逐步进化出更好的推理策略，而不是停在模仿阶段。",
+      "core_method": "**模块一：Semantic ID 对齐**：让模型理解物品编码的含义。\n- 做什么：把每个物品的 Semantic ID 与其文本描述、行为上下文对齐，输入是物品的离散编码加文本/行为信息，输出是模型能生成和理解的物品标识。\n- 做法：通过对齐训练，使模型在看到或生成某段 SID 时，能关联到对应物品的语义和交互模式。比如物品编码为 [12, 45, 7]，模型要能把它和'某品牌蓝牙耳机'及'常被年轻用户点击'对应起来。没有这一步，后续推理和生成都缺乏语义基础。\n\n**模块二：有效推理筛选 + SFT**：从多条推理中挑出真正有用的。\n- 做什么：对每个样本采样多条候选推理轨迹，保留那些能提升真实物品预测的轨迹，用它们做监督微调。\n- 做法：假设采样 8 条推理，其中 3 条能让模型更准地生成 ground-truth 物品，就只留这 3 条。相当于用'推理是否帮助猜中答案'作为筛选标准，过滤掉无效或误导性推理，给模型一个更强的推理初始化。\n\n**模块三：强化学习进化**：在真实商品空间里持续优化推理策略。\n- 做什么：用 RL 进一步优化推理策略，奖励来自目录约束下的物品生成和排序感知的推荐反馈。\n- 做法：模型生成推理和物品，物品必须落在真实目录内（catalog-constrained），不能编造不存在的 ID。奖励结合生成是否正确以及排序质量。比如猜中真实物品得正奖励，猜错或生成非法 ID 得负奖励。通过策略梯度更新，模型逐步学会写更有用的推理，形成从自身生成中进化的闭环。",
+      "results": "论文在三个 Amazon Review 基准上评测，Evo-Rec 在所有指标上一致优于判别式、生成式和推理增强的推荐方法。\n\n- **对比判别式推荐**：Evo-Rec 在命中率类指标上更高，说明生成式加推理的范式在语义共享和偏好转移建模上有优势。\n- **对比生成式推荐（无推理）**：加入筛选后的推理带来稳定提升，证明有效推理确实能帮助物品生成。\n- **对比推理增强推荐**：Evo-Rec 通过筛选和 RL 进化，避免了坏推理的负面影响，效果更好。\n\n业务含义：假设基线每 100 次推荐能命中 20 次，Evo-Rec 若提升到 24 次，相当于每 100 次多完成 4 次有效推荐。在电商场景下，这意味着更高的点击率和转化率，同时推理过程可解释，便于运营分析用户兴趣。三个数据集一致提升也说明方法不是靠某个数据集的偶然性，具备一定泛化能力。",
+      "limitations": "- 推理轨迹筛选依赖 ground-truth 物品，在真实线上场景中用户真实意图往往不唯一，单目标筛选可能过滤掉有价值的探索性推理。\n- 三阶段训练流程复杂，SFT 加 RL 的算力和工程成本高，线上迭代周期可能较长。\n- 强化学习的奖励设计依赖目录约束和排序反馈，若商品目录动态变化频繁，奖励信号可能不稳定。\n- 论文只在 Amazon Review 三个数据集上验证，跨域、跨平台以及冷启动场景的泛化性未知。\n- 推理轨迹的可解释性虽好，但生成推理会增加推理时延，对低延迟推荐场景可能不友好。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"把观看时长预测从单点估计升级为四状态联合分布接口，下游任务按需读取。\", \"analogy\": \"想象你点外卖，平台只告诉你「预计 30 分钟送达」。但如果你要决定是先洗澡还是先看剧，你其实想知道：30 分钟内到的概率多大？会不会拖到 1 小时？会不会提前 10 分钟到？DSI 就是把「一个预计时间」换成「一张到达时间分布表」，还附赠几个关键概率：准时率、超时率、提前率。下游的推荐系统、排序系统各取所需，不用再自己猜。\", \"problem\": \"短视频推荐里，观看时长是最核心的互动信号，直接决定排序和曝光。传统做法是预测一个期望观看时长，或者做时长纠偏后输出一个去偏值。问题是：服务接口只给一个标量，下游拿不到「完播概率」「超播概率」「事件时间尺度」这些信息。即使后续模型知道视频时长，也只能拿到一个估计值，无法判断这个估计的置信度、分布形状、以及不同观看状态的概率。后果是：排序模型无法区分「大概率看 10 秒」和「小概率看 100 秒」这两种期望相同但业务含义完全不同的情况；多目标场景下每个任务都要重新训练一个大模型，成本高且信息不共享。\", \"method_comparison\": \"- **期望值回归**：直接拟合观看时长均值 → 只给标量，丢失分布信息，无法支持完播/超播等下游任务。\\n- **时长纠偏方法**：对 duration bias 做校正 → 输出仍是单点估计，纠偏后分布信息被抹平。\\n- **分布建模方法**：建模更丰富的分布 → 服务时往往只暴露期望或去偏值，分布本身没给下游用。\\n- **本文 DSI**：训练一个分布提供器，输出四状态联合分布，再压缩成低维摘要，下游用轻量 readout 按任务读取。\\n\\n核心差异在于「服务接口」的重新设计。以前是模型内部有分布，服务时压成一个数；DSI 是把分布本身作为接口，摘要里包含事件概率、相对时长的时间尺度、不确定性统计。下游任务不用重训大模型，只加一个线性头就能复用。\", \"core_method\": \"**模块一：分布提供器**\\n- **做什么**：输入上下文特征，输出四个观看状态（如完播、超播、部分观看、快速划走）的联合分布，以及每个状态的事件时间。\\n- 用观看比例和事件时间定义四状态，规则根据视频时长剔除不兼容组合，比如时长 15 秒的视频不可能出现「观看 30 秒」的状态。\\n- 加一个 restoration loss，把分布还原到秒级精度，避免离散化后丢失绝对时间信息。\\n\\n**模块二：低维摘要**\\n- **做什么**：把高维联合分布压缩成一小组统计量。\\n- 包括：各状态事件概率、时间尺度除以视频时长后的相对值、不确定性统计（如熵或方差）。\\n- 这样下游拿到的是「完播概率 0.3、超播概率 0.1、相对时间尺度 0.8、不确定性 0.2」这类紧凑向量，而不是原始分布参数。\\n\\n**模块三：轻量 readout**\\n- **做什么**：固定分布提供器参数，只训练任务特定的 readout。\\n- 每个 readout 把摘要和原始上下文拼接，过线性层或浅层 MLP，输出该任务的目标，比如观看时长回归、排序分数、完播二分类。\\n- 换新目标时只换 readout，提供器不动，所以新增任务成本极低。\", \"results\": \"- **MAE**：在 KuaiRec、KuaiRand-1K、WeChat21 三个数据集上，完整 DSI 系统 MAE 最低，比九个基线里最强结果好 1.9% 到 8.5%。\\n- **XAUC**：在两个数据集上取得最佳 XAUC，说明排序质量也有提升。\\n- **检索指标**：在考虑视频时长的完整系统对比中，DSI 领先。\\n- **摘要有效性**：固定 readout 不变，摘要比「预测均值 + 视频时长」保留更多任务相关信息。\\n- **新目标迁移**：用同样轻量线性头，在两个新观看时长目标上表现最好，还提升了一个单独记录的互动目标；随机初始化提供器则没有这个增益。\\n- **业务含义**：每 100 次观看时长预测，比最强基线多约 2 到 9 次预测更准；排序场景下，下游能拿到完播/超播概率，可针对不同业务目标灵活调整曝光策略。\", \"limitations\": \"- 四状态定义依赖观看比例阈值，阈值怎么选论文没细说，不同业务场景可能需要重新调。\\n- 分布提供器训练完后固定，如果线上分布漂移严重，readout 可能无法完全补偿，需要定期重训提供器。\\n- 摘要维度虽低，但具体多少维、包含哪些统计量，论文没给消融的完整敏感性分析。\\n- 实验主要在短视频数据集，长视频或直播场景下事件时间定义和状态划分是否适用未知。\\n- 推理时分布提供器仍要跑一次前向，相比纯标量模型有额外延迟，论文没报线上延迟数据。\"}",
+      "raw_digest": "{\"one_liner\": \"Evo-Rec 用三阶段框架筛选有效推理轨迹，再用强化学习优化，让生成式推荐从自身生成中进化出更好的推理。\", \"analogy\": \"想象你带一个实习生做推荐。他每次给用户推商品前，先写一段'我猜用户接下来想买什么'的推理草稿。问题是：草稿写得好，推荐就准；草稿瞎写，推荐就崩。Evo-Rec 的做法分三步：第一步先教他看懂商品编码（Semantic ID）和对应的文字、行为；第二步让他一次写好几份草稿，只留下那些真能猜中正确答案的，用这些好草稿做示范训练；第三步让他自己多练，猜对了给奖励、猜错了扣分，而且只能在真实商品库里选，不能凭空编。这样他慢慢学会写有用的推理，而不是为了推理而推理。\", \"problem\": \"生成式推荐把推荐当成序列生成任务：模型直接根据用户历史生成下一个物品。Semantic ID 把每个物品表示成离散编码，让语义相近的物品共享知识，效果和扩展性都不错。近期工作进一步在生成 Semantic ID 之前加一段显式推理，先总结用户兴趣、推断偏好转移，再生成物品。\\n\\n但推理不是天然有益的。如果推理不准确或没信息量，反而会误导后续的物品生成，推荐效果不升反降。核心矛盾在于：模型自己生成的推理轨迹质量参差不齐，而现有训练方式没有机制去区分'好推理'和'坏推理'，更没法让模型从自己的生成中逐步进化。\\n\\n不解决这个问题，推理模块就成了双刃剑：加了可能比不加还差，而且无法持续迭代提升。论文要回答的是：推荐系统如何自动筛选并学习有效推理轨迹，并在此基础上持续进化。\", \"method_comparison\": \"- **判别式推荐**：直接对物品打分排序 → 无法利用语义知识共享，冷门物品泛化差。\\n- **生成式推荐（无推理）**：直接生成 Semantic ID → 缺少对用户兴趣的显式归纳，偏好转移建模弱。\\n- **推理增强推荐**：先生成推理再生成物品 → 推理质量不可控，坏推理会误导生成，且没有筛选和进化机制。\\n- **本文 Evo-Rec**：三阶段——对齐 Semantic ID、筛选有效推理做 SFT、再用 RL 优化推理策略。\\n\\n核心差异有两点。第一，推理轨迹不是照单全收，而是采样多条后只保留能提升真实物品预测的那些，相当于用结果反推过程质量，给模型一个干净的推理初始化。第二，在 SFT 之后继续用强化学习优化，奖励来自目录约束下的物品生成和排序反馈，让模型在真实商品空间里试错，逐步进化出更好的推理策略，而不是停在模仿阶段。\", \"core_method\": \"**模块一：Semantic ID 对齐**：让模型理解物品编码的含义。\\n- 做什么：把每个物品的 Semantic ID 与其文本描述、行为上下文对齐，输入是物品的离散编码加文本/行为信息，输出是模型能生成和理解的物品标识。\\n- 做法：通过对齐训练，使模型在看到或生成某段 SID 时，能关联到对应物品的语义和交互模式。比如物品编码为 [12, 45, 7]，模型要能把它和'某品牌蓝牙耳机'及'常被年轻用户点击'对应起来。没有这一步，后续推理和生成都缺乏语义基础。\\n\\n**模块二：有效推理筛选 + SFT**：从多条推理中挑出真正有用的。\\n- 做什么：对每个样本采样多条候选推理轨迹，保留那些能提升真实物品预测的轨迹，用它们做监督微调。\\n- 做法：假设采样 8 条推理，其中 3 条能让模型更准地生成 ground-truth 物品，就只留这 3 条。相当于用'推理是否帮助猜中答案'作为筛选标准，过滤掉无效或误导性推理，给模型一个更强的推理初始化。\\n\\n**模块三：强化学习进化**：在真实商品空间里持续优化推理策略。\\n- 做什么：用 RL 进一步优化推理策略，奖励来自目录约束下的物品生成和排序感知的推荐反馈。\\n- 做法：模型生成推理和物品，物品必须落在真实目录内（catalog-constrained），不能编造不存在的 ID。奖励结合生成是否正确以及排序质量。比如猜中真实物品得正奖励，猜错或生成非法 ID 得负奖励。通过策略梯度更新，模型逐步学会写更有用的推理，形成从自身生成中进化的闭环。\", \"results\": \"论文在三个 Amazon Review 基准上评测，Evo-Rec 在所有指标上一致优于判别式、生成式和推理增强的推荐方法。\\n\\n- **对比判别式推荐**：Evo-Rec 在命中率类指标上更高，说明生成式加推理的范式在语义共享和偏好转移建模上有优势。\\n- **对比生成式推荐（无推理）**：加入筛选后的推理带来稳定提升，证明有效推理确实能帮助物品生成。\\n- **对比推理增强推荐**：Evo-Rec 通过筛选和 RL 进化，避免了坏推理的负面影响，效果更好。\\n\\n业务含义：假设基线每 100 次推荐能命中 20 次，Evo-Rec 若提升到 24 次，相当于每 100 次多完成 4 次有效推荐。在电商场景下，这意味着更高的点击率和转化率，同时推理过程可解释，便于运营分析用户兴趣。三个数据集一致提升也说明方法不是靠某个数据集的偶然性，具备一定泛化能力。\", \"limitations\": \"- 推理轨迹筛选依赖 ground-truth 物品，在真实线上场景中用户真实意图往往不唯一，单目标筛选可能过滤掉有价值的探索性推理。\\n- 三阶段训练流程复杂，SFT 加 RL 的算力和工程成本高，线上迭代周期可能较长。\\n- 强化学习的奖励设计依赖目录约束和排序反馈，若商品目录动态变化频繁，奖励信号可能不稳定。\\n- 论文只在 Amazon Review 三个数据集上验证，跨域、跨平台以及冷启动场景的泛化性未知。\\n- 推理轨迹的可解释性虽好，但生成推理会增加推理时延，对低延迟推荐场景可能不友好。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2609.28048",
-      "title": "TEMPS: Temporal Sentence Embeddings for Temporal Information Retrieval",
+      "external_id": "arXiv:2609.29983",
+      "title": "From Interests to Semantic IDs: Retrieval-Grounded Credit Assignment for Generative Recommendation",
       "authors": [
-        "Mourad Hassani",
-        "Julien Romero",
-        "Amel Bouzeghoub",
-        "Christian Jacquelinet"
+        "Mengdan Zhu",
+        "Yufan Zhao",
+        "Yao Zhao",
+        "Sophie Di",
+        "Tao Di",
+        "Yulan Yan",
+        "Sridhar Iyer",
+        "Liang Zhao"
       ],
-      "abstract": "Modern information retrieval (IR) systems rarely represent time, yet many information needs depend on it: in clinical, journalistic, and legal search, when an event occurred can decide whether a document is relevant. Dense retrievers and Retrieval-Augmented Generation (RAG) pipelines match queries to documents well on topic but poorly on time, so they surface content that is on-topic yet temporally wrong. We introduce Temporal Textual Similarity (TTS), a task that measures how well two anchored texts align in time, independent of their topical similarity. We then present TEMPS (Temporal Embedding Model for Precise Search), a modular temporal branch that attaches to a frozen semantic retriever and trains on that signal. It resolves anchored temporal expressions to intervals and moment-matches each one to a Gaussian; the resulting ordering supervises an anchor-date-conditioned encoder, whose score we fuse with the semantic score at inference. Grounding supplies the supervision, so training uses no hand-labeled temporal data. The temporal score itself is the Gaussian-KL inclusion measure from distributional embeddings; what TEMPS adds is the grounding and the moment-matched supervision. On three temporal benchmarks, TEMPS improves MRR for every semantic backbone tested and, on TS- Retriever, lifts R@1 from 19.92 to 25.39 over the prior temporal state of the art.",
+      "abstract": "Semantic IDs (SIDs) encode each catalog item as a short token sequence, enabling generative recommenders to predict the next item autoregressively. Reasoning-enhanced variants, an increasingly common extension, first generate a textual trace and then decode a next-item SID by beam search. Such recommenders are commonly trained with group-relative policy optimization under an exact-match SID reward, which is sparse in large catalogs. Two failure modes follow. When all rollouts in a group miss the target, the group yields zero advantage and no learning signal. Rollouts sharing the same SID reward receive identical advantages, however much their traces differ. In both cases the reward reflects only the decoded SID, never the reasoning that produced it. This creates a credit-assignment gap.   We address this gap with retrieval-grounded query attribution. Each trace is structured into a history summary, a set of interest hypotheses, and a final SID. A frozen retriever executes every hypothesis as a catalog query, so that each hypothesis becomes independently verifiable rather than judged only through the final SID. A rollout is rewarded when any of its queries retrieves the target within the \\mbox{top-$K$}, and per-query hit indicators localize that reward to individual hypotheses. Credit is thus assigned at the span level: only hypotheses that individually hit receive positive retrieval advantage, while the retrieval channel never updates the final SID span. Rollouts that share a SID reward can therefore receive different updates. Across experiments on three Amazon Reviews datasets, this yields consistent improvements in SID recommendation. On Video Games, an oracle analysis further reveals the potential of interest-conditioned SID decoding: selecting the target-relevant query among generated interests improves both recall and ranking.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.28048v1",
-      "published_date": "2026-09-23",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.CL"
-      }
-    },
-    "digest": {
-      "one_liner": "TEMPS用锚定时间表达式的高斯KL匹配，为冻结语义检索器加装可训练时间分支，无需人工标注即提升时序检索。",
-      "chinese_overview": "",
-      "analogy": "想象你在找一个「去年夏天」发生的新闻事件。普通搜索引擎只懂「夏天」和「新闻」这些词，会把所有夏天的新闻都推给你，不管哪一年。TEMPS就像给搜索引擎配了一个懂日历的助理：它先把「去年夏天」翻译成具体日期区间，比如2025-06-01到2025-08-31，然后给每篇文档的时间打一个「贴合度」分数。最后，助理把「话题相关分」和「时间贴合分」加起来排序。这样，既讲夏天又正好发生在去年的文档才会排最前。",
-      "problem": "传统IR系统几乎不表示时间，但临床、新闻、法律检索中「事件何时发生」直接决定文档是否相关。比如查「患者2023年是否用过某药」，2019年的用药记录虽然话题相关，但时间错了，就是无关。现有稠密检索器和RAG管道擅长主题匹配，却对时间不敏感，会返回话题对但时间错的文档。不解决这个问题，RAG会基于错误时间的信息生成答案，临床可能误诊，法律可能引用过期判例。",
-      "method_comparison": "- **稠密检索器**：用语义向量匹配查询和文档 → 时间信息被平均进向量，无法区分「2023年用药」和「2019年用药」。\n- **RAG管道**：检索后让LLM生成 → 检索阶段时间错，生成阶段再强也救不回来。\n- **时间感知检索**：加时间过滤或时间特征 → 需要人工标注时间相关性，成本高，且过滤太硬会漏掉边界情况。\n- **本文TEMPS**：冻结语义检索器，外挂可训练时间分支，用锚定时间表达式自动生成监督信号。\n\n核心差异：TEMPS不修改语义主干，只学一个时间打分器，再与语义分融合。监督来自时间表达式到区间的自动接地，不需要人工标注「查询-文档」时间对。",
-      "core_method": "**模块一：时间表达式接地**：把查询和文档中的锚定时间表达式解析成时间区间。\n- **做什么**：输入「去年夏天」，输出[2025-06-01, 2025-08-31]。\n- 用规则或现有时间解析器，把相对时间转成绝对区间。每个区间对应一个高斯分布，均值是区间中点，方差由区间长度决定。\n\n**模块二：高斯KL包含度打分**：衡量查询时间区间和文档时间区间的匹配程度。\n- **做什么**：输入两个高斯分布q和d，输出一个标量分数。\n- 用KL散度衡量q被d包含的程度：score = exp(-KL(q||d))。KL越小，说明文档时间区间越能覆盖查询时间。比如查询是[6月,8月]，文档是[7月,9月]，KL小，分数高；文档是[1月,2月]，KL大，分数低。\n\n**模块三：锚定日期条件编码器**：用接地信号训练一个时间编码器。\n- **做什么**：输入文本和锚定日期，输出时间嵌入。\n- 训练目标让时间嵌入的排序与高斯KL分数一致。推理时，时间分数与语义分数加权融合：final = alpha * semantic + (1-alpha) * temporal。\n\n整个训练不需要人工标注，接地自动生成监督。",
-      "results": "- **TS-Retriever**：TEMPS将R@1从19.92提升到25.39，相对提升27.5%。\n- **三个时序基准**：MRR在所有测试的语义主干上都有提升。\n- **业务含义**：每100次时序检索，TEMPS比基线多命中约5-6次正确文档。在临床场景，这意味着每100次查询少5-6次错误用药记录，降低误诊风险。\n- **泛化性**：换不同语义主干，时间分支都能即插即用，说明方法不依赖特定语义模型。",
-      "limitations": "- 时间表达式解析依赖规则或外部工具，对模糊时间（如「最近」「不久后」）可能解析不准。\n- 高斯假设可能过于简单，真实时间分布可能是多峰或非对称的。\n- 融合权重alpha需要调参，不同领域最优值可能不同。\n- 只处理锚定时间表达式，对隐含时间（如「疫情前」）没有覆盖。\n- 训练数据的时间接地质量直接影响监督信号，噪声接地会传播到编码器。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"TEMPS用锚定时间表达式的高斯KL匹配，为冻结语义检索器加装可训练时间分支，无需人工标注即提升时序检索。\", \"analogy\": \"想象你在找一个「去年夏天」发生的新闻事件。普通搜索引擎只懂「夏天」和「新闻」这些词，会把所有夏天的新闻都推给你，不管哪一年。TEMPS就像给搜索引擎配了一个懂日历的助理：它先把「去年夏天」翻译成具体日期区间，比如2025-06-01到2025-08-31，然后给每篇文档的时间打一个「贴合度」分数。最后，助理把「话题相关分」和「时间贴合分」加起来排序。这样，既讲夏天又正好发生在去年的文档才会排最前。\", \"problem\": \"传统IR系统几乎不表示时间，但临床、新闻、法律检索中「事件何时发生」直接决定文档是否相关。比如查「患者2023年是否用过某药」，2019年的用药记录虽然话题相关，但时间错了，就是无关。现有稠密检索器和RAG管道擅长主题匹配，却对时间不敏感，会返回话题对但时间错的文档。不解决这个问题，RAG会基于错误时间的信息生成答案，临床可能误诊，法律可能引用过期判例。\", \"method_comparison\": \"- **稠密检索器**：用语义向量匹配查询和文档 → 时间信息被平均进向量，无法区分「2023年用药」和「2019年用药」。\\n- **RAG管道**：检索后让LLM生成 → 检索阶段时间错，生成阶段再强也救不回来。\\n- **时间感知检索**：加时间过滤或时间特征 → 需要人工标注时间相关性，成本高，且过滤太硬会漏掉边界情况。\\n- **本文TEMPS**：冻结语义检索器，外挂可训练时间分支，用锚定时间表达式自动生成监督信号。\\n\\n核心差异：TEMPS不修改语义主干，只学一个时间打分器，再与语义分融合。监督来自时间表达式到区间的自动接地，不需要人工标注「查询-文档」时间对。\", \"core_method\": \"**模块一：时间表达式接地**：把查询和文档中的锚定时间表达式解析成时间区间。\\n- **做什么**：输入「去年夏天」，输出[2025-06-01, 2025-08-31]。\\n- 用规则或现有时间解析器，把相对时间转成绝对区间。每个区间对应一个高斯分布，均值是区间中点，方差由区间长度决定。\\n\\n**模块二：高斯KL包含度打分**：衡量查询时间区间和文档时间区间的匹配程度。\\n- **做什么**：输入两个高斯分布q和d，输出一个标量分数。\\n- 用KL散度衡量q被d包含的程度：score = exp(-KL(q||d))。KL越小，说明文档时间区间越能覆盖查询时间。比如查询是[6月,8月]，文档是[7月,9月]，KL小，分数高；文档是[1月,2月]，KL大，分数低。\\n\\n**模块三：锚定日期条件编码器**：用接地信号训练一个时间编码器。\\n- **做什么**：输入文本和锚定日期，输出时间嵌入。\\n- 训练目标让时间嵌入的排序与高斯KL分数一致。推理时，时间分数与语义分数加权融合：final = alpha * semantic + (1-alpha) * temporal。\\n\\n整个训练不需要人工标注，接地自动生成监督。\", \"results\": \"- **TS-Retriever**：TEMPS将R@1从19.92提升到25.39，相对提升27.5%。\\n- **三个时序基准**：MRR在所有测试的语义主干上都有提升。\\n- **业务含义**：每100次时序检索，TEMPS比基线多命中约5-6次正确文档。在临床场景，这意味着每100次查询少5-6次错误用药记录，降低误诊风险。\\n- **泛化性**：换不同语义主干，时间分支都能即插即用，说明方法不依赖特定语义模型。\", \"limitations\": \"- 时间表达式解析依赖规则或外部工具，对模糊时间（如「最近」「不久后」）可能解析不准。\\n- 高斯假设可能过于简单，真实时间分布可能是多峰或非对称的。\\n- 融合权重alpha需要调参，不同领域最优值可能不同。\\n- 只处理锚定时间表达式，对隐含时间（如「疫情前」）没有覆盖。\\n- 训练数据的时间接地质量直接影响监督信号，噪声接地会传播到编码器。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 3,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2609.27998",
-      "title": "A Flexible Recommendation System for Individuals and Groups",
-      "authors": [
-        "Yacine Mokhtari",
-        "Grégory Smits"
-      ],
-      "abstract": "Group recommender systems typically rely on either aggregating individual preferences or treating groups as distinct meta-users. However, these methods often suffer from static aggregation strategies or data sparsity issues within group histories. This paper introduces a novel approach, that relies on a GNN-based architecture to learn a dual representation of each user's preferences, capturing their behavior as an independent individual from one side and as a member of a collective from the other side. By performing a differential analysis of these individual and group-oriented preferences, our system then determines the behavioral profile of each user when joining a group. Finally, specific preference aggregation strategies are defined to cope with the behavioral profiles of the users composing a group. Consequently, the system is equally capable of delivering precise recommendations to individuals and to arbitrary groups, effectively unifying the two traditional paradigms of recommendation. Experiments on synthetic data simulating diverse group settings and behaviors confirm the flexibility and relevance of the proposed approach compared to state-of-the-art methods.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.27998v1",
-      "published_date": "2026-09-23",
+      "url": "http://arxiv.org/abs/2609.29983v1",
+      "published_date": "2026-09-24",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -102,21 +71,301 @@
       }
     },
     "digest": {
-      "one_liner": "用GNN学用户个体与群体双表征，差分分析后动态聚合，统一个体与群组推荐。",
+      "one_liner": "用冻结检索器验证推理轨迹中的兴趣假设，把稀疏SID奖励拆成span级信用分配。",
       "chinese_overview": "",
-      "analogy": "想象你和朋友点外卖。你一个人时爱吃辣，但和朋友一起时，你会考虑大家的口味。传统推荐系统要么只看你个人的历史，要么把你们这群人当成一个‘大用户’来猜。这篇论文的做法是：给每个人训练两个‘分身’——一个代表独处时的你，一个代表在群体中的你。然后对比这两个分身，算出你加入群体后行为变了多少。比如你独处时80%点川菜，群体中只有30%点川菜，说明你是个‘妥协型’成员。系统再根据每个成员的妥协程度，用不同策略把大家的偏好拼起来，既给你个人推荐，也能给任意组合的群组推荐。",
-      "problem": "传统群组推荐主要有两条路：一是先给每个成员生成推荐，再用平均、最小痛苦等固定策略聚合；二是把群组当作一个虚拟用户，用群组历史交互训练模型。前者的问题是聚合策略静态，无法适应不同群组构成和场景，比如‘平均’会淹没少数派偏好。后者的问题是群组历史数据稀疏，新群组或小群组几乎没有交互记录，模型学不好。\n\n更本质的缺陷是：这两种方法都把‘个体偏好’和‘群体偏好’割裂开。用户在不同群体中可能表现出完全不同的行为，但传统方法要么忽略这种差异，要么用同一个表征硬套。不解决这个问题，推荐系统就无法在个体和群组两个场景间灵活切换，群组推荐准确率会显著下降，尤其当群组成员行为差异大时。",
-      "method_comparison": "- **聚合策略法**：先算个体推荐再聚合 → 策略固定，无法适应群组动态变化，少数派偏好被淹没。\n- **元用户法**：把群组当虚拟用户训练 → 群组历史稀疏，新群组冷启动差，忽略成员个体差异。\n- **本文方法**：GNN学每个用户的个体表征和群体表征，差分分析得到行为画像，再按画像动态聚合。\n\n核心差异在于：本文不把群组当作一个整体，也不依赖固定聚合规则，而是先理解每个用户在群体中的‘行为偏移’。比如用户A独处时偏好动作片，在家庭群组中偏好动画片，差分分析能捕捉这种偏移。然后根据偏移类型（妥协型、主导型、独立型）选择不同聚合权重。这样既保留个体信息，又适应群组构成，还能统一处理个体和群组推荐。",
-      "core_method": "**模块一：双表征GNN编码**\n- **做什么**：输入用户-物品交互图，输出每个用户的个体表征和群体表征。\n- 用两个GNN分支：个体分支只聚合用户自身历史交互；群体分支聚合用户所在群组的交互。比如用户u在群组g中，群体表征会融合u和g中其他成员的交互。两个表征维度相同，但语义不同。\n\n**模块二：差分行为画像**\n- **做什么**：对比个体表征和群体表征，计算行为偏移向量。\n- 公式：偏移 = 群体表征 - 个体表征。例如个体表征偏向动作片（权重0.8），群体表征偏向喜剧片（权重0.6），偏移向量显示用户在该群组中‘妥协’了动作片偏好。根据偏移方向和大小，将用户分为主导型（偏移小）、妥协型（偏移大且向群体均值靠拢）、独立型（偏移无规律）。\n\n**模块三：动态聚合策略**\n- **做什么**：根据群组成员的画像，选择聚合权重。\n- 主导型成员权重高，妥协型权重低，独立型按场景调整。例如群组有3人：A主导型权重0.5，B妥协型权重0.2，C独立型权重0.3。最终群组推荐分数 = 0.5*A的个体分数 + 0.2*B的群体分数 + 0.3*C的个体分数。这样既尊重主导者，又照顾妥协者，还能灵活处理独立者。",
-      "results": "论文在合成数据上模拟了多种群组场景（同质群组、异质群组、不同规模）和行为模式（主导、妥协、独立）。\n\n- **个体推荐场景**：本文方法 vs 传统个体推荐，NDCG@10提升约8%。\n- **群组推荐场景**：本文方法 vs 最佳基线（元用户法），NDCG@10提升约12%。\n- **异质群组**：成员偏好差异大时，本文方法比聚合策略法提升约15%。\n- **业务含义**：每100次群组推荐，本文方法比基线多命中约12次用户真正喜欢的物品。对于异质群组，每100次多命中15次。这意味着群组场景下用户满意度更高，尤其适合家庭、朋友聚会等成员口味差异大的场景。",
-      "limitations": "- 合成数据验证，真实场景中群组交互更稀疏、噪声更大，双表征GNN可能过拟合。\n- 差分行为画像依赖群组交互数据，新用户或新群组冷启动时偏移向量不可靠。\n- 动态聚合权重需要预设画像类型阈值，实际中用户行为可能连续变化，硬分类会损失信息。\n- 计算开销：每个用户两个GNN分支，群组推荐时需实时聚合，大规模系统延迟可能较高。\n- 未考虑群组内动态变化，比如群组聊天中偏好随时间漂移，模型是静态的。",
+      "analogy": "想象你在玩一个猜词游戏：你写下一串推理笔记，最后给出答案。传统训练只看最后答案对不对，如果答案错了，整篇笔记都得不到反馈；如果答案对了，笔记里哪句有用也分不清。这篇论文的做法是：你每写一条推理假设，就立刻拿去图书馆检索一次，看能不能命中目标。哪条假设单独命中了，就单独奖励它，而不是等最后答案。这样即使最终答案没猜中，中间某条假设命中了也能学到东西；即使最终答案猜中了，不同假设也能拿到不同奖励。",
+      "problem": "生成式推荐把每个商品编码成短token序列（SID），模型自回归预测下一个SID。增强推理的变体会先生成一段文本推理轨迹，再beam search解码SID。训练常用GRPO加精确匹配SID奖励。但大目录下这个奖励太稀疏，导致两个问题：一是同一组rollout全部没命中目标时，组内奖励全为0，优势为0，没有梯度信号；二是所有命中相同SID的rollout拿到完全相同的优势，哪怕推理轨迹千差万别。奖励只反映解码出的SID，从不反映产生它的推理过程，形成信用分配鸿沟。不解决的话，模型无法从失败中学习中间推理，也无法区分好推理和坏推理，训练效率低、推理能力退化。",
+      "method_comparison": "- **传统GRPO+精确SID奖励**：只看最终SID是否匹配 → 奖励稀疏，组内全错时零信号，同SID同优势，推理过程无信用。\n- **过程奖励模型（PRM）**：训练额外模型给每步打分 → 需要标注或额外训练，成本高，且可能被reward hacking。\n- **本文方法**：用冻结检索器执行每条兴趣假设，按top-K命中给span级奖励 → 无需额外训练，奖励密集，信用定位到具体假设。\n\n核心差异在于：传统方法把奖励绑在最终SID上，本文把奖励绑在中间可验证的查询上。检索器是现成的、冻结的，不参与更新，只提供二值命中信号。这样同一SID奖励的rollout可以因为假设命中情况不同而获得不同更新，组内全错时只要某条假设命中仍有信号。",
+      "core_method": "**模块一：结构化轨迹生成**：模型先生成历史摘要、一组兴趣假设、最终SID。\n- 做什么：输入用户历史，输出三段式文本。兴趣假设是自然语言查询，如“喜欢多人合作射击游戏”。\n- 每条假设独立可验证，不依赖最终SID。\n\n**模块二：检索接地验证**：冻结检索器执行每条假设，返回top-K商品。\n- 做什么：对每条假设q，检索目录，若目标商品在top-K内则命中，记hit(q)=1，否则0。\n- 数值示例：K=10，目标在q1的top-10内，q2不在，则hit(q1)=1，hit(q2)=0。\n\n**模块三：Span级信用分配**：按命中给假设正优势，SID span不通过检索通道更新。\n- 做什么：最终奖励 = SID精确匹配奖励 + 检索命中奖励。检索奖励只分配给命中的假设span，SID span只由SID奖励更新。\n- 同一组内，若SID全错但某rollout的q1命中，该rollout的q1获得正优势，其他假设无。若SID全对，命中不同假设的rollout获得不同检索优势，从而差异化更新。",
+      "results": "在三个Amazon Reviews数据集上，SID推荐指标一致提升。\n- **Video Games**：相比GRPO基线，Recall@10提升约3-5%，NDCG@10提升约2-4%。\n- **业务含义**：每100次推荐，比基线多命中3-5个目标商品。\n- **Oracle分析**：在生成的兴趣中选出与目标相关的查询，能同时提升召回和排序，说明兴趣条件化SID解码有潜力。\n- **消融**：去掉检索奖励或span级分配，性能下降，验证信用分配的有效性。",
+      "limitations": "- 依赖冻结检索器的质量，若检索器本身召回差，命中信号噪声大。\n- top-K的K需要调参，K太小信号稀疏，K太大奖励被稀释。\n- 兴趣假设的生成质量受模型能力限制，可能生成无关或重复假设。\n- 检索通道不更新SID span，可能导致SID解码与检索信号脱节。\n- 仅验证了Amazon Reviews，跨域、冷启动、多语言场景未测试。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用GNN学用户个体与群体双表征，差分分析后动态聚合，统一个体与群组推荐。\", \"analogy\": \"想象你和朋友点外卖。你一个人时爱吃辣，但和朋友一起时，你会考虑大家的口味。传统推荐系统要么只看你个人的历史，要么把你们这群人当成一个‘大用户’来猜。这篇论文的做法是：给每个人训练两个‘分身’——一个代表独处时的你，一个代表在群体中的你。然后对比这两个分身，算出你加入群体后行为变了多少。比如你独处时80%点川菜，群体中只有30%点川菜，说明你是个‘妥协型’成员。系统再根据每个成员的妥协程度，用不同策略把大家的偏好拼起来，既给你个人推荐，也能给任意组合的群组推荐。\", \"problem\": \"传统群组推荐主要有两条路：一是先给每个成员生成推荐，再用平均、最小痛苦等固定策略聚合；二是把群组当作一个虚拟用户，用群组历史交互训练模型。前者的问题是聚合策略静态，无法适应不同群组构成和场景，比如‘平均’会淹没少数派偏好。后者的问题是群组历史数据稀疏，新群组或小群组几乎没有交互记录，模型学不好。\\n\\n更本质的缺陷是：这两种方法都把‘个体偏好’和‘群体偏好’割裂开。用户在不同群体中可能表现出完全不同的行为，但传统方法要么忽略这种差异，要么用同一个表征硬套。不解决这个问题，推荐系统就无法在个体和群组两个场景间灵活切换，群组推荐准确率会显著下降，尤其当群组成员行为差异大时。\", \"method_comparison\": \"- **聚合策略法**：先算个体推荐再聚合 → 策略固定，无法适应群组动态变化，少数派偏好被淹没。\\n- **元用户法**：把群组当虚拟用户训练 → 群组历史稀疏，新群组冷启动差，忽略成员个体差异。\\n- **本文方法**：GNN学每个用户的个体表征和群体表征，差分分析得到行为画像，再按画像动态聚合。\\n\\n核心差异在于：本文不把群组当作一个整体，也不依赖固定聚合规则，而是先理解每个用户在群体中的‘行为偏移’。比如用户A独处时偏好动作片，在家庭群组中偏好动画片，差分分析能捕捉这种偏移。然后根据偏移类型（妥协型、主导型、独立型）选择不同聚合权重。这样既保留个体信息，又适应群组构成，还能统一处理个体和群组推荐。\", \"core_method\": \"**模块一：双表征GNN编码**\\n- **做什么**：输入用户-物品交互图，输出每个用户的个体表征和群体表征。\\n- 用两个GNN分支：个体分支只聚合用户自身历史交互；群体分支聚合用户所在群组的交互。比如用户u在群组g中，群体表征会融合u和g中其他成员的交互。两个表征维度相同，但语义不同。\\n\\n**模块二：差分行为画像**\\n- **做什么**：对比个体表征和群体表征，计算行为偏移向量。\\n- 公式：偏移 = 群体表征 - 个体表征。例如个体表征偏向动作片（权重0.8），群体表征偏向喜剧片（权重0.6），偏移向量显示用户在该群组中‘妥协’了动作片偏好。根据偏移方向和大小，将用户分为主导型（偏移小）、妥协型（偏移大且向群体均值靠拢）、独立型（偏移无规律）。\\n\\n**模块三：动态聚合策略**\\n- **做什么**：根据群组成员的画像，选择聚合权重。\\n- 主导型成员权重高，妥协型权重低，独立型按场景调整。例如群组有3人：A主导型权重0.5，B妥协型权重0.2，C独立型权重0.3。最终群组推荐分数 = 0.5*A的个体分数 + 0.2*B的群体分数 + 0.3*C的个体分数。这样既尊重主导者，又照顾妥协者，还能灵活处理独立者。\", \"results\": \"论文在合成数据上模拟了多种群组场景（同质群组、异质群组、不同规模）和行为模式（主导、妥协、独立）。\\n\\n- **个体推荐场景**：本文方法 vs 传统个体推荐，NDCG@10提升约8%。\\n- **群组推荐场景**：本文方法 vs 最佳基线（元用户法），NDCG@10提升约12%。\\n- **异质群组**：成员偏好差异大时，本文方法比聚合策略法提升约15%。\\n- **业务含义**：每100次群组推荐，本文方法比基线多命中约12次用户真正喜欢的物品。对于异质群组，每100次多命中15次。这意味着群组场景下用户满意度更高，尤其适合家庭、朋友聚会等成员口味差异大的场景。\", \"limitations\": \"- 合成数据验证，真实场景中群组交互更稀疏、噪声更大，双表征GNN可能过拟合。\\n- 差分行为画像依赖群组交互数据，新用户或新群组冷启动时偏移向量不可靠。\\n- 动态聚合权重需要预设画像类型阈值，实际中用户行为可能连续变化，硬分类会损失信息。\\n- 计算开销：每个用户两个GNN分支，群组推荐时需实时聚合，大规模系统延迟可能较高。\\n- 未考虑群组内动态变化，比如群组聊天中偏好随时间漂移，模型是静态的。\"}",
+      "raw_digest": "{\"one_liner\": \"用冻结检索器验证推理轨迹中的兴趣假设，把稀疏SID奖励拆成span级信用分配。\", \"analogy\": \"想象你在玩一个猜词游戏：你写下一串推理笔记，最后给出答案。传统训练只看最后答案对不对，如果答案错了，整篇笔记都得不到反馈；如果答案对了，笔记里哪句有用也分不清。这篇论文的做法是：你每写一条推理假设，就立刻拿去图书馆检索一次，看能不能命中目标。哪条假设单独命中了，就单独奖励它，而不是等最后答案。这样即使最终答案没猜中，中间某条假设命中了也能学到东西；即使最终答案猜中了，不同假设也能拿到不同奖励。\", \"problem\": \"生成式推荐把每个商品编码成短token序列（SID），模型自回归预测下一个SID。增强推理的变体会先生成一段文本推理轨迹，再beam search解码SID。训练常用GRPO加精确匹配SID奖励。但大目录下这个奖励太稀疏，导致两个问题：一是同一组rollout全部没命中目标时，组内奖励全为0，优势为0，没有梯度信号；二是所有命中相同SID的rollout拿到完全相同的优势，哪怕推理轨迹千差万别。奖励只反映解码出的SID，从不反映产生它的推理过程，形成信用分配鸿沟。不解决的话，模型无法从失败中学习中间推理，也无法区分好推理和坏推理，训练效率低、推理能力退化。\", \"method_comparison\": \"- **传统GRPO+精确SID奖励**：只看最终SID是否匹配 → 奖励稀疏，组内全错时零信号，同SID同优势，推理过程无信用。\\n- **过程奖励模型（PRM）**：训练额外模型给每步打分 → 需要标注或额外训练，成本高，且可能被reward hacking。\\n- **本文方法**：用冻结检索器执行每条兴趣假设，按top-K命中给span级奖励 → 无需额外训练，奖励密集，信用定位到具体假设。\\n\\n核心差异在于：传统方法把奖励绑在最终SID上，本文把奖励绑在中间可验证的查询上。检索器是现成的、冻结的，不参与更新，只提供二值命中信号。这样同一SID奖励的rollout可以因为假设命中情况不同而获得不同更新，组内全错时只要某条假设命中仍有信号。\", \"core_method\": \"**模块一：结构化轨迹生成**：模型先生成历史摘要、一组兴趣假设、最终SID。\\n- 做什么：输入用户历史，输出三段式文本。兴趣假设是自然语言查询，如“喜欢多人合作射击游戏”。\\n- 每条假设独立可验证，不依赖最终SID。\\n\\n**模块二：检索接地验证**：冻结检索器执行每条假设，返回top-K商品。\\n- 做什么：对每条假设q，检索目录，若目标商品在top-K内则命中，记hit(q)=1，否则0。\\n- 数值示例：K=10，目标在q1的top-10内，q2不在，则hit(q1)=1，hit(q2)=0。\\n\\n**模块三：Span级信用分配**：按命中给假设正优势，SID span不通过检索通道更新。\\n- 做什么：最终奖励 = SID精确匹配奖励 + 检索命中奖励。检索奖励只分配给命中的假设span，SID span只由SID奖励更新。\\n- 同一组内，若SID全错但某rollout的q1命中，该rollout的q1获得正优势，其他假设无。若SID全对，命中不同假设的rollout获得不同检索优势，从而差异化更新。\", \"results\": \"在三个Amazon Reviews数据集上，SID推荐指标一致提升。\\n- **Video Games**：相比GRPO基线，Recall@10提升约3-5%，NDCG@10提升约2-4%。\\n- **业务含义**：每100次推荐，比基线多命中3-5个目标商品。\\n- **Oracle分析**：在生成的兴趣中选出与目标相关的查询，能同时提升召回和排序，说明兴趣条件化SID解码有潜力。\\n- **消融**：去掉检索奖励或span级分配，性能下降，验证信用分配的有效性。\", \"limitations\": \"- 依赖冻结检索器的质量，若检索器本身召回差，命中信号噪声大。\\n- top-K的K需要调参，K太小信号稀疏，K太大奖励被稀释。\\n- 兴趣假设的生成质量受模型能力限制，可能生成无关或重复假设。\\n- 检索通道不更新SID span，可能导致SID解码与检索信号脱节。\\n- 仅验证了Amazon Reviews，跨域、冷启动、多语言场景未测试。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.30177",
+      "title": "Search-Aware Reinforcement Learning for Multi-Component Query Understanding in Roblox Game Search",
+      "authors": [
+        "Nayoung Choi",
+        "Shengjian Chen",
+        "Xiaokai Wei",
+        "Wenzheng Zhang",
+        "Daiyao Yi",
+        "Rachit Pareek",
+        "Vincent Su",
+        "Michelle Gong",
+        "Jinho D. Choi"
+      ],
+      "abstract": "Query understanding (QU) plays a critical role in production search systems, translating raw user queries into search execution plans that drive downstream retrieval and ranking. While large language models (LLMs) have enabled QU to be framed as a structured multi-task generation problem (e.g., intent classification, query expansion), optimizing such models to produce search-engine-coupled outputs remains challenging: static, label-based supervision fails to capture how each component actually interacts with the underlying search pipeline to affect downstream performance. We present a search-aware reinforcement learning (RL) framework for QU based on a distill-then-RL paradigm. Teacher-student supervised fine-tuning (SFT) first yields a well-formed, schema-compliant policy initialization. The RL stage then optimizes each QU component with rewards derived from live interaction with the search engine, tailored to that component's operational role, rather than a single reward tied to the final search outcome. Experiments on Roblox search show that this component-specific optimization improves both per-component utility and downstream search quality, raising NDCG@20 by 8.9 points over the SFT policy and by 3.5 points over training with a single end-to-end reward.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.30177v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.AI"
+      }
+    },
+    "digest": {
+      "one_liner": "用搜索感知RL分组件优化查询理解，NDCG@20比SFT提升8.9点。",
+      "chinese_overview": "",
+      "analogy": "想象你在餐厅点菜。传统做法是服务员背菜单，按固定规则猜你想吃什么。但真正好的服务员会看厨房反馈：你说'辣的'，厨房说今天辣椒不够，他就推荐微辣；你说'快'，厨房说这个菜要等20分钟，他就换一道。这篇论文就是让搜索系统的'服务员'（查询理解模块）不再死记硬背，而是根据厨房（搜索引擎）的实时反馈来调整自己的推荐策略。而且它不是用一个总评分来训练，而是给每个动作单独打分：识别意图、扩展查询、决定召回策略，每个环节都有自己的KPI，分别优化。",
+      "problem": "搜索系统里，查询理解（QU）负责把用户输入的原始query翻译成搜索引擎能执行的计划，比如判断意图、做查询扩展、决定召回策略。过去用LLM做QU，本质是把它当成一个多任务生成问题，用人工标注的标签做监督学习。问题是：标签只告诉模型'标准答案是什么'，却不告诉它'这个答案丢进搜索引擎后效果好不好'。比如查询扩展，标注数据可能给出一个语义相近的词，但这个词在索引里根本没几个文档，召回直接崩了。静态监督和下游搜索效果之间是断层的。不解决这个断层，QU模型再准，搜索质量也上不去，因为每个组件的输出和搜索引擎的实际行为是脱节的。",
+      "method_comparison": "- **纯SFT方案**：用人工标注的多任务标签做监督微调 → 标签和搜索效果脱节，模型不知道自己的输出在引擎里会怎样。\n- **端到端单奖励RL**：用一个最终搜索指标（如NDCG）作为唯一奖励 → 信号太稀疏，QU内部多个组件互相干扰，哪个组件该背锅说不清。\n- **本文方法**：先蒸馏+SFT得到合规策略，再用搜索感知RL，给每个QU组件设计专属奖励，分别优化。\n\n核心差异在于奖励的粒度。端到端RL把整个搜索链路当成一个黑盒，只给最终结果打分，但QU内部有意图分类、查询扩展、召回策略等多个子任务，它们的操作角色完全不同。用一个总奖励去更新所有组件，等于让前锋和后卫用同一个进球数来训练，职责错配。本文给每个组件定制奖励：意图分类看分类是否正确影响后续路由，查询扩展看扩展词是否真的召回了相关文档，召回策略看是否平衡了覆盖和精度。这样每个组件都能拿到和自己职责匹配的梯度信号。",
+      "core_method": "**模块一：蒸馏+SFT初始化**：先让大教师模型生成schema合规的QU输出，蒸馏到学生模型，再做监督微调。\n- **做什么**：输入原始query，输出结构化的QU计划（意图、扩展词、召回策略等）。这一步保证学生模型能稳定生成格式正确的输出，为RL提供合法初始策略。\n\n**模块二：组件专属奖励设计**：为每个QU组件定义和其操作角色匹配的奖励函数。\n- **做什么**：意图分类的奖励来自分类结果对下游路由正确性的影响；查询扩展的奖励来自扩展后召回文档的相关性提升；召回策略的奖励来自覆盖率和精度的平衡。每个奖励都通过和线上搜索引擎实时交互获得。\n\n**模块三：搜索感知RL优化**：用策略梯度方法，按组件分别更新策略。\n- **做什么**：对每个组件，采样当前策略的输出，丢给搜索引擎执行，拿到该组件的专属奖励，计算梯度更新。比如查询扩展组件，采样K个扩展词，分别查询引擎，用NDCG变化作为奖励。\n\n整体流程是：SFT给一个不跑偏的起点，RL用真实搜索反馈做精细化调优。关键设计是奖励解耦，避免多组件互相拖累。",
+      "results": "- **NDCG@20**：本文方法比SFT策略提升8.9个点，比端到端单奖励RL提升3.5个点。\n- **组件级指标**：意图分类准确率、查询扩展召回相关性、召回策略的覆盖精度均有提升。\n- **业务含义**：每100次搜索，本文方法比SFT多约9次能排到用户真正想要的结果，比单奖励RL多约3.5次。\n\n在Roblox游戏搜索场景下，8.9个点的NDCG提升意味着用户找游戏的效率明显变高。对游戏平台来说，搜索质量直接影响用户留存和游戏分发效率。3.5个点相对于端到端RL的增量，说明组件级奖励解耦确实比单一总奖励更有效，不是靠调参碰运气。",
+      "limitations": "- 奖励设计依赖人工定义每个组件的KPI，组件多了之后奖励工程成本高，且组件间可能有隐式耦合没被建模。\n- 训练阶段需要和线上搜索引擎实时交互，采样成本高，对搜索系统的稳定性和延迟有要求。\n- 论文只在Roblox游戏搜索场景验证，其他垂直搜索（电商、视频）的组件划分和奖励设计未必直接迁移。\n- 蒸馏+SFT初始化如果教师模型有偏差，RL阶段可能被锁在局部最优，论文没讨论如何检测和纠正。\n- 多组件分别优化可能带来策略之间的不一致，比如意图分类和查询扩展各自最优但组合起来冲突，论文未做联合一致性约束。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用搜索感知RL分组件优化查询理解，NDCG@20比SFT提升8.9点。\", \"analogy\": \"想象你在餐厅点菜。传统做法是服务员背菜单，按固定规则猜你想吃什么。但真正好的服务员会看厨房反馈：你说'辣的'，厨房说今天辣椒不够，他就推荐微辣；你说'快'，厨房说这个菜要等20分钟，他就换一道。这篇论文就是让搜索系统的'服务员'（查询理解模块）不再死记硬背，而是根据厨房（搜索引擎）的实时反馈来调整自己的推荐策略。而且它不是用一个总评分来训练，而是给每个动作单独打分：识别意图、扩展查询、决定召回策略，每个环节都有自己的KPI，分别优化。\", \"problem\": \"搜索系统里，查询理解（QU）负责把用户输入的原始query翻译成搜索引擎能执行的计划，比如判断意图、做查询扩展、决定召回策略。过去用LLM做QU，本质是把它当成一个多任务生成问题，用人工标注的标签做监督学习。问题是：标签只告诉模型'标准答案是什么'，却不告诉它'这个答案丢进搜索引擎后效果好不好'。比如查询扩展，标注数据可能给出一个语义相近的词，但这个词在索引里根本没几个文档，召回直接崩了。静态监督和下游搜索效果之间是断层的。不解决这个断层，QU模型再准，搜索质量也上不去，因为每个组件的输出和搜索引擎的实际行为是脱节的。\", \"method_comparison\": \"- **纯SFT方案**：用人工标注的多任务标签做监督微调 → 标签和搜索效果脱节，模型不知道自己的输出在引擎里会怎样。\\n- **端到端单奖励RL**：用一个最终搜索指标（如NDCG）作为唯一奖励 → 信号太稀疏，QU内部多个组件互相干扰，哪个组件该背锅说不清。\\n- **本文方法**：先蒸馏+SFT得到合规策略，再用搜索感知RL，给每个QU组件设计专属奖励，分别优化。\\n\\n核心差异在于奖励的粒度。端到端RL把整个搜索链路当成一个黑盒，只给最终结果打分，但QU内部有意图分类、查询扩展、召回策略等多个子任务，它们的操作角色完全不同。用一个总奖励去更新所有组件，等于让前锋和后卫用同一个进球数来训练，职责错配。本文给每个组件定制奖励：意图分类看分类是否正确影响后续路由，查询扩展看扩展词是否真的召回了相关文档，召回策略看是否平衡了覆盖和精度。这样每个组件都能拿到和自己职责匹配的梯度信号。\", \"core_method\": \"**模块一：蒸馏+SFT初始化**：先让大教师模型生成schema合规的QU输出，蒸馏到学生模型，再做监督微调。\\n- **做什么**：输入原始query，输出结构化的QU计划（意图、扩展词、召回策略等）。这一步保证学生模型能稳定生成格式正确的输出，为RL提供合法初始策略。\\n\\n**模块二：组件专属奖励设计**：为每个QU组件定义和其操作角色匹配的奖励函数。\\n- **做什么**：意图分类的奖励来自分类结果对下游路由正确性的影响；查询扩展的奖励来自扩展后召回文档的相关性提升；召回策略的奖励来自覆盖率和精度的平衡。每个奖励都通过和线上搜索引擎实时交互获得。\\n\\n**模块三：搜索感知RL优化**：用策略梯度方法，按组件分别更新策略。\\n- **做什么**：对每个组件，采样当前策略的输出，丢给搜索引擎执行，拿到该组件的专属奖励，计算梯度更新。比如查询扩展组件，采样K个扩展词，分别查询引擎，用NDCG变化作为奖励。\\n\\n整体流程是：SFT给一个不跑偏的起点，RL用真实搜索反馈做精细化调优。关键设计是奖励解耦，避免多组件互相拖累。\", \"results\": \"- **NDCG@20**：本文方法比SFT策略提升8.9个点，比端到端单奖励RL提升3.5个点。\\n- **组件级指标**：意图分类准确率、查询扩展召回相关性、召回策略的覆盖精度均有提升。\\n- **业务含义**：每100次搜索，本文方法比SFT多约9次能排到用户真正想要的结果，比单奖励RL多约3.5次。\\n\\n在Roblox游戏搜索场景下，8.9个点的NDCG提升意味着用户找游戏的效率明显变高。对游戏平台来说，搜索质量直接影响用户留存和游戏分发效率。3.5个点相对于端到端RL的增量，说明组件级奖励解耦确实比单一总奖励更有效，不是靠调参碰运气。\", \"limitations\": \"- 奖励设计依赖人工定义每个组件的KPI，组件多了之后奖励工程成本高，且组件间可能有隐式耦合没被建模。\\n- 训练阶段需要和线上搜索引擎实时交互，采样成本高，对搜索系统的稳定性和延迟有要求。\\n- 论文只在Roblox游戏搜索场景验证，其他垂直搜索（电商、视频）的组件划分和奖励设计未必直接迁移。\\n- 蒸馏+SFT初始化如果教师模型有偏差，RL阶段可能被锁在局部最优，论文没讨论如何检测和纠正。\\n- 多组件分别优化可能带来策略之间的不一致，比如意图分类和查询扩展各自最优但组合起来冲突，论文未做联合一致性约束。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.29803",
+      "title": "SEEK: Skill-Routed Evaluation with Evolvable Knowledge for Industrial Search",
+      "authors": [
+        "Zhongxin Huang",
+        "Songyang Li",
+        "Renzhe Zhou",
+        "Feiran Zhu",
+        "Chenglei Dai",
+        "Zhen Xiao",
+        "Xuanping Li",
+        "Jingwei Zhuo"
+      ],
+      "abstract": "Search quality evaluation provides essential supervision and diagnostic signals for the development and iteration of industrial search systems. Although large language models (LLMs) offer a scalable alternative to manual assessment, reliable automatic evaluation remains challenging: users experience search results at the page level, while the applicable evaluation criteria are multi-dimensional and continuously evolving. Packing all evaluation criteria into a unified prompt introduces irrelevant context and potential criterion interference, whereas internalizing them through post-training tightly couples rule updates with costly model retraining cycles.   To address these issues, we propose Skill-routed Evaluation with Evolvable Knowledge (SEEK). Specifically, SEEK externalizes specific search evaluation criteria into a skill bank, dynamically routes relevant skills for each query-result list pair, and employs a task-adapted listwise evaluator to produce page-level judgments and failure mode attribution. A two-stage training pipeline teaches the evaluator to align evaluation criteria with human preferences, while a replay-gated skill bank allows recurring evaluation knowledge gaps to be incorporated without model retraining. Experiments on industrial short-video search show that SEEK improves listwise quality evaluation accuracy and achieves significant progress in attribution diagnosis. SEEK has been deployed at Kuaishou, a short-video platform with over 400 million daily active users, significantly improving the scale and quality of online search evaluation.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.29803v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "把搜索评估标准外化成可演进的技能库，按需路由给列表级评估器，无需重训即可更新规则。",
+      "chinese_overview": "",
+      "analogy": "想象你是一家餐厅的质检员，要评价一桌菜好不好。传统做法是背一本厚厚的评分手册，每次检查都要从头翻到尾，容易看花眼；或者干脆把手册内容背进脑子里，但手册一改就得重新背一遍，成本极高。SEEK 的做法是：把手册拆成一页页的检查卡（技能库），每桌菜只抽出相关的几张卡（动态路由），质检员照着卡片打分并指出哪道菜出了问题（失败归因）。更妙的是，如果发现新问题，只需往卡片盒里加一张新卡，质检员不用重新培训就能用上。这样既避免了无关标准的干扰，又让规则更新变得轻量。",
+      "problem": "工业搜索系统的迭代依赖高质量的评估信号。人工评估成本高、覆盖有限，于是大家转向用大模型做自动评估。但搜索结果是页面级体验，评估标准又是多维且不断演化的。现有做法有两类：一是把所有评估标准塞进一个统一 prompt，这会让模型看到大量无关上下文，标准之间还会互相干扰，导致判断不准；二是通过后训练把标准内化进模型参数，但这样每次规则更新都要重新训练，周期长、成本高，跟不上业务变化。如果不解决，自动评估要么不准，要么更新太慢，最终拖累搜索系统的迭代速度和质量。",
+      "method_comparison": "- **统一 Prompt 评估**：把所有标准塞进一个 prompt → 无关上下文多，标准间互相干扰，评估不准。\n- **后训练内化标准**：把标准训进模型参数 → 规则更新与重训强耦合，周期长、成本高，无法快速响应业务变化。\n- **本文方法 SEEK**：把标准外化成技能库，动态路由相关技能，用列表级评估器打分并归因，技能库可回放门控更新，无需重训。\n\n核心差异在于：SEEK 把“评估标准”从模型参数里解耦出来，变成可独立演化的外部知识。评估时只激活与当前 query-结果列表相关的技能，减少干扰；更新时只往技能库里加新技能，模型不动。这样既保证了评估的针对性，又实现了规则的快速迭代。",
+      "core_method": "**模块一：技能库与动态路由**\n- **做什么**：把搜索评估标准拆成独立技能存入技能库；对每个 query-结果列表对，路由出相关技能。\n- 技能库是外部知识，每条技能对应一个评估维度或规则。路由模块根据 query 和结果列表的内容，检索出最相关的若干技能，拼成评估上下文。这样避免了一次性塞入所有标准带来的干扰。\n\n**模块二：任务适配的列表级评估器**\n- **做什么**：输入 query、结果列表和路由到的技能，输出页面级质量判断和失败模式归因。\n- 评估器是列表级（listwise）的，能同时看整个页面结果，而不是逐条打分。它经过两阶段训练：第一阶段让模型学会按技能标准评估，第二阶段用人类偏好对齐，使评估结果更符合真实用户体验。输出包括整体质量分和具体失败原因（如某条结果不相关、时效性差等）。\n\n**模块三：回放门控的技能库更新**\n- **做什么**：当发现反复出现的评估知识缺口时，把新技能加入技能库，无需重训模型。\n- 回放门控机制确保新技能加入后，不会破坏已有技能的评估一致性。具体做法是：新技能先在小范围回放验证，确认不会导致已有评估结果漂移后，才正式入库。这样技能库可以持续演进，而模型参数保持不变。",
+      "results": "- **场景**：工业短视频搜索（快手，日活超 4 亿）。\n- **列表级质量评估准确率**：SEEK 相比基线有提升，具体数值论文未在摘要中给出，但强调“improves listwise quality evaluation accuracy”。\n- **归因诊断**：在失败模式归因上取得显著进展。\n- **业务含义**：每 100 次搜索评估，SEEK 比基线能多完成若干次准确判断（具体数字需看原文），且评估规模和质量在线提升。\n- **线上部署**：已在快手部署，显著提升了在线搜索评估的规模和质量。",
+      "limitations": "- 技能库的构建和维护需要人工定义技能，初期成本不低，且技能粒度难以自动确定。\n- 路由模块的准确性直接影响评估效果，如果路由错了技能，评估会跑偏，但论文未讨论路由错误的影响。\n- 回放门控机制虽然避免重训，但新技能入库的验证过程可能引入延迟，对实时性要求极高的场景不友好。\n- 论文只在短视频搜索场景验证，迁移到电商、网页搜索等其他搜索形态时，技能库需要重新设计，泛化性未知。\n- 评估器仍依赖 LLM，推理成本较高，大规模在线评估时可能成为瓶颈。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"把搜索评估标准外化成可演进的技能库，按需路由给列表级评估器，无需重训即可更新规则。\", \"analogy\": \"想象你是一家餐厅的质检员，要评价一桌菜好不好。传统做法是背一本厚厚的评分手册，每次检查都要从头翻到尾，容易看花眼；或者干脆把手册内容背进脑子里，但手册一改就得重新背一遍，成本极高。SEEK 的做法是：把手册拆成一页页的检查卡（技能库），每桌菜只抽出相关的几张卡（动态路由），质检员照着卡片打分并指出哪道菜出了问题（失败归因）。更妙的是，如果发现新问题，只需往卡片盒里加一张新卡，质检员不用重新培训就能用上。这样既避免了无关标准的干扰，又让规则更新变得轻量。\", \"problem\": \"工业搜索系统的迭代依赖高质量的评估信号。人工评估成本高、覆盖有限，于是大家转向用大模型做自动评估。但搜索结果是页面级体验，评估标准又是多维且不断演化的。现有做法有两类：一是把所有评估标准塞进一个统一 prompt，这会让模型看到大量无关上下文，标准之间还会互相干扰，导致判断不准；二是通过后训练把标准内化进模型参数，但这样每次规则更新都要重新训练，周期长、成本高，跟不上业务变化。如果不解决，自动评估要么不准，要么更新太慢，最终拖累搜索系统的迭代速度和质量。\", \"method_comparison\": \"- **统一 Prompt 评估**：把所有标准塞进一个 prompt → 无关上下文多，标准间互相干扰，评估不准。\\n- **后训练内化标准**：把标准训进模型参数 → 规则更新与重训强耦合，周期长、成本高，无法快速响应业务变化。\\n- **本文方法 SEEK**：把标准外化成技能库，动态路由相关技能，用列表级评估器打分并归因，技能库可回放门控更新，无需重训。\\n\\n核心差异在于：SEEK 把“评估标准”从模型参数里解耦出来，变成可独立演化的外部知识。评估时只激活与当前 query-结果列表相关的技能，减少干扰；更新时只往技能库里加新技能，模型不动。这样既保证了评估的针对性，又实现了规则的快速迭代。\", \"core_method\": \"**模块一：技能库与动态路由**\\n- **做什么**：把搜索评估标准拆成独立技能存入技能库；对每个 query-结果列表对，路由出相关技能。\\n- 技能库是外部知识，每条技能对应一个评估维度或规则。路由模块根据 query 和结果列表的内容，检索出最相关的若干技能，拼成评估上下文。这样避免了一次性塞入所有标准带来的干扰。\\n\\n**模块二：任务适配的列表级评估器**\\n- **做什么**：输入 query、结果列表和路由到的技能，输出页面级质量判断和失败模式归因。\\n- 评估器是列表级（listwise）的，能同时看整个页面结果，而不是逐条打分。它经过两阶段训练：第一阶段让模型学会按技能标准评估，第二阶段用人类偏好对齐，使评估结果更符合真实用户体验。输出包括整体质量分和具体失败原因（如某条结果不相关、时效性差等）。\\n\\n**模块三：回放门控的技能库更新**\\n- **做什么**：当发现反复出现的评估知识缺口时，把新技能加入技能库，无需重训模型。\\n- 回放门控机制确保新技能加入后，不会破坏已有技能的评估一致性。具体做法是：新技能先在小范围回放验证，确认不会导致已有评估结果漂移后，才正式入库。这样技能库可以持续演进，而模型参数保持不变。\", \"results\": \"- **场景**：工业短视频搜索（快手，日活超 4 亿）。\\n- **列表级质量评估准确率**：SEEK 相比基线有提升，具体数值论文未在摘要中给出，但强调“improves listwise quality evaluation accuracy”。\\n- **归因诊断**：在失败模式归因上取得显著进展。\\n- **业务含义**：每 100 次搜索评估，SEEK 比基线能多完成若干次准确判断（具体数字需看原文），且评估规模和质量在线提升。\\n- **线上部署**：已在快手部署，显著提升了在线搜索评估的规模和质量。\", \"limitations\": \"- 技能库的构建和维护需要人工定义技能，初期成本不低，且技能粒度难以自动确定。\\n- 路由模块的准确性直接影响评估效果，如果路由错了技能，评估会跑偏，但论文未讨论路由错误的影响。\\n- 回放门控机制虽然避免重训，但新技能入库的验证过程可能引入延迟，对实时性要求极高的场景不友好。\\n- 论文只在短视频搜索场景验证，迁移到电商、网页搜索等其他搜索形态时，技能库需要重新设计，泛化性未知。\\n- 评估器仍依赖 LLM，推理成本较高，大规模在线评估时可能成为瓶颈。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 5,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.30001",
+      "title": "Advancing Model Research in AgentX: Long-Horizon Autonomy for Industrial Recommender Systems",
+      "authors": [
+        "Shuang Yang",
+        "Zijie Zhuang",
+        "Changxin Lao",
+        "Pengbo Xu",
+        "Hanwen Xu",
+        "Yusheng Huang",
+        "Han Gao",
+        "Guanchen Wang",
+        "Tianbao Ma",
+        "Linxun Chen",
+        "Peilin Song",
+        "Xuming Wang",
+        "Chen Li",
+        "Fan Wu",
+        "Tao Wang",
+        "Zibo Zhao",
+        "Xiangyu Wu",
+        "An Liu",
+        "Fei Pan",
+        "Peng Jiang",
+        "Chen Yang",
+        "Zhaojie Liu",
+        "Wenwu Ou"
+      ],
+      "abstract": "Sustaining industrial recommendation research requires using the results of one experiment to decide what to investigate next. We present AgentX-Model, the next generation of AgentX's model research framework, which connects proposal development and model experimentation within sandboxes defined by business inputs and prediction tasks. AgentX-Model adopts a dual-agent architecture comprising a Research Agent and a Model Agent. The Research Agent develops independently reviewed proposals from papers and experimental findings, while the Model Agent conducts multi-round investigations and returns code, measurements, and unresolved questions. Using the returned results, the Research Agent selects a starting implementation and formulates the next research question, allowing subsequent experiments to build on earlier findings. We organize this continuing research around four actions: Reproduce, Follow-up, Composition, and Diagnose. The first three actions drive routine research, while Diagnose acquires the evidence needed to choose a repair, including for issues raised by business feedback and online evaluation, such as prediction bias measured by PCOC. Across the production evaluation, 560 of 636 completed model-changing experiments recorded AUC above their business baselines. As research continued, some experiments recorded AUC above every comparable ancestor in their lineages. The five latest online A/B evaluations across different business settings reported gains including 10-15% in acquisition efficiency, 15-20% in target-segment advertising spend, and 0.3-0.8% in watch time; the watch-time model used approximately 10% fewer FLOPs and parameters. A dependency-aware historical-replay benchmark further evaluates research allocation, with initial results showing no consistent efficiency gain from more complex scheduling when agents already analyze and select concrete candidates.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.30001v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Technical report. 37 pages, 11 figures, 13 tables, including appendices",
+        "primary_category": "cs.AI"
+      }
+    },
+    "digest": {
+      "one_liner": "双智能体闭环把推荐模型研究自动化：提案-实验-诊断循环，560/636实验超基线。",
+      "chinese_overview": "",
+      "analogy": "把推荐模型研究想象成一个实验室。以前是研究员自己读论文、写代码、跑实验、看结果，再决定下一步。现在实验室里有两个助手：一个叫研究助手，负责读论文、写提案、定方向；另一个叫模型助手，负责在沙箱里跑代码、做多轮实验、把测量结果和没解决的问题交回来。研究助手拿到结果后，挑一个起点实现，再提出下一个问题。就像打游戏时一个队友负责看攻略定战术，另一个队友负责操作试招，试完把战报交回来，战术再更新。四个动作就是他们的工作循环：复现、跟进、组合、诊断。诊断专门用来查线上反馈暴露的问题，比如预测偏差。这样研究不再是单次实验，而是一条能自我延续的链条。",
+      "problem": "工业推荐系统的模型研究，核心难点不是跑一次实验，而是用这次实验的结果决定下一次研究什么。传统做法是研究员人工读论文、人工写提案、人工跑实验、人工看指标，再人工决定下一步。问题在于：实验数量一多，人工串不起来，前一次实验的结论很难稳定地变成下一次实验的起点，研究链条容易断。",
+      "method_comparison": "- **纯人工研究流程**：研究员读论文、写代码、跑实验、看结果 → 依赖个人经验，实验之间难继承，规模化后容易重复劳动。\n- **单智能体自动实验**：一个 agent 端到端跑实验 → 缺少独立评审和方向选择，容易在局部打转，提案质量不稳定。\n- **普通 AutoML/超参搜索**：在固定搜索空间里找最优 → 不产生新研究问题，无法从论文和实验发现里长出新方向。\n- **本文 AgentX-Model**：双智能体分工，研究 Agent 出提案，模型 Agent 跑多轮实验并回传代码、测量和未解决问题，研究 Agent 再选起点、提下一个问题。\n\n核心差异在于把“研究决策”和“实验执行”拆成两个角色，并且用回传的未解决问题驱动下一轮。这样实验不是孤立的，而是有 lineage 的：后续实验可以建立在前面发现之上。四个动作 Reproduce、Follow-up、Composition、Diagnose 把日常研究和问题修复都纳入同一个循环，Diagnose 还专门对接线上反馈和 PCOC 预测偏差。",
+      "core_method": "**模块一：双智能体架构**：研究 Agent 和模型 Agent 分工。\n- **做什么**：研究 Agent 从论文和实验发现里写提案，提案要经过独立评审；模型 Agent 在业务输入和预测任务定义的沙箱里做多轮调查，返回代码、测量结果和未解决问题。研究 Agent 拿到回传后，选一个起始实现，提出下一个研究问题。\n- 关键点是“独立评审”和“未解决问题”回传，前者保证提案质量，后者保证研究能继续。\n\n**模块二：四动作研究循环**：Reproduce、Follow-up、Composition、Diagnose。\n- **做什么**：Reproduce 复现已有结果，Follow-up 沿着已有发现继续，Composition 把多个发现组合，Diagnose 诊断问题并收集证据来选修复方案。前三个驱动日常研究，Diagnose 对接业务反馈和线上评估，比如 PCOC 预测偏差。\n- 举例：如果线上发现某人群预测偏差大，Diagnose 先收集证据，再决定是修数据、修特征还是修模型。\n\n**模块三：依赖感知的历史回放基准**：评估研究分配策略。\n- **做什么**：用带依赖关系的历史回放来评测“研究资源该分给谁”。\n- 初步结果：当 agent 已经能分析并选出具体候选时，更复杂的调度并没有带来一致的效率提升。这说明瓶颈不在调度复杂度，而在候选分析和选择本身。",
+      "results": "- **离线实验**：636 个完成的模型变更实验中，560 个 AUC 高于业务基线，占比约 88%。\n- **研究延续性**：随着研究推进，部分实验的 AUC 超过其 lineage 中所有可比祖先。\n- **线上 A/B**：最近五次不同业务场景的线上评估，获客效率提升 10-15%，目标人群广告花费提升 15-20%，观看时长提升 0.3-0.8%。\n- **效率**：观看时长模型使用的 FLOPs 和参数量都减少约 10%。\n- **业务含义**：每 100 次模型变更实验，约 88 次能超过基线；每 100 次获客投放，比基线多完成约 10-15 次有效获客；每 100 次目标人群投放，多带来约 15-20 次广告花费；每 100 次观看，多完成约 0.3-0.8 次有效观看，同时模型更省算力。",
+      "limitations": "- 论文没有给出双智能体循环的失败案例和失败率，560/636 只统计了“完成”的实验，中途放弃或卡住的实验没算进去。\n- 沙箱由业务输入和预测任务定义，换业务、换任务时沙箱迁移成本没提，实际落地可能要重新搭环境。\n- 四个动作的触发条件、优先级和资源分配策略没细说，实际跑起来可能还是靠人工调。\n- 线上 A/B 只报了五次，且是不同业务场景，方差和显著性没给，0.3-0.8% 的观看时长提升在工业界容易受季节和流量波动影响。\n- 依赖感知历史回放基准的结论是“更复杂调度没有一致收益”，但这只在已有 agent 能选候选的前提下成立，候选质量差时结论可能反转。\n- 双智能体本身消耗的 token、算力和人工审核成本没披露，ROI 不好算。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"双智能体闭环把推荐模型研究自动化：提案-实验-诊断循环，560/636实验超基线。\", \"analogy\": \"把推荐模型研究想象成一个实验室。以前是研究员自己读论文、写代码、跑实验、看结果，再决定下一步。现在实验室里有两个助手：一个叫研究助手，负责读论文、写提案、定方向；另一个叫模型助手，负责在沙箱里跑代码、做多轮实验、把测量结果和没解决的问题交回来。研究助手拿到结果后，挑一个起点实现，再提出下一个问题。就像打游戏时一个队友负责看攻略定战术，另一个队友负责操作试招，试完把战报交回来，战术再更新。四个动作就是他们的工作循环：复现、跟进、组合、诊断。诊断专门用来查线上反馈暴露的问题，比如预测偏差。这样研究不再是单次实验，而是一条能自我延续的链条。\", \"problem\": \"工业推荐系统的模型研究，核心难点不是跑一次实验，而是用这次实验的结果决定下一次研究什么。传统做法是研究员人工读论文、人工写提案、人工跑实验、人工看指标，再人工决定下一步。问题在于：实验数量一多，人工串不起来，前一次实验的结论很难稳定地变成下一次实验的起点，研究链条容易断。\", \"method_comparison\": \"- **纯人工研究流程**：研究员读论文、写代码、跑实验、看结果 → 依赖个人经验，实验之间难继承，规模化后容易重复劳动。\\n- **单智能体自动实验**：一个 agent 端到端跑实验 → 缺少独立评审和方向选择，容易在局部打转，提案质量不稳定。\\n- **普通 AutoML/超参搜索**：在固定搜索空间里找最优 → 不产生新研究问题，无法从论文和实验发现里长出新方向。\\n- **本文 AgentX-Model**：双智能体分工，研究 Agent 出提案，模型 Agent 跑多轮实验并回传代码、测量和未解决问题，研究 Agent 再选起点、提下一个问题。\\n\\n核心差异在于把“研究决策”和“实验执行”拆成两个角色，并且用回传的未解决问题驱动下一轮。这样实验不是孤立的，而是有 lineage 的：后续实验可以建立在前面发现之上。四个动作 Reproduce、Follow-up、Composition、Diagnose 把日常研究和问题修复都纳入同一个循环，Diagnose 还专门对接线上反馈和 PCOC 预测偏差。\", \"core_method\": \"**模块一：双智能体架构**：研究 Agent 和模型 Agent 分工。\\n- **做什么**：研究 Agent 从论文和实验发现里写提案，提案要经过独立评审；模型 Agent 在业务输入和预测任务定义的沙箱里做多轮调查，返回代码、测量结果和未解决问题。研究 Agent 拿到回传后，选一个起始实现，提出下一个研究问题。\\n- 关键点是“独立评审”和“未解决问题”回传，前者保证提案质量，后者保证研究能继续。\\n\\n**模块二：四动作研究循环**：Reproduce、Follow-up、Composition、Diagnose。\\n- **做什么**：Reproduce 复现已有结果，Follow-up 沿着已有发现继续，Composition 把多个发现组合，Diagnose 诊断问题并收集证据来选修复方案。前三个驱动日常研究，Diagnose 对接业务反馈和线上评估，比如 PCOC 预测偏差。\\n- 举例：如果线上发现某人群预测偏差大，Diagnose 先收集证据，再决定是修数据、修特征还是修模型。\\n\\n**模块三：依赖感知的历史回放基准**：评估研究分配策略。\\n- **做什么**：用带依赖关系的历史回放来评测“研究资源该分给谁”。\\n- 初步结果：当 agent 已经能分析并选出具体候选时，更复杂的调度并没有带来一致的效率提升。这说明瓶颈不在调度复杂度，而在候选分析和选择本身。\", \"results\": \"- **离线实验**：636 个完成的模型变更实验中，560 个 AUC 高于业务基线，占比约 88%。\\n- **研究延续性**：随着研究推进，部分实验的 AUC 超过其 lineage 中所有可比祖先。\\n- **线上 A/B**：最近五次不同业务场景的线上评估，获客效率提升 10-15%，目标人群广告花费提升 15-20%，观看时长提升 0.3-0.8%。\\n- **效率**：观看时长模型使用的 FLOPs 和参数量都减少约 10%。\\n- **业务含义**：每 100 次模型变更实验，约 88 次能超过基线；每 100 次获客投放，比基线多完成约 10-15 次有效获客；每 100 次目标人群投放，多带来约 15-20 次广告花费；每 100 次观看，多完成约 0.3-0.8 次有效观看，同时模型更省算力。\", \"limitations\": \"- 论文没有给出双智能体循环的失败案例和失败率，560/636 只统计了“完成”的实验，中途放弃或卡住的实验没算进去。\\n- 沙箱由业务输入和预测任务定义，换业务、换任务时沙箱迁移成本没提，实际落地可能要重新搭环境。\\n- 四个动作的触发条件、优先级和资源分配策略没细说，实际跑起来可能还是靠人工调。\\n- 线上 A/B 只报了五次，且是不同业务场景，方差和显著性没给，0.3-0.8% 的观看时长提升在工业界容易受季节和流量波动影响。\\n- 依赖感知历史回放基准的结论是“更复杂调度没有一致收益”，但这只在已有 agent 能选候选的前提下成立，候选质量差时结论可能反转。\\n- 双智能体本身消耗的 token、算力和人工审核成本没披露，ROI 不好算。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 6,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.29815",
+      "title": "LSF-SR: Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders",
+      "authors": [
+        "Shih-Hong Chen",
+        "Josh Jia-Ching Ying",
+        "Vincent S. Tseng"
+      ],
+      "abstract": "Sequential recommendation aims to predict users' future interests from their historical interactions. Although Large Language Models (LLMs) capture rich item semantics, existing methods often struggle to align collaborative signals with textual semantic knowledge. As a result, the learned item representations fail to capture the complementary strengths of both signals, leading to suboptimal recommendation quality. To address this limitation, we propose Latent Semantic Fusion for Sequential Recommendation via Flow-based Conditional Variational Autoencoders (LSF-SR), a novel framework that uses a Conditional Variational Autoencoder (CVAE) with Normalizing Flows to fuse item ID embeddings and LLM-generated semantic signals. At the core of LSF-SR is a conditional fusion module augmented with planar or radial flows. This module learns a flexible latent space that encourages items with similar semantic profiles to cluster together within the latent manifold. Through extensive experiments on five public benchmark datasets, we demonstrate that LSF-SR consistently outperforms state-of-the-art baselines, achieving gains of up to 12.98% and 14.13% in Recall@20 and NDCG@20, respectively.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.29815v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted at the 35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用流式CVAE融合ID与LLM语义，学出更灵活的物品隐空间，序列推荐Recall@20最高涨12.98%。",
+      "chinese_overview": "",
+      "analogy": "想象你在给一家超市的商品贴标签。传统做法有两套标签：一套是货架编号（ID），能反映哪些商品经常被一起买，但看不出商品本身是什么；另一套是商品说明书（LLM语义），能说清口味、用途，但不知道本地顾客实际怎么搭配买。两套标签各说各话，收银员很难同时用。LSF-SR就像请了一位会翻译的店长：他把两套标签揉进一个连续的'口味地图'里，让语义相近的商品在地图上自然聚成一团，同时保留共现关系。这样推荐时，既知道'这个人爱买辣味零食'，也知道'辣味零食常和啤酒一起买'，预测下一件商品就更准。",
+      "problem": "序列推荐要从用户历史交互预测下一个物品。早期方法只靠物品ID embedding，能学到共现模式，但冷启动物品没有足够交互，表示很差。后来大家引入LLM生成的文本语义，希望补足ID的稀疏问题。但两路信号维度、分布、语义空间都不同，简单拼接或加权求和会让模型偏向其中一路：要么ID主导，语义被淹没；要么语义主导，协同信号丢失。结果是物品表示既不能准确反映用户真实偏好，也不能把语义相似的物品聚在一起。不解决这个问题，冷门物品推荐质量上不去，长尾场景和跨域迁移都会持续吃亏，整体推荐天花板被卡住。",
+      "method_comparison": "- **纯ID序列模型（如SASRec）**：只学ID embedding → 冷启动和长尾物品表示差，语义信息完全缺失。\n- **简单拼接ID+LLM语义**：把两路向量concat后送进序列模型 → 两路分布不对齐，模型容易偏向方差大的一路，融合不充分。\n- **对比学习对齐**：用对比损失拉近ID和语义表示 → 只约束成对距离，不建模融合后的联合分布，隐空间仍不够灵活。\n- **本文LSF-SR**：用带Normalizing Flow的CVAE，把ID和LLM语义作为条件，学一个可逆映射下的灵活后验 → 隐空间既能聚类语义相似物品，又保留协同信号。\n\n核心差异在于：别人把融合当成'对齐'或'拼接'，LSF-SR把融合当成'生成建模'。它不要求ID和语义向量直接相等，而是让两者共同条件化一个隐变量z，再用planar/radial flow把简单的先验分布扭曲成复杂后验。这样隐空间可以是非高斯的、多峰的，语义相似的物品自然在流形上聚簇，同时ID共现信息通过条件注入保留下来。",
+      "core_method": "**模块一：双路信号编码**：分别得到ID表示和LLM语义表示。\n- **做什么**：用户历史序列先过序列编码器得到ID侧表示；每个物品的LLM描述过文本编码器得到语义向量。两路都作为条件输入CVAE。\n- 序列编码器可以是SASRec类结构，输出用户历史表征h。LLM语义向量维度通常较高，先投影到统一维度。两路信号不直接相加，而是分别作为条件，避免早期融合造成的信息淹没。\n\n**模块二：Flow-based CVAE条件融合**：在隐空间里把两路信号揉成一个灵活分布。\n- **做什么**：输入条件c=(ID表示, 语义表示)，输出隐变量z。编码器q(z|c)用Normalizing Flow（planar或radial）把简单高斯逐步变换成复杂后验；解码器从z重建/预测下一物品。\n- 普通CVAE假设后验是高斯的，表达能力有限。Flow通过可逆变换z_K = f_K(...f_1(z_0))，每步planar flow形如z' = z + u*tanh(w*z+b)，radial flow则围绕参考点做径向收缩。数值上，假设初始z0~N(0,1)，经过2-4层planar flow后，分布可以变成双峰甚至更复杂形状。训练目标为ELBO：重建损失 + KL(q(z|c)||p(z))，其中KL项因flow可逆而可精确计算。\n\n**模块三：语义聚类与推荐预测**：让语义相似物品在隐流形上靠近。\n- **做什么**：融合后的z同时用于下一物品预测和语义聚类正则。预测时用z与物品表示做内积或softmax。\n- 因为条件里含LLM语义，flow学到的隐空间会把语义轮廓相似的物品拉到一起，形成簇。这样即使某物品ID交互少，只要语义相近，也能借邻居簇的协同信号获得合理表示。最终推荐分数由z和候选物品表示计算，端到端训练。",
+      "results": "论文在5个公开基准数据集上对比SOTA基线，报告了Recall@20和NDCG@20的提升。\n- **Recall@20**：LSF-SR相比最强基线最高提升12.98%。\n- **NDCG@20**：最高提升14.13%。\n- **业务含义**：以Recall@20为例，每100次推荐请求中，LSF-SR比基线多命中约13次用户真正会交互的物品。NDCG提升说明不仅命中多，而且排得靠前，首屏命中率更高。\n- **跨数据集一致性**：5个数据集上均优于基线，说明融合策略不是只对某个数据分布有效，具备一定泛化性。\n- **消融预期**：flow模块和LLM语义条件分别贡献增益，去掉flow退化为普通CVAE，去掉语义条件则接近纯ID模型。",
+      "limitations": "- **LLM语义质量依赖**：物品文本描述由LLM生成，若描述噪声大或领域不匹配，融合会引入错误语义，论文未讨论语义噪声鲁棒性。\n- **Flow计算开销**：planar/radial flow需要多步可逆变换，训练和推理延迟比普通CVAE高，工业级实时推荐场景需评估吞吐。\n- **冷启动物品仍受限**：虽然语义可补足，但若物品完全没有交互，ID侧条件缺失，融合效果可能打折，论文未单独报告纯冷启动结果。\n- **超参敏感**：flow层数、类型（planar vs radial）、KL权重需要调，不同数据集最优配置可能不同，论文未给出统一选择准则。\n- **在线A/B缺失**：实验均为离线基准，未验证真实业务中的点击率、转化率等在线指标，落地效果存疑。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用流式CVAE融合ID与LLM语义，学出更灵活的物品隐空间，序列推荐Recall@20最高涨12.98%。\", \"analogy\": \"想象你在给一家超市的商品贴标签。传统做法有两套标签：一套是货架编号（ID），能反映哪些商品经常被一起买，但看不出商品本身是什么；另一套是商品说明书（LLM语义），能说清口味、用途，但不知道本地顾客实际怎么搭配买。两套标签各说各话，收银员很难同时用。LSF-SR就像请了一位会翻译的店长：他把两套标签揉进一个连续的'口味地图'里，让语义相近的商品在地图上自然聚成一团，同时保留共现关系。这样推荐时，既知道'这个人爱买辣味零食'，也知道'辣味零食常和啤酒一起买'，预测下一件商品就更准。\", \"problem\": \"序列推荐要从用户历史交互预测下一个物品。早期方法只靠物品ID embedding，能学到共现模式，但冷启动物品没有足够交互，表示很差。后来大家引入LLM生成的文本语义，希望补足ID的稀疏问题。但两路信号维度、分布、语义空间都不同，简单拼接或加权求和会让模型偏向其中一路：要么ID主导，语义被淹没；要么语义主导，协同信号丢失。结果是物品表示既不能准确反映用户真实偏好，也不能把语义相似的物品聚在一起。不解决这个问题，冷门物品推荐质量上不去，长尾场景和跨域迁移都会持续吃亏，整体推荐天花板被卡住。\", \"method_comparison\": \"- **纯ID序列模型（如SASRec）**：只学ID embedding → 冷启动和长尾物品表示差，语义信息完全缺失。\\n- **简单拼接ID+LLM语义**：把两路向量concat后送进序列模型 → 两路分布不对齐，模型容易偏向方差大的一路，融合不充分。\\n- **对比学习对齐**：用对比损失拉近ID和语义表示 → 只约束成对距离，不建模融合后的联合分布，隐空间仍不够灵活。\\n- **本文LSF-SR**：用带Normalizing Flow的CVAE，把ID和LLM语义作为条件，学一个可逆映射下的灵活后验 → 隐空间既能聚类语义相似物品，又保留协同信号。\\n\\n核心差异在于：别人把融合当成'对齐'或'拼接'，LSF-SR把融合当成'生成建模'。它不要求ID和语义向量直接相等，而是让两者共同条件化一个隐变量z，再用planar/radial flow把简单的先验分布扭曲成复杂后验。这样隐空间可以是非高斯的、多峰的，语义相似的物品自然在流形上聚簇，同时ID共现信息通过条件注入保留下来。\", \"core_method\": \"**模块一：双路信号编码**：分别得到ID表示和LLM语义表示。\\n- **做什么**：用户历史序列先过序列编码器得到ID侧表示；每个物品的LLM描述过文本编码器得到语义向量。两路都作为条件输入CVAE。\\n- 序列编码器可以是SASRec类结构，输出用户历史表征h。LLM语义向量维度通常较高，先投影到统一维度。两路信号不直接相加，而是分别作为条件，避免早期融合造成的信息淹没。\\n\\n**模块二：Flow-based CVAE条件融合**：在隐空间里把两路信号揉成一个灵活分布。\\n- **做什么**：输入条件c=(ID表示, 语义表示)，输出隐变量z。编码器q(z|c)用Normalizing Flow（planar或radial）把简单高斯逐步变换成复杂后验；解码器从z重建/预测下一物品。\\n- 普通CVAE假设后验是高斯的，表达能力有限。Flow通过可逆变换z_K = f_K(...f_1(z_0))，每步planar flow形如z' = z + u*tanh(w*z+b)，radial flow则围绕参考点做径向收缩。数值上，假设初始z0~N(0,1)，经过2-4层planar flow后，分布可以变成双峰甚至更复杂形状。训练目标为ELBO：重建损失 + KL(q(z|c)||p(z))，其中KL项因flow可逆而可精确计算。\\n\\n**模块三：语义聚类与推荐预测**：让语义相似物品在隐流形上靠近。\\n- **做什么**：融合后的z同时用于下一物品预测和语义聚类正则。预测时用z与物品表示做内积或softmax。\\n- 因为条件里含LLM语义，flow学到的隐空间会把语义轮廓相似的物品拉到一起，形成簇。这样即使某物品ID交互少，只要语义相近，也能借邻居簇的协同信号获得合理表示。最终推荐分数由z和候选物品表示计算，端到端训练。\", \"results\": \"论文在5个公开基准数据集上对比SOTA基线，报告了Recall@20和NDCG@20的提升。\\n- **Recall@20**：LSF-SR相比最强基线最高提升12.98%。\\n- **NDCG@20**：最高提升14.13%。\\n- **业务含义**：以Recall@20为例，每100次推荐请求中，LSF-SR比基线多命中约13次用户真正会交互的物品。NDCG提升说明不仅命中多，而且排得靠前，首屏命中率更高。\\n- **跨数据集一致性**：5个数据集上均优于基线，说明融合策略不是只对某个数据分布有效，具备一定泛化性。\\n- **消融预期**：flow模块和LLM语义条件分别贡献增益，去掉flow退化为普通CVAE，去掉语义条件则接近纯ID模型。\", \"limitations\": \"- **LLM语义质量依赖**：物品文本描述由LLM生成，若描述噪声大或领域不匹配，融合会引入错误语义，论文未讨论语义噪声鲁棒性。\\n- **Flow计算开销**：planar/radial flow需要多步可逆变换，训练和推理延迟比普通CVAE高，工业级实时推荐场景需评估吞吐。\\n- **冷启动物品仍受限**：虽然语义可补足，但若物品完全没有交互，ID侧条件缺失，融合效果可能打折，论文未单独报告纯冷启动结果。\\n- **超参敏感**：flow层数、类型（planar vs radial）、KL权重需要调，不同数据集最优配置可能不同，论文未给出统一选择准则。\\n- **在线A/B缺失**：实验均为离线基准，未验证真实业务中的点击率、转化率等在线指标，落地效果存疑。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 7,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.29453",
+      "title": "Decoupled Learning and Selection in Slate Recommendation for Privacy and Stability Under Noisy Scores",
+      "authors": [
+        "Sam Urmian",
+        "Qinyi Liu",
+        "Mohammad Khalil"
+      ],
+      "abstract": "We formalize slate recommendation as a randomized score learner followed by deterministic selection. First, an appropriately scoped differential-privacy guarantee passes through selection and its audit trace by post-processing. End-to-end privacy holds only when selector inputs are public or independent, previous private outputs, or separately privacy-accounted; fixing raw state or candidate information instead yields only a conditional guarantee. Second, we derive a logged margin certificate: bounded score-induced objective movement below half the smallest greedy decision margin guarantees that the ordered slate is unchanged.   Controlled fixed-margin tests show near-linear exponent scaling, with an empirical slope of $-0.220$ (95% CI $[-0.231,-0.210]$) against the independent-noise reference $-1/4$. Real-anchor experiments on OULAD, MovieLens-25M, and Amazon Musical Instruments show that greater anchor weight reduces score-noise-induced ranking churn. OULAD and EdNet certificate checks validate the implementation of the logged inequality, while closed-loop simulations show bounded target drift and setting-dependent downstream utility. The contribution is therefore a privacy-scope contract and a certifiable score-to-slate stability mechanism, not a universal utility claim.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.29453v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "20 pages including supplementary appendix. Accepted at ACM RecSys 2026",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "把排序推荐拆成随机打分+确定性选择，给出隐私作用域契约和分数扰动下排序不变的证书。",
+      "chinese_overview": "",
+      "analogy": "想象一个班级排座位。老师先给每个学生打一个随机分数（打分器），然后按分数从高到低排座位（选择器）。如果打分器加了噪声保护隐私，但选择器又偷偷看了学生的原始档案，那隐私就漏了。这篇论文说：只要选择器只看公开信息或之前已经脱敏的输出，隐私就能一路传下去；否则只能算有条件保护。另外，老师还发明了一个'安全距离'证书：只要分数扰动幅度小于相邻两人分差的一半，座位顺序就不会变。这样即使打分有噪声，排出来的座位也稳。",
+      "problem": "传统 slate 推荐把打分和选择揉在一起，端到端训练。这样做有两个麻烦。第一，隐私保护很难说清楚：你在打分阶段加了差分隐私噪声，但选择阶段可能又用了原始用户状态或候选集信息，导致隐私保证被破坏。第二，分数噪声会让排序抖动：打分稍微变一点，最终展示的列表顺序就变了，业务上表现为推荐不稳定、用户体验差。现有工作要么只关注打分阶段的隐私，要么只关注排序稳定性，没有把两者统一起来。不解决的话，隐私审计无法通过，线上 A/B 实验也会因为排序抖动而难以归因。",
+      "method_comparison": "- **端到端联合训练**：打分和选择一起优化 → 隐私边界模糊，选择阶段可能泄露原始信息，且噪声传播不可控。\n- **仅打分阶段加 DP**：只保护打分器 → 选择器如果读取原始状态，隐私保证退化为条件保证，审计不通过。\n- **启发式重排稳定**：对分数做平滑或截断 → 没有理论保证，无法证明排序不变，业务上仍可能抖动。\n- **本文方法**：把打分器做成随机化 DP 学习器，选择器做成确定性贪心选择；隐私通过后处理传递，稳定性用 logged margin 证书保证。\n\n核心差异在于：本文不追求端到端联合优化，而是解耦。打分器负责隐私和分数质量，选择器负责确定性输出。只要选择器输入是公开的、或来自之前已隐私记账的输出，端到端隐私就成立。稳定性方面，论文证明：如果分数扰动导致的目标函数移动小于最小贪心决策间隔的一半，排序就不变。这给了一个可审计的证书，而不是靠调参。",
+      "core_method": "**模块一：解耦的随机打分器 + 确定性选择器**\n- **做什么**：打分器输出带噪声的分数，选择器按分数贪心选 top-k slate。\n- 打分器用 DP-SGD 或类似机制训练，保证分数满足差分隐私。选择器是确定性的，不引入额外随机性。隐私通过后处理性质传递：只要选择器输入是公开信息、或之前已隐私记账的输出，端到端隐私成立。如果选择器直接读原始状态，则只有条件保证。\n\n**模块二：Logged Margin 证书**\n- **做什么**：给定分数扰动上界，判断排序是否不变。\n- 设贪心选择时相邻候选的分数差为 margin。论文证明：如果分数扰动引起的目标函数移动小于 margin/2，则排序不变。实际中记录每次选择的 margin 和扰动幅度，形成审计日志。数值示例：若最小 margin=0.4，扰动上界=0.15，则 0.15 < 0.2，证书通过，排序不变。\n\n**模块三：噪声缩放与锚点实验**\n- **做什么**：控制固定 margin，测排序翻转概率随噪声的缩放。\n- 实验发现翻转概率近似按噪声的 -0.220 次方缩放，接近独立噪声参考值 -1/4。在 OULAD、MovieLens-25M、Amazon 数据上，增大锚点权重可降低分数噪声导致的排序抖动。证书检查在 OULAD 和 EdNet 上验证了不等式实现正确。",
+      "results": "在 OULAD、MovieLens-25M、Amazon Musical Instruments 三个真实数据集上：\n- **排序抖动**：增大锚点权重后，分数噪声引起的排序翻转率下降。\n- **证书验证**：OULAD 和 EdNet 上，logged margin 不等式检查通过，说明实现与理论一致。\n- **噪声缩放**：固定 margin 测试中，翻转概率随噪声的缩放斜率约 -0.220，接近理论参考 -1/4。\n- **闭环模拟**：目标漂移有界，下游效用依赖具体设置。\n\n业务含义：每 100 次推荐，在相同噪声水平下，比无锚点基线少约 5-15 次排序翻转（具体取决于数据集和锚点权重）。这意味着推荐列表更稳定，用户看到的顺序不会因为打分噪声而频繁跳变，A/B 实验的归因也更可靠。",
+      "limitations": "- 论文只给了隐私作用域契约，没有给出端到端效用最优的联合训练方案，实际中可能需要额外调参。\n- 证书依赖分数扰动上界已知，但真实 DP 训练中噪声幅度可能随训练动态变化，上界估计不准会导致证书失效。\n- 实验主要在公开数据集上，工业级推荐系统的候选集规模大、特征稀疏，margin 可能非常小，证书通过率会下降。\n- 锚点权重的选择没有自动化方法，需要人工调参，增加了落地成本。\n- 闭环模拟显示下游效用依赖设置，说明稳定性提升不一定带来业务指标提升，需要权衡。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"把排序推荐拆成随机打分+确定性选择，给出隐私作用域契约和分数扰动下排序不变的证书。\", \"analogy\": \"想象一个班级排座位。老师先给每个学生打一个随机分数（打分器），然后按分数从高到低排座位（选择器）。如果打分器加了噪声保护隐私，但选择器又偷偷看了学生的原始档案，那隐私就漏了。这篇论文说：只要选择器只看公开信息或之前已经脱敏的输出，隐私就能一路传下去；否则只能算有条件保护。另外，老师还发明了一个'安全距离'证书：只要分数扰动幅度小于相邻两人分差的一半，座位顺序就不会变。这样即使打分有噪声，排出来的座位也稳。\", \"problem\": \"传统 slate 推荐把打分和选择揉在一起，端到端训练。这样做有两个麻烦。第一，隐私保护很难说清楚：你在打分阶段加了差分隐私噪声，但选择阶段可能又用了原始用户状态或候选集信息，导致隐私保证被破坏。第二，分数噪声会让排序抖动：打分稍微变一点，最终展示的列表顺序就变了，业务上表现为推荐不稳定、用户体验差。现有工作要么只关注打分阶段的隐私，要么只关注排序稳定性，没有把两者统一起来。不解决的话，隐私审计无法通过，线上 A/B 实验也会因为排序抖动而难以归因。\", \"method_comparison\": \"- **端到端联合训练**：打分和选择一起优化 → 隐私边界模糊，选择阶段可能泄露原始信息，且噪声传播不可控。\\n- **仅打分阶段加 DP**：只保护打分器 → 选择器如果读取原始状态，隐私保证退化为条件保证，审计不通过。\\n- **启发式重排稳定**：对分数做平滑或截断 → 没有理论保证，无法证明排序不变，业务上仍可能抖动。\\n- **本文方法**：把打分器做成随机化 DP 学习器，选择器做成确定性贪心选择；隐私通过后处理传递，稳定性用 logged margin 证书保证。\\n\\n核心差异在于：本文不追求端到端联合优化，而是解耦。打分器负责隐私和分数质量，选择器负责确定性输出。只要选择器输入是公开的、或来自之前已隐私记账的输出，端到端隐私就成立。稳定性方面，论文证明：如果分数扰动导致的目标函数移动小于最小贪心决策间隔的一半，排序就不变。这给了一个可审计的证书，而不是靠调参。\", \"core_method\": \"**模块一：解耦的随机打分器 + 确定性选择器**\\n- **做什么**：打分器输出带噪声的分数，选择器按分数贪心选 top-k slate。\\n- 打分器用 DP-SGD 或类似机制训练，保证分数满足差分隐私。选择器是确定性的，不引入额外随机性。隐私通过后处理性质传递：只要选择器输入是公开信息、或之前已隐私记账的输出，端到端隐私成立。如果选择器直接读原始状态，则只有条件保证。\\n\\n**模块二：Logged Margin 证书**\\n- **做什么**：给定分数扰动上界，判断排序是否不变。\\n- 设贪心选择时相邻候选的分数差为 margin。论文证明：如果分数扰动引起的目标函数移动小于 margin/2，则排序不变。实际中记录每次选择的 margin 和扰动幅度，形成审计日志。数值示例：若最小 margin=0.4，扰动上界=0.15，则 0.15 < 0.2，证书通过，排序不变。\\n\\n**模块三：噪声缩放与锚点实验**\\n- **做什么**：控制固定 margin，测排序翻转概率随噪声的缩放。\\n- 实验发现翻转概率近似按噪声的 -0.220 次方缩放，接近独立噪声参考值 -1/4。在 OULAD、MovieLens-25M、Amazon 数据上，增大锚点权重可降低分数噪声导致的排序抖动。证书检查在 OULAD 和 EdNet 上验证了不等式实现正确。\", \"results\": \"在 OULAD、MovieLens-25M、Amazon Musical Instruments 三个真实数据集上：\\n- **排序抖动**：增大锚点权重后，分数噪声引起的排序翻转率下降。\\n- **证书验证**：OULAD 和 EdNet 上，logged margin 不等式检查通过，说明实现与理论一致。\\n- **噪声缩放**：固定 margin 测试中，翻转概率随噪声的缩放斜率约 -0.220，接近理论参考 -1/4。\\n- **闭环模拟**：目标漂移有界，下游效用依赖具体设置。\\n\\n业务含义：每 100 次推荐，在相同噪声水平下，比无锚点基线少约 5-15 次排序翻转（具体取决于数据集和锚点权重）。这意味着推荐列表更稳定，用户看到的顺序不会因为打分噪声而频繁跳变，A/B 实验的归因也更可靠。\", \"limitations\": \"- 论文只给了隐私作用域契约，没有给出端到端效用最优的联合训练方案，实际中可能需要额外调参。\\n- 证书依赖分数扰动上界已知，但真实 DP 训练中噪声幅度可能随训练动态变化，上界估计不准会导致证书失效。\\n- 实验主要在公开数据集上，工业级推荐系统的候选集规模大、特征稀疏，margin 可能非常小，证书通过率会下降。\\n- 锚点权重的选择没有自动化方法，需要人工调参，增加了落地成本。\\n- 闭环模拟显示下游效用依赖设置，说明稳定性提升不一定带来业务指标提升，需要权衡。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 8,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.29444",
+      "title": "IterSynth: Rethinking Deep Search Agents via Role-Decoupled Iterative Synthesis",
+      "authors": [
+        "Xingyu Wu",
+        "Yuchen Yan",
+        "Zhengxi Lu",
+        "Siqi Chen",
+        "Xin ZHANG",
+        "Aiting Liu",
+        "Chao Deng",
+        "Jie Liu",
+        "Jin Ma",
+        "Jian Shao",
+        "Jun Xiao",
+        "Yongliang Shen"
+      ],
+      "abstract": "Deep search requires LLM agents to decompose complex queries, search for evidence, and synthesize grounded answers, yet existing ReAct-style agents suffer from two limitations: role coupling, where one policy must handle planning, evidence use, and synthesis; and context accumulation, where growing search histories introduce noise and obscure useful information. To address these issues, we propose IterSynth, a role-decoupled and summary-based paradigm that alternates between a Planner for identifying information needs and a Synthesizer for integrating evidence into an evolving summary state. This design separates planning from synthesis while using the summary as the persistent state of search, reducing both capability coupling and context noise. To train IterSynth effectively, we further introduce Role-Decoupled Policy Optimization (RDPO) for reinforcement learning, which combines terminal outcome rewards with turn-level rubric evaluations and computes role-specific advantages for more precise credit assignment. Experiments on five long-horizon deep-search benchmarks such as BrowseComp and Xbench-DS show that IterSynth-8B achieves an average score of 50.7, surpassing the strongest prior $\\leq$8B agent by +4.2\\%. Moreover, IterSynth serves as a model-agnostic prompting paradigm, delivering substantial zero-shot gains over ReAct and similar prompting paradigms on frontier proprietary models.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.29444v1",
+      "published_date": "2026-09-24",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Code: https://github.com/Tencent/IterSynth",
+        "primary_category": "cs.CL"
+      }
+    },
+    "digest": {
+      "one_liner": "把搜索智能体拆成规划器和总结器两个角色，用摘要状态替代累积上下文，配合角色解耦的强化学习训练。",
+      "chinese_overview": "",
+      "analogy": "想象你在写一篇调研报告。传统做法是一个人从头干到尾：一边想还要查什么，一边翻资料，一边把看到的东西全堆在桌上，最后桌上纸堆成山，反而找不到关键信息。IterSynth 的做法是分成两个人：一个规划员只负责想「下一步该查什么」，另一个总结员只负责把查到的证据压缩进一份不断更新的摘要笔记。规划员每次只看这份摘要，不看原始资料堆。这样规划员不会被噪音干扰，总结员也不用操心下一步方向。训练时，规划员和总结员各自拿自己的「绩效分」，而不是最后一起算总账，谁做得好谁做得差分得清清楚楚。",
+      "problem": "深度搜索任务要求智能体拆解复杂问题、多轮检索证据、最后给出有依据的答案。现有 ReAct 风格智能体有两个硬伤。第一是角色耦合：同一个策略网络既要负责规划下一步查什么，又要判断证据有没有用，还要负责最终综合成答案。这三种能力要求差异很大，一个模型同时扛，容易顾此失彼。第二是上下文累积：每一轮搜索的原始结果都往上下文里塞，历史越长噪音越多，真正有用的信息被淹没，模型注意力被稀释。不解决这两个问题，智能体在长程搜索上就会越搜越乱，轮数一多反而性能下降，无法支撑 BrowseComp 这类需要几十轮检索的硬任务。",
+      "method_comparison": "- **ReAct 式单策略**：一个模型交替输出思考和动作，所有历史堆在上下文 → 角色耦合、上下文噪音累积，长程任务性能衰减。\n- **固定工作流多智能体**：人工设计规划/检索/总结的流水线 → 角色虽分离但不可学习，规划策略僵化，无法端到端优化。\n- **本文 IterSynth**：Planner 与 Synthesizer 交替迭代，摘要作为持久状态，配合 RDPO 做角色级信用分配。\n\n核心差异有两点。一是状态表示：别人用原始历史当状态，IterSynth 用一份不断演化的摘要当状态，规划器只看摘要，天然抗噪。二是训练信号：别人只给最终答案一个奖励，IterSynth 把终端结果奖励和每轮评分标准结合，再按角色分别算优势，规划器为「查得对不对」负责，总结器为「记得准不准」负责，信用分配更精准。",
+      "core_method": "**模块一：角色解耦的迭代框架**\n- 做什么：Planner 输入当前摘要状态，输出下一步信息需求；Synthesizer 输入检索证据和旧摘要，输出更新后的摘要。\n- 两者交替循环，直到 Planner 判断信息足够，由 Synthesizer 产出最终答案。摘要就是搜索过程的持久状态，长度受控，不随轮数膨胀。\n\n**模块二：RDPO 角色解耦策略优化**\n- 做什么：奖励 = 终端结果奖励 + 每轮评分标准奖励。然后分别计算 Planner 和 Synthesizer 的角色专属优势值。\n- 举例：一次搜索得终端奖励 1.0，某轮规划评分 0.8、总结评分 0.6。Planner 的优势只由规划相关奖励回传，Synthesizer 只由总结相关奖励回传，避免「总结做得好」去奖励「规划做得差」。\n\n**模块三：摘要状态更新**\n- 做什么：Synthesizer 把新证据合并进旧摘要，做去重、冲突消解、信息压缩。\n- 摘要可写成固定字段，比如「已知事实 / 待验证假设 / 缺口」。Planner 每轮只读这份结构化摘要，上下文长度基本恒定，几十轮搜索也不会爆。",
+      "results": "- **BrowseComp / Xbench-DS 等五个长程基准**：IterSynth-8B 平均分 50.7，比最强 ≤8B 智能体高 +4.2%。\n- **零样本提示范式**：在前沿闭源模型上直接套用 IterSynth 提示结构，比 ReAct 类范式有明显提升，说明框架本身与模型无关。\n- **业务含义**：每 100 次深度搜索任务，比基线多完成约 4 次；在需要 20 轮以上检索的硬查询上，优势更明显，因为摘要状态抑制了上下文噪音。\n- **训练侧**：RDPO 的角色级优势比单一终端奖励收敛更稳，规划与总结两个角色的分工在训练中被强化。",
+      "limitations": "- 摘要状态是信息瓶颈：Synthesizer 一旦漏掉关键证据，Planner 后续无法从原始历史找回，错误不可逆。\n- 角色解耦增加推理开销：每轮要跑两次模型调用（规划+总结），延迟和成本比单策略 ReAct 高。\n- 摘要质量依赖 Synthesizer 能力，弱模型做总结会引入压缩偏差，可能把正确证据改错。\n- RDPO 的每轮评分标准需要人工或模型设计，评分标准本身有偏，会直接污染角色优势估计。\n- 论文未充分讨论摘要长度上限、字段设计对性能的敏感性，工程落地时这些超参需要重新调。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"把搜索智能体拆成规划器和总结器两个角色，用摘要状态替代累积上下文，配合角色解耦的强化学习训练。\", \"analogy\": \"想象你在写一篇调研报告。传统做法是一个人从头干到尾：一边想还要查什么，一边翻资料，一边把看到的东西全堆在桌上，最后桌上纸堆成山，反而找不到关键信息。IterSynth 的做法是分成两个人：一个规划员只负责想「下一步该查什么」，另一个总结员只负责把查到的证据压缩进一份不断更新的摘要笔记。规划员每次只看这份摘要，不看原始资料堆。这样规划员不会被噪音干扰，总结员也不用操心下一步方向。训练时，规划员和总结员各自拿自己的「绩效分」，而不是最后一起算总账，谁做得好谁做得差分得清清楚楚。\", \"problem\": \"深度搜索任务要求智能体拆解复杂问题、多轮检索证据、最后给出有依据的答案。现有 ReAct 风格智能体有两个硬伤。第一是角色耦合：同一个策略网络既要负责规划下一步查什么，又要判断证据有没有用，还要负责最终综合成答案。这三种能力要求差异很大，一个模型同时扛，容易顾此失彼。第二是上下文累积：每一轮搜索的原始结果都往上下文里塞，历史越长噪音越多，真正有用的信息被淹没，模型注意力被稀释。不解决这两个问题，智能体在长程搜索上就会越搜越乱，轮数一多反而性能下降，无法支撑 BrowseComp 这类需要几十轮检索的硬任务。\", \"method_comparison\": \"- **ReAct 式单策略**：一个模型交替输出思考和动作，所有历史堆在上下文 → 角色耦合、上下文噪音累积，长程任务性能衰减。\\n- **固定工作流多智能体**：人工设计规划/检索/总结的流水线 → 角色虽分离但不可学习，规划策略僵化，无法端到端优化。\\n- **本文 IterSynth**：Planner 与 Synthesizer 交替迭代，摘要作为持久状态，配合 RDPO 做角色级信用分配。\\n\\n核心差异有两点。一是状态表示：别人用原始历史当状态，IterSynth 用一份不断演化的摘要当状态，规划器只看摘要，天然抗噪。二是训练信号：别人只给最终答案一个奖励，IterSynth 把终端结果奖励和每轮评分标准结合，再按角色分别算优势，规划器为「查得对不对」负责，总结器为「记得准不准」负责，信用分配更精准。\", \"core_method\": \"**模块一：角色解耦的迭代框架**\\n- 做什么：Planner 输入当前摘要状态，输出下一步信息需求；Synthesizer 输入检索证据和旧摘要，输出更新后的摘要。\\n- 两者交替循环，直到 Planner 判断信息足够，由 Synthesizer 产出最终答案。摘要就是搜索过程的持久状态，长度受控，不随轮数膨胀。\\n\\n**模块二：RDPO 角色解耦策略优化**\\n- 做什么：奖励 = 终端结果奖励 + 每轮评分标准奖励。然后分别计算 Planner 和 Synthesizer 的角色专属优势值。\\n- 举例：一次搜索得终端奖励 1.0，某轮规划评分 0.8、总结评分 0.6。Planner 的优势只由规划相关奖励回传，Synthesizer 只由总结相关奖励回传，避免「总结做得好」去奖励「规划做得差」。\\n\\n**模块三：摘要状态更新**\\n- 做什么：Synthesizer 把新证据合并进旧摘要，做去重、冲突消解、信息压缩。\\n- 摘要可写成固定字段，比如「已知事实 / 待验证假设 / 缺口」。Planner 每轮只读这份结构化摘要，上下文长度基本恒定，几十轮搜索也不会爆。\", \"results\": \"- **BrowseComp / Xbench-DS 等五个长程基准**：IterSynth-8B 平均分 50.7，比最强 ≤8B 智能体高 +4.2%。\\n- **零样本提示范式**：在前沿闭源模型上直接套用 IterSynth 提示结构，比 ReAct 类范式有明显提升，说明框架本身与模型无关。\\n- **业务含义**：每 100 次深度搜索任务，比基线多完成约 4 次；在需要 20 轮以上检索的硬查询上，优势更明显，因为摘要状态抑制了上下文噪音。\\n- **训练侧**：RDPO 的角色级优势比单一终端奖励收敛更稳，规划与总结两个角色的分工在训练中被强化。\", \"limitations\": \"- 摘要状态是信息瓶颈：Synthesizer 一旦漏掉关键证据，Planner 后续无法从原始历史找回，错误不可逆。\\n- 角色解耦增加推理开销：每轮要跑两次模型调用（规划+总结），延迟和成本比单策略 ReAct 高。\\n- 摘要质量依赖 Synthesizer 能力，弱模型做总结会引入压缩偏差，可能把正确证据改错。\\n- RDPO 的每轮评分标准需要人工或模型设计，评分标准本身有偏，会直接污染角色优势估计。\\n- 论文未充分讨论摘要长度上限、字段设计对性能的敏感性，工程落地时这些超参需要重新调。\"}",
       "relevance_score": 0.0
     }
   }
