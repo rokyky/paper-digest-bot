@@ -137,7 +137,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.29803",
       "title": "SEEK: Skill-Routed Evaluation with Evolvable Knowledge for Industrial Search",
