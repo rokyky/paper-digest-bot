@@ -282,7 +282,7 @@
   },
   {
     "position": 7,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.29453",
       "title": "Decoupled Learning and Selection in Slate Recommendation for Privacy and Stability Under Noisy Scores",
