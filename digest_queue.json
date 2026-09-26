@@ -91,7 +91,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.30177",
       "title": "Search-Aware Reinforcement Learning for Multi-Component Query Understanding in Roblox Game Search",
