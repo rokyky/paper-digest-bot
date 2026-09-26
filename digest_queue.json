@@ -322,7 +322,7 @@
   },
   {
     "position": 8,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.29444",
       "title": "IterSynth: Rethinking Deep Search Agents via Role-Decoupled Iterative Synthesis",
