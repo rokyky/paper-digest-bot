@@ -42,7 +42,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2609.35695",
       "title": "Rethinking Personalized Generation: Test-Time Alignment via Factorized Ranking Models",
