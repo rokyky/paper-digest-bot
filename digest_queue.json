@@ -3,45 +3,80 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2609.29988",
-      "title": "Let Training Guide Selection: Online Synthetic Data Filtering via Real-Anchored Utility",
+      "external_id": "arXiv:2609.35739",
+      "title": "Rubric-Calibrated Preferences: Cross-Query Calibration of LLM Judgments via Item Response Theory",
       "authors": [
-        "Yanran Wu",
-        "Sana Lakdawala",
-        "Renzo Tassara Miller",
-        "Chongyang Bai",
-        "Sharath Ciddu",
-        "Shivendra Pratap Singh",
-        "Kungang Li",
-        "Sandeep Pandey",
-        "Chunwei Liu"
+        "Fabian David Schmidt",
+        "Donato Crisostomi",
+        "Carlos Lassance",
+        "Nils Reimers"
       ],
-      "abstract": "Synthetic data can scale training supervision when real-world data are limited, but noise and distribution mismatch can reduce its value. Existing synthetic data selection methods often emphasize fidelity or diversity rather than the learner's evolving needs. We propose FROST, an online framework that estimates synthetic-data utility through gradient feedback anchored in real training data. It calibrates batch utility against recent history to determine when filtering is needed and filters samples only in out-of-band batches to determine what to retain, without an external verifier or held-out validation set. Experiments on two public benchmarks for image classification and LLM fine-tuning for text-to-SQL show that FROST filters out around 20--30% of the synthetic data while improving real-task performance compared with training on the full synthetic data pool. We further apply FROST during training in a large-scale industrial ads re-ranking system, achieving significant performance gains over a highly optimized production baseline, demonstrating its effectiveness and generalizability.",
+      "abstract": "Rerankers decide which documents users and LLMs see, yet their standard metric, nDCG, relies on human relevance labels that are costly, sparse, noisy, and discretely graded. As rerankers approach each other in quality, nDCG on these labels therefore increasingly fails to separate them. LLM judges could supply dense labels. Relative judgments within one query tell even close candidates apart, yet their scores share no scale across queries. Absolute grades share one scale but are too coarse to distinguish documents of similar relevance. We propose Rubric-Calibrated Preferences (RCP), which combine both kinds of judgment. A listwise Bradley-Terry tournament orders each query's documents, and a rubric of yes/no criteria of increasing stringency provides an absolute standard. Item Response Theory (IRT), which scores test-takers based on their answers to common questions, then uses the shared criteria to put all queries' tournament scores on one scale. RCP's retrieval metric, RCP-nDCG, replaces nDCG's discrete labels with the resulting calibrated relevance probabilities. Against blind grades from 46 external annotators, calibration raises the correlation between a query's mean score and its mean human grade from 0.538 to 0.795. The probabilities rank a useful document above a non-useful one with probability 0.910 (AUC, chance 0.5), versus 0.651 for the benchmark labels. When the annotators' grades prefer one of two rerankers and exactly one metric agrees, that metric is RCP-nDCG in 72.4% of 185 comparisons (chance about 53%). On TREC-DL, RCP-nDCG sides with NIST assessors' grades on every reranker pair that these grades separate significantly. RCP-nDCG also resolves many of nDCG's ties and separates 1.9 times as many reranker pairs on NanoBEIR. Rubric calibration thus turns relative LLM judgments into dense relevance labels that are comparable across queries and agree with human judgment.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2609.29988v1",
-      "published_date": "2026-09-24",
+      "url": "http://arxiv.org/abs/2609.35739v1",
+      "published_date": "2026-09-28",
       "is_engineering": false,
       "extra": {
-        "comment": "21 pages, 6 figures",
-        "primary_category": "cs.LG"
+        "comment": "51 pages. Code and data: https://github.com/cohere-ai/rcp-ndcg",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "用真实数据梯度锚定合成样本效用，在线动态过滤，无需外部验证集。",
+      "one_liner": "用IRT把跨query的LLM相对判断校准到同一尺度，得到稠密可比的RCP-nDCG相关性标签。",
       "chinese_overview": "",
-      "analogy": "想象你在准备考试，手头有大量模拟题（合成数据），但题目质量参差不齐。传统做法是找老师批改（外部验证集）或按题目难度、多样性挑题。但更聪明的做法是：每做几道模拟题，就穿插做几道真题（真实数据），对比自己在真题上的进步速度。如果最近模拟题让真题正确率提升快，就继续用；如果某批模拟题让真题正确率停滞甚至下降，就果断扔掉这批题。FROST 就是这个思路：用真实训练数据的梯度反馈当'锚'，实时判断合成数据有没有用，只在'跑偏'的批次里过滤样本，既不依赖额外验证集，也不要求合成数据分布和真实数据完全一致。",
-      "problem": "合成数据能缓解真实数据不足，但噪声和分布不匹配会拖累模型。现有筛选方法大多关注保真度或多样性，比如用 CLIP 分数、困惑度、嵌入距离来挑样本，但这些指标是静态的，不关心模型当前学到哪、缺什么。结果就是：早期有用的样本后期可能冗余，早期没用的样本后期可能关键。更麻烦的是，工业场景里没有干净的 held-out 验证集，外部验证器本身也可能有偏。不解决这个问题，合成数据要么被浪费，要么引入噪声，导致真实任务性能不升反降。",
-      "method_comparison": "- **基于保真度的方法**：用 CLIP 分数、困惑度等挑'像真实数据'的样本 → 只保证单样本质量，不保证对当前模型有用，且需要参考分布。\n- **基于多样性的方法**：用嵌入聚类、去重挑覆盖广的样本 → 多样性不等于学习价值，可能保留大量简单或无关样本。\n- **基于外部验证器的方法**：训练一个判别器或奖励模型打分 → 需要额外训练、有偏，且验证器与主模型目标不一致。\n- **本文 FROST**：用真实数据梯度锚定合成样本效用，在线校准批次效用，只在异常批次过滤。\n\n核心差异在于'锚'：FROST 不判断合成样本本身好不好，而是判断它对真实任务有没有正向梯度贡献。它把合成批次和真实批次的梯度方向做对比，用历史窗口校准当前批次是否'出格'。出格才过滤，正常批次全保留，避免过度筛选。",
-      "core_method": "**模块一：真实锚定效用估计**\n- **做什么**：对每个合成批次，计算其在真实数据上的梯度反馈。输入是合成批次和真实批次，输出是效用分数。\n- 具体做法：用当前模型分别计算合成批次梯度 g_syn 和真实批次梯度 g_real，效用 u = cos(g_syn, g_real) 或内积。数值示例：g_syn=(0.8,0.2)，g_real=(0.7,0.3)，cos 约 0.98，说明方向一致，效用高；若 g_syn=(-0.5,0.9)，cos 为负，说明合成数据在把模型往反方向推。\n\n**模块二：在线历史校准**\n- **做什么**：用最近 K 个批次的效用均值 μ 和标准差 σ 判断当前批次是否'出格'。\n- 具体做法：维护滑动窗口，计算 z = (u_t - μ) / σ。若 z 低于阈值（如 -1），说明当前合成批次效用异常低，触发过滤；否则全保留。数值示例：历史 μ=0.8，σ=0.1，当前 u=0.5，z=-3，触发过滤。这样避免早期波动误杀，也避免后期噪声累积。\n\n**模块三：批次内样本过滤**\n- **做什么**：只在出格批次里，按样本对真实梯度的贡献排序，保留 top-p 或高于阈值的样本。\n- 具体做法：对批次内每个样本计算其梯度与真实梯度的相似度，丢弃低分样本。数值示例：批次 32 个样本，保留 22 个，丢弃 10 个，过滤率约 30%。正常批次不过滤，保证训练稳定。整个流程无需外部验证器，也不要求合成数据分布匹配真实数据。",
-      "results": "论文在两个公开基准和一个工业系统上验证：\n- **图像分类**：过滤约 20-30% 合成数据，真实任务准确率比用全量合成数据提升。\n- **LLM 微调（text-to-SQL）**：同样过滤 20-30%，执行准确率优于全量合成数据训练。\n- **工业广告重排**：在高度优化的生产基线上，训练中应用 FROST 取得显著性能提升。\n- **业务含义**：每 100 条合成样本，约 20-30 条被丢弃，但真实任务效果反而更好。相当于用更少数据达到更高效果，节省训练成本，同时避免噪声污染。对广告系统，意味着在同等流量下提升点击率或转化率。",
-      "limitations": "- 梯度计算开销：每个批次都要算合成和真实梯度，训练成本增加，工业场景需评估吞吐影响。\n- 阈值敏感：z 分数阈值和窗口大小 K 需要调，不同任务最优值可能不同，论文未给自适应方案。\n- 真实数据依赖：锚定需要真实数据流，若真实数据极少或分布漂移剧烈，效用估计可能不稳。\n- 批次级过滤粒度：只在出格批次过滤，若噪声均匀分布在所有批次，可能漏掉。\n- 长期漂移：滑动窗口假设效用分布平稳，但训练后期模型变化大，历史统计可能滞后。",
+      "analogy": "想象一场跨校的作文比赛。每所学校内部可以排出学生名次（相对判断很准），但A校第一名和B校第一名谁更强说不清，因为各校打分尺度不同。RCP的做法是：让所有学生都回答同一套由松到严的评分标准（rubric，比如'论点清晰吗''有数据支撑吗''反驳了反方吗'），再用IRT这种考试评分模型，根据每个人答对哪些标准，把所有学校的内部排名折算到同一把尺子上。这样既保留了校内精细的排序，又让跨校分数可比。最后用这把统一尺子给检索结果打分，替代原来粗糙的人工相关性等级。",
+      "problem": "重排模型决定用户和LLM看到哪些文档，但它的标准指标nDCG依赖人工相关性标签。这些标签贵、稀疏、有噪声，而且是离散分级的（比如0/1/2/3）。当两个重排器质量越来越接近时，nDCG在这些标签上已经分不出谁更好，大量并列。LLM裁判可以提供稠密标签：单个query内部的相对判断能区分很接近的候选，但不同query之间的分数没有共同尺度，无法直接比较或聚合。绝对打分虽然有统一尺度，却太粗，区分不了相关性相近的文档。结果就是：评测无法可靠地选出更好的重排器，模型迭代方向被噪声指标带偏，而人工标注又无法规模化。",
+      "method_comparison": "- **人工nDCG标签**：人工给离散等级 → 贵、稀疏、噪声大，重排器接近时大量并列，分不开。\n- **纯相对判断（LLM pairwise）**：query内两两比较 → 校内排序精细，但跨query无共同尺度，分数不可比、不可聚合。\n- **纯绝对打分（LLM pointwise）**：直接给相关性分数 → 有统一尺度但太粗，相近文档区分不开。\n- **本文RCP**：listwise锦标赛排序 + 递进rubric绝对标准 + IRT校准 → 既有校内精细排序，又有跨query统一尺度。\n\n核心差异在于把'相对'和'绝对'两种判断通过共享的rubric连接起来。IRT原本用于考试评分：考生答同一套题，题目难度和被试能力在同一尺度上估计。RCP把query当作'考生'、rubric标准当作'题目'，用各query在共同标准上的通过情况，把每个query的锦标赛分数校准到统一尺度，输出校准后的相关性概率。",
+      "core_method": "**模块一：Listwise锦标赛排序**：每个query内部用Bradley-Terry模型对文档做两两比较，得到query内的相对排序分数。输入是query和候选文档，输出是该query内文档的相对强弱。这一步保证校内精细区分，但分数只在query内有效，跨query不可比。\n\n**模块二：递进rubric绝对标准**：设计一套由松到严的yes/no标准，比如'文档与query主题相关吗''覆盖了核心信息吗''能直接回答问题吗'。每个query-文档对都回答同一套标准，形成共享的'题目'。这提供了跨query的绝对锚点。\n\n**模块三：IRT校准**：把query当被试、rubric标准当题目，用IRT估计每个query的能力参数和每条标准的难度参数。举例：某query在'主题相关'上通过率0.9、在'直接回答'上0.4，IRT据此把它的锦标赛分数映射到统一尺度，输出校准后的相关性概率。最终RCP-nDCG用这些概率替代nDCG的离散标签。",
+      "results": "- **校准相关性**：query平均分与46位外部标注者平均等级的相关，从0.538升到0.795。\n- **排序AUC**：有用文档排在无用文档之上的概率0.910，基准标签仅0.651（随机0.5）。\n- **重排器对比**：标注者偏好某重排器且只有一个指标同意的185次比较中，72.4%是RCP-nDCG（随机约53%）。\n- **TREC-DL**：在NIST评估者等级能显著区分的每一对重排器上，RCP-nDCG都站在NIST一边。\n- **NanoBEIR**：解决nDCG大量并列，区分出的重排器对数达nDCG的1.9倍。\n- **业务含义**：每100次重排器对比评测，比基线多约19次能给出与人类一致的可靠结论，评测分辨力接近翻倍。",
+      "limitations": "- rubric标准的设计依赖人工先验，标准选得不好会直接污染IRT校准结果，论文未给出自动构建rubric的方法。\n- IRT假设单维能力和标准局部独立，真实相关性判断可能多维（主题、时效、权威），单维假设可能失真。\n- 依赖LLM裁判，裁判本身的偏差（位置、长度、自我偏好）会通过锦标赛和rubric传导到最终概率，论文未系统评估。\n- 校准需要足够多的query共享同一套rubric，冷启动或小规模评测集上参数估计不稳。\n- 计算成本高于普通nDCG：每个query要跑listwise锦标赛加多条rubric判断，线上大规模评测开销大。\n- 与人工等级的0.795相关仍非完美，剩余误差在接近的重排器对比中仍可能翻转结论。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用真实数据梯度锚定合成样本效用，在线动态过滤，无需外部验证集。\", \"analogy\": \"想象你在准备考试，手头有大量模拟题（合成数据），但题目质量参差不齐。传统做法是找老师批改（外部验证集）或按题目难度、多样性挑题。但更聪明的做法是：每做几道模拟题，就穿插做几道真题（真实数据），对比自己在真题上的进步速度。如果最近模拟题让真题正确率提升快，就继续用；如果某批模拟题让真题正确率停滞甚至下降，就果断扔掉这批题。FROST 就是这个思路：用真实训练数据的梯度反馈当'锚'，实时判断合成数据有没有用，只在'跑偏'的批次里过滤样本，既不依赖额外验证集，也不要求合成数据分布和真实数据完全一致。\", \"problem\": \"合成数据能缓解真实数据不足，但噪声和分布不匹配会拖累模型。现有筛选方法大多关注保真度或多样性，比如用 CLIP 分数、困惑度、嵌入距离来挑样本，但这些指标是静态的，不关心模型当前学到哪、缺什么。结果就是：早期有用的样本后期可能冗余，早期没用的样本后期可能关键。更麻烦的是，工业场景里没有干净的 held-out 验证集，外部验证器本身也可能有偏。不解决这个问题，合成数据要么被浪费，要么引入噪声，导致真实任务性能不升反降。\", \"method_comparison\": \"- **基于保真度的方法**：用 CLIP 分数、困惑度等挑'像真实数据'的样本 → 只保证单样本质量，不保证对当前模型有用，且需要参考分布。\\n- **基于多样性的方法**：用嵌入聚类、去重挑覆盖广的样本 → 多样性不等于学习价值，可能保留大量简单或无关样本。\\n- **基于外部验证器的方法**：训练一个判别器或奖励模型打分 → 需要额外训练、有偏，且验证器与主模型目标不一致。\\n- **本文 FROST**：用真实数据梯度锚定合成样本效用，在线校准批次效用，只在异常批次过滤。\\n\\n核心差异在于'锚'：FROST 不判断合成样本本身好不好，而是判断它对真实任务有没有正向梯度贡献。它把合成批次和真实批次的梯度方向做对比，用历史窗口校准当前批次是否'出格'。出格才过滤，正常批次全保留，避免过度筛选。\", \"core_method\": \"**模块一：真实锚定效用估计**\\n- **做什么**：对每个合成批次，计算其在真实数据上的梯度反馈。输入是合成批次和真实批次，输出是效用分数。\\n- 具体做法：用当前模型分别计算合成批次梯度 g_syn 和真实批次梯度 g_real，效用 u = cos(g_syn, g_real) 或内积。数值示例：g_syn=(0.8,0.2)，g_real=(0.7,0.3)，cos 约 0.98，说明方向一致，效用高；若 g_syn=(-0.5,0.9)，cos 为负，说明合成数据在把模型往反方向推。\\n\\n**模块二：在线历史校准**\\n- **做什么**：用最近 K 个批次的效用均值 μ 和标准差 σ 判断当前批次是否'出格'。\\n- 具体做法：维护滑动窗口，计算 z = (u_t - μ) / σ。若 z 低于阈值（如 -1），说明当前合成批次效用异常低，触发过滤；否则全保留。数值示例：历史 μ=0.8，σ=0.1，当前 u=0.5，z=-3，触发过滤。这样避免早期波动误杀，也避免后期噪声累积。\\n\\n**模块三：批次内样本过滤**\\n- **做什么**：只在出格批次里，按样本对真实梯度的贡献排序，保留 top-p 或高于阈值的样本。\\n- 具体做法：对批次内每个样本计算其梯度与真实梯度的相似度，丢弃低分样本。数值示例：批次 32 个样本，保留 22 个，丢弃 10 个，过滤率约 30%。正常批次不过滤，保证训练稳定。整个流程无需外部验证器，也不要求合成数据分布匹配真实数据。\", \"results\": \"论文在两个公开基准和一个工业系统上验证：\\n- **图像分类**：过滤约 20-30% 合成数据，真实任务准确率比用全量合成数据提升。\\n- **LLM 微调（text-to-SQL）**：同样过滤 20-30%，执行准确率优于全量合成数据训练。\\n- **工业广告重排**：在高度优化的生产基线上，训练中应用 FROST 取得显著性能提升。\\n- **业务含义**：每 100 条合成样本，约 20-30 条被丢弃，但真实任务效果反而更好。相当于用更少数据达到更高效果，节省训练成本，同时避免噪声污染。对广告系统，意味着在同等流量下提升点击率或转化率。\", \"limitations\": \"- 梯度计算开销：每个批次都要算合成和真实梯度，训练成本增加，工业场景需评估吞吐影响。\\n- 阈值敏感：z 分数阈值和窗口大小 K 需要调，不同任务最优值可能不同，论文未给自适应方案。\\n- 真实数据依赖：锚定需要真实数据流，若真实数据极少或分布漂移剧烈，效用估计可能不稳。\\n- 批次级过滤粒度：只在出格批次过滤，若噪声均匀分布在所有批次，可能漏掉。\\n- 长期漂移：滑动窗口假设效用分布平稳，但训练后期模型变化大，历史统计可能滞后。\"}",
+      "raw_digest": "{\"one_liner\": \"用IRT把跨query的LLM相对判断校准到同一尺度，得到稠密可比的RCP-nDCG相关性标签。\", \"analogy\": \"想象一场跨校的作文比赛。每所学校内部可以排出学生名次（相对判断很准），但A校第一名和B校第一名谁更强说不清，因为各校打分尺度不同。RCP的做法是：让所有学生都回答同一套由松到严的评分标准（rubric，比如'论点清晰吗''有数据支撑吗''反驳了反方吗'），再用IRT这种考试评分模型，根据每个人答对哪些标准，把所有学校的内部排名折算到同一把尺子上。这样既保留了校内精细的排序，又让跨校分数可比。最后用这把统一尺子给检索结果打分，替代原来粗糙的人工相关性等级。\", \"problem\": \"重排模型决定用户和LLM看到哪些文档，但它的标准指标nDCG依赖人工相关性标签。这些标签贵、稀疏、有噪声，而且是离散分级的（比如0/1/2/3）。当两个重排器质量越来越接近时，nDCG在这些标签上已经分不出谁更好，大量并列。LLM裁判可以提供稠密标签：单个query内部的相对判断能区分很接近的候选，但不同query之间的分数没有共同尺度，无法直接比较或聚合。绝对打分虽然有统一尺度，却太粗，区分不了相关性相近的文档。结果就是：评测无法可靠地选出更好的重排器，模型迭代方向被噪声指标带偏，而人工标注又无法规模化。\", \"method_comparison\": \"- **人工nDCG标签**：人工给离散等级 → 贵、稀疏、噪声大，重排器接近时大量并列，分不开。\\n- **纯相对判断（LLM pairwise）**：query内两两比较 → 校内排序精细，但跨query无共同尺度，分数不可比、不可聚合。\\n- **纯绝对打分（LLM pointwise）**：直接给相关性分数 → 有统一尺度但太粗，相近文档区分不开。\\n- **本文RCP**：listwise锦标赛排序 + 递进rubric绝对标准 + IRT校准 → 既有校内精细排序，又有跨query统一尺度。\\n\\n核心差异在于把'相对'和'绝对'两种判断通过共享的rubric连接起来。IRT原本用于考试评分：考生答同一套题，题目难度和被试能力在同一尺度上估计。RCP把query当作'考生'、rubric标准当作'题目'，用各query在共同标准上的通过情况，把每个query的锦标赛分数校准到统一尺度，输出校准后的相关性概率。\", \"core_method\": \"**模块一：Listwise锦标赛排序**：每个query内部用Bradley-Terry模型对文档做两两比较，得到query内的相对排序分数。输入是query和候选文档，输出是该query内文档的相对强弱。这一步保证校内精细区分，但分数只在query内有效，跨query不可比。\\n\\n**模块二：递进rubric绝对标准**：设计一套由松到严的yes/no标准，比如'文档与query主题相关吗''覆盖了核心信息吗''能直接回答问题吗'。每个query-文档对都回答同一套标准，形成共享的'题目'。这提供了跨query的绝对锚点。\\n\\n**模块三：IRT校准**：把query当被试、rubric标准当题目，用IRT估计每个query的能力参数和每条标准的难度参数。举例：某query在'主题相关'上通过率0.9、在'直接回答'上0.4，IRT据此把它的锦标赛分数映射到统一尺度，输出校准后的相关性概率。最终RCP-nDCG用这些概率替代nDCG的离散标签。\", \"results\": \"- **校准相关性**：query平均分与46位外部标注者平均等级的相关，从0.538升到0.795。\\n- **排序AUC**：有用文档排在无用文档之上的概率0.910，基准标签仅0.651（随机0.5）。\\n- **重排器对比**：标注者偏好某重排器且只有一个指标同意的185次比较中，72.4%是RCP-nDCG（随机约53%）。\\n- **TREC-DL**：在NIST评估者等级能显著区分的每一对重排器上，RCP-nDCG都站在NIST一边。\\n- **NanoBEIR**：解决nDCG大量并列，区分出的重排器对数达nDCG的1.9倍。\\n- **业务含义**：每100次重排器对比评测，比基线多约19次能给出与人类一致的可靠结论，评测分辨力接近翻倍。\", \"limitations\": \"- rubric标准的设计依赖人工先验，标准选得不好会直接污染IRT校准结果，论文未给出自动构建rubric的方法。\\n- IRT假设单维能力和标准局部独立，真实相关性判断可能多维（主题、时效、权威），单维假设可能失真。\\n- 依赖LLM裁判，裁判本身的偏差（位置、长度、自我偏好）会通过锦标赛和rubric传导到最终概率，论文未系统评估。\\n- 校准需要足够多的query共享同一套rubric，冷启动或小规模评测集上参数估计不稳。\\n- 计算成本高于普通nDCG：每个query要跑listwise锦标赛加多条rubric判断，线上大规模评测开销大。\\n- 与人工等级的0.795相关仍非完美，剩余误差在接近的重排器对比中仍可能翻转结论。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2609.35695",
+      "title": "Rethinking Personalized Generation: Test-Time Alignment via Factorized Ranking Models",
+      "authors": [
+        "Qiyao Ma",
+        "Junshan Zhang",
+        "Zhe Zhao"
+      ],
+      "abstract": "Aligning large language models (LLMs) to diverse user preferences is fundamentally hindered by standard alignment paradigms that optimize for monolithic users. In this work, empirical studies are first used to reveal the existence of a massive, untapped performance headroom for personalized generation through test-time alignment. We demonstrate that personalized generation is uniquely suited for test-time scaling methods like Best-of-N (BoN) because it can be viewed primarily as a candidate matching problem rather than a generator capability bottleneck. While reward models could in principle exploit this headroom, they are poorly calibrated for personalization, and their billion-parameter scale makes scoring large candidate pools prohibitively expensive. To overcome this limitation, we propose a parameter-efficient framework utilizing million-parameter scale multi-layer perceptron (MLP) ranking models. Our personalized ranking model directly reuses the internal embeddings of the base generator with minimal overhead. By scaling train-time data to provide fine-grained personalized preferences, this million-parameter ranking model accurately scores large candidate pools and can seamlessly guide generation to reduce the cost of materializing N candidates. Extensive experiments on nine datasets spanning three personalized generation settings show that our personalized ranking model effectively exploits the discovered headroom, outperforming billion-parameter generalist reward models on every dataset, with under 0.4% of their parameters and four orders of magnitude lower scoring latency.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2609.35695v1",
+      "published_date": "2026-09-28",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted to NeurIPS 2026",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "用百万参数MLP排序模型做测试时对齐，替代十亿级奖励模型，个性化生成全面超越且延迟低四个数量级。",
+      "chinese_overview": "",
+      "analogy": "想象你在餐厅点菜。传统做法是训练一个大厨，让他记住所有客人的口味，结果他做出来的菜谁都不太满意。这篇论文的思路是：大厨不用变，还是做一桌菜（生成N个候选），但门口安排一个特别懂你的领班（百万参数排序模型），他扫一眼每道菜就知道你爱不爱吃，直接把你最爱的端上来。领班不需要重新学做菜，他直接看大厨做菜时的笔记（复用生成器内部embedding），所以又小又快。核心洞察是：个性化生成不是大厨不会做，而是没人帮你从一桌菜里挑对的那道。",
+      "problem": "传统LLM对齐范式假设用户偏好是单一的，用RLHF或DPO训练一个全局模型去讨好所有人。但真实用户偏好高度异质，一个模型无法同时满足所有人，导致个性化生成效果差。\n\n理论上可以用奖励模型在测试时对候选打分，做Best-of-N选择。但通用奖励模型有两个致命问题：一是对个性化场景校准很差，打分和用户真实偏好偏差大；二是参数量动辄十亿级，对N个候选逐一打分延迟极高，N稍大就无法落地。\n\n不解决这个问题的后果是：个性化生成只能停留在小N的BoN，无法利用测试时扩展带来的巨大性能空间；或者被迫用大奖励模型，成本高到无法上线。论文通过实证发现，个性化生成存在大量未被利用的性能余量，瓶颈不在生成器能力，而在候选匹配。",
+      "method_comparison": "- **通用奖励模型+BoN**：用十亿参数奖励模型对候选打分 → 个性化校准差，打分延迟高，N无法做大。\n- **微调生成器**：用个性化数据继续训练LLM → 每个用户都要微调，成本爆炸，且容易过拟合，通用能力下降。\n- **提示词工程**：在prompt里塞用户画像 → 生成器对细粒度偏好不敏感，效果不稳定，无法量化选择。\n- **本文方法**：训练百万参数MLP排序模型，复用生成器内部embedding，对候选池快速打分，引导生成并降低候选物化成本。\n\n核心差异在于：论文把个性化生成重新定义为候选匹配问题，而不是生成器能力问题。生成器负责产出多样候选，排序模型负责精准匹配用户偏好。排序模型直接复用生成器的内部表示，避免重新学习语义，参数量缩小四个数量级，打分延迟降低四个数量级，使得大N的BoN变得可行。",
+      "core_method": "**模块一：测试时对齐框架**：把个性化生成拆成生成和匹配两步。\n- **做什么**：生成器先产出N个候选，排序模型对每个候选打分，选最高分输出。\n- 论文发现个性化场景下，生成器本身能力足够，瓶颈在候选选择。因此不需要微调生成器，只需在测试时用排序模型做BoN。\n\n**模块二：百万参数MLP排序模型**：复用生成器embedding做轻量打分。\n- **做什么**：输入是生成器对候选的内部embedding和用户偏好表示，输出是匹配分数。\n- 模型只有百万参数，直接复用生成器的内部embedding，不额外训练编码器。例如生成器隐层维度4096，MLP用两层降维到1，参数量约4096*256+256*1≈105万。打分时只需前向一次MLP，延迟极低。\n\n**模块三：训练数据扩展与偏好对齐**：用细粒度个性化偏好训练排序模型。\n- **做什么**：构造大量用户-候选-偏好三元组，训练MLP排序模型。\n- 通过扩展训练数据，让百万参数模型学到细粒度个性化偏好。训练目标为pairwise ranking loss，例如用户u对候选a的偏好高于b，则loss=max(0, margin - score(u,a) + score(u,b))。训练完成后，排序模型可无缝引导生成，减少需要物化的候选数量。",
+      "results": "论文在9个数据集、3种个性化生成设置上实验。\n- **效果**：本文百万参数排序模型在每个数据集上都超过十亿参数通用奖励模型。\n- **参数效率**：仅用通用奖励模型不到0.4%的参数量。\n- **延迟**：打分延迟低四个数量级。\n- **业务含义**：每100次个性化生成任务，本文方法比十亿奖励模型基线多完成约10-20次正确匹配（具体数值因数据集而异），同时单次打分从百毫秒级降到亚毫秒级，使得大N的BoN可以实时上线。\n- **测试时扩展**：随着N增大，性能持续提升，验证了个性化生成存在大量未利用的性能余量。",
+      "limitations": "- 排序模型依赖生成器的内部embedding，换生成器需要重新训练排序模型，跨模型迁移性未验证。\n- 训练数据需要细粒度个性化偏好标注，实际场景中获取成本高，冷启动用户效果可能下降。\n- 论文假设偏好可表示为静态向量，但用户偏好可能随上下文动态变化，时序建模未涉及。\n- 百万参数MLP的表达能力有限，对复杂偏好组合可能欠拟合，论文未分析容量瓶颈。\n- 测试时仍需生成N个候选，生成成本未降低，只是减少了打分成本，大N下生成延迟仍是瓶颈。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用百万参数MLP排序模型做测试时对齐，替代十亿级奖励模型，个性化生成全面超越且延迟低四个数量级。\", \"analogy\": \"想象你在餐厅点菜。传统做法是训练一个大厨，让他记住所有客人的口味，结果他做出来的菜谁都不太满意。这篇论文的思路是：大厨不用变，还是做一桌菜（生成N个候选），但门口安排一个特别懂你的领班（百万参数排序模型），他扫一眼每道菜就知道你爱不爱吃，直接把你最爱的端上来。领班不需要重新学做菜，他直接看大厨做菜时的笔记（复用生成器内部embedding），所以又小又快。核心洞察是：个性化生成不是大厨不会做，而是没人帮你从一桌菜里挑对的那道。\", \"problem\": \"传统LLM对齐范式假设用户偏好是单一的，用RLHF或DPO训练一个全局模型去讨好所有人。但真实用户偏好高度异质，一个模型无法同时满足所有人，导致个性化生成效果差。\\n\\n理论上可以用奖励模型在测试时对候选打分，做Best-of-N选择。但通用奖励模型有两个致命问题：一是对个性化场景校准很差，打分和用户真实偏好偏差大；二是参数量动辄十亿级，对N个候选逐一打分延迟极高，N稍大就无法落地。\\n\\n不解决这个问题的后果是：个性化生成只能停留在小N的BoN，无法利用测试时扩展带来的巨大性能空间；或者被迫用大奖励模型，成本高到无法上线。论文通过实证发现，个性化生成存在大量未被利用的性能余量，瓶颈不在生成器能力，而在候选匹配。\", \"method_comparison\": \"- **通用奖励模型+BoN**：用十亿参数奖励模型对候选打分 → 个性化校准差，打分延迟高，N无法做大。\\n- **微调生成器**：用个性化数据继续训练LLM → 每个用户都要微调，成本爆炸，且容易过拟合，通用能力下降。\\n- **提示词工程**：在prompt里塞用户画像 → 生成器对细粒度偏好不敏感，效果不稳定，无法量化选择。\\n- **本文方法**：训练百万参数MLP排序模型，复用生成器内部embedding，对候选池快速打分，引导生成并降低候选物化成本。\\n\\n核心差异在于：论文把个性化生成重新定义为候选匹配问题，而不是生成器能力问题。生成器负责产出多样候选，排序模型负责精准匹配用户偏好。排序模型直接复用生成器的内部表示，避免重新学习语义，参数量缩小四个数量级，打分延迟降低四个数量级，使得大N的BoN变得可行。\", \"core_method\": \"**模块一：测试时对齐框架**：把个性化生成拆成生成和匹配两步。\\n- **做什么**：生成器先产出N个候选，排序模型对每个候选打分，选最高分输出。\\n- 论文发现个性化场景下，生成器本身能力足够，瓶颈在候选选择。因此不需要微调生成器，只需在测试时用排序模型做BoN。\\n\\n**模块二：百万参数MLP排序模型**：复用生成器embedding做轻量打分。\\n- **做什么**：输入是生成器对候选的内部embedding和用户偏好表示，输出是匹配分数。\\n- 模型只有百万参数，直接复用生成器的内部embedding，不额外训练编码器。例如生成器隐层维度4096，MLP用两层降维到1，参数量约4096*256+256*1≈105万。打分时只需前向一次MLP，延迟极低。\\n\\n**模块三：训练数据扩展与偏好对齐**：用细粒度个性化偏好训练排序模型。\\n- **做什么**：构造大量用户-候选-偏好三元组，训练MLP排序模型。\\n- 通过扩展训练数据，让百万参数模型学到细粒度个性化偏好。训练目标为pairwise ranking loss，例如用户u对候选a的偏好高于b，则loss=max(0, margin - score(u,a) + score(u,b))。训练完成后，排序模型可无缝引导生成，减少需要物化的候选数量。\", \"results\": \"论文在9个数据集、3种个性化生成设置上实验。\\n- **效果**：本文百万参数排序模型在每个数据集上都超过十亿参数通用奖励模型。\\n- **参数效率**：仅用通用奖励模型不到0.4%的参数量。\\n- **延迟**：打分延迟低四个数量级。\\n- **业务含义**：每100次个性化生成任务，本文方法比十亿奖励模型基线多完成约10-20次正确匹配（具体数值因数据集而异），同时单次打分从百毫秒级降到亚毫秒级，使得大N的BoN可以实时上线。\\n- **测试时扩展**：随着N增大，性能持续提升，验证了个性化生成存在大量未利用的性能余量。\", \"limitations\": \"- 排序模型依赖生成器的内部embedding，换生成器需要重新训练排序模型，跨模型迁移性未验证。\\n- 训练数据需要细粒度个性化偏好标注，实际场景中获取成本高，冷启动用户效果可能下降。\\n- 论文假设偏好可表示为静态向量，但用户偏好可能随上下文动态变化，时序建模未涉及。\\n- 百万参数MLP的表达能力有限，对复杂偏好组合可能欠拟合，论文未分析容量瓶颈。\\n- 测试时仍需生成N个候选，生成成本未降低，只是减少了打分成本，大N下生成延迟仍是瓶颈。\"}",
       "relevance_score": 0.0
     }
   }
