@@ -48,7 +48,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.08306",
       "title": "GINGER: Spicing Up Graph-Based Vector Search",
