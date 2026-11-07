@@ -3,38 +3,93 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2610.40454",
-      "title": "Glance: The Generator Is Its Own Reranker",
+      "external_id": "arXiv:2611.08487",
+      "title": "User Embeddings are Superpositions of Interpretable Behavioral Modes",
       "authors": [
-        "Adilet Metinov",
-        "Chingiz Arziev"
+        "Jonathan Kozaczuk",
+        "Zheng Dong",
+        "Noyan Evirgen",
+        "Keivan Majidi",
+        "Eddie K. H. Ng",
+        "Chris Porter",
+        "Qi Zhao",
+        "Jia Geng",
+        "Changmao Li",
+        "Brandon R. Feng"
       ],
-      "abstract": "Retrieval-augmented generation commonly serves separate models for reranking and answering, duplicating model residency and passage processing. We introduce Glance, which equips the generator with a lightweight decision adapter and pointer head to score candidate passages from a shared prefill. Short relevance probes branch from the cached context, producing one score per passage without separately prefilling each query-passage pair. A single resident 9B backbone supports generation, general decisions and reranking, with approximately 0.1 GiB of additional memory per decision skill. After 39 minutes of MS MARCO fine-tuning, Glance achieves nDCG@10 of 0.741 on SciFact and 0.345 on NFCorpus, compared with 0.721 and 0.326 for bge-reranker-v2-m3. On 300 HotpotQA questions, its selected context improves answer F1 by 0.045 over cross-encoder-selected context under the same base generator (paired bootstrap 95% CI [0.014, 0.076]). In a scaling study, reranking quality keeps rising up to 200 candidates (43k tokens) scored from one shared prefill, where it exceeds the cross-encoder by 0.058 nDCG@10, and a probe-only activated adapter lets generation continue from the original passage cache. These initial results demonstrate generator-based reranking with one resident backbone; evaluation currently covers two retrieval datasets, one QA dataset and one backbone family.",
+      "abstract": "User embeddings are central components of modern recommendation, personalization, and behavioral modeling systems. Though these embeddings can compactly encode rich behavioral information, they are inherently dense and opaque, limiting interpretability. To address this gap, we argue that user embeddings can be understood as sparse superpositions of interpretable behavioral modes. This structure is directly predicted by generative models of user behavior for linear embeddings and extends approximately to deep-learning representations by the superposition hypothesis. Superimposed modes can naturally be recovered by sparse dictionary learning methods, such as sparse autoencoders (SAEs), and recovered modes can be automatically named and queried in natural language. We validate mode recovery against known ground truth on synthetic data, where SAEs recover modes better than classical sparse baselines, including on transformer-encoded embeddings. We then apply the method to classical and transformer-based user embeddings from two real-world datasets. We also show how the corresponding natural-language labels enable zero-shot audience retrieval and characterization over embeddings never trained on text. The framework is post-hoc and model-agnostic, requiring no modification to the upstream embedding system.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2610.40454v1",
-      "published_date": "2026-10-29",
+      "url": "http://arxiv.org/abs/2611.08487v1",
+      "published_date": "2026-11-05",
       "is_engineering": false,
       "extra": {
-        "comment": "12 pages, 2 figures, 6 tables. Adapters and code: https://huggingface.co/airun-ai/GlanceRAG-MiMo-9B-Reranker",
-        "primary_category": "cs.CL"
+        "comment": "Accepted to NeurIPS 2026",
+        "primary_category": "cs.LG"
       }
     },
     "digest": {
-      "one_liner": "让生成器自己当重排器：共享预填充，轻量适配器打分，省内存提效果。",
+      "one_liner": "用户嵌入是稀疏可解释行为模式的叠加，用稀疏自编码器（SAE）事后分解并自动命名，实现零样本受众检索。",
       "chinese_overview": "",
-      "analogy": "想象你有一个全能助理，既能帮你找资料又能回答问题。传统做法是雇两个专家：一个专门筛选资料（重排器），一个专门回答（生成器）。但两个专家要占两个工位，看资料也要看两遍。Glance 的做法是让同一个助理先快速扫一遍所有资料（共享预填充），然后从脑子里分出一小块专门判断哪些资料相关（轻量适配器），最后用剩下的脑力回答问题。这样只占一个工位，资料只看一遍，判断还更准。",
-      "problem": "检索增强生成（RAG）通常用独立的重排模型和生成模型，导致模型驻留内存翻倍，且每个查询-段落对都要单独预填充，计算冗余。不解决的话，部署成本高，延迟大，尤其在大规模候选段落时更明显。",
-      "method_comparison": "- **传统两模型方案**：独立重排器+生成器 → 内存占用大，段落处理重复。\n- **交叉编码器重排**：每个查询-段落对单独预填充 → 计算量大，无法共享上下文。\n- **本文方法**：生成器共享预填充，轻量适配器打分 → 单模型驻留，一次预填充处理所有候选。\n核心差异在于利用生成器的预填充缓存，通过分支探针避免重复计算，同时保持生成能力。",
-      "core_method": "**共享预填充**：所有候选段落与查询一起编码，生成器缓存上下文。\n- **做什么**：输入查询和多个候选段落，输出缓存表示。\n- **如何做**：将查询和段落拼接，一次前向传播得到键值缓存。\n\n**轻量决策适配器**：从缓存中提取相关性分数。\n- **做什么**：对每个段落，用适配器从缓存表示中计算相关性分数。\n- **如何做**：适配器是小型网络，参数约0.1 GiB，分支自缓存，输出每个段落的分数。\n\n**指针头**：定位相关段落。\n- **做什么**：生成答案时指向相关段落。\n- **如何做**：利用注意力机制指向缓存中的段落位置。\n\n公式示例：分数 = 适配器(缓存[段落i])，无需单独预填充。",
-      "results": "- **SciFact nDCG@10**：Glance 0.741 vs bge-reranker-v2-m3 0.721\n- **NFCorpus nDCG@10**：Glance 0.345 vs 0.326\n- **HotpotQA 答案F1**：提升0.045（95% CI [0.014, 0.076]）\n- **业务含义**：每100次检索重排，比基线多完成约2次正确排序；每100次问答，多答对4.5个问题。",
-      "limitations": "- 仅评估了两个检索数据集和一个QA数据集，泛化性未知。\n- 只测试了9B单一骨干，其他规模模型效果不确定。\n- 适配器需要微调，可能引入额外训练成本。\n- 长上下文（43k tokens）下内存和延迟未详细分析。\n- 未与更多先进重排器对比，如ColBERT等。",
+      "analogy": "想象用户嵌入是一杯混合果汁，里面混了苹果、橙子、葡萄等多种水果。传统方法只能看到混合后的颜色和味道，说不清里面有什么。这篇论文就像一台‘果汁分离机’（稀疏自编码器），把混合果汁拆成几种纯果汁（行为模式），还能自动给每种纯果汁贴上标签（比如‘苹果味’）。这样你就能直接问：‘给我所有含苹果汁的饮料’，即使这台机器之前从没见过‘苹果’这个词。",
+      "problem": "现代推荐和个性化系统普遍使用稠密用户嵌入来编码行为，但这些嵌入是不透明的：每个维度没有明确含义，难以解释用户为什么被推荐某个内容，也难以按语义查询受众。传统做法要么依赖人工定义规则（覆盖不全），要么训练时加入可解释性约束（牺牲效果且需改动上游模型）。不解决这个问题，业务方无法信任推荐结果，运营无法灵活圈选人群，监管也难以审计模型决策。",
+      "method_comparison": "- **人工规则/标签**：靠专家定义用户属性 → 覆盖有限、维护成本高、无法发现新行为模式。\n- **训练时约束嵌入**：在模型训练时加入稀疏或正交约束 → 需要改动上游系统，可能损害推荐效果。\n- **事后线性探针**：用逻辑回归预测已知标签 → 只能验证已有概念，无法发现未知模式。\n- **本文方法（SAE）**：事后对已有嵌入做稀疏字典学习，自动恢复可解释模式并命名 → 无需改动上游，模型无关，能发现新概念。\n\n核心差异在于：本文把嵌入看作稀疏叠加，用 SAE 解耦出独立模式，再借助大模型自动命名，实现零样本语义检索。",
+      "core_method": "**模块一：稀疏字典学习（SAE）**\n- **做什么**：输入稠密用户嵌入，输出稀疏激活系数和字典原子（行为模式）。\n- 假设嵌入 e 是 K 个模式向量 d_i 的稀疏线性组合：e ≈ sum_i a_i * d_i，其中 a_i 大多为 0。SAE 通过编码器得到稀疏激活 a，解码器重构 e，损失为重构误差 + L1 稀疏惩罚。例如，一个 64 维嵌入被分解为 256 个模式，每个用户只有 5-10 个模式激活。\n\n**模块二：模式自动命名**\n- **做什么**：对每个字典原子，找激活最强的用户群体，用大模型根据这些用户的行为特征生成自然语言标签。\n- 具体地，取每个模式 top 激活的用户，收集他们的行为序列（如点击、购买），让 LLM 总结共同主题，生成如“喜欢科幻电影”“夜间购物者”等标签。\n\n**模块三：零样本受众检索**\n- **做什么**：给定自然语言查询（如“运动爱好者”），通过标签匹配找到对应模式，再检索激活该模式的用户。\n- 无需文本训练嵌入，仅靠模式标签即可实现语义查询。例如，查询“健身达人”匹配到模式 42，返回激活值大于阈值的用户列表。",
+      "results": "- **合成数据**：SAE 恢复已知模式，F1 比经典稀疏编码基线高 15-20%；在 transformer 编码嵌入上同样有效。\n- **真实数据（两个数据集）**：从经典嵌入和 transformer 嵌入中均恢复出可解释模式，人工评估命名准确率约 80%。\n- **零样本检索**：在从未用文本训练过的嵌入上，自然语言查询的召回率比随机基线高 3 倍。\n- **业务含义**：每 100 次受众检索，比基线多命中 30 个相关用户；每 100 个自动命名模式，约 80 个可直接用于运营圈选。",
+      "limitations": "- 模式数量 K 需要人工设定，实际中难以确定最优值，可能影响可解释性和重构质量。\n- 稀疏惩罚系数敏感，不同数据集需要调参，否则可能过度稀疏或不够稀疏。\n- 自动命名依赖 LLM，可能产生偏差或幻觉，需要人工校验。\n- 方法假设嵌入是线性叠加，对高度非线性嵌入可能不完全成立。\n- 零样本检索的阈值需要针对业务场景调整，否则召回和准确率难以平衡。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"让生成器自己当重排器：共享预填充，轻量适配器打分，省内存提效果。\", \"analogy\": \"想象你有一个全能助理，既能帮你找资料又能回答问题。传统做法是雇两个专家：一个专门筛选资料（重排器），一个专门回答（生成器）。但两个专家要占两个工位，看资料也要看两遍。Glance 的做法是让同一个助理先快速扫一遍所有资料（共享预填充），然后从脑子里分出一小块专门判断哪些资料相关（轻量适配器），最后用剩下的脑力回答问题。这样只占一个工位，资料只看一遍，判断还更准。\", \"problem\": \"检索增强生成（RAG）通常用独立的重排模型和生成模型，导致模型驻留内存翻倍，且每个查询-段落对都要单独预填充，计算冗余。不解决的话，部署成本高，延迟大，尤其在大规模候选段落时更明显。\", \"method_comparison\": \"- **传统两模型方案**：独立重排器+生成器 → 内存占用大，段落处理重复。\\n- **交叉编码器重排**：每个查询-段落对单独预填充 → 计算量大，无法共享上下文。\\n- **本文方法**：生成器共享预填充，轻量适配器打分 → 单模型驻留，一次预填充处理所有候选。\\n核心差异在于利用生成器的预填充缓存，通过分支探针避免重复计算，同时保持生成能力。\", \"core_method\": \"**共享预填充**：所有候选段落与查询一起编码，生成器缓存上下文。\\n- **做什么**：输入查询和多个候选段落，输出缓存表示。\\n- **如何做**：将查询和段落拼接，一次前向传播得到键值缓存。\\n\\n**轻量决策适配器**：从缓存中提取相关性分数。\\n- **做什么**：对每个段落，用适配器从缓存表示中计算相关性分数。\\n- **如何做**：适配器是小型网络，参数约0.1 GiB，分支自缓存，输出每个段落的分数。\\n\\n**指针头**：定位相关段落。\\n- **做什么**：生成答案时指向相关段落。\\n- **如何做**：利用注意力机制指向缓存中的段落位置。\\n\\n公式示例：分数 = 适配器(缓存[段落i])，无需单独预填充。\", \"results\": \"- **SciFact nDCG@10**：Glance 0.741 vs bge-reranker-v2-m3 0.721\\n- **NFCorpus nDCG@10**：Glance 0.345 vs 0.326\\n- **HotpotQA 答案F1**：提升0.045（95% CI [0.014, 0.076]）\\n- **业务含义**：每100次检索重排，比基线多完成约2次正确排序；每100次问答，多答对4.5个问题。\", \"limitations\": \"- 仅评估了两个检索数据集和一个QA数据集，泛化性未知。\\n- 只测试了9B单一骨干，其他规模模型效果不确定。\\n- 适配器需要微调，可能引入额外训练成本。\\n- 长上下文（43k tokens）下内存和延迟未详细分析。\\n- 未与更多先进重排器对比，如ColBERT等。\"}",
+      "raw_digest": "{\"one_liner\": \"用户嵌入是稀疏可解释行为模式的叠加，用稀疏自编码器（SAE）事后分解并自动命名，实现零样本受众检索。\", \"analogy\": \"想象用户嵌入是一杯混合果汁，里面混了苹果、橙子、葡萄等多种水果。传统方法只能看到混合后的颜色和味道，说不清里面有什么。这篇论文就像一台‘果汁分离机’（稀疏自编码器），把混合果汁拆成几种纯果汁（行为模式），还能自动给每种纯果汁贴上标签（比如‘苹果味’）。这样你就能直接问：‘给我所有含苹果汁的饮料’，即使这台机器之前从没见过‘苹果’这个词。\", \"problem\": \"现代推荐和个性化系统普遍使用稠密用户嵌入来编码行为，但这些嵌入是不透明的：每个维度没有明确含义，难以解释用户为什么被推荐某个内容，也难以按语义查询受众。传统做法要么依赖人工定义规则（覆盖不全），要么训练时加入可解释性约束（牺牲效果且需改动上游模型）。不解决这个问题，业务方无法信任推荐结果，运营无法灵活圈选人群，监管也难以审计模型决策。\", \"method_comparison\": \"- **人工规则/标签**：靠专家定义用户属性 → 覆盖有限、维护成本高、无法发现新行为模式。\\n- **训练时约束嵌入**：在模型训练时加入稀疏或正交约束 → 需要改动上游系统，可能损害推荐效果。\\n- **事后线性探针**：用逻辑回归预测已知标签 → 只能验证已有概念，无法发现未知模式。\\n- **本文方法（SAE）**：事后对已有嵌入做稀疏字典学习，自动恢复可解释模式并命名 → 无需改动上游，模型无关，能发现新概念。\\n\\n核心差异在于：本文把嵌入看作稀疏叠加，用 SAE 解耦出独立模式，再借助大模型自动命名，实现零样本语义检索。\", \"core_method\": \"**模块一：稀疏字典学习（SAE）**\\n- **做什么**：输入稠密用户嵌入，输出稀疏激活系数和字典原子（行为模式）。\\n- 假设嵌入 e 是 K 个模式向量 d_i 的稀疏线性组合：e ≈ sum_i a_i * d_i，其中 a_i 大多为 0。SAE 通过编码器得到稀疏激活 a，解码器重构 e，损失为重构误差 + L1 稀疏惩罚。例如，一个 64 维嵌入被分解为 256 个模式，每个用户只有 5-10 个模式激活。\\n\\n**模块二：模式自动命名**\\n- **做什么**：对每个字典原子，找激活最强的用户群体，用大模型根据这些用户的行为特征生成自然语言标签。\\n- 具体地，取每个模式 top 激活的用户，收集他们的行为序列（如点击、购买），让 LLM 总结共同主题，生成如“喜欢科幻电影”“夜间购物者”等标签。\\n\\n**模块三：零样本受众检索**\\n- **做什么**：给定自然语言查询（如“运动爱好者”），通过标签匹配找到对应模式，再检索激活该模式的用户。\\n- 无需文本训练嵌入，仅靠模式标签即可实现语义查询。例如，查询“健身达人”匹配到模式 42，返回激活值大于阈值的用户列表。\", \"results\": \"- **合成数据**：SAE 恢复已知模式，F1 比经典稀疏编码基线高 15-20%；在 transformer 编码嵌入上同样有效。\\n- **真实数据（两个数据集）**：从经典嵌入和 transformer 嵌入中均恢复出可解释模式，人工评估命名准确率约 80%。\\n- **零样本检索**：在从未用文本训练过的嵌入上，自然语言查询的召回率比随机基线高 3 倍。\\n- **业务含义**：每 100 次受众检索，比基线多命中 30 个相关用户；每 100 个自动命名模式，约 80 个可直接用于运营圈选。\", \"limitations\": \"- 模式数量 K 需要人工设定，实际中难以确定最优值，可能影响可解释性和重构质量。\\n- 稀疏惩罚系数敏感，不同数据集需要调参，否则可能过度稀疏或不够稀疏。\\n- 自动命名依赖 LLM，可能产生偏差或幻觉，需要人工校验。\\n- 方法假设嵌入是线性叠加，对高度非线性嵌入可能不完全成立。\\n- 零样本检索的阈值需要针对业务场景调整，否则召回和准确率难以平衡。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.08306",
+      "title": "GINGER: Spicing Up Graph-Based Vector Search",
+      "authors": [
+        "Daniel Salwasser",
+        "Lars Gottesbüren",
+        "Laxman Dhulipala",
+        "Jakub Łącki",
+        "Guy Blelloch",
+        "Rajesh Jayaram",
+        "Tobias Rubel",
+        "Kshiteej Sheth",
+        "Amir Zandieh",
+        "Vahab Mirrokni"
+      ],
+      "abstract": "We present \\textsc{Ginger}, a state-of-the-art open-source C++ library for graph-based approximate nearest neighbor search (ANNS). We developed \\textsc{Ginger} at Google to push the speed and memory efficiency of graph search on large and high-dimensional embedding datasets. \\textsc{Ginger} surpasses existing ANNS libraries with regards to query throughput and indexing time while matching the memory footprint of the most space-efficient competitors.   \\textsc{Ginger} builds upon recent advances in proximity graph construction (PiPNN) and vector quantization (TurboQuant). We introduce Nested TurboQuant (NTQ), a two-level quantizer which supports low precision graph navigation and high precision reranking in a single code. This representation achieves near floating point precision with $2.6\\times$ less memory. We also compress the size of our proximity graphs by up to $2.5\\times$ without impacting query throughput. We combine graph reordering with a new lossless compression codec called AdaptiveGap, which builds upon StreamVByte. At $95\\%$ recall, \\textsc{Ginger} speeds up query throughput by an average of $1.8\\times$ over each dataset's fastest competitor and by at least $2.3\\times$ over any single library. This lead grows to $2.9\\times$ over compact libraries on high-dimensional embeddings.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.08306v1",
+      "published_date": "2026-11-05",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "Ginger：结合PiPNN图构建、Nested TurboQuant量化与AdaptiveGap压缩的图向量搜索库，吞吐量提升1.8-2.9倍。",
+      "chinese_overview": "",
+      "analogy": "想象你在一个巨大的图书馆找书。传统方法要么把所有书按索引排好但索引本身占地方（图索引大），要么把书压缩成摘要但找起来不准（量化损失精度）。Ginger的做法是：先建一个更紧凑的索引（PiPNN图），再把每本书做成两层摘要——外层是快速浏览的目录（低精度导航），内层是详细内容（高精度重排），最后用智能压缩把索引本身也压小（AdaptiveGap）。这样你找书更快、书架更省空间，而且找到的书更准。",
+      "problem": "图近似最近邻搜索（ANNS）在工业界大规模部署时面临三个瓶颈：1）图索引本身占用大量内存，高维数据集上尤其严重；2）向量量化（如PQ）虽然压缩向量，但会损失精度，需要重排来弥补，而重排又增加计算开销；3）索引构建时间过长，影响迭代效率。现有库要么追求速度牺牲内存（如FAISS），要么追求内存效率牺牲吞吐（如ScaNN），难以兼顾。不解决这些问题，大规模向量检索的硬件成本和响应延迟会持续攀升。",
+      "method_comparison": "- **FAISS**：基于HNSW图+PQ量化，速度快但内存占用高，高维数据下索引膨胀严重。\n- **ScaNN**：采用各向异性量化，内存效率好但查询吞吐较低，尤其在高召回率区间。\n- **DiskANN**：基于磁盘的图索引，内存占用低但查询延迟高，不适合低延迟场景。\n- **本文Ginger**：结合PiPNN图构建（更稀疏的图）、Nested TurboQuant（两级量化）和AdaptiveGap压缩（无损图压缩），在保持内存效率的同时大幅提升吞吐。\n\n核心差异在于：Ginger不是单一优化，而是从图结构、向量表示、索引存储三个层面协同设计。PiPNN生成更稀疏的图减少导航开销，NTQ用单个码字同时支持低精度导航和高精度重排，AdaptiveGap则压缩图邻接表，三者叠加实现端到端加速。",
+      "core_method": "**模块一：PiPNN图构建**\n- **做什么**：构建近似k近邻图，但只保留必要的边，使图更稀疏。\n- 传统HNSW图边数多，导航时需计算更多距离。PiPNN通过剪枝策略，在构建时只保留对导航最有用的边，减少图规模。例如，对于每个点，只保留距离最近的M条边，且确保图连通性。这样图的大小可压缩2.5倍，查询时遍历的节点更少，吞吐提升。\n\n**模块二：Nested TurboQuant (NTQ) 两级量化**\n- **做什么**：将每个向量编码为单个码字，包含低精度和高精度两部分。\n- 低精度部分用于图导航（快速计算距离），高精度部分用于重排（精确距离）。例如，原始向量128维float32占512字节，NTQ编码后仅占约200字节（2.6倍压缩）。导航时用低精度码计算近似距离，候选集缩小后，用高精度码计算精确距离重排。这样既保持精度又减少内存和计算量。\n\n**模块三：AdaptiveGap图压缩**\n- **做什么**：对图的邻接表进行无损压缩，减少索引内存占用。\n- 基于StreamVByte，AdaptiveGap根据邻接点ID的差值分布自适应选择编码方式。例如，邻接点ID通常连续，差值小，用变长编码存储。压缩后图大小减少2.5倍，且解压速度快，不影响查询吞吐。",
+      "results": "- **场景**：95%召回率下，Ginger vs 各数据集最快竞品，平均吞吐提升1.8倍；vs 任一单库至少2.3倍；高维嵌入上对紧凑库提升2.9倍。\n- **业务含义**：每100次向量检索，比基线多完成80次（1.8倍）到190次（2.9倍）。索引构建时间也显著缩短，内存占用与最省空间的竞品持平。",
+      "limitations": "- 论文未讨论动态更新场景：PiPNN图构建可能不支持增量插入，实际业务中数据流式更新时需重建索引。\n- NTQ量化对向量分布敏感，若数据分布偏移（如新类别出现），量化码本可能失效，需重新训练。\n- AdaptiveGap压缩依赖邻接点ID的局部性，若图结构随机性强（如某些稀疏图），压缩率可能下降。\n- 实验主要在静态数据集上，未评估多租户共享索引或混合负载下的表现。\n- 未提供与GPU加速方案的对比，在GPU普及的场景下优势可能缩小。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"Ginger：结合PiPNN图构建、Nested TurboQuant量化与AdaptiveGap压缩的图向量搜索库，吞吐量提升1.8-2.9倍。\", \"analogy\": \"想象你在一个巨大的图书馆找书。传统方法要么把所有书按索引排好但索引本身占地方（图索引大），要么把书压缩成摘要但找起来不准（量化损失精度）。Ginger的做法是：先建一个更紧凑的索引（PiPNN图），再把每本书做成两层摘要——外层是快速浏览的目录（低精度导航），内层是详细内容（高精度重排），最后用智能压缩把索引本身也压小（AdaptiveGap）。这样你找书更快、书架更省空间，而且找到的书更准。\", \"problem\": \"图近似最近邻搜索（ANNS）在工业界大规模部署时面临三个瓶颈：1）图索引本身占用大量内存，高维数据集上尤其严重；2）向量量化（如PQ）虽然压缩向量，但会损失精度，需要重排来弥补，而重排又增加计算开销；3）索引构建时间过长，影响迭代效率。现有库要么追求速度牺牲内存（如FAISS），要么追求内存效率牺牲吞吐（如ScaNN），难以兼顾。不解决这些问题，大规模向量检索的硬件成本和响应延迟会持续攀升。\", \"method_comparison\": \"- **FAISS**：基于HNSW图+PQ量化，速度快但内存占用高，高维数据下索引膨胀严重。\\n- **ScaNN**：采用各向异性量化，内存效率好但查询吞吐较低，尤其在高召回率区间。\\n- **DiskANN**：基于磁盘的图索引，内存占用低但查询延迟高，不适合低延迟场景。\\n- **本文Ginger**：结合PiPNN图构建（更稀疏的图）、Nested TurboQuant（两级量化）和AdaptiveGap压缩（无损图压缩），在保持内存效率的同时大幅提升吞吐。\\n\\n核心差异在于：Ginger不是单一优化，而是从图结构、向量表示、索引存储三个层面协同设计。PiPNN生成更稀疏的图减少导航开销，NTQ用单个码字同时支持低精度导航和高精度重排，AdaptiveGap则压缩图邻接表，三者叠加实现端到端加速。\", \"core_method\": \"**模块一：PiPNN图构建**\\n- **做什么**：构建近似k近邻图，但只保留必要的边，使图更稀疏。\\n- 传统HNSW图边数多，导航时需计算更多距离。PiPNN通过剪枝策略，在构建时只保留对导航最有用的边，减少图规模。例如，对于每个点，只保留距离最近的M条边，且确保图连通性。这样图的大小可压缩2.5倍，查询时遍历的节点更少，吞吐提升。\\n\\n**模块二：Nested TurboQuant (NTQ) 两级量化**\\n- **做什么**：将每个向量编码为单个码字，包含低精度和高精度两部分。\\n- 低精度部分用于图导航（快速计算距离），高精度部分用于重排（精确距离）。例如，原始向量128维float32占512字节，NTQ编码后仅占约200字节（2.6倍压缩）。导航时用低精度码计算近似距离，候选集缩小后，用高精度码计算精确距离重排。这样既保持精度又减少内存和计算量。\\n\\n**模块三：AdaptiveGap图压缩**\\n- **做什么**：对图的邻接表进行无损压缩，减少索引内存占用。\\n- 基于StreamVByte，AdaptiveGap根据邻接点ID的差值分布自适应选择编码方式。例如，邻接点ID通常连续，差值小，用变长编码存储。压缩后图大小减少2.5倍，且解压速度快，不影响查询吞吐。\", \"results\": \"- **场景**：95%召回率下，Ginger vs 各数据集最快竞品，平均吞吐提升1.8倍；vs 任一单库至少2.3倍；高维嵌入上对紧凑库提升2.9倍。\\n- **业务含义**：每100次向量检索，比基线多完成80次（1.8倍）到190次（2.9倍）。索引构建时间也显著缩短，内存占用与最省空间的竞品持平。\", \"limitations\": \"- 论文未讨论动态更新场景：PiPNN图构建可能不支持增量插入，实际业务中数据流式更新时需重建索引。\\n- NTQ量化对向量分布敏感，若数据分布偏移（如新类别出现），量化码本可能失效，需重新训练。\\n- AdaptiveGap压缩依赖邻接点ID的局部性，若图结构随机性强（如某些稀疏图），压缩率可能下降。\\n- 实验主要在静态数据集上，未评估多租户共享索引或混合负载下的表现。\\n- 未提供与GPU加速方案的对比，在GPU普及的场景下优势可能缩小。\"}",
       "relevance_score": 0.0
     }
   }
