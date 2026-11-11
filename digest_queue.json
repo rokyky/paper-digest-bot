@@ -94,7 +94,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.12296",
       "title": "RecoGEM: A Serving System for Production-Scale Generative Recommendation",
