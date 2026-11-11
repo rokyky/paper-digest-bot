@@ -142,7 +142,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.12725",
       "title": "Scaling Taxonomy-Free Image Labeling with Generative AI: A Multimodal",
