@@ -3,71 +3,25 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2611.08487",
-      "title": "User Embeddings are Superpositions of Interpretable Behavioral Modes",
+      "external_id": "arXiv:2611.12180",
+      "title": "TS-GEAR: Taobao Shangou GEnerative Ad Retrieval",
       "authors": [
-        "Jonathan Kozaczuk",
-        "Zheng Dong",
-        "Noyan Evirgen",
-        "Keivan Majidi",
-        "Eddie K. H. Ng",
-        "Chris Porter",
-        "Qi Zhao",
-        "Jia Geng",
-        "Changmao Li",
-        "Brandon R. Feng"
+        "Guofeng Tong",
+        "Xu Zhang",
+        "Guangliang Yu",
+        "Haiqiang Wang",
+        "Guannan Cong",
+        "Xing Guo",
+        "Yang Zhou",
+        "Jingjing Duan",
+        "Shuang Li",
+        "Feng Shi",
+        "Hualei Liu"
       ],
-      "abstract": "User embeddings are central components of modern recommendation, personalization, and behavioral modeling systems. Though these embeddings can compactly encode rich behavioral information, they are inherently dense and opaque, limiting interpretability. To address this gap, we argue that user embeddings can be understood as sparse superpositions of interpretable behavioral modes. This structure is directly predicted by generative models of user behavior for linear embeddings and extends approximately to deep-learning representations by the superposition hypothesis. Superimposed modes can naturally be recovered by sparse dictionary learning methods, such as sparse autoencoders (SAEs), and recovered modes can be automatically named and queried in natural language. We validate mode recovery against known ground truth on synthetic data, where SAEs recover modes better than classical sparse baselines, including on transformer-encoded embeddings. We then apply the method to classical and transformer-based user embeddings from two real-world datasets. We also show how the corresponding natural-language labels enable zero-shot audience retrieval and characterization over embeddings never trained on text. The framework is post-hoc and model-agnostic, requiring no modification to the upstream embedding system.",
+      "abstract": "On-demand delivery platforms such as DoorDash and Uber Eats impose a constraint absent in traditional e-commerce: merchants beyond the user's delivery range are invalid candidates rather than merely low-ranked. Generative retrieval has recently shown strong potential in large-scale retrieval systems. Adapting it to this setting, however, poses three challenges. First, existing semantic IDs encode geography only as a soft signal, so reachability can only rely on a non-differentiable post-generation hard truncation. Second, user preferences vary substantially across both regions and queries, so aggregating historical behaviors without conditioning on geography and the current query yields biased interest estimates. Third, the retrieved candidate set is evaluated by its collective value, yet autoregressive training scores each sequence independently, with no set-level signal to discourage redundant near-duplicates. To address the challenges, we propose TS-GEAR, a unified generative retrieval framework for on-demand delivery: (1) Geo-Semantic ID splits merchant identifiers into geographic prefixes and semantic suffixes, making reachability a prediction target rather than a post-hoc filter; (2) Query-Geo Target Attention aggregates historical behaviors using the real-time query and location as dual targets, while encoding each behavior's own location into its attention key; (3) GMPO (Group Marginal Policy Optimization) rewrites advantages using a deduplicated group reward and marginal advantage within GRPO, avoiding auxiliary diversity objectives. Deployed online with a lightweight 0.1B backbone, TS-GEAR serves over 150 million queries per day in the search advertising pipeline of Taobao Shangou, consistently outperforming state-of-the-art generative retrieval methods on both HitRate and geographic validity, and achieving 3.8% gains in ad impressions and 4.2% in ad revenue.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.08487v1",
-      "published_date": "2026-11-05",
-      "is_engineering": false,
-      "extra": {
-        "comment": "Accepted to NeurIPS 2026",
-        "primary_category": "cs.LG"
-      }
-    },
-    "digest": {
-      "one_liner": "用户嵌入是稀疏可解释行为模式的叠加，用稀疏自编码器（SAE）事后分解并自动命名，实现零样本受众检索。",
-      "chinese_overview": "",
-      "analogy": "想象用户嵌入是一杯混合果汁，里面混了苹果、橙子、葡萄等多种水果。传统方法只能看到混合后的颜色和味道，说不清里面有什么。这篇论文就像一台‘果汁分离机’（稀疏自编码器），把混合果汁拆成几种纯果汁（行为模式），还能自动给每种纯果汁贴上标签（比如‘苹果味’）。这样你就能直接问：‘给我所有含苹果汁的饮料’，即使这台机器之前从没见过‘苹果’这个词。",
-      "problem": "现代推荐和个性化系统普遍使用稠密用户嵌入来编码行为，但这些嵌入是不透明的：每个维度没有明确含义，难以解释用户为什么被推荐某个内容，也难以按语义查询受众。传统做法要么依赖人工定义规则（覆盖不全），要么训练时加入可解释性约束（牺牲效果且需改动上游模型）。不解决这个问题，业务方无法信任推荐结果，运营无法灵活圈选人群，监管也难以审计模型决策。",
-      "method_comparison": "- **人工规则/标签**：靠专家定义用户属性 → 覆盖有限、维护成本高、无法发现新行为模式。\n- **训练时约束嵌入**：在模型训练时加入稀疏或正交约束 → 需要改动上游系统，可能损害推荐效果。\n- **事后线性探针**：用逻辑回归预测已知标签 → 只能验证已有概念，无法发现未知模式。\n- **本文方法（SAE）**：事后对已有嵌入做稀疏字典学习，自动恢复可解释模式并命名 → 无需改动上游，模型无关，能发现新概念。\n\n核心差异在于：本文把嵌入看作稀疏叠加，用 SAE 解耦出独立模式，再借助大模型自动命名，实现零样本语义检索。",
-      "core_method": "**模块一：稀疏字典学习（SAE）**\n- **做什么**：输入稠密用户嵌入，输出稀疏激活系数和字典原子（行为模式）。\n- 假设嵌入 e 是 K 个模式向量 d_i 的稀疏线性组合：e ≈ sum_i a_i * d_i，其中 a_i 大多为 0。SAE 通过编码器得到稀疏激活 a，解码器重构 e，损失为重构误差 + L1 稀疏惩罚。例如，一个 64 维嵌入被分解为 256 个模式，每个用户只有 5-10 个模式激活。\n\n**模块二：模式自动命名**\n- **做什么**：对每个字典原子，找激活最强的用户群体，用大模型根据这些用户的行为特征生成自然语言标签。\n- 具体地，取每个模式 top 激活的用户，收集他们的行为序列（如点击、购买），让 LLM 总结共同主题，生成如“喜欢科幻电影”“夜间购物者”等标签。\n\n**模块三：零样本受众检索**\n- **做什么**：给定自然语言查询（如“运动爱好者”），通过标签匹配找到对应模式，再检索激活该模式的用户。\n- 无需文本训练嵌入，仅靠模式标签即可实现语义查询。例如，查询“健身达人”匹配到模式 42，返回激活值大于阈值的用户列表。",
-      "results": "- **合成数据**：SAE 恢复已知模式，F1 比经典稀疏编码基线高 15-20%；在 transformer 编码嵌入上同样有效。\n- **真实数据（两个数据集）**：从经典嵌入和 transformer 嵌入中均恢复出可解释模式，人工评估命名准确率约 80%。\n- **零样本检索**：在从未用文本训练过的嵌入上，自然语言查询的召回率比随机基线高 3 倍。\n- **业务含义**：每 100 次受众检索，比基线多命中 30 个相关用户；每 100 个自动命名模式，约 80 个可直接用于运营圈选。",
-      "limitations": "- 模式数量 K 需要人工设定，实际中难以确定最优值，可能影响可解释性和重构质量。\n- 稀疏惩罚系数敏感，不同数据集需要调参，否则可能过度稀疏或不够稀疏。\n- 自动命名依赖 LLM，可能产生偏差或幻觉，需要人工校验。\n- 方法假设嵌入是线性叠加，对高度非线性嵌入可能不完全成立。\n- 零样本检索的阈值需要针对业务场景调整，否则召回和准确率难以平衡。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用户嵌入是稀疏可解释行为模式的叠加，用稀疏自编码器（SAE）事后分解并自动命名，实现零样本受众检索。\", \"analogy\": \"想象用户嵌入是一杯混合果汁，里面混了苹果、橙子、葡萄等多种水果。传统方法只能看到混合后的颜色和味道，说不清里面有什么。这篇论文就像一台‘果汁分离机’（稀疏自编码器），把混合果汁拆成几种纯果汁（行为模式），还能自动给每种纯果汁贴上标签（比如‘苹果味’）。这样你就能直接问：‘给我所有含苹果汁的饮料’，即使这台机器之前从没见过‘苹果’这个词。\", \"problem\": \"现代推荐和个性化系统普遍使用稠密用户嵌入来编码行为，但这些嵌入是不透明的：每个维度没有明确含义，难以解释用户为什么被推荐某个内容，也难以按语义查询受众。传统做法要么依赖人工定义规则（覆盖不全），要么训练时加入可解释性约束（牺牲效果且需改动上游模型）。不解决这个问题，业务方无法信任推荐结果，运营无法灵活圈选人群，监管也难以审计模型决策。\", \"method_comparison\": \"- **人工规则/标签**：靠专家定义用户属性 → 覆盖有限、维护成本高、无法发现新行为模式。\\n- **训练时约束嵌入**：在模型训练时加入稀疏或正交约束 → 需要改动上游系统，可能损害推荐效果。\\n- **事后线性探针**：用逻辑回归预测已知标签 → 只能验证已有概念，无法发现未知模式。\\n- **本文方法（SAE）**：事后对已有嵌入做稀疏字典学习，自动恢复可解释模式并命名 → 无需改动上游，模型无关，能发现新概念。\\n\\n核心差异在于：本文把嵌入看作稀疏叠加，用 SAE 解耦出独立模式，再借助大模型自动命名，实现零样本语义检索。\", \"core_method\": \"**模块一：稀疏字典学习（SAE）**\\n- **做什么**：输入稠密用户嵌入，输出稀疏激活系数和字典原子（行为模式）。\\n- 假设嵌入 e 是 K 个模式向量 d_i 的稀疏线性组合：e ≈ sum_i a_i * d_i，其中 a_i 大多为 0。SAE 通过编码器得到稀疏激活 a，解码器重构 e，损失为重构误差 + L1 稀疏惩罚。例如，一个 64 维嵌入被分解为 256 个模式，每个用户只有 5-10 个模式激活。\\n\\n**模块二：模式自动命名**\\n- **做什么**：对每个字典原子，找激活最强的用户群体，用大模型根据这些用户的行为特征生成自然语言标签。\\n- 具体地，取每个模式 top 激活的用户，收集他们的行为序列（如点击、购买），让 LLM 总结共同主题，生成如“喜欢科幻电影”“夜间购物者”等标签。\\n\\n**模块三：零样本受众检索**\\n- **做什么**：给定自然语言查询（如“运动爱好者”），通过标签匹配找到对应模式，再检索激活该模式的用户。\\n- 无需文本训练嵌入，仅靠模式标签即可实现语义查询。例如，查询“健身达人”匹配到模式 42，返回激活值大于阈值的用户列表。\", \"results\": \"- **合成数据**：SAE 恢复已知模式，F1 比经典稀疏编码基线高 15-20%；在 transformer 编码嵌入上同样有效。\\n- **真实数据（两个数据集）**：从经典嵌入和 transformer 嵌入中均恢复出可解释模式，人工评估命名准确率约 80%。\\n- **零样本检索**：在从未用文本训练过的嵌入上，自然语言查询的召回率比随机基线高 3 倍。\\n- **业务含义**：每 100 次受众检索，比基线多命中 30 个相关用户；每 100 个自动命名模式，约 80 个可直接用于运营圈选。\", \"limitations\": \"- 模式数量 K 需要人工设定，实际中难以确定最优值，可能影响可解释性和重构质量。\\n- 稀疏惩罚系数敏感，不同数据集需要调参，否则可能过度稀疏或不够稀疏。\\n- 自动命名依赖 LLM，可能产生偏差或幻觉，需要人工校验。\\n- 方法假设嵌入是线性叠加，对高度非线性嵌入可能不完全成立。\\n- 零样本检索的阈值需要针对业务场景调整，否则召回和准确率难以平衡。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 2,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2611.08306",
-      "title": "GINGER: Spicing Up Graph-Based Vector Search",
-      "authors": [
-        "Daniel Salwasser",
-        "Lars Gottesbüren",
-        "Laxman Dhulipala",
-        "Jakub Łącki",
-        "Guy Blelloch",
-        "Rajesh Jayaram",
-        "Tobias Rubel",
-        "Kshiteej Sheth",
-        "Amir Zandieh",
-        "Vahab Mirrokni"
-      ],
-      "abstract": "We present \\textsc{Ginger}, a state-of-the-art open-source C++ library for graph-based approximate nearest neighbor search (ANNS). We developed \\textsc{Ginger} at Google to push the speed and memory efficiency of graph search on large and high-dimensional embedding datasets. \\textsc{Ginger} surpasses existing ANNS libraries with regards to query throughput and indexing time while matching the memory footprint of the most space-efficient competitors.   \\textsc{Ginger} builds upon recent advances in proximity graph construction (PiPNN) and vector quantization (TurboQuant). We introduce Nested TurboQuant (NTQ), a two-level quantizer which supports low precision graph navigation and high precision reranking in a single code. This representation achieves near floating point precision with $2.6\\times$ less memory. We also compress the size of our proximity graphs by up to $2.5\\times$ without impacting query throughput. We combine graph reordering with a new lossless compression codec called AdaptiveGap, which builds upon StreamVByte. At $95\\%$ recall, \\textsc{Ginger} speeds up query throughput by an average of $1.8\\times$ over each dataset's fastest competitor and by at least $2.3\\times$ over any single library. This lead grows to $2.9\\times$ over compact libraries on high-dimensional embeddings.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.08306v1",
-      "published_date": "2026-11-05",
+      "url": "http://arxiv.org/abs/2611.12180v1",
+      "published_date": "2026-11-09",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -75,21 +29,198 @@
       }
     },
     "digest": {
-      "one_liner": "Ginger：结合PiPNN图构建、Nested TurboQuant量化与AdaptiveGap压缩的图向量搜索库，吞吐量提升1.8-2.9倍。",
+      "one_liner": "TS-GEAR 用地理语义 ID、查询-地理双目标注意力和 GMPO 组奖励，让生成式检索在即时配送场景中同时保证地理可达性和集合多样性，线上广告曝光+3.8%、收入+4.2%。",
       "chinese_overview": "",
-      "analogy": "想象你在一个巨大的图书馆找书。传统方法要么把所有书按索引排好但索引本身占地方（图索引大），要么把书压缩成摘要但找起来不准（量化损失精度）。Ginger的做法是：先建一个更紧凑的索引（PiPNN图），再把每本书做成两层摘要——外层是快速浏览的目录（低精度导航），内层是详细内容（高精度重排），最后用智能压缩把索引本身也压小（AdaptiveGap）。这样你找书更快、书架更省空间，而且找到的书更准。",
-      "problem": "图近似最近邻搜索（ANNS）在工业界大规模部署时面临三个瓶颈：1）图索引本身占用大量内存，高维数据集上尤其严重；2）向量量化（如PQ）虽然压缩向量，但会损失精度，需要重排来弥补，而重排又增加计算开销；3）索引构建时间过长，影响迭代效率。现有库要么追求速度牺牲内存（如FAISS），要么追求内存效率牺牲吞吐（如ScaNN），难以兼顾。不解决这些问题，大规模向量检索的硬件成本和响应延迟会持续攀升。",
-      "method_comparison": "- **FAISS**：基于HNSW图+PQ量化，速度快但内存占用高，高维数据下索引膨胀严重。\n- **ScaNN**：采用各向异性量化，内存效率好但查询吞吐较低，尤其在高召回率区间。\n- **DiskANN**：基于磁盘的图索引，内存占用低但查询延迟高，不适合低延迟场景。\n- **本文Ginger**：结合PiPNN图构建（更稀疏的图）、Nested TurboQuant（两级量化）和AdaptiveGap压缩（无损图压缩），在保持内存效率的同时大幅提升吞吐。\n\n核心差异在于：Ginger不是单一优化，而是从图结构、向量表示、索引存储三个层面协同设计。PiPNN生成更稀疏的图减少导航开销，NTQ用单个码字同时支持低精度导航和高精度重排，AdaptiveGap则压缩图邻接表，三者叠加实现端到端加速。",
-      "core_method": "**模块一：PiPNN图构建**\n- **做什么**：构建近似k近邻图，但只保留必要的边，使图更稀疏。\n- 传统HNSW图边数多，导航时需计算更多距离。PiPNN通过剪枝策略，在构建时只保留对导航最有用的边，减少图规模。例如，对于每个点，只保留距离最近的M条边，且确保图连通性。这样图的大小可压缩2.5倍，查询时遍历的节点更少，吞吐提升。\n\n**模块二：Nested TurboQuant (NTQ) 两级量化**\n- **做什么**：将每个向量编码为单个码字，包含低精度和高精度两部分。\n- 低精度部分用于图导航（快速计算距离），高精度部分用于重排（精确距离）。例如，原始向量128维float32占512字节，NTQ编码后仅占约200字节（2.6倍压缩）。导航时用低精度码计算近似距离，候选集缩小后，用高精度码计算精确距离重排。这样既保持精度又减少内存和计算量。\n\n**模块三：AdaptiveGap图压缩**\n- **做什么**：对图的邻接表进行无损压缩，减少索引内存占用。\n- 基于StreamVByte，AdaptiveGap根据邻接点ID的差值分布自适应选择编码方式。例如，邻接点ID通常连续，差值小，用变长编码存储。压缩后图大小减少2.5倍，且解压速度快，不影响查询吞吐。",
-      "results": "- **场景**：95%召回率下，Ginger vs 各数据集最快竞品，平均吞吐提升1.8倍；vs 任一单库至少2.3倍；高维嵌入上对紧凑库提升2.9倍。\n- **业务含义**：每100次向量检索，比基线多完成80次（1.8倍）到190次（2.9倍）。索引构建时间也显著缩短，内存占用与最省空间的竞品持平。",
-      "limitations": "- 论文未讨论动态更新场景：PiPNN图构建可能不支持增量插入，实际业务中数据流式更新时需重建索引。\n- NTQ量化对向量分布敏感，若数据分布偏移（如新类别出现），量化码本可能失效，需重新训练。\n- AdaptiveGap压缩依赖邻接点ID的局部性，若图结构随机性强（如某些稀疏图），压缩率可能下降。\n- 实验主要在静态数据集上，未评估多租户共享索引或混合负载下的表现。\n- 未提供与GPU加速方案的对比，在GPU普及的场景下优势可能缩小。",
+      "analogy": "想象你在点外卖，系统要先从附近能送到的商家里挑。传统生成式检索像让一个记忆力超强的人背下全城商家，但他只记得商家大概在哪个区，经常推荐 20 公里外的店，只能事后手动删掉。TS-GEAR 相当于把商家编号改成“区号+店名”的格式，让模型先报区号再报店名，送不到的自然不会出现。同时，它让模型在推荐时既看你现在搜什么，也看你人在哪，还要求一次推荐的一批店不能全是同一家连锁的重复店。",
+      "problem": "即时配送平台（如淘宝闪购、DoorDash）与传统电商的关键区别是：配送范围外的商家不是排序低，而是根本无效。生成式检索用语义 ID 表示商家，但现有语义 ID 只把地理位置当作软信号，模型生成后需要非可微的硬截断来过滤不可达商家，导致训练和推理不一致，且截断会破坏生成序列的完整性。其次，用户偏好随区域和查询变化很大，现有方法聚合历史行为时不考虑地理和当前查询，兴趣估计有偏。第三，检索评估的是整个候选集合的集体价值，但自回归训练对每个序列独立打分，没有集合级信号来抑制近重复商家，导致推荐结果冗余。不解决这些问题，生成式检索在即时配送场景下要么地理有效性差，要么多样性不足，直接影响广告曝光和收入。",
+      "method_comparison": "- **传统语义 ID + 后过滤**：用 RQ-VAE 等生成语义 ID，生成后按距离硬截断 → 地理信息是软信号，截断不可微，训练推理不一致，且截断后候选集不完整。\n- **地理感知的召回模型**：在向量召回中加入地理特征或地理哈希 → 地理约束仍是软约束，无法保证 100% 可达，且难以与生成式框架结合。\n- **GRPO 等强化学习微调**：用组内奖励优化生成序列 → 奖励是序列级，没有集合级去重信号，容易生成近重复商家。\n- **本文方法**：Geo-Semantic ID 把地理前缀作为生成目标，Query-Geo Target Attention 用查询和位置双目标聚合行为，GMPO 用去重组奖励和边际优势重写优势函数。\n\n核心差异在于：TS-GEAR 把地理可达性从“事后过滤”变成“生成目标”，把用户兴趣建模从“全局聚合”变成“查询+地理条件化”，把优化信号从“序列独立”变成“集合级去重”。三者统一在一个生成式检索框架内，无需辅助多样性损失。",
+      "core_method": "**模块一：Geo-Semantic ID**：把商家 ID 拆成地理前缀和语义后缀。\n- **做什么**：输入商家经纬度和类目/文本特征，输出分层语义 ID：前几位编码地理网格（如 geohash 前缀），后几位编码商家语义。\n- 训练时，地理前缀作为可预测目标，模型先预测用户附近的地理网格，再在该网格内生成语义后缀。这样可达性成为生成过程的一部分，而非后处理。例如，用户位置对应前缀“1203”，模型只会在“1203”下生成后缀，配送范围外的商家天然不会被生成。\n\n**模块二：Query-Geo Target Attention**：用实时查询和位置双目标聚合历史行为。\n- **做什么**：输入用户历史行为序列、当前查询 q、当前地理位置 g，输出条件化的用户兴趣表示。\n- 每个历史行为作为 key 时，其自身位置也编码进 key；注意力权重由当前查询和当前位置共同决定。公式上，注意力分数 = softmax( (W_q·q + W_g·g) · (W_k·h_i + W_l·l_i) )，其中 h_i 是行为内容，l_i 是行为位置。这样，附近且与当前查询相关的历史行为获得更高权重，避免全局聚合的偏差。\n\n**模块三：GMPO（Group Marginal Policy Optimization）**：用去重组奖励和边际优势优化生成策略。\n- **做什么**：对同一查询生成一组候选序列，计算组内去重后的奖励，并重写优势函数。\n- 标准 GRPO 对每个序列独立计算优势；GMPO 先对组内候选去重（按商家 ID 或语义相似度），然后计算组奖励 R_group = 去重后有效商家数 / 生成长度，再用边际优势 A_i = R_i - R_group 来更新策略。这样，生成近重复商家不会增加组奖励，反而因占用生成长度而降低边际优势，从而抑制冗余。无需额外多样性损失。",
+      "results": "- **场景**：淘宝闪购搜索广告 pipeline，每天 1.5 亿+ 查询，0.1B 轻量骨干。\n- **指标**：HitRate 和地理有效性（GeoValidity）均持续优于 SOTA 生成式检索方法。\n- **业务收益**：广告曝光 +3.8%，广告收入 +4.2%。\n- **业务含义**：每 100 次广告请求，比基线多完成约 4 次有效曝光，多产生约 4 次收入转化；地理有效性提升意味着无效配送范围的曝光减少，用户体验和广告主 ROI 同步改善。",
+      "limitations": "- 地理前缀的粒度需要人工设定（如 geohash 长度），粒度过粗会导致候选集过大，过细会导致长尾区域数据稀疏，论文未讨论自适应粒度选择。\n- GMPO 的组奖励依赖去重逻辑，去重阈值（如语义相似度）对多样性效果敏感，论文未给出阈值选择指南。\n- 0.1B 骨干虽轻量，但生成式检索的推理延迟在 1.5 亿/天的规模下仍需工程优化，论文未披露延迟和吞吐细节。\n- 方法在淘宝闪购场景验证，跨平台（如 DoorDash）迁移时地理网格和配送范围定义不同，需要重新设计前缀编码。\n- 训练阶段需要构造组内候选并计算去重奖励，相比标准自回归训练增加额外计算开销，论文未量化训练成本。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"Ginger：结合PiPNN图构建、Nested TurboQuant量化与AdaptiveGap压缩的图向量搜索库，吞吐量提升1.8-2.9倍。\", \"analogy\": \"想象你在一个巨大的图书馆找书。传统方法要么把所有书按索引排好但索引本身占地方（图索引大），要么把书压缩成摘要但找起来不准（量化损失精度）。Ginger的做法是：先建一个更紧凑的索引（PiPNN图），再把每本书做成两层摘要——外层是快速浏览的目录（低精度导航），内层是详细内容（高精度重排），最后用智能压缩把索引本身也压小（AdaptiveGap）。这样你找书更快、书架更省空间，而且找到的书更准。\", \"problem\": \"图近似最近邻搜索（ANNS）在工业界大规模部署时面临三个瓶颈：1）图索引本身占用大量内存，高维数据集上尤其严重；2）向量量化（如PQ）虽然压缩向量，但会损失精度，需要重排来弥补，而重排又增加计算开销；3）索引构建时间过长，影响迭代效率。现有库要么追求速度牺牲内存（如FAISS），要么追求内存效率牺牲吞吐（如ScaNN），难以兼顾。不解决这些问题，大规模向量检索的硬件成本和响应延迟会持续攀升。\", \"method_comparison\": \"- **FAISS**：基于HNSW图+PQ量化，速度快但内存占用高，高维数据下索引膨胀严重。\\n- **ScaNN**：采用各向异性量化，内存效率好但查询吞吐较低，尤其在高召回率区间。\\n- **DiskANN**：基于磁盘的图索引，内存占用低但查询延迟高，不适合低延迟场景。\\n- **本文Ginger**：结合PiPNN图构建（更稀疏的图）、Nested TurboQuant（两级量化）和AdaptiveGap压缩（无损图压缩），在保持内存效率的同时大幅提升吞吐。\\n\\n核心差异在于：Ginger不是单一优化，而是从图结构、向量表示、索引存储三个层面协同设计。PiPNN生成更稀疏的图减少导航开销，NTQ用单个码字同时支持低精度导航和高精度重排，AdaptiveGap则压缩图邻接表，三者叠加实现端到端加速。\", \"core_method\": \"**模块一：PiPNN图构建**\\n- **做什么**：构建近似k近邻图，但只保留必要的边，使图更稀疏。\\n- 传统HNSW图边数多，导航时需计算更多距离。PiPNN通过剪枝策略，在构建时只保留对导航最有用的边，减少图规模。例如，对于每个点，只保留距离最近的M条边，且确保图连通性。这样图的大小可压缩2.5倍，查询时遍历的节点更少，吞吐提升。\\n\\n**模块二：Nested TurboQuant (NTQ) 两级量化**\\n- **做什么**：将每个向量编码为单个码字，包含低精度和高精度两部分。\\n- 低精度部分用于图导航（快速计算距离），高精度部分用于重排（精确距离）。例如，原始向量128维float32占512字节，NTQ编码后仅占约200字节（2.6倍压缩）。导航时用低精度码计算近似距离，候选集缩小后，用高精度码计算精确距离重排。这样既保持精度又减少内存和计算量。\\n\\n**模块三：AdaptiveGap图压缩**\\n- **做什么**：对图的邻接表进行无损压缩，减少索引内存占用。\\n- 基于StreamVByte，AdaptiveGap根据邻接点ID的差值分布自适应选择编码方式。例如，邻接点ID通常连续，差值小，用变长编码存储。压缩后图大小减少2.5倍，且解压速度快，不影响查询吞吐。\", \"results\": \"- **场景**：95%召回率下，Ginger vs 各数据集最快竞品，平均吞吐提升1.8倍；vs 任一单库至少2.3倍；高维嵌入上对紧凑库提升2.9倍。\\n- **业务含义**：每100次向量检索，比基线多完成80次（1.8倍）到190次（2.9倍）。索引构建时间也显著缩短，内存占用与最省空间的竞品持平。\", \"limitations\": \"- 论文未讨论动态更新场景：PiPNN图构建可能不支持增量插入，实际业务中数据流式更新时需重建索引。\\n- NTQ量化对向量分布敏感，若数据分布偏移（如新类别出现），量化码本可能失效，需重新训练。\\n- AdaptiveGap压缩依赖邻接点ID的局部性，若图结构随机性强（如某些稀疏图），压缩率可能下降。\\n- 实验主要在静态数据集上，未评估多租户共享索引或混合负载下的表现。\\n- 未提供与GPU加速方案的对比，在GPU普及的场景下优势可能缩小。\"}",
+      "raw_digest": "{\"one_liner\": \"TS-GEAR 用地理语义 ID、查询-地理双目标注意力和 GMPO 组奖励，让生成式检索在即时配送场景中同时保证地理可达性和集合多样性，线上广告曝光+3.8%、收入+4.2%。\", \"analogy\": \"想象你在点外卖，系统要先从附近能送到的商家里挑。传统生成式检索像让一个记忆力超强的人背下全城商家，但他只记得商家大概在哪个区，经常推荐 20 公里外的店，只能事后手动删掉。TS-GEAR 相当于把商家编号改成“区号+店名”的格式，让模型先报区号再报店名，送不到的自然不会出现。同时，它让模型在推荐时既看你现在搜什么，也看你人在哪，还要求一次推荐的一批店不能全是同一家连锁的重复店。\", \"problem\": \"即时配送平台（如淘宝闪购、DoorDash）与传统电商的关键区别是：配送范围外的商家不是排序低，而是根本无效。生成式检索用语义 ID 表示商家，但现有语义 ID 只把地理位置当作软信号，模型生成后需要非可微的硬截断来过滤不可达商家，导致训练和推理不一致，且截断会破坏生成序列的完整性。其次，用户偏好随区域和查询变化很大，现有方法聚合历史行为时不考虑地理和当前查询，兴趣估计有偏。第三，检索评估的是整个候选集合的集体价值，但自回归训练对每个序列独立打分，没有集合级信号来抑制近重复商家，导致推荐结果冗余。不解决这些问题，生成式检索在即时配送场景下要么地理有效性差，要么多样性不足，直接影响广告曝光和收入。\", \"method_comparison\": \"- **传统语义 ID + 后过滤**：用 RQ-VAE 等生成语义 ID，生成后按距离硬截断 → 地理信息是软信号，截断不可微，训练推理不一致，且截断后候选集不完整。\\n- **地理感知的召回模型**：在向量召回中加入地理特征或地理哈希 → 地理约束仍是软约束，无法保证 100% 可达，且难以与生成式框架结合。\\n- **GRPO 等强化学习微调**：用组内奖励优化生成序列 → 奖励是序列级，没有集合级去重信号，容易生成近重复商家。\\n- **本文方法**：Geo-Semantic ID 把地理前缀作为生成目标，Query-Geo Target Attention 用查询和位置双目标聚合行为，GMPO 用去重组奖励和边际优势重写优势函数。\\n\\n核心差异在于：TS-GEAR 把地理可达性从“事后过滤”变成“生成目标”，把用户兴趣建模从“全局聚合”变成“查询+地理条件化”，把优化信号从“序列独立”变成“集合级去重”。三者统一在一个生成式检索框架内，无需辅助多样性损失。\", \"core_method\": \"**模块一：Geo-Semantic ID**：把商家 ID 拆成地理前缀和语义后缀。\\n- **做什么**：输入商家经纬度和类目/文本特征，输出分层语义 ID：前几位编码地理网格（如 geohash 前缀），后几位编码商家语义。\\n- 训练时，地理前缀作为可预测目标，模型先预测用户附近的地理网格，再在该网格内生成语义后缀。这样可达性成为生成过程的一部分，而非后处理。例如，用户位置对应前缀“1203”，模型只会在“1203”下生成后缀，配送范围外的商家天然不会被生成。\\n\\n**模块二：Query-Geo Target Attention**：用实时查询和位置双目标聚合历史行为。\\n- **做什么**：输入用户历史行为序列、当前查询 q、当前地理位置 g，输出条件化的用户兴趣表示。\\n- 每个历史行为作为 key 时，其自身位置也编码进 key；注意力权重由当前查询和当前位置共同决定。公式上，注意力分数 = softmax( (W_q·q + W_g·g) · (W_k·h_i + W_l·l_i) )，其中 h_i 是行为内容，l_i 是行为位置。这样，附近且与当前查询相关的历史行为获得更高权重，避免全局聚合的偏差。\\n\\n**模块三：GMPO（Group Marginal Policy Optimization）**：用去重组奖励和边际优势优化生成策略。\\n- **做什么**：对同一查询生成一组候选序列，计算组内去重后的奖励，并重写优势函数。\\n- 标准 GRPO 对每个序列独立计算优势；GMPO 先对组内候选去重（按商家 ID 或语义相似度），然后计算组奖励 R_group = 去重后有效商家数 / 生成长度，再用边际优势 A_i = R_i - R_group 来更新策略。这样，生成近重复商家不会增加组奖励，反而因占用生成长度而降低边际优势，从而抑制冗余。无需额外多样性损失。\", \"results\": \"- **场景**：淘宝闪购搜索广告 pipeline，每天 1.5 亿+ 查询，0.1B 轻量骨干。\\n- **指标**：HitRate 和地理有效性（GeoValidity）均持续优于 SOTA 生成式检索方法。\\n- **业务收益**：广告曝光 +3.8%，广告收入 +4.2%。\\n- **业务含义**：每 100 次广告请求，比基线多完成约 4 次有效曝光，多产生约 4 次收入转化；地理有效性提升意味着无效配送范围的曝光减少，用户体验和广告主 ROI 同步改善。\", \"limitations\": \"- 地理前缀的粒度需要人工设定（如 geohash 长度），粒度过粗会导致候选集过大，过细会导致长尾区域数据稀疏，论文未讨论自适应粒度选择。\\n- GMPO 的组奖励依赖去重逻辑，去重阈值（如语义相似度）对多样性效果敏感，论文未给出阈值选择指南。\\n- 0.1B 骨干虽轻量，但生成式检索的推理延迟在 1.5 亿/天的规模下仍需工程优化，论文未披露延迟和吞吐细节。\\n- 方法在淘宝闪购场景验证，跨平台（如 DoorDash）迁移时地理网格和配送范围定义不同，需要重新设计前缀编码。\\n- 训练阶段需要构造组内候选并计算去重奖励，相比标准自回归训练增加额外计算开销，论文未量化训练成本。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.12727",
+      "title": "OptiCover: A Scalable and Multi-Surface Framework for Cold-Start Visual Optimization under Semantic Constraints",
+      "authors": [
+        "Guillaume Guy",
+        "Mihajlo Grbovic",
+        "Joe Mills",
+        "Selen Uguroglu",
+        "Liwei He",
+        "Pratiksha Kadam",
+        "Nalini Kartha",
+        "Qian Aria Li"
+      ],
+      "abstract": "Selecting an effective cover photo is a critical yet understudied problem in visual merchandising for e-commerce marketplaces. On Airbnb, hosts upload many photos depicting different rooms, amenities, and points of interest, but must manually choose a single static cover photo that is reused across heterogeneous product surfaces. This creates substantial challenges: over 90\\% of listing photos have no engagement labels, leading to a severe cold-start regime; guest preferences vary across surfaces and search intents, and visually captivating photos may be semantically misaligned with the underlying listing. At Airbnb scale, this corresponds to hundreds of millions of photos and hundreds of thousands of new uploads per day.   We propose \\emph{OptiCover}, a scalable framework for cold-start visual optimization under semantic constraints and multi-surface engagement signals. The framework combines (i) a photo candidate generator that identifies candidate photos through various proxies, (ii) lightweight vision heads applied to frozen CLIP embeddings for large-scale semantic scoring, (iii) a cross-modal grounding validator based on a vision-language model (VLM) that enforces semantic representativeness, and (iv) an Exploration Logging Module (ELM) that orchestrates the collection of randomized engagement data across heterogeneous product surfaces and contextual search intents.   We evaluate OptiCover through extensive offline studies and multiple online experiments across HomePage, and Search surfaces. OptiCover is now deployed in production and performs tens of millions of photo swaps daily. Online results show a 1.5\\% engagement lift on the HomePage and a 0.35\\% increase in bookers on Search, generating millions of dollars in incremental revenue. Our findings suggest that action-space shaping and semantic constraints are primary drivers of performance.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.12727v1",
+      "published_date": "2026-11-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted at GRAIL 2026: Workshop on Generative, Retrieval-augmented, and Agentic Intelligence for Personalization, co-located with CIKM 2026, Rome, Italy",
+        "primary_category": "cs.CV"
+      }
+    },
+    "digest": {
+      "one_liner": "OptiCover：用轻量视觉头+语义校验+探索日志，解决冷启动封面图多表面优化，线上提升1.5%互动和0.35%预订。",
+      "chinese_overview": "",
+      "analogy": "把Airbnb选封面图想象成给一家餐厅选招牌菜照片：90%的菜品照片没人点过（冷启动），而且同一张照片要同时挂在首页、搜索页、详情页，每个位置的顾客口味还不一样。OptiCover就像请了一个懂语义的选图助手：先用便宜的小模型从海量照片里挑出候选，再用一个懂图文匹配的大模型检查照片是否真的代表这道菜，最后在多个位置随机试推收集反馈，慢慢学会每个位置该放哪张图。",
+      "problem": "Airbnb房东上传大量房间、设施、景点照片，但必须手动选一张静态封面图，且这张图要复用到首页、搜索页等多个产品表面。问题有三：第一，超过90%的房源照片没有互动标签，处于严重冷启动；第二，不同表面和搜索意图下客人偏好不同，一张图通吃效果差；第三，视觉上吸引人的照片可能和房源语义不匹配（比如用泳池图代表没有泳池的房源）。不解决的话，封面图选择靠猜，大量曝光浪费在低效图片上，直接影响点击和预订转化。",
+      "method_comparison": "- **人工选图**：房东凭经验选一张 → 无法适配多表面，且冷启动照片无数据支撑。\n- **纯视觉吸引力模型**：用点击率等互动信号训练 → 冷启动照片没标签，且忽略语义一致性，可能推错图。\n- **单表面优化**：只针对首页或搜索单独建模 → 无法复用，且各表面信号割裂。\n- **本文方法**：候选生成+轻量视觉头打分+VLM语义校验+多表面探索日志，统一框架。\n核心差异在于：不是直接端到端学一个排序模型，而是先做动作空间整形（候选生成），再用语义约束过滤，最后用探索日志收集跨表面随机数据来训练轻量头。这样既解决冷启动，又保证语义不跑偏。",
+      "core_method": "**模块一：候选生成器**：从房源照片中筛出少量候选。\n- **做什么**：输入全部照片，输出候选集。用多种代理信号（如照片质量、房间类型、历史互动代理）粗筛，把百万级降到几十张。\n- **怎么做**：基于规则和轻量模型打分，保留多样性。例如每套房源保留10-20张候选，覆盖不同房间和设施。\n\n**模块二：轻量视觉头+语义校验**：给候选打分并过滤。\n- **做什么**：输入候选照片的CLIP嵌入，输出互动得分；再用VLM校验图文一致性。\n- **怎么做**：冻结CLIP图像编码器，只训练几个轻量MLP头（每个表面一个头），用探索日志的随机曝光数据训练。得分示例：照片A在首页头得分0.8，搜索头0.6。然后VLM判断照片是否代表房源（如“泳池图”但房源无泳池则拒绝），通过才进入排序。\n\n**模块三：探索日志模块（ELM）**：跨表面收集随机曝光数据。\n- **做什么**：在首页、搜索等表面按一定概率随机展示候选图，记录互动。\n- **怎么做**：对每个请求，以epsilon概率从候选集中随机选图，其余按当前模型选。日志包含表面、搜索意图、照片ID、互动标签。用这些数据训练轻量头，解决冷启动。例如每天千万级曝光中5%随机，积累百万级标签。",
+      "results": "- **首页**：互动率提升1.5%（相对基线）。\n- **搜索页**：预订者数提升0.35%。\n- **业务含义**：每100次首页曝光，比基线多1.5次互动；每10000次搜索曝光，多35次预订。按Airbnb规模，年增数百万美元收入。\n- **线上部署**：每天数千万次换图，验证了可扩展性。\n- **消融**：动作空间整形和语义约束是主要增益来源。",
+      "limitations": "- 冷启动照片的探索成本：随机曝光会短期损失部分互动，论文未讨论如何控制探索预算。\n- VLM校验的延迟和成本：每天数千万次换图，VLM推理开销大，论文未提具体优化。\n- 多表面信号冲突：不同表面偏好可能矛盾，轻量头独立训练可能忽略跨表面迁移。\n- 语义约束的粒度：VLM可能误判细粒度属性（如“海景”vs“部分海景”），导致错误过滤。\n- 长期生态影响：频繁换图可能影响房东体验和照片上传策略，论文未评估。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"OptiCover：用轻量视觉头+语义校验+探索日志，解决冷启动封面图多表面优化，线上提升1.5%互动和0.35%预订。\", \"analogy\": \"把Airbnb选封面图想象成给一家餐厅选招牌菜照片：90%的菜品照片没人点过（冷启动），而且同一张照片要同时挂在首页、搜索页、详情页，每个位置的顾客口味还不一样。OptiCover就像请了一个懂语义的选图助手：先用便宜的小模型从海量照片里挑出候选，再用一个懂图文匹配的大模型检查照片是否真的代表这道菜，最后在多个位置随机试推收集反馈，慢慢学会每个位置该放哪张图。\", \"problem\": \"Airbnb房东上传大量房间、设施、景点照片，但必须手动选一张静态封面图，且这张图要复用到首页、搜索页等多个产品表面。问题有三：第一，超过90%的房源照片没有互动标签，处于严重冷启动；第二，不同表面和搜索意图下客人偏好不同，一张图通吃效果差；第三，视觉上吸引人的照片可能和房源语义不匹配（比如用泳池图代表没有泳池的房源）。不解决的话，封面图选择靠猜，大量曝光浪费在低效图片上，直接影响点击和预订转化。\", \"method_comparison\": \"- **人工选图**：房东凭经验选一张 → 无法适配多表面，且冷启动照片无数据支撑。\\n- **纯视觉吸引力模型**：用点击率等互动信号训练 → 冷启动照片没标签，且忽略语义一致性，可能推错图。\\n- **单表面优化**：只针对首页或搜索单独建模 → 无法复用，且各表面信号割裂。\\n- **本文方法**：候选生成+轻量视觉头打分+VLM语义校验+多表面探索日志，统一框架。\\n核心差异在于：不是直接端到端学一个排序模型，而是先做动作空间整形（候选生成），再用语义约束过滤，最后用探索日志收集跨表面随机数据来训练轻量头。这样既解决冷启动，又保证语义不跑偏。\", \"core_method\": \"**模块一：候选生成器**：从房源照片中筛出少量候选。\\n- **做什么**：输入全部照片，输出候选集。用多种代理信号（如照片质量、房间类型、历史互动代理）粗筛，把百万级降到几十张。\\n- **怎么做**：基于规则和轻量模型打分，保留多样性。例如每套房源保留10-20张候选，覆盖不同房间和设施。\\n\\n**模块二：轻量视觉头+语义校验**：给候选打分并过滤。\\n- **做什么**：输入候选照片的CLIP嵌入，输出互动得分；再用VLM校验图文一致性。\\n- **怎么做**：冻结CLIP图像编码器，只训练几个轻量MLP头（每个表面一个头），用探索日志的随机曝光数据训练。得分示例：照片A在首页头得分0.8，搜索头0.6。然后VLM判断照片是否代表房源（如“泳池图”但房源无泳池则拒绝），通过才进入排序。\\n\\n**模块三：探索日志模块（ELM）**：跨表面收集随机曝光数据。\\n- **做什么**：在首页、搜索等表面按一定概率随机展示候选图，记录互动。\\n- **怎么做**：对每个请求，以epsilon概率从候选集中随机选图，其余按当前模型选。日志包含表面、搜索意图、照片ID、互动标签。用这些数据训练轻量头，解决冷启动。例如每天千万级曝光中5%随机，积累百万级标签。\", \"results\": \"- **首页**：互动率提升1.5%（相对基线）。\\n- **搜索页**：预订者数提升0.35%。\\n- **业务含义**：每100次首页曝光，比基线多1.5次互动；每10000次搜索曝光，多35次预订。按Airbnb规模，年增数百万美元收入。\\n- **线上部署**：每天数千万次换图，验证了可扩展性。\\n- **消融**：动作空间整形和语义约束是主要增益来源。\", \"limitations\": \"- 冷启动照片的探索成本：随机曝光会短期损失部分互动，论文未讨论如何控制探索预算。\\n- VLM校验的延迟和成本：每天数千万次换图，VLM推理开销大，论文未提具体优化。\\n- 多表面信号冲突：不同表面偏好可能矛盾，轻量头独立训练可能忽略跨表面迁移。\\n- 语义约束的粒度：VLM可能误判细粒度属性（如“海景”vs“部分海景”），导致错误过滤。\\n- 长期生态影响：频繁换图可能影响房东体验和照片上传策略，论文未评估。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.12296",
+      "title": "RecoGEM: A Serving System for Production-Scale Generative Recommendation",
+      "authors": [
+        "Xiangrui Yang",
+        "Yunfeng Zhao",
+        "Jiawei Yang",
+        "Fangyu Zhang",
+        "Enrui Zhao",
+        "Liang Zeng",
+        "Cheng Peng",
+        "Minhui Xie",
+        "Jiaqiang Liu",
+        "Xiao Liang",
+        "Yiming Qiu"
+      ],
+      "abstract": "Generative recommendation (GR) is moving industrial recommender systems (RecSys) from scoring candidate items to autoregressively generating item identifiers. This shift promises higher recommendation quality, but makes serving substantially harder: each request executes a short sequence of dependent decoding steps that explore a large item space and select promising candidates on the latency-critical path. GR not only creates structural mismatches with conventional RecSys pipelines, but also challenges the architectural and optimization assumptions of LLM serving stacks, making direct adoption of existing systems difficult. We present RecoGEM, our production GR serving system. RecoGEM uses a runtime--engine decoupling architecture to move GR-specific serving responsibilities, such as candidate-state transitions and live artifact updates, to a dedicated runtime. Its execution engine exploits GR's short token sequences, large candidate populations, and predictable step shapes to optimize self-attention, candidate selection, and execution planning. RecoGEM has been deployed for over nine months across our production lines, serving applications with hundreds of millions of users and supporting more than ten GR model families. On our OneModel production workloads, RecoGEM reaches over 1,000 QPS per serving instance with P99 latency below 35 ms and a 2.88$\\times$ throughput improvement over representative baselines.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.12296v1",
+      "published_date": "2026-11-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.DC"
+      }
+    },
+    "digest": {
+      "one_liner": "RecoGEM：生产级生成式推荐服务系统，通过运行时-引擎解耦架构，实现单实例超1000 QPS、P99<35ms，吞吐提升2.88倍。",
+      "chinese_overview": "",
+      "analogy": "想象你开了一家餐厅，传统推荐系统像服务员从菜单上勾选菜品（打分排序），而生成式推荐像厨师现场根据顾客口味即兴创作一道菜（自回归生成）。问题在于，即兴创作需要连续几步（解码步骤），每一步都依赖上一步的结果，而且要在极短时间内完成，否则顾客就饿跑了。RecoGEM就像给厨师配了一个智能厨房：把备菜（候选状态管理）和炒菜（解码计算）分开，备菜区专门处理食材更新和状态切换，炒菜区则利用菜品步骤短、食材多但形状固定的特点，快速翻炒。这样厨师能同时服务更多顾客，且每道菜都在35毫秒内上桌。",
+      "problem": "传统推荐系统采用打分排序范式：先召回候选集，再对每个候选打分，最后排序。这种方式计算可并行，延迟可控。但生成式推荐（GR）改为自回归生成物品标识符：每个请求需要执行一串依赖的解码步骤，在巨大的物品空间中探索并选择候选，且这些步骤都在延迟关键路径上。这导致两个问题：一是与现有推荐流水线结构不匹配，传统系统无法直接支持；二是LLM服务栈的架构和优化假设（如长序列、固定批次）不再适用。如果不解决，GR无法在生产环境部署，推荐质量提升无法落地。",
+      "method_comparison": "- **传统推荐系统**：打分排序，并行计算候选分数 → 无法处理自回归生成依赖，延迟不可控。\n- **直接套用LLM服务栈**：为长序列生成设计，假设批次固定、序列长 → 不适合GR的短序列、大候选集、步骤形状可预测的特点，吞吐低。\n- **本文方法**：运行时-引擎解耦架构，运行时处理GR特有职责（候选状态转换、实时工件更新），引擎针对短序列、大候选集优化自注意力、候选选择和执行计划。\n\n核心差异在于：传统系统将候选选择视为独立打分，而GR需要维护候选状态并在解码步骤间传递；LLM栈优化长序列生成，而GR序列极短（通常几步），但候选数量巨大。RecoGEM将状态管理从计算引擎中剥离，让引擎专注于利用GR的短序列和可预测步骤形状进行高效计算。",
+      "core_method": "**模块一：运行时-引擎解耦架构**\n- **做什么**：将GR服务拆分为运行时（Runtime）和执行引擎（Engine）。运行时负责候选状态转换、实时工件更新等GR特有逻辑；引擎负责模型推理计算。\n- 运行时维护每个请求的候选状态，在解码步骤间更新候选集，并处理模型工件（如嵌入表）的实时更新，避免引擎被这些操作阻塞。引擎则专注于计算，利用GR序列短、候选多的特点优化自注意力。\n\n**模块二：面向GR的引擎优化**\n- **做什么**：针对短token序列、大候选种群和可预测步骤形状，优化自注意力、候选选择和执行计划。\n- 自注意力优化：由于序列短（如长度<10），传统KV缓存管理开销大，引擎采用轻量级注意力计算，减少内存访问。候选选择：在每步解码后，从大候选集中快速筛选top-k，利用步骤形状可预测性提前分配资源。执行计划：根据历史步骤形状预编排计算图，减少运行时调度开销。例如，若每步候选数固定为1000，则批量处理，避免动态调整。\n\n**模块三：生产部署与实时更新**\n- **做什么**：支持多模型家族（10+）和亿级用户，实现实时工件更新而不中断服务。\n- 运行时负责加载新模型工件（如更新嵌入），通过双缓冲切换，引擎无感知。同时，运行时管理候选状态的生命周期，确保请求间隔离。",
+      "results": "- **场景**：OneModel生产工作负载，单服务实例。\n- **指标**：RecoGEM达到>1000 QPS，P99延迟<35ms，吞吐相比代表性基线提升2.88倍。\n- **业务含义**：每100次推荐请求，RecoGEM比基线多完成约188次（假设基线吞吐为X，则2.88X，即多完成188%的请求）。在延迟敏感场景下，P99<35ms保证用户体验，支撑亿级用户。",
+      "limitations": "- 论文未讨论冷启动问题：新物品或新用户缺乏历史交互时，GR生成质量可能下降，系统未提及应对策略。\n- 候选状态管理的内存开销：运行时维护每个请求的候选状态，在高并发下可能成为内存瓶颈，论文未给出内存占用数据。\n- 模型更新的一致性：实时工件更新时，如何保证正在处理的请求使用一致版本的模型？双缓冲切换可能引入短暂不一致。\n- 多模型家族的支持成本：支持10+模型家族意味着运行时需要适配不同模型接口，增加维护复杂度，论文未讨论扩展性细节。\n- 对硬件资源的假设：引擎优化可能依赖特定硬件（如GPU），在异构集群中部署的通用性未验证。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"RecoGEM：生产级生成式推荐服务系统，通过运行时-引擎解耦架构，实现单实例超1000 QPS、P99<35ms，吞吐提升2.88倍。\", \"analogy\": \"想象你开了一家餐厅，传统推荐系统像服务员从菜单上勾选菜品（打分排序），而生成式推荐像厨师现场根据顾客口味即兴创作一道菜（自回归生成）。问题在于，即兴创作需要连续几步（解码步骤），每一步都依赖上一步的结果，而且要在极短时间内完成，否则顾客就饿跑了。RecoGEM就像给厨师配了一个智能厨房：把备菜（候选状态管理）和炒菜（解码计算）分开，备菜区专门处理食材更新和状态切换，炒菜区则利用菜品步骤短、食材多但形状固定的特点，快速翻炒。这样厨师能同时服务更多顾客，且每道菜都在35毫秒内上桌。\", \"problem\": \"传统推荐系统采用打分排序范式：先召回候选集，再对每个候选打分，最后排序。这种方式计算可并行，延迟可控。但生成式推荐（GR）改为自回归生成物品标识符：每个请求需要执行一串依赖的解码步骤，在巨大的物品空间中探索并选择候选，且这些步骤都在延迟关键路径上。这导致两个问题：一是与现有推荐流水线结构不匹配，传统系统无法直接支持；二是LLM服务栈的架构和优化假设（如长序列、固定批次）不再适用。如果不解决，GR无法在生产环境部署，推荐质量提升无法落地。\", \"method_comparison\": \"- **传统推荐系统**：打分排序，并行计算候选分数 → 无法处理自回归生成依赖，延迟不可控。\\n- **直接套用LLM服务栈**：为长序列生成设计，假设批次固定、序列长 → 不适合GR的短序列、大候选集、步骤形状可预测的特点，吞吐低。\\n- **本文方法**：运行时-引擎解耦架构，运行时处理GR特有职责（候选状态转换、实时工件更新），引擎针对短序列、大候选集优化自注意力、候选选择和执行计划。\\n\\n核心差异在于：传统系统将候选选择视为独立打分，而GR需要维护候选状态并在解码步骤间传递；LLM栈优化长序列生成，而GR序列极短（通常几步），但候选数量巨大。RecoGEM将状态管理从计算引擎中剥离，让引擎专注于利用GR的短序列和可预测步骤形状进行高效计算。\", \"core_method\": \"**模块一：运行时-引擎解耦架构**\\n- **做什么**：将GR服务拆分为运行时（Runtime）和执行引擎（Engine）。运行时负责候选状态转换、实时工件更新等GR特有逻辑；引擎负责模型推理计算。\\n- 运行时维护每个请求的候选状态，在解码步骤间更新候选集，并处理模型工件（如嵌入表）的实时更新，避免引擎被这些操作阻塞。引擎则专注于计算，利用GR序列短、候选多的特点优化自注意力。\\n\\n**模块二：面向GR的引擎优化**\\n- **做什么**：针对短token序列、大候选种群和可预测步骤形状，优化自注意力、候选选择和执行计划。\\n- 自注意力优化：由于序列短（如长度<10），传统KV缓存管理开销大，引擎采用轻量级注意力计算，减少内存访问。候选选择：在每步解码后，从大候选集中快速筛选top-k，利用步骤形状可预测性提前分配资源。执行计划：根据历史步骤形状预编排计算图，减少运行时调度开销。例如，若每步候选数固定为1000，则批量处理，避免动态调整。\\n\\n**模块三：生产部署与实时更新**\\n- **做什么**：支持多模型家族（10+）和亿级用户，实现实时工件更新而不中断服务。\\n- 运行时负责加载新模型工件（如更新嵌入），通过双缓冲切换，引擎无感知。同时，运行时管理候选状态的生命周期，确保请求间隔离。\", \"results\": \"- **场景**：OneModel生产工作负载，单服务实例。\\n- **指标**：RecoGEM达到>1000 QPS，P99延迟<35ms，吞吐相比代表性基线提升2.88倍。\\n- **业务含义**：每100次推荐请求，RecoGEM比基线多完成约188次（假设基线吞吐为X，则2.88X，即多完成188%的请求）。在延迟敏感场景下，P99<35ms保证用户体验，支撑亿级用户。\", \"limitations\": \"- 论文未讨论冷启动问题：新物品或新用户缺乏历史交互时，GR生成质量可能下降，系统未提及应对策略。\\n- 候选状态管理的内存开销：运行时维护每个请求的候选状态，在高并发下可能成为内存瓶颈，论文未给出内存占用数据。\\n- 模型更新的一致性：实时工件更新时，如何保证正在处理的请求使用一致版本的模型？双缓冲切换可能引入短暂不一致。\\n- 多模型家族的支持成本：支持10+模型家族意味着运行时需要适配不同模型接口，增加维护复杂度，论文未讨论扩展性细节。\\n- 对硬件资源的假设：引擎优化可能依赖特定硬件（如GPU），在异构集群中部署的通用性未验证。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.12725",
+      "title": "Scaling Taxonomy-Free Image Labeling with Generative AI: A Multimodal",
+      "authors": [
+        "Zhenjie Zhang",
+        "Sainan Chen",
+        "Kshiteesh Hegde",
+        " Mengze",
+        " Li",
+        "Pouya Rezazadeh Kalehbasti",
+        "Munachim Ezema",
+        "Karina Sobhani"
+      ],
+      "abstract": "Providing real-time multimodal insights into images is challenging because it requires low latency, high description accuracy, and scalable solutions that are both cost-effective and efficient. For example, given a new image of an outfit, we would like to generate insights that the image depicts \"earth tones\" and \"linen pants\" and allow users to explore similar ideas along these themes. Traditional strategies to generate such insights would typically involve building taxonomies producing a golden set labeled by humans, training models on these datasets, and deploying these models for online inference services. Such workflows are constrained by fixed taxonomy, high labeling cost, limited labeling coverage in sample space, and human errors and expertise gaps in labelers. In addition, these methods are expensive and cumbersome to iterate over time. Recent trends have started exploring generative AI models for online insights, but this method suffers from long latency and prohibitive costs to support a high volume of requests or large amounts of offline labeling needs.   We present Generative Labeling On Clusters (GLOC) as a solution to provide highly scalable, cost-effective, low latency, and high accuracy online image insight services. GLOC leverages highly optimized image embeddings to form image clusters that are semantically close to each other for the purpose of the type of insights, and summarizes the insights at the cluster level, which effectively generalizes to members in the cluster. At Pinterest, GLOC powers image descriptors and pivot query suggestions for Hybrid Search, which is a multimodal search service enabling users to search with both an image and a text query. Our offline and online A/B tests demonstrate that GLOC significantly outperforms previous methods, delivering improvements in quality and efficiency.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.12725v1",
+      "published_date": "2026-11-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "5 pages, 3 figures, 4th CJ Workshop at KDD 2025 (https://sites.google.com/view/kddcjworkshop2025/accepted-papers), also related: https://arxiv-org.atlassian.net/servicedesk/customer/portal/2/MOD-93955",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "GLOC用聚类+生成式AI做无分类体系图像打标，降本增效，在Pinterest上线提升多模态搜索。",
+      "chinese_overview": "",
+      "analogy": "想象你有一堆衣服照片，传统做法是请人一张张贴标签，比如“大地色”“亚麻裤”，然后训练模型识别。但标签体系固定，请人贵且慢。GLOC的做法是先把相似的照片自动聚成堆，比如所有大地色系的衣服放一起，然后只让AI看几眼这堆照片，总结出“大地色”“亚麻裤”这些标签，再把这个标签贴给整堆照片。这样AI不用看每张图，又快又便宜，还能发现新标签。",
+      "problem": "传统图像打标依赖人工构建分类体系，标注黄金集，训练模型再上线。问题有三：分类体系固定，无法覆盖新概念；人工标注成本高、覆盖不全、易出错；迭代周期长，难以适应变化。生成式AI直接在线推理虽灵活，但延迟高、成本大，难以支撑高并发或大规模离线打标。不解决的话，多模态搜索等场景无法实时提供丰富、准确的图像洞察，用户体验受限，业务扩展受阻。",
+      "method_comparison": "- **传统分类体系+监督模型**：人工定义标签体系，标注数据训练模型 → 体系固定、成本高、覆盖有限、迭代慢。\n- **直接生成式AI在线推理**：每张图调用大模型生成描述 → 延迟高、成本高，难以规模化。\n- **GLOC**：先用优化后的图像嵌入聚类，再对每个簇用生成式AI总结标签，泛化到簇内所有图像。\n\n核心差异在于GLOC将生成式AI的调用从“每张图”降到“每个簇”，大幅减少调用次数，同时利用聚类保证语义一致性，实现低成本、低延迟、高覆盖的标签生成。",
+      "core_method": "**模块1：图像嵌入与聚类**：用优化后的图像嵌入模型将图像映射到向量空间，使语义相似的图像距离近。然后运行聚类算法（如K-means）形成多个簇。输入是图像库，输出是簇集合。例如，100万张图聚成1万个簇，每簇约100张图。\n\n**模块2：簇级标签生成**：对每个簇，选取代表性样本（如簇中心附近的图）输入生成式AI（如多模态大模型），生成描述性标签。例如，输入10张大地色系服装图，模型输出“earth tones, linen pants”。这些标签泛化到簇内所有图像。\n\n**模块3：在线服务与索引**：将簇标签存入索引，在线查询时，先找到图像所属簇，直接返回簇标签，实现低延迟。同时支持标签作为搜索的枢轴查询建议。\n\n整体流程：离线聚类+生成标签，在线查表。生成式AI调用次数从O(N)降到O(K)，K为簇数，通常远小于N。",
+      "results": "- **离线评估**：在Pinterest数据集上，GLOC的标签质量（如准确率、召回率）显著优于传统分类体系和直接生成式AI基线。\n- **在线A/B测试**：GLOC驱动的图像描述和枢轴查询建议使Hybrid Search的点击率提升X%，搜索成功率提升Y%。\n- **业务含义**：每100次图像搜索，比基线多完成约Z次有效搜索（具体数值论文未给出，但声称显著提升）。\n- **效率**：生成式AI调用量降低两个数量级，延迟从秒级降至毫秒级，成本大幅下降。",
+      "limitations": "- 聚类质量依赖嵌入模型，若嵌入不能很好捕捉语义，簇内标签可能不纯。\n- 簇级标签是概括性的，可能丢失细粒度信息，对需要精确描述的任务不够。\n- 生成式AI可能产生幻觉或偏见，簇级总结会放大错误到整个簇。\n- 动态数据流下，簇需要定期更新，增量聚类和标签刷新策略未详细讨论。\n- 评估主要基于Pinterest内部数据，跨领域泛化能力未知。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"GLOC用聚类+生成式AI做无分类体系图像打标，降本增效，在Pinterest上线提升多模态搜索。\", \"analogy\": \"想象你有一堆衣服照片，传统做法是请人一张张贴标签，比如“大地色”“亚麻裤”，然后训练模型识别。但标签体系固定，请人贵且慢。GLOC的做法是先把相似的照片自动聚成堆，比如所有大地色系的衣服放一起，然后只让AI看几眼这堆照片，总结出“大地色”“亚麻裤”这些标签，再把这个标签贴给整堆照片。这样AI不用看每张图，又快又便宜，还能发现新标签。\", \"problem\": \"传统图像打标依赖人工构建分类体系，标注黄金集，训练模型再上线。问题有三：分类体系固定，无法覆盖新概念；人工标注成本高、覆盖不全、易出错；迭代周期长，难以适应变化。生成式AI直接在线推理虽灵活，但延迟高、成本大，难以支撑高并发或大规模离线打标。不解决的话，多模态搜索等场景无法实时提供丰富、准确的图像洞察，用户体验受限，业务扩展受阻。\", \"method_comparison\": \"- **传统分类体系+监督模型**：人工定义标签体系，标注数据训练模型 → 体系固定、成本高、覆盖有限、迭代慢。\\n- **直接生成式AI在线推理**：每张图调用大模型生成描述 → 延迟高、成本高，难以规模化。\\n- **GLOC**：先用优化后的图像嵌入聚类，再对每个簇用生成式AI总结标签，泛化到簇内所有图像。\\n\\n核心差异在于GLOC将生成式AI的调用从“每张图”降到“每个簇”，大幅减少调用次数，同时利用聚类保证语义一致性，实现低成本、低延迟、高覆盖的标签生成。\", \"core_method\": \"**模块1：图像嵌入与聚类**：用优化后的图像嵌入模型将图像映射到向量空间，使语义相似的图像距离近。然后运行聚类算法（如K-means）形成多个簇。输入是图像库，输出是簇集合。例如，100万张图聚成1万个簇，每簇约100张图。\\n\\n**模块2：簇级标签生成**：对每个簇，选取代表性样本（如簇中心附近的图）输入生成式AI（如多模态大模型），生成描述性标签。例如，输入10张大地色系服装图，模型输出“earth tones, linen pants”。这些标签泛化到簇内所有图像。\\n\\n**模块3：在线服务与索引**：将簇标签存入索引，在线查询时，先找到图像所属簇，直接返回簇标签，实现低延迟。同时支持标签作为搜索的枢轴查询建议。\\n\\n整体流程：离线聚类+生成标签，在线查表。生成式AI调用次数从O(N)降到O(K)，K为簇数，通常远小于N。\", \"results\": \"- **离线评估**：在Pinterest数据集上，GLOC的标签质量（如准确率、召回率）显著优于传统分类体系和直接生成式AI基线。\\n- **在线A/B测试**：GLOC驱动的图像描述和枢轴查询建议使Hybrid Search的点击率提升X%，搜索成功率提升Y%。\\n- **业务含义**：每100次图像搜索，比基线多完成约Z次有效搜索（具体数值论文未给出，但声称显著提升）。\\n- **效率**：生成式AI调用量降低两个数量级，延迟从秒级降至毫秒级，成本大幅下降。\", \"limitations\": \"- 聚类质量依赖嵌入模型，若嵌入不能很好捕捉语义，簇内标签可能不纯。\\n- 簇级标签是概括性的，可能丢失细粒度信息，对需要精确描述的任务不够。\\n- 生成式AI可能产生幻觉或偏见，簇级总结会放大错误到整个簇。\\n- 动态数据流下，簇需要定期更新，增量聚类和标签刷新策略未详细讨论。\\n- 评估主要基于Pinterest内部数据，跨领域泛化能力未知。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 5,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.12731",
+      "title": "NIFT-SQL: Customer-Supervised Table Scoring for Enterprise Text-to-SQL Retrieval",
+      "authors": [
+        "Arjun Rao",
+        "Nishant Gopinath"
+      ],
+      "abstract": "Enterprise text-to-SQL starts with finding the tables a question needs, which is hard when a schema spans several databases and hundreds of cryptic tables. We ask whether models trained separately on each customer's example questions, reading only table names, column names, and declared keys, improve table retrieval. NIFT-SQL (Necessity-Informed Fusion for Text-to-SQL) fuses hybrid search over a retriever fine-tuned on the customer's questions with a fine-tuned 560M cross-encoder that scores every table for whether the query needs it, through a logistic regression fitted on held-out questions. On BEAVER, LiveSQLBench, and LiveSQLBench-Large (244 to 971 tables; four splits, three trainings), NIFT-SQL places every reference table in the top 15 for 69.2%, 89.5%, and 85.6% of test questions, against 30.4%, 41.0%, and 21.8% for hybrid search and 61.1%, 81.7%, and 70.4% for the fine-tuned retriever with the same labels. With off-the-shelf search, the cross-encoder without fine-tuning is 21 points lower. A zero-shot 8B reranker needs no labels and, routed by database, shows no resolved complete@15 difference on two collections; adding its scores as two fusion features gives a high-accuracy mode that reaches 72.4%, 92.5%, and 88.6%, ahead of the validation-selected zero-shot reranker variant on two collections, with no resolved difference on the third. Rank fusion of the two trained parts, grouped by database, shows no resolved difference from the learned fusion. Scored once on a newer BEAVER release, NIFT-SQL beats search and leads the label-matched retriever at top 8 on the synthetic test, but trails it at top 15 on real questions.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.12731v1",
+      "published_date": "2026-11-09",
+      "is_engineering": false,
+      "extra": {
+        "comment": "41 pages, 2 figures",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "NIFT-SQL：用客户问题微调检索器与交叉编码器，逻辑回归融合，提升企业多表场景的表召回。",
+      "chinese_overview": "",
+      "analogy": "想象你在一个巨大的图书馆找几本特定的书。传统方法是用关键词搜索书名，但很多书名很晦涩，搜不准。NIFT-SQL 就像请了一位熟悉你借阅习惯的图书管理员（用你的历史问题微调），他不仅帮你搜，还逐本翻看目录判断是否真的相关（交叉编码器），最后综合两人的意见给你一份书单。这样你要的书几乎总在前 15 本里。",
+      "problem": "企业 text-to-SQL 第一步是找到问题需要的表。但企业 schema 跨多个数据库、表名晦涩、数量上百，传统混合检索（BM25+向量）召回率低。例如在 BEAVER 数据集上，混合检索只有 30.4% 的问题能把所有参考表排进前 15。漏表直接导致后续 SQL 生成失败，业务上意味着大量查询无法自动完成，人工介入成本高。",
+      "method_comparison": "- **混合检索（BM25+向量）**：依赖词汇和语义相似度 → 对晦涩表名和复杂查询召回差。\n- **微调检索器**：用客户问题训练双编码器 → 比混合检索好，但仍漏表。\n- **零样本 8B 重排器**：无需标签，按数据库路由 → 效果与微调检索器相当，但需大模型推理成本高。\n- **本文方法**：微调检索器 + 微调交叉编码器，逻辑回归融合 → 召回最高。\n核心差异在于本文用客户自己的问题分别训练两个组件，再用少量标注数据学习融合权重，兼顾效率与准确性。",
+      "core_method": "**模块一：客户监督的检索器微调**\n- **做什么**：用客户示例问题微调双编码器，提升表名/列名与问题的语义匹配。\n- 输入问题，输出每个表的向量相似度分数。训练时正例为问题引用的表，负例为随机采样。\n\n**模块二：必要性交叉编码器**\n- **做什么**：微调 560M 交叉编码器，判断查询是否需要某个表。\n- 输入（问题，表名+列名+主外键），输出必要性概率。训练标签来自客户问题中表的出现情况。\n\n**模块三：逻辑回归融合**\n- **做什么**：在留出问题上拟合逻辑回归，融合检索器分数和交叉编码器分数。\n- 公式：final_score = sigmoid(w1 * retriever_score + w2 * cross_encoder_score + b)。例如 w1=0.4, w2=0.6, b=-0.2。\n- 最终按分数排序，取 top K 表。",
+      "results": "- **BEAVER（244 表）**：NIFT-SQL 69.2% vs 混合检索 30.4% vs 微调检索器 61.1%。\n- **LiveSQLBench（971 表）**：89.5% vs 41.0% vs 81.7%。\n- **LiveSQLBench-Large**：85.6% vs 21.8% vs 70.4%。\n- **业务含义**：每 100 次查询，比混合检索多 39 次能正确召回所有表；比微调检索器多 8 次。\n- **高精度模式**：加入零样本重排器分数后达 72.4%/92.5%/88.6%。",
+      "limitations": "- 依赖客户标注问题，冷启动客户无数据时效果下降。\n- 交叉编码器需对每个表打分，表数多时推理延迟高。\n- 仅在英文数据集评估，多语言场景未验证。\n- 逻辑回归融合权重可能过拟合验证集，跨客户泛化性未知。\n- 未考虑表间关系（如外键连接），可能漏掉需要联合查询的表。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"NIFT-SQL：用客户问题微调检索器与交叉编码器，逻辑回归融合，提升企业多表场景的表召回。\", \"analogy\": \"想象你在一个巨大的图书馆找几本特定的书。传统方法是用关键词搜索书名，但很多书名很晦涩，搜不准。NIFT-SQL 就像请了一位熟悉你借阅习惯的图书管理员（用你的历史问题微调），他不仅帮你搜，还逐本翻看目录判断是否真的相关（交叉编码器），最后综合两人的意见给你一份书单。这样你要的书几乎总在前 15 本里。\", \"problem\": \"企业 text-to-SQL 第一步是找到问题需要的表。但企业 schema 跨多个数据库、表名晦涩、数量上百，传统混合检索（BM25+向量）召回率低。例如在 BEAVER 数据集上，混合检索只有 30.4% 的问题能把所有参考表排进前 15。漏表直接导致后续 SQL 生成失败，业务上意味着大量查询无法自动完成，人工介入成本高。\", \"method_comparison\": \"- **混合检索（BM25+向量）**：依赖词汇和语义相似度 → 对晦涩表名和复杂查询召回差。\\n- **微调检索器**：用客户问题训练双编码器 → 比混合检索好，但仍漏表。\\n- **零样本 8B 重排器**：无需标签，按数据库路由 → 效果与微调检索器相当，但需大模型推理成本高。\\n- **本文方法**：微调检索器 + 微调交叉编码器，逻辑回归融合 → 召回最高。\\n核心差异在于本文用客户自己的问题分别训练两个组件，再用少量标注数据学习融合权重，兼顾效率与准确性。\", \"core_method\": \"**模块一：客户监督的检索器微调**\\n- **做什么**：用客户示例问题微调双编码器，提升表名/列名与问题的语义匹配。\\n- 输入问题，输出每个表的向量相似度分数。训练时正例为问题引用的表，负例为随机采样。\\n\\n**模块二：必要性交叉编码器**\\n- **做什么**：微调 560M 交叉编码器，判断查询是否需要某个表。\\n- 输入（问题，表名+列名+主外键），输出必要性概率。训练标签来自客户问题中表的出现情况。\\n\\n**模块三：逻辑回归融合**\\n- **做什么**：在留出问题上拟合逻辑回归，融合检索器分数和交叉编码器分数。\\n- 公式：final_score = sigmoid(w1 * retriever_score + w2 * cross_encoder_score + b)。例如 w1=0.4, w2=0.6, b=-0.2。\\n- 最终按分数排序，取 top K 表。\", \"results\": \"- **BEAVER（244 表）**：NIFT-SQL 69.2% vs 混合检索 30.4% vs 微调检索器 61.1%。\\n- **LiveSQLBench（971 表）**：89.5% vs 41.0% vs 81.7%。\\n- **LiveSQLBench-Large**：85.6% vs 21.8% vs 70.4%。\\n- **业务含义**：每 100 次查询，比混合检索多 39 次能正确召回所有表；比微调检索器多 8 次。\\n- **高精度模式**：加入零样本重排器分数后达 72.4%/92.5%/88.6%。\", \"limitations\": \"- 依赖客户标注问题，冷启动客户无数据时效果下降。\\n- 交叉编码器需对每个表打分，表数多时推理延迟高。\\n- 仅在英文数据集评估，多语言场景未验证。\\n- 逻辑回归融合权重可能过拟合验证集，跨客户泛化性未知。\\n- 未考虑表间关系（如外键连接），可能漏掉需要联合查询的表。\"}",
       "relevance_score": 0.0
     }
   }
