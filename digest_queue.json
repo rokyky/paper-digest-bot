@@ -187,7 +187,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.12731",
       "title": "NIFT-SQL: Customer-Supervised Table Scoring for Enterprise Text-to-SQL Retrieval",
