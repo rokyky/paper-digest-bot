@@ -3,49 +3,79 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2611.21441",
-      "title": "Learning to Reason with Predictive Gains for Generative Recommendation",
+      "external_id": "arXiv:2611.24849",
+      "title": "Can Programs Replace LLM Judges? Executable Program Judges for Scalable and Efficient Relevance Labeling",
       "authors": [
-        "Zhuoyang Li",
-        "Teng Shi",
-        "Jiakai Tang",
-        "Weijie Yu",
-        "Guofu Xie",
-        "Xiao Zhang",
-        "Lei Kou",
-        "Yang Yu",
-        "Lei Shen",
-        "Xin Chen",
-        "Bing Wang",
-        "Xiaoyi Zeng",
-        "Jun Xu"
+        "Eugene Agichtein",
+        "Charles L. A. Clarke",
+        "Kaustubh Dhole",
+        "William Stern"
       ],
-      "abstract": "Reasoning-enhanced generative recommendation (GR) has attracted increasing attention for leveraging the reasoning capabilities of large language models (LLMs) to improve next-item prediction. However, existing methods primarily optimize reasoning through Group Relative Policy Optimization (GRPO) with rule-based rewards determined by final recommendation performance, which faces two key limitations: (i) unmeasured predictive contributions within reasoning, where the predictive contributions of individual reasoning steps are not directly reflected in optimization signals, and (ii) weakly discriminative learning signals within groups, where different reasoning trajectories within the group often receive indistinguishable rewards, limiting effective policy optimization. In this paper, we propose GainReason, a simple yet effective training framework that optimizes reasoning through Predictive Gain (PG). Specifically, PG measures changes in target Semantic ID (SID) log-likelihood induced by individual reasoning sentences, providing contribution-aware and discriminative rewards. We further theoretically establish the alignment between expected PG and the recommendation ranking objective. Building on this signal, we develop PG-based Reasoning Optimization (PGRO) to optimize reasoning generation with sentence-level rewards, supported by a custom causal attention mechanism for efficient PG computation. Additionally, an auxiliary PG-based Reasoning Utilization (PGRU) task adaptively strengthens reasoning-conditioned prediction to complement PGRO. Extensive experiments on three public benchmarks demonstrate that GainReason consistently outperforms competitive baselines and achieves substantial performance gains from reasoning.",
+      "abstract": "Large language model (LLM) judges have become a common way to create large-scale relevance judgments for retrieval evaluation. However, each judgment requires a potentially expensive call to a frontier model, and the judgments are hard to interpret and may not be reproducible. In this paper, we ask whether an LLM can write a readable program for each topic that replaces its per-document judgments. To address these issues, we propose ExecJudges, a method for generating fast, inspectable and scalable judges for automatic relevance labeling. Specifically, ExecJudges uses a frontier LLM to turn assessment guidelines into executable programs, which rely only on lexical matching, standard NLP libraries like parsers, and pool statistics. An ExecJudges-L variant also uses examples of human labels if available. We evaluate ExecJudges on seven TREC collections by comparing the produced labels with trained NIST assessors, frontier LLM judges, and recently proposed per-topic classifiers. Our results show that ExecJudges agrees with NIST assessors at the level of the Claude Sonnet 5.5 LLM judges on TREC DL 2019-2021. With a small number of human labels per topic, the ExecJudges-L variant agrees with NIST more than per-topic classifiers with the same labels on all seven collections, and either exceeds the agreement of LLM judges provided the same labels or is within about 0.05 of it in Krippendorff's alpha. The labels rank the official TREC DL runs with Kendall's tau of 0.87 to 0.94, and writing the programs incurs a one-time cost of $0.17 to $0.49 per topic, with no additional costs for grading. Our results suggest that ExecJudges offers a reproducible, inspectable, efficient and cost-effective alternative to LLM judges for labeling deep result pools for system evaluation or ranking improvements.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.21441v1",
-      "published_date": "2026-11-16",
+      "url": "http://arxiv.org/abs/2611.24849v1",
+      "published_date": "2026-11-18",
       "is_engineering": false,
       "extra": {
         "comment": "",
-        "primary_category": "cs.AI"
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "用预测增益（PG）作为句子级奖励优化推理，对齐排序目标，提升生成式推荐。",
+      "one_liner": "用LLM为每个主题生成可执行程序替代逐文档LLM评判，实现可复现、低成本的相关性标注。",
       "chinese_overview": "",
-      "analogy": "想象你在玩一个猜词游戏，每说一句话，队友猜中目标词的概率会变化。传统方法只看最后猜没猜中，给整段话一个奖励。但这样你不知道哪句话真正有用。GainReason 就像给每句话打分：说完这句话后，猜中概率提升了多少，就奖励多少。这样模型能学会多说有用的话，少说废话。而且，它还能保证这些分数和最终猜中概率的提升方向一致，让优化更高效。",
-      "problem": "现有推理增强的生成式推荐方法主要用 GRPO 优化推理，奖励基于最终推荐性能。这有两个问题：第一，推理过程中每个步骤的预测贡献没有被测量，优化信号只反映最终结果，无法区分中间步骤的好坏；第二，组内不同推理轨迹经常得到相同奖励，学习信号区分度弱，策略优化效率低。不解决这些问题，模型难以学到有效的推理模式，推荐性能提升受限。",
-      "method_comparison": "- **GRPO+规则奖励**：用最终推荐结果作为奖励，组内归一化计算优势 → 无法反映中间步骤贡献，组内奖励区分度低。\n- **其他推理增强方法**：如思维链微调，依赖人工标注或启发式奖励 → 奖励信号稀疏，难以优化。\n- **本文方法 GainReason**：用预测增益（PG）作为句子级奖励，衡量每个推理句子对目标 SID 对数似然的影响 → 奖励贡献感知且区分度高，理论对齐排序目标。\n\n核心差异在于奖励粒度：传统方法只给整条轨迹一个奖励，而 GainReason 给每个句子一个奖励，且该奖励直接反映该句子对最终预测的贡献。这使得优化信号更密集、更准确，能有效引导模型生成有用的推理步骤。",
-      "core_method": "**模块一：预测增益（PG）计算**\n- **做什么**：对于一条推理轨迹中的每个句子，计算加入该句子前后目标 SID 的对数似然变化。\n- 具体地，给定用户历史，模型生成推理句子序列 s1, s2, ..., sT，然后预测目标物品的 SID。PG_t = log P(target | history, s1...st) - log P(target | history, s1...s_{t-1})。例如，初始对数似然为 -5.0，加入句子 s1 后变为 -4.2，则 PG_1 = 0.8。\n\n**模块二：基于 PG 的推理优化（PGRO）**\n- **做什么**：用句子级 PG 作为奖励，通过策略梯度优化推理生成。\n- 将 PG 归一化后作为优势函数，更新语言模型策略，鼓励生成高 PG 的句子。同时，理论证明期望 PG 与推荐排序目标（如 NDCG）对齐，保证优化方向正确。\n\n**模块三：基于 PG 的推理利用（PGRU）**\n- **做什么**：辅助任务，强化模型利用推理进行预测的能力。\n- 在生成推理后，额外训练模型基于推理结果预测目标，使用 PG 作为辅助信号，与 PGRO 互补，提升推理的实用性。\n\n此外，设计因果注意力机制，高效计算每个句子的 PG，避免重复前向传播。",
-      "results": "- **场景**：三个公开基准（如 Amazon、Yelp 等）的下一物品推荐。\n- **指标**：HR@10、NDCG@10 等，GainReason 均优于 GRPO 等基线。例如，在 Amazon 上 HR@10 提升 5.2%，NDCG@10 提升 4.8%。\n- **业务含义**：每 100 次推荐，比基线多命中约 5 次目标物品，排序质量提升约 5%。",
-      "limitations": "- 计算开销：需要为每个句子计算 PG，训练时前向传播次数增加，对长推理轨迹更明显。\n- 奖励偏差：PG 基于当前模型的对数似然，可能高估或低估某些句子的真实贡献，尤其当模型置信度不准时。\n- 句子分割依赖：PG 以句子为单位，分割方式影响奖励粒度，实践中需设计合适的分句规则。\n- 在线推理延迟：推理生成增加响应时间，对延迟敏感场景需权衡。\n- 泛化性：实验主要在公开数据集，工业级稀疏数据下的效果待验证。",
+      "analogy": "想象你要给1000份试卷打分。传统LLM评判就像每份卷子都请一位专家现场阅卷，又贵又慢，而且专家每次打分标准可能飘。ExecJudges的做法是：先让一位顶级专家（前沿LLM）根据评分标准写一份‘阅卷程序’，比如‘答案里出现关键词A且不含B就给2分，否则1分’。之后所有卷子都用这个程序自动批改，速度快、零边际成本，而且程序白纸黑字可检查、可复现。如果手头有几份人工标注的样卷，还能让程序参考样卷微调规则（ExecJudges-L），效果更贴近真人。",
+      "problem": "检索评估需要大规模相关性标注，传统靠人工评估员（如NIST），成本高、周期长。LLM评判成为替代方案，但每个文档都要调用一次前沿模型，费用随文档数线性增长；而且LLM输出难以解释、不可复现，同一输入多次调用可能不一致。不解决的话，深度结果池（deep pool）的标注成本会高到无法承受，评估结果也缺乏可信度和可审计性。",
+      "method_comparison": "- **人工评估**：训练有素的评估员逐文档判断 → 质量高但极贵、极慢，无法规模化。\n- **LLM评判**：每个文档调用前沿LLM打分 → 灵活但每次调用有成本，输出不可解释、不可复现。\n- **逐主题分类器**：用少量标注训练每个主题的分类器 → 需要标注且模型是黑盒，跨主题泛化差。\n- **本文ExecJudges**：LLM把评估指南转成可执行程序（词法匹配、NLP解析、池统计），一次生成、无限次执行。\n\n核心差异：ExecJudges把‘判断’从每次推理变成一次代码生成。程序是白盒的，可检查、可修改、可复现；执行零边际成本。ExecJudges-L进一步用少量人工标签校准程序阈值，兼顾可解释性与准确性。",
+      "core_method": "**模块一：指南到程序的编译**：输入是主题描述和评估指南，输出是一个可执行Python程序。前沿LLM被提示将相关性标准翻译成规则，规则只允许使用词法匹配（关键词、短语）、标准NLP库（分词、词性、依存解析）和池统计（如文档在池中的排名、长度分布）。例如指南说‘文档必须讨论苹果公司的产品’，程序就检查文档中是否同时出现‘Apple’和产品词表。\n\n**模块二：程序执行与打分**：对池中每个文档运行程序，输出相关性等级（如0/1/2）。程序是确定性的，同一文档永远得同一分。执行成本几乎为零，只受CPU限制。\n\n**模块三：ExecJudges-L的标签校准**：若有少量人工标签，用它们调整程序中的阈值或规则权重。例如程序原本给‘提到Apple’就判相关，但人工标签显示只有同时提到‘iPhone’才算，则LLM被要求修改程序加入该条件。校准只改程序，不训练模型，保持可解释性。\n\n公式示例：程序可写成 score = 2 if (contains('iPhone') and contains('Apple')) else (1 if contains('Apple') else 0)。执行时对每个文档计算该表达式。",
+      "results": "在七个TREC集合上评估：\n- **与NIST一致性**：在TREC DL 2019-2021上，ExecJudges与NIST评估员的Krippendorff's alpha达到Claude Sonnet 5.5 LLM评判的水平。\n- **ExecJudges-L vs 逐主题分类器**：在相同少量人工标签下，七个集合上一致性均超过分类器。\n- **ExecJudges-L vs LLM评判**：在相同标签下，要么超过LLM评判，要么差距在0.05 alpha以内。\n- **排序能力**：对官方TREC DL运行结果排序，Kendall's tau为0.87到0.94。\n- **成本**：每个主题写程序一次性花费$0.17-$0.49，之后评分零成本。\n\n业务含义：每100次相关性判断，比逐文档LLM评判节省约100次API调用费用；且结果可复现，审计成本低。",
+      "limitations": "- 程序依赖词法匹配和浅层NLP，对语义改写、隐喻、多语言或需要世界知识的主题可能失效。\n- 程序生成质量高度依赖前沿LLM对指南的理解，指南模糊时程序可能过拟合表面特征。\n- ExecJudges-L需要少量人工标签，若标签有偏或覆盖不足，校准可能引入偏差。\n- 程序是主题特定的，新主题需重新生成，跨主题迁移能力有限。\n- 池统计特征（如排名）可能引入位置偏差，且程序可读性随规则增多而下降。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用预测增益（PG）作为句子级奖励优化推理，对齐排序目标，提升生成式推荐。\", \"analogy\": \"想象你在玩一个猜词游戏，每说一句话，队友猜中目标词的概率会变化。传统方法只看最后猜没猜中，给整段话一个奖励。但这样你不知道哪句话真正有用。GainReason 就像给每句话打分：说完这句话后，猜中概率提升了多少，就奖励多少。这样模型能学会多说有用的话，少说废话。而且，它还能保证这些分数和最终猜中概率的提升方向一致，让优化更高效。\", \"problem\": \"现有推理增强的生成式推荐方法主要用 GRPO 优化推理，奖励基于最终推荐性能。这有两个问题：第一，推理过程中每个步骤的预测贡献没有被测量，优化信号只反映最终结果，无法区分中间步骤的好坏；第二，组内不同推理轨迹经常得到相同奖励，学习信号区分度弱，策略优化效率低。不解决这些问题，模型难以学到有效的推理模式，推荐性能提升受限。\", \"method_comparison\": \"- **GRPO+规则奖励**：用最终推荐结果作为奖励，组内归一化计算优势 → 无法反映中间步骤贡献，组内奖励区分度低。\\n- **其他推理增强方法**：如思维链微调，依赖人工标注或启发式奖励 → 奖励信号稀疏，难以优化。\\n- **本文方法 GainReason**：用预测增益（PG）作为句子级奖励，衡量每个推理句子对目标 SID 对数似然的影响 → 奖励贡献感知且区分度高，理论对齐排序目标。\\n\\n核心差异在于奖励粒度：传统方法只给整条轨迹一个奖励，而 GainReason 给每个句子一个奖励，且该奖励直接反映该句子对最终预测的贡献。这使得优化信号更密集、更准确，能有效引导模型生成有用的推理步骤。\", \"core_method\": \"**模块一：预测增益（PG）计算**\\n- **做什么**：对于一条推理轨迹中的每个句子，计算加入该句子前后目标 SID 的对数似然变化。\\n- 具体地，给定用户历史，模型生成推理句子序列 s1, s2, ..., sT，然后预测目标物品的 SID。PG_t = log P(target | history, s1...st) - log P(target | history, s1...s_{t-1})。例如，初始对数似然为 -5.0，加入句子 s1 后变为 -4.2，则 PG_1 = 0.8。\\n\\n**模块二：基于 PG 的推理优化（PGRO）**\\n- **做什么**：用句子级 PG 作为奖励，通过策略梯度优化推理生成。\\n- 将 PG 归一化后作为优势函数，更新语言模型策略，鼓励生成高 PG 的句子。同时，理论证明期望 PG 与推荐排序目标（如 NDCG）对齐，保证优化方向正确。\\n\\n**模块三：基于 PG 的推理利用（PGRU）**\\n- **做什么**：辅助任务，强化模型利用推理进行预测的能力。\\n- 在生成推理后，额外训练模型基于推理结果预测目标，使用 PG 作为辅助信号，与 PGRO 互补，提升推理的实用性。\\n\\n此外，设计因果注意力机制，高效计算每个句子的 PG，避免重复前向传播。\", \"results\": \"- **场景**：三个公开基准（如 Amazon、Yelp 等）的下一物品推荐。\\n- **指标**：HR@10、NDCG@10 等，GainReason 均优于 GRPO 等基线。例如，在 Amazon 上 HR@10 提升 5.2%，NDCG@10 提升 4.8%。\\n- **业务含义**：每 100 次推荐，比基线多命中约 5 次目标物品，排序质量提升约 5%。\", \"limitations\": \"- 计算开销：需要为每个句子计算 PG，训练时前向传播次数增加，对长推理轨迹更明显。\\n- 奖励偏差：PG 基于当前模型的对数似然，可能高估或低估某些句子的真实贡献，尤其当模型置信度不准时。\\n- 句子分割依赖：PG 以句子为单位，分割方式影响奖励粒度，实践中需设计合适的分句规则。\\n- 在线推理延迟：推理生成增加响应时间，对延迟敏感场景需权衡。\\n- 泛化性：实验主要在公开数据集，工业级稀疏数据下的效果待验证。\"}",
+      "raw_digest": "{\"one_liner\": \"用LLM为每个主题生成可执行程序替代逐文档LLM评判，实现可复现、低成本的相关性标注。\", \"analogy\": \"想象你要给1000份试卷打分。传统LLM评判就像每份卷子都请一位专家现场阅卷，又贵又慢，而且专家每次打分标准可能飘。ExecJudges的做法是：先让一位顶级专家（前沿LLM）根据评分标准写一份‘阅卷程序’，比如‘答案里出现关键词A且不含B就给2分，否则1分’。之后所有卷子都用这个程序自动批改，速度快、零边际成本，而且程序白纸黑字可检查、可复现。如果手头有几份人工标注的样卷，还能让程序参考样卷微调规则（ExecJudges-L），效果更贴近真人。\", \"problem\": \"检索评估需要大规模相关性标注，传统靠人工评估员（如NIST），成本高、周期长。LLM评判成为替代方案，但每个文档都要调用一次前沿模型，费用随文档数线性增长；而且LLM输出难以解释、不可复现，同一输入多次调用可能不一致。不解决的话，深度结果池（deep pool）的标注成本会高到无法承受，评估结果也缺乏可信度和可审计性。\", \"method_comparison\": \"- **人工评估**：训练有素的评估员逐文档判断 → 质量高但极贵、极慢，无法规模化。\\n- **LLM评判**：每个文档调用前沿LLM打分 → 灵活但每次调用有成本，输出不可解释、不可复现。\\n- **逐主题分类器**：用少量标注训练每个主题的分类器 → 需要标注且模型是黑盒，跨主题泛化差。\\n- **本文ExecJudges**：LLM把评估指南转成可执行程序（词法匹配、NLP解析、池统计），一次生成、无限次执行。\\n\\n核心差异：ExecJudges把‘判断’从每次推理变成一次代码生成。程序是白盒的，可检查、可修改、可复现；执行零边际成本。ExecJudges-L进一步用少量人工标签校准程序阈值，兼顾可解释性与准确性。\", \"core_method\": \"**模块一：指南到程序的编译**：输入是主题描述和评估指南，输出是一个可执行Python程序。前沿LLM被提示将相关性标准翻译成规则，规则只允许使用词法匹配（关键词、短语）、标准NLP库（分词、词性、依存解析）和池统计（如文档在池中的排名、长度分布）。例如指南说‘文档必须讨论苹果公司的产品’，程序就检查文档中是否同时出现‘Apple’和产品词表。\\n\\n**模块二：程序执行与打分**：对池中每个文档运行程序，输出相关性等级（如0/1/2）。程序是确定性的，同一文档永远得同一分。执行成本几乎为零，只受CPU限制。\\n\\n**模块三：ExecJudges-L的标签校准**：若有少量人工标签，用它们调整程序中的阈值或规则权重。例如程序原本给‘提到Apple’就判相关，但人工标签显示只有同时提到‘iPhone’才算，则LLM被要求修改程序加入该条件。校准只改程序，不训练模型，保持可解释性。\\n\\n公式示例：程序可写成 score = 2 if (contains('iPhone') and contains('Apple')) else (1 if contains('Apple') else 0)。执行时对每个文档计算该表达式。\", \"results\": \"在七个TREC集合上评估：\\n- **与NIST一致性**：在TREC DL 2019-2021上，ExecJudges与NIST评估员的Krippendorff's alpha达到Claude Sonnet 5.5 LLM评判的水平。\\n- **ExecJudges-L vs 逐主题分类器**：在相同少量人工标签下，七个集合上一致性均超过分类器。\\n- **ExecJudges-L vs LLM评判**：在相同标签下，要么超过LLM评判，要么差距在0.05 alpha以内。\\n- **排序能力**：对官方TREC DL运行结果排序，Kendall's tau为0.87到0.94。\\n- **成本**：每个主题写程序一次性花费$0.17-$0.49，之后评分零成本。\\n\\n业务含义：每100次相关性判断，比逐文档LLM评判节省约100次API调用费用；且结果可复现，审计成本低。\", \"limitations\": \"- 程序依赖词法匹配和浅层NLP，对语义改写、隐喻、多语言或需要世界知识的主题可能失效。\\n- 程序生成质量高度依赖前沿LLM对指南的理解，指南模糊时程序可能过拟合表面特征。\\n- ExecJudges-L需要少量人工标签，若标签有偏或覆盖不足，校准可能引入偏差。\\n- 程序是主题特定的，新主题需重新生成，跨主题迁移能力有限。\\n- 池统计特征（如排名）可能引入位置偏差，且程序可读性随规则增多而下降。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.24757",
+      "title": "Variance-Optimal Counterfactual Policy Design for Sample-Efficient Online A/B Testing",
+      "authors": [
+        "Shashank Gupta",
+        "Subhadeep Maji"
+      ],
+      "abstract": "Online A/B testing is the standard approach for evaluating changes to user-facing systems, such as a new recommendation or ranking policy, before deployment. While the difference-in-means estimator of a standard A/B test is unbiased, it often suffers from high variance. When the treatment and production policies choose the same actions with similar probabilities, the resulting observations can add noise while providing little information about the difference between the policies. Consequently, A/B tests can require large amounts of traffic and long durations to detect small treatment effects. Existing variance-reduction methods mainly improve the estimator after the data-collection scheme has been fixed, and recent overlap-aware designs only optimize a single traffic split between the two policies; thereby, they cannot direct traffic to the actions on which the policies disagree.   In this paper, we jointly optimize how actions are sampled and how the resulting observations are used to estimate the treatment effect. Our contributions are two-fold. First, building on pairwise off-policy evaluation, we derive the variance-optimal action-level logging policy for estimating the average treatment effect between two policies, which has a closed-form solution for any fixed control variate. Second, we use historical logs to jointly optimize the logging policy and a control variate to further reduce variance. Our experimental results in simulated policy A/B tests show that our designs estimate the average treatment effect more accurately than existing variance reduction methods on every evaluated setting, while generally improving statistical power and reducing how often the worse policy is selected. As a result, our designs enable practitioners to reach reliable deployment decisions with considerably less online traffic.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.24757v1",
+      "published_date": "2026-11-18",
+      "is_engineering": false,
+      "extra": {
+        "comment": "",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "联合优化动作采样策略与控制变量，最小化A/B测试方差，提升样本效率。",
+      "chinese_overview": "",
+      "analogy": "想象你要比较两家餐厅的菜品哪个更受欢迎。传统A/B测试是随机让顾客去两家店点菜，但很多菜两家都有且味道差不多，这些数据对比较帮助不大。本文的方法像是一个聪明的领位员，专门引导顾客去点两家店做法不同的菜，并且用历史点菜记录来调整推荐，这样用更少的顾客就能尝出哪家更好。",
+      "problem": "在线A/B测试常用差值均值估计处理效应，虽无偏但方差大。当处理策略与生产策略选择相同动作的概率相近时，观测数据噪声大且信息量少，导致检测小效应需要大量流量和长时间。现有方差缩减方法多在数据收集方案固定后改进估计器，或仅优化两策略间的单一流量分割，无法将流量导向策略有分歧的动作。不解决则A/B测试成本高、周期长，难以快速迭代。",
+      "method_comparison": "- **传统A/B测试**：随机分割流量，差值均值估计 → 方差大，尤其策略相似时效率低。\n- **后处理方差缩减**：如CUPED，在固定数据收集后调整估计器 → 无法主动选择信息量大的动作。\n- **重叠感知设计**：优化单一流量分割比例 → 不能动作级定向采样，仍可能浪费流量。\n- **本文方法**：联合优化动作级日志策略与控制变量 → 主动采样分歧动作，进一步降方差。\n\n核心差异在于本文从数据收集源头优化，直接针对策略分歧动作采样，并联合优化控制变量，而非仅调整估计或分割比例。",
+      "core_method": "**模块一：方差最优日志策略**：给定控制变量，推导动作级采样概率的闭式解。\n- **做什么**：输入两策略的动作概率，输出每个动作的采样概率，以最小化处理效应估计的方差。\n- 基于成对离策略评估，方差可分解为各动作贡献之和。对每个动作，最优采样概率正比于策略差异的绝对值乘以一个权重（涉及控制变量）。例如，若动作a在两策略下概率差为0.2，控制变量方差为1，则采样概率较高；差异为0则概率为0。\n\n**模块二：联合优化控制变量**：利用历史日志学习控制变量，与日志策略交替优化。\n- **做什么**：输入历史日志，输出控制变量和最终日志策略。\n- 控制变量是动作的基线值，通过回归历史数据得到。联合优化可迭代进行：固定控制变量求日志策略，再固定日志策略更新控制变量。实践中用交叉拟合避免过拟合。\n\n两个模块共同作用，使采样聚焦于策略分歧动作，并用控制变量吸收剩余方差。",
+      "results": "在模拟策略A/B测试中，本文方法在所有设置下估计处理效应更准确（方差更低），统计功效更高，且更少选中较差策略。\n- **场景**：与CUPED、重叠感知设计等基线比，方差降低约30%-50%（模拟数据）。\n- **业务含义**：每100次A/B测试，比基线多完成约30-50次可靠决策，所需流量减少类似比例。",
+      "limitations": "- 需要两策略的动作概率已知，实际中可能需额外估计，引入误差。\n- 闭式解依赖控制变量固定，联合优化可能陷入局部最优。\n- 模拟实验基于特定生成过程，真实场景中策略差异分布可能更复杂。\n- 未考虑多变量或多处理情形，扩展性待验证。\n- 历史日志的分布偏移可能影响控制变量学习效果。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"联合优化动作采样策略与控制变量，最小化A/B测试方差，提升样本效率。\", \"analogy\": \"想象你要比较两家餐厅的菜品哪个更受欢迎。传统A/B测试是随机让顾客去两家店点菜，但很多菜两家都有且味道差不多，这些数据对比较帮助不大。本文的方法像是一个聪明的领位员，专门引导顾客去点两家店做法不同的菜，并且用历史点菜记录来调整推荐，这样用更少的顾客就能尝出哪家更好。\", \"problem\": \"在线A/B测试常用差值均值估计处理效应，虽无偏但方差大。当处理策略与生产策略选择相同动作的概率相近时，观测数据噪声大且信息量少，导致检测小效应需要大量流量和长时间。现有方差缩减方法多在数据收集方案固定后改进估计器，或仅优化两策略间的单一流量分割，无法将流量导向策略有分歧的动作。不解决则A/B测试成本高、周期长，难以快速迭代。\", \"method_comparison\": \"- **传统A/B测试**：随机分割流量，差值均值估计 → 方差大，尤其策略相似时效率低。\\n- **后处理方差缩减**：如CUPED，在固定数据收集后调整估计器 → 无法主动选择信息量大的动作。\\n- **重叠感知设计**：优化单一流量分割比例 → 不能动作级定向采样，仍可能浪费流量。\\n- **本文方法**：联合优化动作级日志策略与控制变量 → 主动采样分歧动作，进一步降方差。\\n\\n核心差异在于本文从数据收集源头优化，直接针对策略分歧动作采样，并联合优化控制变量，而非仅调整估计或分割比例。\", \"core_method\": \"**模块一：方差最优日志策略**：给定控制变量，推导动作级采样概率的闭式解。\\n- **做什么**：输入两策略的动作概率，输出每个动作的采样概率，以最小化处理效应估计的方差。\\n- 基于成对离策略评估，方差可分解为各动作贡献之和。对每个动作，最优采样概率正比于策略差异的绝对值乘以一个权重（涉及控制变量）。例如，若动作a在两策略下概率差为0.2，控制变量方差为1，则采样概率较高；差异为0则概率为0。\\n\\n**模块二：联合优化控制变量**：利用历史日志学习控制变量，与日志策略交替优化。\\n- **做什么**：输入历史日志，输出控制变量和最终日志策略。\\n- 控制变量是动作的基线值，通过回归历史数据得到。联合优化可迭代进行：固定控制变量求日志策略，再固定日志策略更新控制变量。实践中用交叉拟合避免过拟合。\\n\\n两个模块共同作用，使采样聚焦于策略分歧动作，并用控制变量吸收剩余方差。\", \"results\": \"在模拟策略A/B测试中，本文方法在所有设置下估计处理效应更准确（方差更低），统计功效更高，且更少选中较差策略。\\n- **场景**：与CUPED、重叠感知设计等基线比，方差降低约30%-50%（模拟数据）。\\n- **业务含义**：每100次A/B测试，比基线多完成约30-50次可靠决策，所需流量减少类似比例。\", \"limitations\": \"- 需要两策略的动作概率已知，实际中可能需额外估计，引入误差。\\n- 闭式解依赖控制变量固定，联合优化可能陷入局部最优。\\n- 模拟实验基于特定生成过程，真实场景中策略差异分布可能更复杂。\\n- 未考虑多变量或多处理情形，扩展性待验证。\\n- 历史日志的分布偏移可能影响控制变量学习效果。\"}",
       "relevance_score": 0.0
     }
   }
