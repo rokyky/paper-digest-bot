@@ -42,7 +42,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.24757",
       "title": "Variance-Optimal Counterfactual Policy Design for Sample-Efficient Online A/B Testing",
