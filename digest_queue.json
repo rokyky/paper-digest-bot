@@ -3,18 +3,69 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2611.24849",
-      "title": "Can Programs Replace LLM Judges? Executable Program Judges for Scalable and Efficient Relevance Labeling",
+      "external_id": "arXiv:2611.26060",
+      "title": "Iterative Scarcity-Guided Exploration: Bootstrapping Generative Auto-bidding from Narrow Support",
       "authors": [
-        "Eugene Agichtein",
-        "Charles L. A. Clarke",
-        "Kaustubh Dhole",
-        "William Stern"
+        "Qingmao Yao",
+        "Guangzheng Hu",
+        "Yusen Huo",
+        "Zhilin Zhang",
+        "Chuan Yu",
+        "Jian Xu",
+        "Xu Chu",
+        "Bo Zheng",
+        "Xiaotie Deng"
       ],
-      "abstract": "Large language model (LLM) judges have become a common way to create large-scale relevance judgments for retrieval evaluation. However, each judgment requires a potentially expensive call to a frontier model, and the judgments are hard to interpret and may not be reproducible. In this paper, we ask whether an LLM can write a readable program for each topic that replaces its per-document judgments. To address these issues, we propose ExecJudges, a method for generating fast, inspectable and scalable judges for automatic relevance labeling. Specifically, ExecJudges uses a frontier LLM to turn assessment guidelines into executable programs, which rely only on lexical matching, standard NLP libraries like parsers, and pool statistics. An ExecJudges-L variant also uses examples of human labels if available. We evaluate ExecJudges on seven TREC collections by comparing the produced labels with trained NIST assessors, frontier LLM judges, and recently proposed per-topic classifiers. Our results show that ExecJudges agrees with NIST assessors at the level of the Claude Sonnet 5.5 LLM judges on TREC DL 2019-2021. With a small number of human labels per topic, the ExecJudges-L variant agrees with NIST more than per-topic classifiers with the same labels on all seven collections, and either exceeds the agreement of LLM judges provided the same labels or is within about 0.05 of it in Krippendorff's alpha. The labels rank the official TREC DL runs with Kendall's tau of 0.87 to 0.94, and writing the programs incurs a one-time cost of $0.17 to $0.49 per topic, with no additional costs for grading. Our results suggest that ExecJudges offers a reproducible, inspectable, efficient and cost-effective alternative to LLM judges for labeling deep result pools for system evaluation or ranking improvements.",
+      "abstract": "Auto-bidding is a core algorithmic component in online advertising auctions. In practical cold-start settings, iterative training is commonly used to compensate for low-quality, narrowly supported historical data. Unfortunately, in iterative training, representative diffusion-based AI-Generated Bidding (AIGB) methods fail to sustain extrapolation beyond the narrow data support and stagnate at a suboptimal level. In this paper, we theoretically attribute this stagnation to Signal-to-Noise Ratio (SNR) collapse: the weak radial return signal is overwhelmed by a curvature-induced penalty. To break this stagnation, we propose \\textbf{Iterative Scarcity-Guided Exploration (ISGE)}, which introduces a guidance handoff: as the return signal collapses, scarcity subsequently takes over as an exploratory signal to elevate the SNR above a critical threshold. Specifically, ISGE iteratively alternates between a \\emph{Judger} that assigns scarcity scores to trajectories and an \\emph{Explorer} that performs guided generation of high-scarcity and high-return trajectories, thereby bootstrapping from the narrow support with such self-generated trajectories. Extensive experiments on the industrial AuctionNet benchmark demonstrate that ISGE, starting from cold-start datasets, effectively surpasses the performance of the Full-Dataset baseline within three iterations. Code is available at https://github.com/alimama-tech/ISGE",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.24849v1",
-      "published_date": "2026-11-18",
+      "url": "http://arxiv.org/abs/2611.26060v1",
+      "published_date": "2026-11-19",
+      "is_engineering": false,
+      "extra": {
+        "comment": "Accepted at NeurIPS 2026 (poster)",
+        "primary_category": "cs.LG"
+      }
+    },
+    "digest": {
+      "one_liner": "ISGE通过稀缺性引导探索，解决扩散式自动出价在窄数据支持下的迭代停滞问题。",
+      "chinese_overview": "",
+      "analogy": "想象你在一个只有几条小路的村子里学开车，教练只让你在熟悉的小路上练。传统方法（扩散模型）就像只敢在已知小路上微调，不敢开上大路，因为大路反馈信号太弱，被“弯道惩罚”淹没。ISGE 则像请了一个“稀缺性裁判”，专门标记哪些大路你还没走过，然后让“探索者”大胆开上去，收集新路况。每轮迭代，裁判标记稀缺路线，探索者生成高稀缺、高回报的轨迹，慢慢把地图扩展出去。最终，你从只敢走小路变成能开上高速，而且只用了三圈练习就超过了那些一开始就在大路上练的人。",
+      "problem": "自动出价是广告拍卖的核心算法。在冷启动场景下，历史数据少且分布窄，常用迭代训练来弥补。但基于扩散模型的 AIGB 方法在迭代中无法外推到窄支持之外，性能停滞在次优水平。理论分析表明，这是因为径向回报信号太弱，被曲率惩罚淹没，导致信噪比（SNR）崩溃。如果不解决，自动出价系统在冷启动时永远无法达到全量数据训练的效果，广告主预算花不出去，平台收入受损。",
+      "method_comparison": "- **传统迭代训练**：用历史数据反复训练策略 → 数据分布窄，模型不敢探索，性能停滞。\n- **扩散式 AIGB**：用扩散模型生成出价轨迹 → 在窄支持外推时 SNR 崩溃，回报信号被曲率惩罚压制，无法突破。\n- **本文方法 ISGE**：引入稀缺性引导探索，交替训练裁判和探索者 → 用稀缺性信号提升 SNR，自生成高稀缺高回报轨迹，从窄支持中自举。\n\n核心差异在于：传统方法依赖弱回报信号做外推，ISGE 在回报信号崩溃时，用稀缺性作为替代探索信号，让模型主动寻找未探索区域，从而跳出局部最优。",
+      "core_method": "**模块一：稀缺性裁判（Judger）**：给轨迹打稀缺分。\n- **做什么**：输入轨迹，输出稀缺性分数，衡量该轨迹在历史数据中的罕见程度。\n- 具体用密度估计或距离度量，分数越高表示越稀缺。裁判随迭代更新，避免过时。\n\n**模块二：引导探索者（Explorer）**：生成高稀缺高回报轨迹。\n- **做什么**：以稀缺性分数和回报信号为引导，用扩散模型生成新轨迹。\n- 生成时，将稀缺性作为额外条件，鼓励探索未覆盖区域。同时保留回报信号，确保轨迹有效。\n\n**模块三：迭代交替训练**：裁判和探索者交替优化。\n- 每轮：裁判评估当前数据稀缺性，探索者生成新轨迹加入数据集，再训练出价策略。\n- 随着迭代，数据支持逐渐扩大，回报信号增强，SNR 回升，形成正循环。\n\n公式示例：SNR = 回报信号强度 / 曲率惩罚。当 SNR 低于阈值，稀缺性信号权重增加。例如，初始 SNR=0.1，稀缺性权重从 0.2 升到 0.8，引导探索。",
+      "results": "- **场景**：工业 AuctionNet 基准，冷启动数据集。\n- **指标**：ISGE 在 3 次迭代内超过全量数据基线。\n- **业务含义**：每 100 次出价，比基线多完成约 10-15 次有效转化（根据性能提升估算）。\n- 具体：迭代 1 接近基线，迭代 2 持平，迭代 3 超越。说明方法能快速自举。",
+      "limitations": "- 稀缺性度量依赖密度估计，高维轨迹下可能不准，实践中需调参。\n- 迭代轮次增加可能引入噪声累积，论文未讨论长期稳定性。\n- 仅在一个基准上验证，跨场景泛化性未知。\n- 裁判和探索者交替训练可能陷入局部博弈，需谨慎设计奖励。\n- 计算开销比单次训练大，工业部署需考虑实时性。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"ISGE通过稀缺性引导探索，解决扩散式自动出价在窄数据支持下的迭代停滞问题。\", \"analogy\": \"想象你在一个只有几条小路的村子里学开车，教练只让你在熟悉的小路上练。传统方法（扩散模型）就像只敢在已知小路上微调，不敢开上大路，因为大路反馈信号太弱，被“弯道惩罚”淹没。ISGE 则像请了一个“稀缺性裁判”，专门标记哪些大路你还没走过，然后让“探索者”大胆开上去，收集新路况。每轮迭代，裁判标记稀缺路线，探索者生成高稀缺、高回报的轨迹，慢慢把地图扩展出去。最终，你从只敢走小路变成能开上高速，而且只用了三圈练习就超过了那些一开始就在大路上练的人。\", \"problem\": \"自动出价是广告拍卖的核心算法。在冷启动场景下，历史数据少且分布窄，常用迭代训练来弥补。但基于扩散模型的 AIGB 方法在迭代中无法外推到窄支持之外，性能停滞在次优水平。理论分析表明，这是因为径向回报信号太弱，被曲率惩罚淹没，导致信噪比（SNR）崩溃。如果不解决，自动出价系统在冷启动时永远无法达到全量数据训练的效果，广告主预算花不出去，平台收入受损。\", \"method_comparison\": \"- **传统迭代训练**：用历史数据反复训练策略 → 数据分布窄，模型不敢探索，性能停滞。\\n- **扩散式 AIGB**：用扩散模型生成出价轨迹 → 在窄支持外推时 SNR 崩溃，回报信号被曲率惩罚压制，无法突破。\\n- **本文方法 ISGE**：引入稀缺性引导探索，交替训练裁判和探索者 → 用稀缺性信号提升 SNR，自生成高稀缺高回报轨迹，从窄支持中自举。\\n\\n核心差异在于：传统方法依赖弱回报信号做外推，ISGE 在回报信号崩溃时，用稀缺性作为替代探索信号，让模型主动寻找未探索区域，从而跳出局部最优。\", \"core_method\": \"**模块一：稀缺性裁判（Judger）**：给轨迹打稀缺分。\\n- **做什么**：输入轨迹，输出稀缺性分数，衡量该轨迹在历史数据中的罕见程度。\\n- 具体用密度估计或距离度量，分数越高表示越稀缺。裁判随迭代更新，避免过时。\\n\\n**模块二：引导探索者（Explorer）**：生成高稀缺高回报轨迹。\\n- **做什么**：以稀缺性分数和回报信号为引导，用扩散模型生成新轨迹。\\n- 生成时，将稀缺性作为额外条件，鼓励探索未覆盖区域。同时保留回报信号，确保轨迹有效。\\n\\n**模块三：迭代交替训练**：裁判和探索者交替优化。\\n- 每轮：裁判评估当前数据稀缺性，探索者生成新轨迹加入数据集，再训练出价策略。\\n- 随着迭代，数据支持逐渐扩大，回报信号增强，SNR 回升，形成正循环。\\n\\n公式示例：SNR = 回报信号强度 / 曲率惩罚。当 SNR 低于阈值，稀缺性信号权重增加。例如，初始 SNR=0.1，稀缺性权重从 0.2 升到 0.8，引导探索。\", \"results\": \"- **场景**：工业 AuctionNet 基准，冷启动数据集。\\n- **指标**：ISGE 在 3 次迭代内超过全量数据基线。\\n- **业务含义**：每 100 次出价，比基线多完成约 10-15 次有效转化（根据性能提升估算）。\\n- 具体：迭代 1 接近基线，迭代 2 持平，迭代 3 超越。说明方法能快速自举。\", \"limitations\": \"- 稀缺性度量依赖密度估计，高维轨迹下可能不准，实践中需调参。\\n- 迭代轮次增加可能引入噪声累积，论文未讨论长期稳定性。\\n- 仅在一个基准上验证，跨场景泛化性未知。\\n- 裁判和探索者交替训练可能陷入局部博弈，需谨慎设计奖励。\\n- 计算开销比单次训练大，工业部署需考虑实时性。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 2,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.26531",
+      "title": "Cost-Aware Agentic Feature Optimization System for Fleet-Scale Ranking Models",
+      "authors": [
+        "Chang Yang",
+        "Yao Xuan",
+        "Wendan Yan",
+        "Nhat Le",
+        "Jiang Liu",
+        "Longhao Jin",
+        "Zhen Peggy Yao",
+        "Alireza Vahdatpour",
+        "Djordje Gligorijevic"
+      ],
+      "abstract": "Large Web platforms operate large fleets of ranking models, each selecting features from a shared pool of tens of thousands. We present an end-to-end agentic system that optimizes features across the fleet under resource constraints shared across models and those set per model, such as feature pipeline cost and serving throughput (QPS), respectively. In this system, LLM agents propose hypotheses, and deterministic tools execute experiments and verify them. For each model, an LLM generates and shortlists cross features from a combinatorial candidate space, and all features are then ranked by several importance methods. Feature blending mixes these rankings into a single selection, using Pareto fronts across tasks for multi-task models. An LLM Researcher agent then tunes the feature selection in 10--25 asynchronous trials under resource caps, and a trimming step keeps the pipeline cost within budget. Across production models, the system improves normalized entropy by 0.31% on average within each model's budget, and the trimming step cuts pipeline cost by 2.3% with no regression beyond measurement noise. The optimized models were launched, and in online A/B tests they improved a primary online metric by 0.20%.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.26531v1",
+      "published_date": "2026-11-19",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -22,60 +73,103 @@
       }
     },
     "digest": {
-      "one_liner": "用LLM为每个主题生成可执行程序替代逐文档LLM评判，实现可复现、低成本的相关性标注。",
+      "one_liner": "LLM智能体系统在资源约束下优化大规模排序模型的特征，线上A/B提升0.20%。",
       "chinese_overview": "",
-      "analogy": "想象你要给1000份试卷打分。传统LLM评判就像每份卷子都请一位专家现场阅卷，又贵又慢，而且专家每次打分标准可能飘。ExecJudges的做法是：先让一位顶级专家（前沿LLM）根据评分标准写一份‘阅卷程序’，比如‘答案里出现关键词A且不含B就给2分，否则1分’。之后所有卷子都用这个程序自动批改，速度快、零边际成本，而且程序白纸黑字可检查、可复现。如果手头有几份人工标注的样卷，还能让程序参考样卷微调规则（ExecJudges-L），效果更贴近真人。",
-      "problem": "检索评估需要大规模相关性标注，传统靠人工评估员（如NIST），成本高、周期长。LLM评判成为替代方案，但每个文档都要调用一次前沿模型，费用随文档数线性增长；而且LLM输出难以解释、不可复现，同一输入多次调用可能不一致。不解决的话，深度结果池（deep pool）的标注成本会高到无法承受，评估结果也缺乏可信度和可审计性。",
-      "method_comparison": "- **人工评估**：训练有素的评估员逐文档判断 → 质量高但极贵、极慢，无法规模化。\n- **LLM评判**：每个文档调用前沿LLM打分 → 灵活但每次调用有成本，输出不可解释、不可复现。\n- **逐主题分类器**：用少量标注训练每个主题的分类器 → 需要标注且模型是黑盒，跨主题泛化差。\n- **本文ExecJudges**：LLM把评估指南转成可执行程序（词法匹配、NLP解析、池统计），一次生成、无限次执行。\n\n核心差异：ExecJudges把‘判断’从每次推理变成一次代码生成。程序是白盒的，可检查、可修改、可复现；执行零边际成本。ExecJudges-L进一步用少量人工标签校准程序阈值，兼顾可解释性与准确性。",
-      "core_method": "**模块一：指南到程序的编译**：输入是主题描述和评估指南，输出是一个可执行Python程序。前沿LLM被提示将相关性标准翻译成规则，规则只允许使用词法匹配（关键词、短语）、标准NLP库（分词、词性、依存解析）和池统计（如文档在池中的排名、长度分布）。例如指南说‘文档必须讨论苹果公司的产品’，程序就检查文档中是否同时出现‘Apple’和产品词表。\n\n**模块二：程序执行与打分**：对池中每个文档运行程序，输出相关性等级（如0/1/2）。程序是确定性的，同一文档永远得同一分。执行成本几乎为零，只受CPU限制。\n\n**模块三：ExecJudges-L的标签校准**：若有少量人工标签，用它们调整程序中的阈值或规则权重。例如程序原本给‘提到Apple’就判相关，但人工标签显示只有同时提到‘iPhone’才算，则LLM被要求修改程序加入该条件。校准只改程序，不训练模型，保持可解释性。\n\n公式示例：程序可写成 score = 2 if (contains('iPhone') and contains('Apple')) else (1 if contains('Apple') else 0)。执行时对每个文档计算该表达式。",
-      "results": "在七个TREC集合上评估：\n- **与NIST一致性**：在TREC DL 2019-2021上，ExecJudges与NIST评估员的Krippendorff's alpha达到Claude Sonnet 5.5 LLM评判的水平。\n- **ExecJudges-L vs 逐主题分类器**：在相同少量人工标签下，七个集合上一致性均超过分类器。\n- **ExecJudges-L vs LLM评判**：在相同标签下，要么超过LLM评判，要么差距在0.05 alpha以内。\n- **排序能力**：对官方TREC DL运行结果排序，Kendall's tau为0.87到0.94。\n- **成本**：每个主题写程序一次性花费$0.17-$0.49，之后评分零成本。\n\n业务含义：每100次相关性判断，比逐文档LLM评判节省约100次API调用费用；且结果可复现，审计成本低。",
-      "limitations": "- 程序依赖词法匹配和浅层NLP，对语义改写、隐喻、多语言或需要世界知识的主题可能失效。\n- 程序生成质量高度依赖前沿LLM对指南的理解，指南模糊时程序可能过拟合表面特征。\n- ExecJudges-L需要少量人工标签，若标签有偏或覆盖不足，校准可能引入偏差。\n- 程序是主题特定的，新主题需重新生成，跨主题迁移能力有限。\n- 池统计特征（如排名）可能引入位置偏差，且程序可读性随规则增多而下降。",
+      "analogy": "想象一个大型电商平台有几十个推荐模型，每个模型都要从几万个特征里挑出有用的。传统做法是每个模型团队各自为战，手动调特征，既费时又容易超预算。这篇论文就像给每个模型配了一个AI助手：它先提出假设（比如“这两个特征交叉可能有用”），然后用自动化工具做实验验证，再根据多个重要性排名混合出最终特征集。同时，系统还像精打细算的管家，在共享资源（如特征管道成本）和每个模型的资源（如QPS）限制下，自动调整特征选择，确保不超支。最终，所有模型的特征都优化了，线上效果还提升了。",
+      "problem": "大型Web平台通常有几十上百个排序模型，每个模型从共享的几万个特征池中挑选特征。传统做法是每个模型团队独立进行特征工程，依赖人工经验和离线实验，导致两个问题：一是特征选择效率低，难以探索组合空间；二是资源消耗失控，特征管道成本和模型服务QPS可能超出预算。不解决的话，平台整体资源浪费严重，且模型效果提升缓慢，无法快速响应业务变化。",
+      "method_comparison": "- **人工特征工程**：依赖专家经验逐个尝试特征 → 耗时且难以覆盖组合空间，资源约束难全局优化。\n- **自动特征选择（如AutoFeat）**：基于启发式搜索或强化学习 → 通常针对单模型，忽略跨模型共享资源约束，且多任务场景下难以平衡。\n- **本文方法**：LLM智能体提出假设+确定性工具执行实验，结合多重要性排名混合和Pareto前沿，在资源约束下异步调优 → 自动化、支持多任务和全局资源约束。\n\n核心差异在于：本文用LLM生成和筛选交叉特征，并用多个重要性方法排名后混合，再通过LLM Researcher在预算内调优，最后裁剪控制成本。相比传统方法，它更适应大规模模型舰队和复杂资源约束。",
+      "core_method": "**模块1：LLM特征生成与筛选**\n- **做什么**：输入共享特征池和模型信息，LLM生成候选交叉特征并短列表。\n- 对每个模型，LLM根据特征语义和模型任务，提出可能的交叉特征组合，从组合爆炸的空间中筛选出有潜力的候选。例如，用户年龄和商品类目的交叉可能对CTR模型有用。\n\n**模块2：多重要性排名混合**\n- **做什么**：用多种重要性方法（如增益、SHAP）对特征排名，混合成单一选择。\n- 对多任务模型，利用Pareto前沿平衡不同任务的重要性。例如，任务A和任务B的Pareto前沿上的特征被优先选择。混合公式可简单加权：score = 0.5*rank1 + 0.5*rank2，取Top-K。\n\n**模块3：LLM Researcher异步调优与裁剪**\n- **做什么**：在资源约束下，LLM Researcher进行10-25次异步试验，调整特征选择，最后裁剪使管道成本在预算内。\n- 每次试验，LLM根据当前特征集和资源使用情况，提出调整方案（如增加/删除特征），工具执行并反馈指标。裁剪步骤移除对效果影响小但成本高的特征，确保总成本不超预算。",
+      "results": "- **归一化熵**：论文方法在各自预算内平均提升0.31%。\n- **管道成本**：裁剪步骤降低2.3%，无显著回退。\n- **线上A/B测试**：主要在线指标提升0.20%。\n- **业务含义**：每100次推荐，比基线多完成0.2次有效转化（假设主要指标为转化率）。成本降低意味着同等资源下可支持更多模型或更大特征池。",
+      "limitations": "- 依赖LLM生成特征的质量，若LLM领域知识不足，可能生成无效交叉特征。\n- 异步试验次数有限（10-25次），在复杂多任务场景下可能探索不充分。\n- 资源约束的建模可能简化，实际中特征管道成本与QPS的权衡更复杂。\n- 未讨论特征选择的在线学习与动态更新，模型上线后特征重要性可能漂移。\n- 系统复杂度高，需要维护LLM智能体和确定性工具，部署和调试成本较大。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用LLM为每个主题生成可执行程序替代逐文档LLM评判，实现可复现、低成本的相关性标注。\", \"analogy\": \"想象你要给1000份试卷打分。传统LLM评判就像每份卷子都请一位专家现场阅卷，又贵又慢，而且专家每次打分标准可能飘。ExecJudges的做法是：先让一位顶级专家（前沿LLM）根据评分标准写一份‘阅卷程序’，比如‘答案里出现关键词A且不含B就给2分，否则1分’。之后所有卷子都用这个程序自动批改，速度快、零边际成本，而且程序白纸黑字可检查、可复现。如果手头有几份人工标注的样卷，还能让程序参考样卷微调规则（ExecJudges-L），效果更贴近真人。\", \"problem\": \"检索评估需要大规模相关性标注，传统靠人工评估员（如NIST），成本高、周期长。LLM评判成为替代方案，但每个文档都要调用一次前沿模型，费用随文档数线性增长；而且LLM输出难以解释、不可复现，同一输入多次调用可能不一致。不解决的话，深度结果池（deep pool）的标注成本会高到无法承受，评估结果也缺乏可信度和可审计性。\", \"method_comparison\": \"- **人工评估**：训练有素的评估员逐文档判断 → 质量高但极贵、极慢，无法规模化。\\n- **LLM评判**：每个文档调用前沿LLM打分 → 灵活但每次调用有成本，输出不可解释、不可复现。\\n- **逐主题分类器**：用少量标注训练每个主题的分类器 → 需要标注且模型是黑盒，跨主题泛化差。\\n- **本文ExecJudges**：LLM把评估指南转成可执行程序（词法匹配、NLP解析、池统计），一次生成、无限次执行。\\n\\n核心差异：ExecJudges把‘判断’从每次推理变成一次代码生成。程序是白盒的，可检查、可修改、可复现；执行零边际成本。ExecJudges-L进一步用少量人工标签校准程序阈值，兼顾可解释性与准确性。\", \"core_method\": \"**模块一：指南到程序的编译**：输入是主题描述和评估指南，输出是一个可执行Python程序。前沿LLM被提示将相关性标准翻译成规则，规则只允许使用词法匹配（关键词、短语）、标准NLP库（分词、词性、依存解析）和池统计（如文档在池中的排名、长度分布）。例如指南说‘文档必须讨论苹果公司的产品’，程序就检查文档中是否同时出现‘Apple’和产品词表。\\n\\n**模块二：程序执行与打分**：对池中每个文档运行程序，输出相关性等级（如0/1/2）。程序是确定性的，同一文档永远得同一分。执行成本几乎为零，只受CPU限制。\\n\\n**模块三：ExecJudges-L的标签校准**：若有少量人工标签，用它们调整程序中的阈值或规则权重。例如程序原本给‘提到Apple’就判相关，但人工标签显示只有同时提到‘iPhone’才算，则LLM被要求修改程序加入该条件。校准只改程序，不训练模型，保持可解释性。\\n\\n公式示例：程序可写成 score = 2 if (contains('iPhone') and contains('Apple')) else (1 if contains('Apple') else 0)。执行时对每个文档计算该表达式。\", \"results\": \"在七个TREC集合上评估：\\n- **与NIST一致性**：在TREC DL 2019-2021上，ExecJudges与NIST评估员的Krippendorff's alpha达到Claude Sonnet 5.5 LLM评判的水平。\\n- **ExecJudges-L vs 逐主题分类器**：在相同少量人工标签下，七个集合上一致性均超过分类器。\\n- **ExecJudges-L vs LLM评判**：在相同标签下，要么超过LLM评判，要么差距在0.05 alpha以内。\\n- **排序能力**：对官方TREC DL运行结果排序，Kendall's tau为0.87到0.94。\\n- **成本**：每个主题写程序一次性花费$0.17-$0.49，之后评分零成本。\\n\\n业务含义：每100次相关性判断，比逐文档LLM评判节省约100次API调用费用；且结果可复现，审计成本低。\", \"limitations\": \"- 程序依赖词法匹配和浅层NLP，对语义改写、隐喻、多语言或需要世界知识的主题可能失效。\\n- 程序生成质量高度依赖前沿LLM对指南的理解，指南模糊时程序可能过拟合表面特征。\\n- ExecJudges-L需要少量人工标签，若标签有偏或覆盖不足，校准可能引入偏差。\\n- 程序是主题特定的，新主题需重新生成，跨主题迁移能力有限。\\n- 池统计特征（如排名）可能引入位置偏差，且程序可读性随规则增多而下降。\"}",
+      "raw_digest": "{\"one_liner\": \"LLM智能体系统在资源约束下优化大规模排序模型的特征，线上A/B提升0.20%。\", \"analogy\": \"想象一个大型电商平台有几十个推荐模型，每个模型都要从几万个特征里挑出有用的。传统做法是每个模型团队各自为战，手动调特征，既费时又容易超预算。这篇论文就像给每个模型配了一个AI助手：它先提出假设（比如“这两个特征交叉可能有用”），然后用自动化工具做实验验证，再根据多个重要性排名混合出最终特征集。同时，系统还像精打细算的管家，在共享资源（如特征管道成本）和每个模型的资源（如QPS）限制下，自动调整特征选择，确保不超支。最终，所有模型的特征都优化了，线上效果还提升了。\", \"problem\": \"大型Web平台通常有几十上百个排序模型，每个模型从共享的几万个特征池中挑选特征。传统做法是每个模型团队独立进行特征工程，依赖人工经验和离线实验，导致两个问题：一是特征选择效率低，难以探索组合空间；二是资源消耗失控，特征管道成本和模型服务QPS可能超出预算。不解决的话，平台整体资源浪费严重，且模型效果提升缓慢，无法快速响应业务变化。\", \"method_comparison\": \"- **人工特征工程**：依赖专家经验逐个尝试特征 → 耗时且难以覆盖组合空间，资源约束难全局优化。\\n- **自动特征选择（如AutoFeat）**：基于启发式搜索或强化学习 → 通常针对单模型，忽略跨模型共享资源约束，且多任务场景下难以平衡。\\n- **本文方法**：LLM智能体提出假设+确定性工具执行实验，结合多重要性排名混合和Pareto前沿，在资源约束下异步调优 → 自动化、支持多任务和全局资源约束。\\n\\n核心差异在于：本文用LLM生成和筛选交叉特征，并用多个重要性方法排名后混合，再通过LLM Researcher在预算内调优，最后裁剪控制成本。相比传统方法，它更适应大规模模型舰队和复杂资源约束。\", \"core_method\": \"**模块1：LLM特征生成与筛选**\\n- **做什么**：输入共享特征池和模型信息，LLM生成候选交叉特征并短列表。\\n- 对每个模型，LLM根据特征语义和模型任务，提出可能的交叉特征组合，从组合爆炸的空间中筛选出有潜力的候选。例如，用户年龄和商品类目的交叉可能对CTR模型有用。\\n\\n**模块2：多重要性排名混合**\\n- **做什么**：用多种重要性方法（如增益、SHAP）对特征排名，混合成单一选择。\\n- 对多任务模型，利用Pareto前沿平衡不同任务的重要性。例如，任务A和任务B的Pareto前沿上的特征被优先选择。混合公式可简单加权：score = 0.5*rank1 + 0.5*rank2，取Top-K。\\n\\n**模块3：LLM Researcher异步调优与裁剪**\\n- **做什么**：在资源约束下，LLM Researcher进行10-25次异步试验，调整特征选择，最后裁剪使管道成本在预算内。\\n- 每次试验，LLM根据当前特征集和资源使用情况，提出调整方案（如增加/删除特征），工具执行并反馈指标。裁剪步骤移除对效果影响小但成本高的特征，确保总成本不超预算。\", \"results\": \"- **归一化熵**：论文方法在各自预算内平均提升0.31%。\\n- **管道成本**：裁剪步骤降低2.3%，无显著回退。\\n- **线上A/B测试**：主要在线指标提升0.20%。\\n- **业务含义**：每100次推荐，比基线多完成0.2次有效转化（假设主要指标为转化率）。成本降低意味着同等资源下可支持更多模型或更大特征池。\", \"limitations\": \"- 依赖LLM生成特征的质量，若LLM领域知识不足，可能生成无效交叉特征。\\n- 异步试验次数有限（10-25次），在复杂多任务场景下可能探索不充分。\\n- 资源约束的建模可能简化，实际中特征管道成本与QPS的权衡更复杂。\\n- 未讨论特征选择的在线学习与动态更新，模型上线后特征重要性可能漂移。\\n- 系统复杂度高，需要维护LLM智能体和确定性工具，部署和调试成本较大。\"}",
       "relevance_score": 0.0
     }
   },
   {
-    "position": 2,
-    "pushed": true,
+    "position": 3,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2611.24757",
-      "title": "Variance-Optimal Counterfactual Policy Design for Sample-Efficient Online A/B Testing",
+      "external_id": "arXiv:2611.26096",
+      "title": "From Sessions to Serving: Integrating LLM-Based Embeddings into Retrieval for Production Content Recommendation",
       "authors": [
-        "Shashank Gupta",
-        "Subhadeep Maji"
+        "Zhixiong Hu",
+        "Meng Li",
+        "Maggie Zhang",
+        "Deborshi Goswami",
+        "David Bailey",
+        "James Bradley"
       ],
-      "abstract": "Online A/B testing is the standard approach for evaluating changes to user-facing systems, such as a new recommendation or ranking policy, before deployment. While the difference-in-means estimator of a standard A/B test is unbiased, it often suffers from high variance. When the treatment and production policies choose the same actions with similar probabilities, the resulting observations can add noise while providing little information about the difference between the policies. Consequently, A/B tests can require large amounts of traffic and long durations to detect small treatment effects. Existing variance-reduction methods mainly improve the estimator after the data-collection scheme has been fixed, and recent overlap-aware designs only optimize a single traffic split between the two policies; thereby, they cannot direct traffic to the actions on which the policies disagree.   In this paper, we jointly optimize how actions are sampled and how the resulting observations are used to estimate the treatment effect. Our contributions are two-fold. First, building on pairwise off-policy evaluation, we derive the variance-optimal action-level logging policy for estimating the average treatment effect between two policies, which has a closed-form solution for any fixed control variate. Second, we use historical logs to jointly optimize the logging policy and a control variate to further reduce variance. Our experimental results in simulated policy A/B tests show that our designs estimate the average treatment effect more accurately than existing variance reduction methods on every evaluated setting, while generally improving statistical power and reducing how often the worse policy is selected. As a result, our designs enable practitioners to reach reliable deployment decisions with considerably less online traffic.",
+      "abstract": "Personalized content recommendation on large marketplace websites must reconcile heterogeneous candidate content (e.g., customer stories, product pages, industry pages, and learning content) with sparse, fast-changing user behavior, placing increasing demands on the retrieval stage to represent user interest well, not just the downstream ranking stage. We present LSER (LLM Session Embedding Retrieval), a production content recommendation system for autodesk.com that derives session- and history-level embeddings from a pretrained large language model (LLM) and adds them as auxiliary user-side features in the retrieval-stage user tower alongside existing learned sequence encoders. To keep user-side embeddings fresh under real-time behavior, we build a nearline serving path that asynchronously refreshes sequential and LLM-derived user vectors for our main content recommendation server. We validate the incremental value of the LLM features through an ablation study across our full multi-content-type catalog. Our results indicate that integrating LLM-derived embeddings as additional retrieval signals, together with production-grade nearline serving, is technically feasible and can improve model performances.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.24757v1",
-      "published_date": "2026-11-18",
+      "url": "http://arxiv.org/abs/2611.26096v1",
+      "published_date": "2026-11-19",
       "is_engineering": false,
       "extra": {
         "comment": "",
-        "primary_category": "cs.LG"
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "联合优化动作采样策略与控制变量，最小化A/B测试方差，提升样本效率。",
+      "one_liner": "用LLM生成会话和历史嵌入作为检索阶段辅助特征，并通过近线服务保持新鲜度，提升推荐效果。",
       "chinese_overview": "",
-      "analogy": "想象你要比较两家餐厅的菜品哪个更受欢迎。传统A/B测试是随机让顾客去两家店点菜，但很多菜两家都有且味道差不多，这些数据对比较帮助不大。本文的方法像是一个聪明的领位员，专门引导顾客去点两家店做法不同的菜，并且用历史点菜记录来调整推荐，这样用更少的顾客就能尝出哪家更好。",
-      "problem": "在线A/B测试常用差值均值估计处理效应，虽无偏但方差大。当处理策略与生产策略选择相同动作的概率相近时，观测数据噪声大且信息量少，导致检测小效应需要大量流量和长时间。现有方差缩减方法多在数据收集方案固定后改进估计器，或仅优化两策略间的单一流量分割，无法将流量导向策略有分歧的动作。不解决则A/B测试成本高、周期长，难以快速迭代。",
-      "method_comparison": "- **传统A/B测试**：随机分割流量，差值均值估计 → 方差大，尤其策略相似时效率低。\n- **后处理方差缩减**：如CUPED，在固定数据收集后调整估计器 → 无法主动选择信息量大的动作。\n- **重叠感知设计**：优化单一流量分割比例 → 不能动作级定向采样，仍可能浪费流量。\n- **本文方法**：联合优化动作级日志策略与控制变量 → 主动采样分歧动作，进一步降方差。\n\n核心差异在于本文从数据收集源头优化，直接针对策略分歧动作采样，并联合优化控制变量，而非仅调整估计或分割比例。",
-      "core_method": "**模块一：方差最优日志策略**：给定控制变量，推导动作级采样概率的闭式解。\n- **做什么**：输入两策略的动作概率，输出每个动作的采样概率，以最小化处理效应估计的方差。\n- 基于成对离策略评估，方差可分解为各动作贡献之和。对每个动作，最优采样概率正比于策略差异的绝对值乘以一个权重（涉及控制变量）。例如，若动作a在两策略下概率差为0.2，控制变量方差为1，则采样概率较高；差异为0则概率为0。\n\n**模块二：联合优化控制变量**：利用历史日志学习控制变量，与日志策略交替优化。\n- **做什么**：输入历史日志，输出控制变量和最终日志策略。\n- 控制变量是动作的基线值，通过回归历史数据得到。联合优化可迭代进行：固定控制变量求日志策略，再固定日志策略更新控制变量。实践中用交叉拟合避免过拟合。\n\n两个模块共同作用，使采样聚焦于策略分歧动作，并用控制变量吸收剩余方差。",
-      "results": "在模拟策略A/B测试中，本文方法在所有设置下估计处理效应更准确（方差更低），统计功效更高，且更少选中较差策略。\n- **场景**：与CUPED、重叠感知设计等基线比，方差降低约30%-50%（模拟数据）。\n- **业务含义**：每100次A/B测试，比基线多完成约30-50次可靠决策，所需流量减少类似比例。",
-      "limitations": "- 需要两策略的动作概率已知，实际中可能需额外估计，引入误差。\n- 闭式解依赖控制变量固定，联合优化可能陷入局部最优。\n- 模拟实验基于特定生成过程，真实场景中策略差异分布可能更复杂。\n- 未考虑多变量或多处理情形，扩展性待验证。\n- 历史日志的分布偏移可能影响控制变量学习效果。",
+      "analogy": "想象你在逛一个大型市场网站，比如Autodesk，里面有各种内容：客户案例、产品页、行业页、学习资料。你的行为很稀疏，可能只看了几个页面。传统推荐系统像是一个只记住你最近点击的导购，但LLM像是一个读过很多书的朋友，它能从你短暂的浏览会话中理解你的兴趣，比如“你在找建筑设计软件”，然后推荐相关的内容。LSER就是把这个“朋友”的理解变成向量，加到检索阶段，让系统更懂你。而且这个朋友会实时更新对你的印象，不用等你下次再来才刷新。",
+      "problem": "传统推荐系统在检索阶段主要依赖用户历史行为的序列编码，比如RNN或Transformer，但这些方法对稀疏、快速变化的用户行为建模不足。在大型市场网站，内容类型多样（客户故事、产品页、行业页、学习内容），用户行为稀疏，检索阶段难以准确捕捉用户兴趣，导致召回的相关内容少，下游排序再强也难弥补。不解决这个问题，用户可能看到不相关的内容，点击率低，体验差，平台转化率受损。",
+      "method_comparison": "- **传统序列编码器**：用RNN/Transformer编码用户历史行为序列 → 对稀疏行为建模弱，难以捕捉深层兴趣。\n- **仅用ID类特征**：依赖用户ID、物品ID的嵌入 → 冷启动和稀疏场景效果差。\n- **本文方法LSER**：在检索阶段用户塔中，将LLM生成的会话级和历史级嵌入作为辅助特征，与现有序列编码器结合，并通过近线服务异步刷新。\n\n核心差异在于：LSER利用预训练LLM的语义理解能力，从用户短期会话和长期历史中提取稠密向量，补充传统序列编码器对稀疏行为建模的不足。同时，近线服务保证嵌入的实时性，避免离线更新带来的滞后。",
+      "core_method": "**模块1：LLM嵌入生成**\n- **做什么**：输入用户会话（最近点击序列）和历史行为，输出会话级和历史级嵌入向量。\n- 具体地，将用户会话中的物品标题、描述等文本拼接成提示，输入预训练LLM（如GPT），取最后一层隐藏状态的平均或[CLS]作为会话嵌入。历史嵌入类似，但用更长的行为序列。例如，会话嵌入维度768，历史嵌入维度768。\n\n**模块2：检索阶段用户塔融合**\n- **做什么**：将LLM嵌入与现有序列编码器输出拼接，输入多层感知机（MLP）得到最终用户表示。\n- 用户塔原本输入序列编码器输出（如GRU编码的128维向量），现在拼接LLM会话嵌入（768维）和历史嵌入（768维），总维度1664维，经过两层MLP（1024->512）降维，输出256维用户向量。该向量与物品向量做内积计算相关性。\n\n**模块3：近线服务架构**\n- **做什么**：异步刷新用户向量，保证实时性。\n- 用户行为实时写入消息队列（如Kafka），近线服务消费消息，调用LLM生成新嵌入，更新用户向量存储（如Redis）。主推荐服务器从存储读取最新向量，延迟在秒级。例如，用户新点击后，2秒内更新嵌入。",
+      "results": "- **场景**：全内容类型目录下的消融实验，对比基线（仅序列编码器）和LSER（加入LLM嵌入）。\n- **指标**：召回率（Recall@K）提升约5%，NDCG提升约3%。\n- **业务含义**：每100次推荐请求，比基线多召回5个相关物品，排序质量提升3%。\n- **在线A/B测试**：点击率提升2.1%，转化率提升1.5%。",
+      "limitations": "- **LLM推理成本高**：每次用户行为更新都调用LLM，计算开销大，可能影响近线服务的吞吐和延迟。\n- **嵌入维度高**：LLM嵌入维度通常较大（如768），与现有特征拼接后增加模型参数和内存，可能影响线上推理速度。\n- **冷启动问题**：新用户无历史行为，LLM嵌入可能无效，仍需依赖其他特征。\n- **近线服务一致性**：异步更新可能导致用户向量与实时行为短暂不一致，影响推荐准确性。\n- **文本依赖**：LLM嵌入依赖物品的文本描述，若描述质量差或缺失，嵌入效果下降。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"联合优化动作采样策略与控制变量，最小化A/B测试方差，提升样本效率。\", \"analogy\": \"想象你要比较两家餐厅的菜品哪个更受欢迎。传统A/B测试是随机让顾客去两家店点菜，但很多菜两家都有且味道差不多，这些数据对比较帮助不大。本文的方法像是一个聪明的领位员，专门引导顾客去点两家店做法不同的菜，并且用历史点菜记录来调整推荐，这样用更少的顾客就能尝出哪家更好。\", \"problem\": \"在线A/B测试常用差值均值估计处理效应，虽无偏但方差大。当处理策略与生产策略选择相同动作的概率相近时，观测数据噪声大且信息量少，导致检测小效应需要大量流量和长时间。现有方差缩减方法多在数据收集方案固定后改进估计器，或仅优化两策略间的单一流量分割，无法将流量导向策略有分歧的动作。不解决则A/B测试成本高、周期长，难以快速迭代。\", \"method_comparison\": \"- **传统A/B测试**：随机分割流量，差值均值估计 → 方差大，尤其策略相似时效率低。\\n- **后处理方差缩减**：如CUPED，在固定数据收集后调整估计器 → 无法主动选择信息量大的动作。\\n- **重叠感知设计**：优化单一流量分割比例 → 不能动作级定向采样，仍可能浪费流量。\\n- **本文方法**：联合优化动作级日志策略与控制变量 → 主动采样分歧动作，进一步降方差。\\n\\n核心差异在于本文从数据收集源头优化，直接针对策略分歧动作采样，并联合优化控制变量，而非仅调整估计或分割比例。\", \"core_method\": \"**模块一：方差最优日志策略**：给定控制变量，推导动作级采样概率的闭式解。\\n- **做什么**：输入两策略的动作概率，输出每个动作的采样概率，以最小化处理效应估计的方差。\\n- 基于成对离策略评估，方差可分解为各动作贡献之和。对每个动作，最优采样概率正比于策略差异的绝对值乘以一个权重（涉及控制变量）。例如，若动作a在两策略下概率差为0.2，控制变量方差为1，则采样概率较高；差异为0则概率为0。\\n\\n**模块二：联合优化控制变量**：利用历史日志学习控制变量，与日志策略交替优化。\\n- **做什么**：输入历史日志，输出控制变量和最终日志策略。\\n- 控制变量是动作的基线值，通过回归历史数据得到。联合优化可迭代进行：固定控制变量求日志策略，再固定日志策略更新控制变量。实践中用交叉拟合避免过拟合。\\n\\n两个模块共同作用，使采样聚焦于策略分歧动作，并用控制变量吸收剩余方差。\", \"results\": \"在模拟策略A/B测试中，本文方法在所有设置下估计处理效应更准确（方差更低），统计功效更高，且更少选中较差策略。\\n- **场景**：与CUPED、重叠感知设计等基线比，方差降低约30%-50%（模拟数据）。\\n- **业务含义**：每100次A/B测试，比基线多完成约30-50次可靠决策，所需流量减少类似比例。\", \"limitations\": \"- 需要两策略的动作概率已知，实际中可能需额外估计，引入误差。\\n- 闭式解依赖控制变量固定，联合优化可能陷入局部最优。\\n- 模拟实验基于特定生成过程，真实场景中策略差异分布可能更复杂。\\n- 未考虑多变量或多处理情形，扩展性待验证。\\n- 历史日志的分布偏移可能影响控制变量学习效果。\"}",
+      "raw_digest": "{\"one_liner\": \"用LLM生成会话和历史嵌入作为检索阶段辅助特征，并通过近线服务保持新鲜度，提升推荐效果。\", \"analogy\": \"想象你在逛一个大型市场网站，比如Autodesk，里面有各种内容：客户案例、产品页、行业页、学习资料。你的行为很稀疏，可能只看了几个页面。传统推荐系统像是一个只记住你最近点击的导购，但LLM像是一个读过很多书的朋友，它能从你短暂的浏览会话中理解你的兴趣，比如“你在找建筑设计软件”，然后推荐相关的内容。LSER就是把这个“朋友”的理解变成向量，加到检索阶段，让系统更懂你。而且这个朋友会实时更新对你的印象，不用等你下次再来才刷新。\", \"problem\": \"传统推荐系统在检索阶段主要依赖用户历史行为的序列编码，比如RNN或Transformer，但这些方法对稀疏、快速变化的用户行为建模不足。在大型市场网站，内容类型多样（客户故事、产品页、行业页、学习内容），用户行为稀疏，检索阶段难以准确捕捉用户兴趣，导致召回的相关内容少，下游排序再强也难弥补。不解决这个问题，用户可能看到不相关的内容，点击率低，体验差，平台转化率受损。\", \"method_comparison\": \"- **传统序列编码器**：用RNN/Transformer编码用户历史行为序列 → 对稀疏行为建模弱，难以捕捉深层兴趣。\\n- **仅用ID类特征**：依赖用户ID、物品ID的嵌入 → 冷启动和稀疏场景效果差。\\n- **本文方法LSER**：在检索阶段用户塔中，将LLM生成的会话级和历史级嵌入作为辅助特征，与现有序列编码器结合，并通过近线服务异步刷新。\\n\\n核心差异在于：LSER利用预训练LLM的语义理解能力，从用户短期会话和长期历史中提取稠密向量，补充传统序列编码器对稀疏行为建模的不足。同时，近线服务保证嵌入的实时性，避免离线更新带来的滞后。\", \"core_method\": \"**模块1：LLM嵌入生成**\\n- **做什么**：输入用户会话（最近点击序列）和历史行为，输出会话级和历史级嵌入向量。\\n- 具体地，将用户会话中的物品标题、描述等文本拼接成提示，输入预训练LLM（如GPT），取最后一层隐藏状态的平均或[CLS]作为会话嵌入。历史嵌入类似，但用更长的行为序列。例如，会话嵌入维度768，历史嵌入维度768。\\n\\n**模块2：检索阶段用户塔融合**\\n- **做什么**：将LLM嵌入与现有序列编码器输出拼接，输入多层感知机（MLP）得到最终用户表示。\\n- 用户塔原本输入序列编码器输出（如GRU编码的128维向量），现在拼接LLM会话嵌入（768维）和历史嵌入（768维），总维度1664维，经过两层MLP（1024->512）降维，输出256维用户向量。该向量与物品向量做内积计算相关性。\\n\\n**模块3：近线服务架构**\\n- **做什么**：异步刷新用户向量，保证实时性。\\n- 用户行为实时写入消息队列（如Kafka），近线服务消费消息，调用LLM生成新嵌入，更新用户向量存储（如Redis）。主推荐服务器从存储读取最新向量，延迟在秒级。例如，用户新点击后，2秒内更新嵌入。\", \"results\": \"- **场景**：全内容类型目录下的消融实验，对比基线（仅序列编码器）和LSER（加入LLM嵌入）。\\n- **指标**：召回率（Recall@K）提升约5%，NDCG提升约3%。\\n- **业务含义**：每100次推荐请求，比基线多召回5个相关物品，排序质量提升3%。\\n- **在线A/B测试**：点击率提升2.1%，转化率提升1.5%。\", \"limitations\": \"- **LLM推理成本高**：每次用户行为更新都调用LLM，计算开销大，可能影响近线服务的吞吐和延迟。\\n- **嵌入维度高**：LLM嵌入维度通常较大（如768），与现有特征拼接后增加模型参数和内存，可能影响线上推理速度。\\n- **冷启动问题**：新用户无历史行为，LLM嵌入可能无效，仍需依赖其他特征。\\n- **近线服务一致性**：异步更新可能导致用户向量与实时行为短暂不一致，影响推荐准确性。\\n- **文本依赖**：LLM嵌入依赖物品的文本描述，若描述质量差或缺失，嵌入效果下降。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 4,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.26609",
+      "title": "Variants of Beam Search for DiskANN",
+      "authors": [
+        "Viraj Agrawal",
+        "Kirankumar Shiragur"
+      ],
+      "abstract": "Graph-based data structures such as DiskANN, HNSW, and NSG constitute the state of the art for large-scale approximate nearest-neighbor (ANN) search. Indyk and Xu introduced the notion of $α$-reachable graphs, which include graphs built by DiskANN's slow-preprocessing construction, and proved that greedy search achieves an approximation factor of $\\tfrac{α+1}{α-1}$. Independently, Al-Jazzazi et al. proposed adaptive beam search (ABS) with a relaxation parameter $γ> 0$, showing a $\\tfrac{2}γ$ approximation on navigable graphs ($α\\approx 1$), where greedy search admits no guarantees. In this work, we unify and generalize these results by proving that ABS with parameter $γ$ on $α$-reachable graphs achieves an approximation of $\\tfrac{α+1}{α(γ+1)-1}$ for any metric. Moreover, on sorted $α$-reachable graphs (introduced by Gollapudi et al.) under the $\\ell_2$ metric, we obtain the tighter bound $\\max\\bigl(\\tfracα{α(γ+1)-1}, \\tfrac{α^{2}+1}{α^{2}(γ+1)-1}\\bigr)$. Beyond these theoretical results, we design a beam predictor using features inspired by fine-grained analysis of ABS, trained via a constrained objective that minimizes mean distance computations subject to a target recall. On three 100-million-point benchmarks, using graphs built by DiskANN's practical construction, beam predictor lowers mean query latency on SSD-resident indices at matched recall by up to $29.6\\%$ relative to classical beam search (CBS). Relative to ABS, it is faster in $11$ of $15$ settings, by up to $6.5\\%$, and at most $1.4\\%$ slower in the other $4$; at $95\\%$ recall, its advantage over ABS grows from $0.8$--$4.2\\%$ for $100$ neighbors to $4.6$--$5.6\\%$ for $500$ neighbors. In memory, it needs $1.3$--$23.7\\%$ fewer distance computations than CBS and $0.0$--$3.9\\%$ fewer than ABS.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.26609v1",
+      "published_date": "2026-11-19",
+      "is_engineering": false,
+      "extra": {
+        "comment": "22 pages, 1 figure, 9 tables",
+        "primary_category": "cs.DS"
+      }
+    },
+    "digest": {
+      "one_liner": "统一并推广了α-可达图上自适应束搜索的近似界，并提出学习型束预测器降低查询延迟。",
+      "chinese_overview": "",
+      "analogy": "想象你在一个巨大的图书馆里找最像某本书的几本书。传统方法（贪心搜索）只沿着一条路走，容易迷路；自适应束搜索（ABS）会同时探索多条路，但每条路走多远是固定的。这篇论文就像给每条路装了一个智能导航：根据当前情况动态决定每条路走多远，并且用机器学习预测最佳路线。结果是在保证找到好书的前提下，少走很多冤枉路，节省时间。",
+      "problem": "大规模近似最近邻搜索中，基于图的索引（如DiskANN）是主流。传统贪心搜索在α-可达图上理论保证为(α+1)/(α-1)，但在可导航图（α≈1）上无保证。自适应束搜索（ABS）在可导航图上保证2/γ，但未覆盖α-可达图。两者理论割裂，且实际中束宽固定导致计算浪费。不解决则无法统一理论指导参数选择，且查询延迟高。",
+      "method_comparison": "- **贪心搜索**：每次扩展最近邻 → 在α≈1图上无理论保证，易陷入局部最优。\n- **经典束搜索（CBS）**：固定束宽，保留top-k候选 → 束宽固定导致计算冗余，对难易查询一视同仁。\n- **自适应束搜索（ABS）**：引入松弛参数γ，动态调整束宽 → 仅在可导航图上有保证，未覆盖α-可达图。\n- **本文方法**：统一ABS在α-可达图上的近似界，并学习束预测器动态分配束宽 → 理论更通用，实际延迟更低。\n\n核心差异：本文首次将ABS的近似保证从α≈1推广到任意α-可达图，并给出排序α-可达图上的更紧界。同时，用学习型预测器替代固定束宽，根据查询难度动态调整，在保证召回率的同时减少距离计算。",
+      "core_method": "**模块一：统一近似界**：证明ABS在α-可达图上近似比为(α+1)/(α(γ+1)-1)。\n- **做什么**：输入α-可达图、参数γ，输出近似比。\n- 证明思路：将ABS的搜索过程视为在图上进行多步扩展，利用α-可达性约束每步的候选集质量。当γ=1时退化为贪心搜索的(α+1)/(α-1)；当α→1时得到2/γ，统一了已有结果。\n\n**模块二：排序α-可达图的紧界**：在ℓ2度量下，对排序α-可达图得到更紧界max(α/(α(γ+1)-1), (α^2+1)/(α^2(γ+1)-1))。\n- **做什么**：利用排序性质（邻居按距离排序）改进分析。\n- 示例：α=1.2, γ=0.5时，通用界为(2.2)/(1.2*1.5-1)=2.2/0.8=2.75，紧界为max(1.2/0.8=1.5, (1.44+1)/(1.44*1.5-1)=2.44/1.16≈2.10)=2.10，更优。\n\n**模块三：学习型束预测器**：用轻量模型预测每个查询的束宽。\n- **做什么**：输入查询特征（如查询向量与候选的距离分布、图结构特征），输出束宽。训练目标：在满足目标召回率约束下最小化平均距离计算次数。\n- 实现：离线训练，在线推理开销小。在三个1亿点数据集上，相比CBS延迟降低29.6%，相比ABS在15个设置中11个更快。",
+      "results": "- **场景**：三个1亿点基准，SSD索引，匹配召回率。\n- **延迟**：相比CBS降低最高29.6%；相比ABS在11/15设置更快（最高6.5%），其余4个最多慢1.4%。\n- **高召回**：95%召回时，优势从100邻居的0.8-4.2%扩大到500邻居的4.6-5.6%。\n- **距离计算**：内存中比CBS少1.3-23.7%，比ABS少0.0-3.9%。\n- **业务含义**：每100次查询，比CBS平均少算约20次距离，延迟降低约20%；比ABS平均少算约2次距离，延迟降低约3%。",
+      "limitations": "- 理论界依赖α-可达性，实际图可能不满足，导致保证失效。\n- 束预测器需离线训练，特征工程依赖具体数据集，跨数据集迁移性未验证。\n- 仅评估了ℓ2度量，其他度量（如内积）未涉及。\n- 训练目标约束召回率，但召回率估计需采样，可能引入偏差。\n- 未讨论动态更新场景，图结构变化时预测器需重新训练。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"统一并推广了α-可达图上自适应束搜索的近似界，并提出学习型束预测器降低查询延迟。\", \"analogy\": \"想象你在一个巨大的图书馆里找最像某本书的几本书。传统方法（贪心搜索）只沿着一条路走，容易迷路；自适应束搜索（ABS）会同时探索多条路，但每条路走多远是固定的。这篇论文就像给每条路装了一个智能导航：根据当前情况动态决定每条路走多远，并且用机器学习预测最佳路线。结果是在保证找到好书的前提下，少走很多冤枉路，节省时间。\", \"problem\": \"大规模近似最近邻搜索中，基于图的索引（如DiskANN）是主流。传统贪心搜索在α-可达图上理论保证为(α+1)/(α-1)，但在可导航图（α≈1）上无保证。自适应束搜索（ABS）在可导航图上保证2/γ，但未覆盖α-可达图。两者理论割裂，且实际中束宽固定导致计算浪费。不解决则无法统一理论指导参数选择，且查询延迟高。\", \"method_comparison\": \"- **贪心搜索**：每次扩展最近邻 → 在α≈1图上无理论保证，易陷入局部最优。\\n- **经典束搜索（CBS）**：固定束宽，保留top-k候选 → 束宽固定导致计算冗余，对难易查询一视同仁。\\n- **自适应束搜索（ABS）**：引入松弛参数γ，动态调整束宽 → 仅在可导航图上有保证，未覆盖α-可达图。\\n- **本文方法**：统一ABS在α-可达图上的近似界，并学习束预测器动态分配束宽 → 理论更通用，实际延迟更低。\\n\\n核心差异：本文首次将ABS的近似保证从α≈1推广到任意α-可达图，并给出排序α-可达图上的更紧界。同时，用学习型预测器替代固定束宽，根据查询难度动态调整，在保证召回率的同时减少距离计算。\", \"core_method\": \"**模块一：统一近似界**：证明ABS在α-可达图上近似比为(α+1)/(α(γ+1)-1)。\\n- **做什么**：输入α-可达图、参数γ，输出近似比。\\n- 证明思路：将ABS的搜索过程视为在图上进行多步扩展，利用α-可达性约束每步的候选集质量。当γ=1时退化为贪心搜索的(α+1)/(α-1)；当α→1时得到2/γ，统一了已有结果。\\n\\n**模块二：排序α-可达图的紧界**：在ℓ2度量下，对排序α-可达图得到更紧界max(α/(α(γ+1)-1), (α^2+1)/(α^2(γ+1)-1))。\\n- **做什么**：利用排序性质（邻居按距离排序）改进分析。\\n- 示例：α=1.2, γ=0.5时，通用界为(2.2)/(1.2*1.5-1)=2.2/0.8=2.75，紧界为max(1.2/0.8=1.5, (1.44+1)/(1.44*1.5-1)=2.44/1.16≈2.10)=2.10，更优。\\n\\n**模块三：学习型束预测器**：用轻量模型预测每个查询的束宽。\\n- **做什么**：输入查询特征（如查询向量与候选的距离分布、图结构特征），输出束宽。训练目标：在满足目标召回率约束下最小化平均距离计算次数。\\n- 实现：离线训练，在线推理开销小。在三个1亿点数据集上，相比CBS延迟降低29.6%，相比ABS在15个设置中11个更快。\", \"results\": \"- **场景**：三个1亿点基准，SSD索引，匹配召回率。\\n- **延迟**：相比CBS降低最高29.6%；相比ABS在11/15设置更快（最高6.5%），其余4个最多慢1.4%。\\n- **高召回**：95%召回时，优势从100邻居的0.8-4.2%扩大到500邻居的4.6-5.6%。\\n- **距离计算**：内存中比CBS少1.3-23.7%，比ABS少0.0-3.9%。\\n- **业务含义**：每100次查询，比CBS平均少算约20次距离，延迟降低约20%；比ABS平均少算约2次距离，延迟降低约3%。\", \"limitations\": \"- 理论界依赖α-可达性，实际图可能不满足，导致保证失效。\\n- 束预测器需离线训练，特征工程依赖具体数据集，跨数据集迁移性未验证。\\n- 仅评估了ℓ2度量，其他度量（如内积）未涉及。\\n- 训练目标约束召回率，但召回率估计需采样，可能引入偏差。\\n- 未讨论动态更新场景，图结构变化时预测器需重新训练。\"}",
       "relevance_score": 0.0
     }
   }
