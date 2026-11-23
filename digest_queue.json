@@ -47,7 +47,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.26531",
       "title": "Cost-Aware Agentic Feature Optimization System for Fleet-Scale Ranking Models",
