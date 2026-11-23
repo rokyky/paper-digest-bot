@@ -136,7 +136,7 @@
   },
   {
     "position": 4,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.26609",
       "title": "Variants of Beam Search for DiskANN",
