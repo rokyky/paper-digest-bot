@@ -166,7 +166,7 @@
   },
   {
     "position": 5,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.30662",
       "title": "WeMM-Ecom: Advancing Multimodal Content Understanding for WeChat E-Commerce",
