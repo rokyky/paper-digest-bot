@@ -42,7 +42,7 @@
   },
   {
     "position": 2,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.31052",
       "title": "From Head to Tail: LLM-Augmented Sequential Recommendation and Trade-off Optimization",
