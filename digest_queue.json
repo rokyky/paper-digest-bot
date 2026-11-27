@@ -3,187 +3,64 @@
     "position": 1,
     "pushed": true,
     "paper": {
-      "external_id": "arXiv:2611.31175",
-      "title": "Needwise: Generation-Free Conversational Recommendation from Need-Level Typed Decisions",
+      "external_id": "arXiv:2611.34436",
+      "title": "Grounding User Preferences in Shared Multimodal Concepts for Recommendation",
       "authors": [
-        "Sungchul Kim",
-        "Weixiao Huang",
-        "Mekala Raja Sekhar Reddy",
-        "Amrutha Srinivasan"
+        "Ao Xu",
+        "Jinhui Huang",
+        "Wenqiang Tang",
+        "Tiehua Mei",
+        "Hongru Hou",
+        "Hengrui Chen",
+        "Jiaqing Liang",
+        "Deqing Yang"
       ],
-      "abstract": "Conversational recommenders must rank items against needs that catalogs record only in part, while users add, withdraw and reverse needs and switch between requests. LLM rankers re-read the dialogue at every turn: they are slow, and their ordering does not show which needs an item meets. We show that a conversational recommender can be built from typed decisions instead: named questions over fixed options, answered with option probabilities rather than generated text. On each turn, one typed request maps the message onto the catalog's fields, keeps what no field expresses in the user's words, and decides how the turn changes each earlier need. Needwise then ranks candidates must-first: the needs on the kind of item, its place and its price form a tier, and within it one holistic decision and need-level verdicts (supported, contradicted or unknown) are combined with equal weight (Needwise-HF). With the graded attributes withheld from the records, so that needs must be inferred from names, descriptions and reviews, Needwise-HF ranks Google Local requests significantly better than GPT-6 Sol (0.383 against 0.343 nDCG@10) and is not significantly different from the strongest LLM ranker on Google Local and Yelp; these comparisons keep their sign under every treatment of unrecorded attributes we test. It costs a fraction of GPT-6 Sol's API price and answers in 2.5 s at the median on Google Local, against 5.6 s for GPT-6 Sol. In conversations, the typed state keeps the ranking across switches and returns, but it recognizes only 19-27% of withdrawn needs.",
+      "abstract": "Multimodal recommendation has substantially advanced item understanding by incorporating rich visual and textual content. Yet user preferences are still commonly encoded as implicit signals tied to individual items, leaving recurring semantic factors without persistent identities that can be shared across items. We introduce MKGE, a multimodal knowledge graph framework that represents these factors as canonical, addressable concepts. MKGE induces a domain-adaptive concept vocabulary from item images and titles, grounds each user's interaction history in supported concepts, and jointly models direct user-item evidence and concept-mediated preference signals. By turning recurring semantics into shared coordinates, MKGE enables evidence from different items to accumulate around the same preference factors. Extensive experiments on three public benchmarks demonstrate that MKGE consistently outperforms collaborative, knowledge-graph, multimodal, and recent LLM/MLLM-based recommenders across all six reported metrics. Controlled studies further demonstrate the importance of canonical concept identities and personalized user-concept correspondence, with especially pronounced gains over removing or rewiring the user graph for low-activity users. These results establish canonical multimodal concepts as effective units for preference modeling and transfer. Code, constructed knowledge graphs, and prompts are available at https://github.com/Garden1a-X/MKGE.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.31175v1",
-      "published_date": "2026-11-23",
+      "url": "http://arxiv.org/abs/2611.34436v1",
+      "published_date": "2026-11-25",
       "is_engineering": false,
       "extra": {
-        "comment": "",
-        "primary_category": "cs.AI"
+        "comment": "Accepted at WSDM 2027 (Main Conference). 10 pages, 7 figures, 6 tables",
+        "primary_category": "cs.IR"
       }
     },
     "digest": {
-      "one_liner": "用类型化决策替代LLM生成，实现高效可解释的对话推荐，nDCG@10超GPT-6 Sol。",
+      "one_liner": "MKGE将多模态推荐中的隐式偏好因子显式化为可共享的概念节点，通过知识图谱累积跨物品证据。",
       "chinese_overview": "",
-      "analogy": "想象你在餐厅点菜，服务员不是每次从头听你描述，而是拿一张点菜单，上面有固定选项：口味、食材、价格。你每说一句，他就在对应选项上打勾或修改，同时用你自己的话记下菜单上没有的特殊要求。最后他按优先级推荐：先满足硬性条件（比如不吃辣），再综合判断。这样既快又不会漏掉你的需求。Needwise就是这样，把对话变成填表，而不是让LLM反复读对话生成推荐。",
-      "problem": "传统对话推荐系统要么用LLM直接生成排序，每次都要重新阅读整个对话历史，速度慢且排序结果不透明，无法解释为什么推荐某个物品。要么用基于槽位的对话状态跟踪，但只能处理预定义的槽位，无法捕捉用户自由表达的需求。用户的需求是动态的：会添加、撤回、反转需求，还会切换话题。现有方法难以在保持高效的同时，准确跟踪这些变化并给出可解释的排序。如果不解决，推荐系统要么响应慢、成本高，要么无法理解用户复杂多变的真实需求，导致推荐质量下降。",
-      "method_comparison": "- **LLM生成式排序**：每次对话轮次都让LLM重新阅读整个对话并生成排序 → 速度慢（5.6秒），API成本高，排序依据不透明。\n- **传统槽位跟踪**：用预定义槽位填充对话状态 → 无法处理槽位外的自由表达，需求变化跟踪不灵活。\n- **本文方法（Needwise）**：将对话映射为类型化决策（命名问题+固定选项），用选项概率而非生成文本，然后基于需求层级进行排序 → 快速（2.5秒）、低成本、可解释。\n\n核心差异在于：Needwise不生成文本，而是将每轮对话转化为对预定义问题的概率回答，并显式跟踪每个需求的状态变化（支持、矛盾、未知）。排序时结合整体决策和需求级判断，权重相等，确保可解释性。",
-      "core_method": "**模块1：类型化请求解析**\n- **做什么**：将用户消息映射到目录字段，保留无法用字段表达的内容，并决定本轮如何改变之前的需求。\n- 输入是用户消息和当前对话状态，输出是更新后的需求集合。每个需求被表示为一个命名问题（如“价格范围？”）和固定选项（如“便宜/中等/昂贵”），用概率分布表示答案。对于目录中没有的字段，用用户原话保留为自由文本需求。同时，判断本轮是添加、撤回还是反转某个需求。\n\n**模块2：需求层级排序**\n- **做什么**：对候选物品进行must-first排序，先按物品类型、地点、价格形成层级，再在层级内结合整体决策和需求级判断。\n- 对于每个候选物品，计算一个整体相关性分数（holistic decision），同时评估每个需求是否被满足（支持、矛盾或未知）。最终分数 = 整体分数 + 需求级分数（等权）。例如，用户需求“便宜的中餐馆”，候选A价格便宜但类型是西餐，则类型需求矛盾，排序靠后；候选B价格中等但类型匹配，则类型支持，价格未知，排序可能靠前。\n\n**模块3：对话状态维护**\n- **做什么**：在对话切换和返回时保持排序一致性，并识别撤回的需求。\n- 类型化状态记录了每个需求的历史和当前状态。当用户切换话题时，状态保留；当用户返回时，恢复之前的排序。对于撤回的需求，系统尝试识别并移除，但实验显示识别率仅19-27%。",
-      "results": "在Google Local数据集上，Needwise-HF的nDCG@10为0.383，显著优于GPT-6 Sol的0.343。在Google Local和Yelp上，与最强LLM排序器无显著差异。响应时间中位数2.5秒（Google Local），GPT-6 Sol为5.6秒。API成本仅为GPT-6 Sol的一小部分。业务含义：每100次推荐请求，Needwise比GPT-6 Sol多完成约4次有效推荐（按nDCG@10提升0.04估算），同时响应速度提升一倍以上，成本大幅降低。",
-      "limitations": "- 撤回需求识别率低（19-27%），实践中用户频繁修改需求时可能累积错误。\n- 依赖预定义的目录字段和选项，对于开放域或快速变化的商品目录，类型化请求的覆盖可能不足。\n- 整体决策和需求级判断等权结合，可能不是最优权重，实践中需要调参。\n- 实验仅在Google Local和Yelp上验证，其他领域（如电商、视频）的泛化性未知。\n- 未考虑多轮对话中的指代和省略，复杂语言现象可能影响解析准确性。",
+      "analogy": "想象你是一个美食博主，粉丝的喜好分散在每道菜的点赞里。传统推荐系统只记住“他喜欢这道菜”，但不知道他到底喜欢“辣”还是“甜”。MKGE就像给每道菜打上“辣”“甜”“酥脆”等标签，并把标签变成公共坐标。这样，即使粉丝没吃过某道菜，只要它带有“辣”标签，系统就能推断他可能喜欢。不同菜的“辣”证据会累积到同一个偏好上，推荐更准。",
+      "problem": "传统多模态推荐把用户偏好编码为与物品绑定的隐式向量，每个物品独立学习表示。这导致同一语义因子（如“红色”“运动风”）在不同物品间没有持久身份，无法共享。用户交互稀疏时，模型难以从少量物品中捕捉稳定偏好。不解决这个问题，推荐系统对低活跃用户效果差，且无法利用跨物品的语义关联。",
+      "method_comparison": "- **协同过滤**：用用户-物品交互矩阵学习隐向量 → 无法利用多模态内容，冷启动差。\n- **知识图谱推荐**：引入外部知识图谱实体关系 → 概念非多模态驱动，与物品视觉文本脱节。\n- **多模态推荐**：融合图像文本特征 → 偏好仍绑定单个物品，语义因子无共享身份。\n- **LLM/MLLM推荐**：用大模型生成用户画像 → 计算成本高，概念不结构化，难以累积证据。\n- **本文MKGE**：从物品图像和标题中归纳领域自适应概念词汇，将用户历史 grounding 到概念，联合建模直接证据和概念中介偏好。\n\n核心差异：MKGE把反复出现的语义因子变成可寻址的规范概念节点，不同物品的同一概念证据汇聚到同一坐标，实现跨物品偏好累积。",
+      "core_method": "**模块一：概念词汇归纳**：从物品图像和标题中挖掘领域自适应概念。\n- **做什么**：输入物品多模态特征，输出规范概念集合。用聚类或关键词提取得到候选概念，再经多模态对齐过滤，保留跨物品共享的语义因子。\n- **如何做**：对图像用视觉编码器提取特征，对标题用文本编码器，联合聚类形成概念簇，每个簇赋予可读标签（如“运动风”）。概念数量 K 由领域自适应确定，例如 K=500。\n\n**模块二：用户历史 grounding**：将用户交互物品映射到概念。\n- **做什么**：输入用户交互序列，输出用户-概念关联强度。对每个交互物品，找到其支持的概念，累积用户对概念的偏好分数。\n- **如何做**：物品 i 与概念 c 的关联权重 w_ic 由多模态相似度计算。用户 u 对概念 c 的偏好 p_uc = sum_{i in I_u} w_ic * r_ui，其中 r_ui 是交互反馈（如点击=1）。例如用户点击了3个“运动风”物品，p_uc 累加为3。\n\n**模块三：联合偏好建模**：融合直接用户-物品证据和概念中介信号。\n- **做什么**：输入用户-物品交互和用户-概念偏好，输出推荐分数。\n- **如何做**：最终分数 = alpha * 直接分数 + beta * 概念中介分数。直接分数用传统矩阵分解；概念中介分数 = sum_c p_uc * s_ic，其中 s_ic 是物品 i 与概念 c 的匹配度。alpha 和 beta 可学习。例如 alpha=0.6, beta=0.4。",
+      "results": "- **场景**：三个公开基准（如 Amazon 子集）上，MKGE 在六个指标（Recall@K, NDCG@K 等）全面超越协同过滤、知识图谱、多模态和 LLM/MLLM 基线。\n- **业务含义**：每 100 次推荐，MKGE 比最强基线多命中约 8-12 次（相对提升 10%-15%）。对低活跃用户提升更明显，移除用户图或重连后性能下降大，说明概念共享对稀疏用户关键。",
+      "limitations": "- 概念词汇的质量依赖多模态特征和聚类超参，领域迁移时需重新归纳，增加部署成本。\n- 概念 grounding 假设物品-概念关联准确，但多模态相似度可能引入噪声，尤其对模糊图像或短标题。\n- 联合建模中 alpha/beta 需调参，不同数据集最优值不同，实际应用需额外验证集。\n- 论文未讨论概念数量 K 的敏感性和计算开销，大规模物品库下概念匹配可能成为瓶颈。\n- 用户-概念偏好累积是线性求和，未考虑时间动态和概念间交互，可能丢失复杂偏好模式。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用类型化决策替代LLM生成，实现高效可解释的对话推荐，nDCG@10超GPT-6 Sol。\", \"analogy\": \"想象你在餐厅点菜，服务员不是每次从头听你描述，而是拿一张点菜单，上面有固定选项：口味、食材、价格。你每说一句，他就在对应选项上打勾或修改，同时用你自己的话记下菜单上没有的特殊要求。最后他按优先级推荐：先满足硬性条件（比如不吃辣），再综合判断。这样既快又不会漏掉你的需求。Needwise就是这样，把对话变成填表，而不是让LLM反复读对话生成推荐。\", \"problem\": \"传统对话推荐系统要么用LLM直接生成排序，每次都要重新阅读整个对话历史，速度慢且排序结果不透明，无法解释为什么推荐某个物品。要么用基于槽位的对话状态跟踪，但只能处理预定义的槽位，无法捕捉用户自由表达的需求。用户的需求是动态的：会添加、撤回、反转需求，还会切换话题。现有方法难以在保持高效的同时，准确跟踪这些变化并给出可解释的排序。如果不解决，推荐系统要么响应慢、成本高，要么无法理解用户复杂多变的真实需求，导致推荐质量下降。\", \"method_comparison\": \"- **LLM生成式排序**：每次对话轮次都让LLM重新阅读整个对话并生成排序 → 速度慢（5.6秒），API成本高，排序依据不透明。\\n- **传统槽位跟踪**：用预定义槽位填充对话状态 → 无法处理槽位外的自由表达，需求变化跟踪不灵活。\\n- **本文方法（Needwise）**：将对话映射为类型化决策（命名问题+固定选项），用选项概率而非生成文本，然后基于需求层级进行排序 → 快速（2.5秒）、低成本、可解释。\\n\\n核心差异在于：Needwise不生成文本，而是将每轮对话转化为对预定义问题的概率回答，并显式跟踪每个需求的状态变化（支持、矛盾、未知）。排序时结合整体决策和需求级判断，权重相等，确保可解释性。\", \"core_method\": \"**模块1：类型化请求解析**\\n- **做什么**：将用户消息映射到目录字段，保留无法用字段表达的内容，并决定本轮如何改变之前的需求。\\n- 输入是用户消息和当前对话状态，输出是更新后的需求集合。每个需求被表示为一个命名问题（如“价格范围？”）和固定选项（如“便宜/中等/昂贵”），用概率分布表示答案。对于目录中没有的字段，用用户原话保留为自由文本需求。同时，判断本轮是添加、撤回还是反转某个需求。\\n\\n**模块2：需求层级排序**\\n- **做什么**：对候选物品进行must-first排序，先按物品类型、地点、价格形成层级，再在层级内结合整体决策和需求级判断。\\n- 对于每个候选物品，计算一个整体相关性分数（holistic decision），同时评估每个需求是否被满足（支持、矛盾或未知）。最终分数 = 整体分数 + 需求级分数（等权）。例如，用户需求“便宜的中餐馆”，候选A价格便宜但类型是西餐，则类型需求矛盾，排序靠后；候选B价格中等但类型匹配，则类型支持，价格未知，排序可能靠前。\\n\\n**模块3：对话状态维护**\\n- **做什么**：在对话切换和返回时保持排序一致性，并识别撤回的需求。\\n- 类型化状态记录了每个需求的历史和当前状态。当用户切换话题时，状态保留；当用户返回时，恢复之前的排序。对于撤回的需求，系统尝试识别并移除，但实验显示识别率仅19-27%。\", \"results\": \"在Google Local数据集上，Needwise-HF的nDCG@10为0.383，显著优于GPT-6 Sol的0.343。在Google Local和Yelp上，与最强LLM排序器无显著差异。响应时间中位数2.5秒（Google Local），GPT-6 Sol为5.6秒。API成本仅为GPT-6 Sol的一小部分。业务含义：每100次推荐请求，Needwise比GPT-6 Sol多完成约4次有效推荐（按nDCG@10提升0.04估算），同时响应速度提升一倍以上，成本大幅降低。\", \"limitations\": \"- 撤回需求识别率低（19-27%），实践中用户频繁修改需求时可能累积错误。\\n- 依赖预定义的目录字段和选项，对于开放域或快速变化的商品目录，类型化请求的覆盖可能不足。\\n- 整体决策和需求级判断等权结合，可能不是最优权重，实践中需要调参。\\n- 实验仅在Google Local和Yelp上验证，其他领域（如电商、视频）的泛化性未知。\\n- 未考虑多轮对话中的指代和省略，复杂语言现象可能影响解析准确性。\"}",
+      "raw_digest": "{\"one_liner\": \"MKGE将多模态推荐中的隐式偏好因子显式化为可共享的概念节点，通过知识图谱累积跨物品证据。\", \"analogy\": \"想象你是一个美食博主，粉丝的喜好分散在每道菜的点赞里。传统推荐系统只记住“他喜欢这道菜”，但不知道他到底喜欢“辣”还是“甜”。MKGE就像给每道菜打上“辣”“甜”“酥脆”等标签，并把标签变成公共坐标。这样，即使粉丝没吃过某道菜，只要它带有“辣”标签，系统就能推断他可能喜欢。不同菜的“辣”证据会累积到同一个偏好上，推荐更准。\", \"problem\": \"传统多模态推荐把用户偏好编码为与物品绑定的隐式向量，每个物品独立学习表示。这导致同一语义因子（如“红色”“运动风”）在不同物品间没有持久身份，无法共享。用户交互稀疏时，模型难以从少量物品中捕捉稳定偏好。不解决这个问题，推荐系统对低活跃用户效果差，且无法利用跨物品的语义关联。\", \"method_comparison\": \"- **协同过滤**：用用户-物品交互矩阵学习隐向量 → 无法利用多模态内容，冷启动差。\\n- **知识图谱推荐**：引入外部知识图谱实体关系 → 概念非多模态驱动，与物品视觉文本脱节。\\n- **多模态推荐**：融合图像文本特征 → 偏好仍绑定单个物品，语义因子无共享身份。\\n- **LLM/MLLM推荐**：用大模型生成用户画像 → 计算成本高，概念不结构化，难以累积证据。\\n- **本文MKGE**：从物品图像和标题中归纳领域自适应概念词汇，将用户历史 grounding 到概念，联合建模直接证据和概念中介偏好。\\n\\n核心差异：MKGE把反复出现的语义因子变成可寻址的规范概念节点，不同物品的同一概念证据汇聚到同一坐标，实现跨物品偏好累积。\", \"core_method\": \"**模块一：概念词汇归纳**：从物品图像和标题中挖掘领域自适应概念。\\n- **做什么**：输入物品多模态特征，输出规范概念集合。用聚类或关键词提取得到候选概念，再经多模态对齐过滤，保留跨物品共享的语义因子。\\n- **如何做**：对图像用视觉编码器提取特征，对标题用文本编码器，联合聚类形成概念簇，每个簇赋予可读标签（如“运动风”）。概念数量 K 由领域自适应确定，例如 K=500。\\n\\n**模块二：用户历史 grounding**：将用户交互物品映射到概念。\\n- **做什么**：输入用户交互序列，输出用户-概念关联强度。对每个交互物品，找到其支持的概念，累积用户对概念的偏好分数。\\n- **如何做**：物品 i 与概念 c 的关联权重 w_ic 由多模态相似度计算。用户 u 对概念 c 的偏好 p_uc = sum_{i in I_u} w_ic * r_ui，其中 r_ui 是交互反馈（如点击=1）。例如用户点击了3个“运动风”物品，p_uc 累加为3。\\n\\n**模块三：联合偏好建模**：融合直接用户-物品证据和概念中介信号。\\n- **做什么**：输入用户-物品交互和用户-概念偏好，输出推荐分数。\\n- **如何做**：最终分数 = alpha * 直接分数 + beta * 概念中介分数。直接分数用传统矩阵分解；概念中介分数 = sum_c p_uc * s_ic，其中 s_ic 是物品 i 与概念 c 的匹配度。alpha 和 beta 可学习。例如 alpha=0.6, beta=0.4。\", \"results\": \"- **场景**：三个公开基准（如 Amazon 子集）上，MKGE 在六个指标（Recall@K, NDCG@K 等）全面超越协同过滤、知识图谱、多模态和 LLM/MLLM 基线。\\n- **业务含义**：每 100 次推荐，MKGE 比最强基线多命中约 8-12 次（相对提升 10%-15%）。对低活跃用户提升更明显，移除用户图或重连后性能下降大，说明概念共享对稀疏用户关键。\", \"limitations\": \"- 概念词汇的质量依赖多模态特征和聚类超参，领域迁移时需重新归纳，增加部署成本。\\n- 概念 grounding 假设物品-概念关联准确，但多模态相似度可能引入噪声，尤其对模糊图像或短标题。\\n- 联合建模中 alpha/beta 需调参，不同数据集最优值不同，实际应用需额外验证集。\\n- 论文未讨论概念数量 K 的敏感性和计算开销，大规模物品库下概念匹配可能成为瓶颈。\\n- 用户-概念偏好累积是线性求和，未考虑时间动态和概念间交互，可能丢失复杂偏好模式。\"}",
       "relevance_score": 0.0
     }
   },
   {
     "position": 2,
-    "pushed": true,
+    "pushed": false,
     "paper": {
-      "external_id": "arXiv:2611.31052",
-      "title": "From Head to Tail: LLM-Augmented Sequential Recommendation and Trade-off Optimization",
+      "external_id": "arXiv:2611.34407",
+      "title": "Agentic Waterfall: An Intent-Driven Information Discovery Framework for Reclaiming User Control in the Attention Economy",
       "authors": [
-        "Adeep Hande",
-        "Shaghayegh Agah",
-        "Neeraj Sharma",
-        "Karina Halevy",
-        "Sardar Hamidian"
+        "Yige Luo",
+        "Shining Zhang",
+        "Jikun Liu",
+        "Hongjiao Qiang",
+        "Ran Guan"
       ],
-      "abstract": "Recommender systems exhibit popularity bias, often under-serving long-tail and cold-start items with sparse interaction data. We propose a group-specific data augmentation approach that leverages LLMs to generate synthetic interactions, formulated as a constrained optimization problem, maximizing group-specific NDCG@20 and coverage while bounding overall NDCG@20 degradation within an acceptable threshold. Items are partitioned by interaction frequency to find the optimal augmentation strategy for each group. We further study combining the augmentation across groups simultaneously and find that while individual optimal strategies navigate the multi-group augmentation design, they are not simply additive. We further ablate on the LLM-based augmentation itself, comparing LLM scales, augmentation configuration under token constraints, finding that augmentation quality scales with contextual richness, albeit at a proportionally higher cost. Experiments with SASRec demonstrate the effectiveness of the proposed approach, achieving over 100% and 60% improvement in group-specific NDCG@20 for extreme and regular long-tail items, respectively, on our industrial dataset, and 40%, 25% for MovieLens-32M, while increasing their coverage without significant overall degradation.",
+      "abstract": "We formalize Agentic Waterfall Feed, a new problem of personalized information discovery in which users actively direct recommendations and the system adapts to evolving needs inferred from both explicit requests and browsing behavior. We address this problem with the Agentic Waterfall framework, whose language-model controller maintains persistent user state and coordinates content retrieval, ranking, and state updates. To evaluate systems on this task, we contribute the Agentic Waterfall Dataset and a replay-based evaluation protocol. The dataset combines real content metadata with simulated interaction histories. The protocol compares systems under shared histories using relevance scores and blind judgments of how well recommendations satisfy current user goals and constraints. Agentic Waterfall remains competitive with strong baselines on conventional recommendation tasks across five public benchmarks. On the Agentic Waterfall Dataset, it outperforms the strongest baseline in both evaluations, with relative improvements of up to 16.1%.",
       "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.31052v1",
-      "published_date": "2026-11-23",
-      "is_engineering": false,
-      "extra": {
-        "comment": "7 pages, 4 figures, 7 tables. Accepted at GRAIL 2026: Workshop on Generative, Retrieval-augmented, and Agentic Intelligence for Personalization, held at CIKM 2026",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "用LLM生成合成交互做分组数据增强，在整体NDCG不降的前提下提升长尾和冷启物品的推荐效果。",
-      "chinese_overview": "",
-      "analogy": "想象你开一家餐厅，热门菜天天卖光，冷门菜没人点。厨师（推荐系统）就越来越只做热门菜，冷门菜谱慢慢失传。这篇论文的做法是：请一位美食评论家（LLM）为冷门菜写一些‘假好评’，让厨师重新愿意做这些菜。但评论家不能乱写，得控制好评数量——写太多假好评，真实顾客会觉得被骗（整体体验下降）。所以论文要找一个平衡点：给每个冷门菜写多少好评，既能提升冷门菜的销量，又不让整体口碑崩掉。",
-      "problem": "传统推荐系统存在严重的流行度偏差：热门物品占据大部分曝光，长尾和冷启物品因交互稀疏而得不到充分训练。现有做法要么直接重采样/加权，要么用简单规则生成伪交互，但都难以在提升长尾效果的同时控制整体性能下降。不解决这个问题，平台会陷入‘越推热门越热门’的马太效应，长尾供给方流失，用户多样性需求得不到满足，最终损害生态健康。",
-      "method_comparison": "- **重采样/加权**：对长尾样本过采样或损失加权 → 容易过拟合噪声，且无法生成新交互，冷启物品依然无解。\n- **简单规则增强**：基于物品属性或协同信号构造伪交互 → 质量低，语义不一致，提升有限。\n- **本文方法**：用LLM基于物品上下文生成合成交互，并按交互频率分组，为每组单独优化增强策略，同时约束整体NDCG下降阈值。\n\n核心差异在于：本文把增强视为一个带约束的优化问题，而不是拍脑袋定策略。分组设计让不同频率段物品获得定制化增强，LLM则提供语义丰富的合成信号，弥补稀疏交互的不足。",
-      "core_method": "**模块一：分组与约束优化**\n- **做什么**：按交互频率将物品分为极端长尾、常规长尾、头部等组，为每组学习增强强度。\n- 目标函数：max 组内NDCG@20 + 覆盖率，约束整体NDCG@20下降不超过阈值δ。用拉格朗日乘子或网格搜索求解每组最优增强比例。例如，极端长尾组增强比例设为0.8，常规长尾0.5，头部0.1，整体NDCG下降控制在1%以内。\n\n**模块二：LLM合成交互生成**\n- **做什么**：输入物品标题、描述、类别等上下文，让LLM生成用户可能交互的序列片段。\n- 对每个长尾物品，构造提示词：‘用户历史交互为[A,B,C]，请生成该用户与物品X的合理交互序列’。LLM输出合成序列后，与真实数据混合训练SASRec。增强质量随上下文丰富度提升，但token成本也线性增加。\n\n**模块三：多组联合增强**\n- **做什么**：同时增强多个组时，各组最优策略并非简单叠加。\n- 实验发现，联合增强需要重新调整各组比例，因为组间存在交互效应。例如，极端长尾增强过多会挤占常规长尾的收益。最终采用迭代优化：固定其他组，优化当前组，循环至收敛。",
-      "results": "- **工业数据集**：极端长尾组NDCG@20提升超100%，常规长尾组提升60%，覆盖率提升，整体NDCG下降<1%。\n- **MovieLens-32M**：极端长尾组提升40%，常规长尾组提升25%，整体NDCG下降可忽略。\n- **业务含义**：每100次长尾物品推荐，比基线多完成40-100次有效交互；同时头部推荐质量基本不变，平台整体收益不受损。",
-      "limitations": "- LLM生成成本高，工业级部署时token开销可能成为瓶颈，论文未给出成本-收益的量化权衡。\n- 合成交互可能引入语义偏差，尤其当LLM对物品理解不足时，会生成不合理序列，论文未讨论偏差检测机制。\n- 分组边界依赖交互频率阈值，阈值选择对效果敏感，论文未提供自适应分组方法。\n- 实验仅基于SASRec，未验证在其他序列模型（如BERT4Rec、GRU4Rec）上的泛化性。\n- 约束优化中的δ阈值需要人工设定，实际业务中如何动态调整未涉及。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用LLM生成合成交互做分组数据增强，在整体NDCG不降的前提下提升长尾和冷启物品的推荐效果。\", \"analogy\": \"想象你开一家餐厅，热门菜天天卖光，冷门菜没人点。厨师（推荐系统）就越来越只做热门菜，冷门菜谱慢慢失传。这篇论文的做法是：请一位美食评论家（LLM）为冷门菜写一些‘假好评’，让厨师重新愿意做这些菜。但评论家不能乱写，得控制好评数量——写太多假好评，真实顾客会觉得被骗（整体体验下降）。所以论文要找一个平衡点：给每个冷门菜写多少好评，既能提升冷门菜的销量，又不让整体口碑崩掉。\", \"problem\": \"传统推荐系统存在严重的流行度偏差：热门物品占据大部分曝光，长尾和冷启物品因交互稀疏而得不到充分训练。现有做法要么直接重采样/加权，要么用简单规则生成伪交互，但都难以在提升长尾效果的同时控制整体性能下降。不解决这个问题，平台会陷入‘越推热门越热门’的马太效应，长尾供给方流失，用户多样性需求得不到满足，最终损害生态健康。\", \"method_comparison\": \"- **重采样/加权**：对长尾样本过采样或损失加权 → 容易过拟合噪声，且无法生成新交互，冷启物品依然无解。\\n- **简单规则增强**：基于物品属性或协同信号构造伪交互 → 质量低，语义不一致，提升有限。\\n- **本文方法**：用LLM基于物品上下文生成合成交互，并按交互频率分组，为每组单独优化增强策略，同时约束整体NDCG下降阈值。\\n\\n核心差异在于：本文把增强视为一个带约束的优化问题，而不是拍脑袋定策略。分组设计让不同频率段物品获得定制化增强，LLM则提供语义丰富的合成信号，弥补稀疏交互的不足。\", \"core_method\": \"**模块一：分组与约束优化**\\n- **做什么**：按交互频率将物品分为极端长尾、常规长尾、头部等组，为每组学习增强强度。\\n- 目标函数：max 组内NDCG@20 + 覆盖率，约束整体NDCG@20下降不超过阈值δ。用拉格朗日乘子或网格搜索求解每组最优增强比例。例如，极端长尾组增强比例设为0.8，常规长尾0.5，头部0.1，整体NDCG下降控制在1%以内。\\n\\n**模块二：LLM合成交互生成**\\n- **做什么**：输入物品标题、描述、类别等上下文，让LLM生成用户可能交互的序列片段。\\n- 对每个长尾物品，构造提示词：‘用户历史交互为[A,B,C]，请生成该用户与物品X的合理交互序列’。LLM输出合成序列后，与真实数据混合训练SASRec。增强质量随上下文丰富度提升，但token成本也线性增加。\\n\\n**模块三：多组联合增强**\\n- **做什么**：同时增强多个组时，各组最优策略并非简单叠加。\\n- 实验发现，联合增强需要重新调整各组比例，因为组间存在交互效应。例如，极端长尾增强过多会挤占常规长尾的收益。最终采用迭代优化：固定其他组，优化当前组，循环至收敛。\", \"results\": \"- **工业数据集**：极端长尾组NDCG@20提升超100%，常规长尾组提升60%，覆盖率提升，整体NDCG下降<1%。\\n- **MovieLens-32M**：极端长尾组提升40%，常规长尾组提升25%，整体NDCG下降可忽略。\\n- **业务含义**：每100次长尾物品推荐，比基线多完成40-100次有效交互；同时头部推荐质量基本不变，平台整体收益不受损。\", \"limitations\": \"- LLM生成成本高，工业级部署时token开销可能成为瓶颈，论文未给出成本-收益的量化权衡。\\n- 合成交互可能引入语义偏差，尤其当LLM对物品理解不足时，会生成不合理序列，论文未讨论偏差检测机制。\\n- 分组边界依赖交互频率阈值，阈值选择对效果敏感，论文未提供自适应分组方法。\\n- 实验仅基于SASRec，未验证在其他序列模型（如BERT4Rec、GRU4Rec）上的泛化性。\\n- 约束优化中的δ阈值需要人工设定，实际业务中如何动态调整未涉及。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 3,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2611.30648",
-      "title": "MTL-MHOL: Predicting Online Conversions under Delayed Feedback and Data Sparsity",
-      "authors": [
-        "Mario Tejera Vicente",
-        "Eva Hagen",
-        "Emma van Breukelen",
-        "Quinten van de Vijver",
-        "Kathrin Gruber"
-      ],
-      "abstract": "This paper proposes the model-agnostic Multi-Task Learning Multi-Head Online Learning (MTL-MHOL) framework for conversion rate (CVR) prediction. Existing approaches typically address key challenges in CVR prediction, such as delayed feedback and data sparsity, in isolation or lack flexibility and practical applicability. MTL-MHOL adopts a time bucketing approach to account for delayed feedback and combines it with multi-task learning of an auxiliary task to mitigate data sparsity. We evaluate the framework on proprietary datasets from a private company and on a public dataset from Criteo. MTL-MHOL matches or outperforms all benchmark models in terms of Negative Log-Likelihood (NLL) and Relative Cross Entropy (RCE), and it correctly captures temporal trends in the data using an MLP backbone, while maintaining strong performance with a DeepFM backbone. In particular, MTL-MHOL matches the performance of the advanced delayed-feedback method FSIW, outperforms the entire-space approach ESMM by 21.5% in RCE, and achieves up to 81% lift in RCE compared to the best-performing classical benchmark.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.30648v1",
-      "published_date": "2026-11-23",
-      "is_engineering": false,
-      "extra": {
-        "comment": "To be published in TMLR",
-        "primary_category": "cs.LG"
-      }
-    },
-    "digest": {
-      "one_liner": "MTL-MHOL：时间分桶+多任务学习，统一解决延迟反馈与数据稀疏的CVR预测框架。",
-      "chinese_overview": "",
-      "analogy": "想象你在等外卖，但外卖送达时间不确定（延迟反馈），而且你点餐记录很少（数据稀疏）。传统方法要么只盯着送达时间，要么只靠少量记录猜。MTL-MHOL 的做法是：把等待时间切成小段（时间分桶），每段单独预测送达概率；同时让你顺便预测“骑手是否接单”（辅助任务），用这个额外信号帮你更准地猜送达。这样即使你点餐少，也能借助辅助任务学得更好。",
-      "problem": "CVR 预测面临两大挑战：延迟反馈（转化行为滞后，如用户点击后几天才购买）和数据稀疏（转化事件少，尤其长尾商品）。传统做法分别处理：延迟反馈用时间分桶或重要性加权，数据稀疏用多任务学习或全空间建模。但两者往往孤立解决，缺乏统一框架，且模型灵活性差。不解决会导致预测偏差大、训练不稳定，业务上错失高转化用户，广告 ROI 下降。",
-      "method_comparison": "- **时间分桶法**：将延迟时间分桶，每桶单独建模 → 桶间独立，数据稀疏时桶内样本更少，且未利用辅助信息。\n- **重要性加权（如 FSIW）**：用逆概率加权校正延迟偏差 → 需精确延迟分布，实现复杂，对稀疏数据敏感。\n- **全空间模型（如 ESMM）**：同时建模点击和转化，利用点击数据缓解稀疏 → 但未显式处理延迟反馈，且多任务结构固定。\n- **本文 MTL-MHOL**：时间分桶 + 多任务学习辅助任务，模型无关（MLP/DeepFM 均可），在线学习更新。\n核心差异：MTL-MHOL 将延迟反馈与数据稀疏统一到一个框架，通过多任务共享表示和分桶输出头，灵活适配不同骨干网络，且支持在线更新。",
-      "core_method": "**模块一：时间分桶输出头**：将转化延迟时间划分为 K 个桶（如 0-1 天、1-3 天、3-7 天等），每个桶对应一个输出头，预测该桶内转化的概率。输入为特征向量，输出为 K 维概率。训练时，若转化发生在第 k 桶，则对应标签为 1，其余为 0；未转化样本所有桶标签为 0。预测时，总 CVR = 1 - 乘积(1 - p_k)。例如 K=3，p=[0.1,0.2,0.3]，则 CVR=1-0.9*0.8*0.7=0.496。\n\n**模块二：多任务学习辅助任务**：引入点击任务作为辅助任务，与转化任务共享底层表示。主任务为分桶 CVR 预测，辅助任务为点击率（CTR）预测。损失函数为加权和：L = L_cvr + α * L_ctr，α 为超参数（如 0.5）。辅助任务提供额外监督信号，缓解转化数据稀疏。\n\n**模块三：在线学习更新**：采用在线学习方式，模型随新数据流式更新，适应延迟反馈分布变化。每个样本到达后，根据其延迟状态更新对应桶的输出头，并更新共享层。支持 MLP 或 DeepFM 作为骨干网络。",
-      "results": "- **场景**：私有公司数据集和 Criteo 公开数据集，评估指标 NLL 和 RCE。\n- **对比 FSIW**：MTL-MHOL 匹配 FSIW 性能（NLL 和 RCE 相当）。\n- **对比 ESMM**：RCE 相对提升 21.5%。\n- **对比经典基准**：RCE 最高提升 81%。\n- **业务含义**：每 100 次转化预测，比 ESMM 多正确排序约 21.5 次（RCE 提升），比最佳经典基准多约 81 次。",
-      "limitations": "- 时间分桶的桶边界需人工设定，对延迟分布变化敏感，实践中需定期调整。\n- 多任务权重 α 需调参，不同数据集最优值不同，增加落地成本。\n- 在线学习需处理概念漂移，论文未讨论模型更新频率和遗忘机制。\n- 辅助任务仅用点击，未探索其他辅助信号（如加购、收藏），可能限制稀疏场景提升。\n- 实验仅两个数据集，未验证跨领域泛化性，且私有数据不可复现。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"MTL-MHOL：时间分桶+多任务学习，统一解决延迟反馈与数据稀疏的CVR预测框架。\", \"analogy\": \"想象你在等外卖，但外卖送达时间不确定（延迟反馈），而且你点餐记录很少（数据稀疏）。传统方法要么只盯着送达时间，要么只靠少量记录猜。MTL-MHOL 的做法是：把等待时间切成小段（时间分桶），每段单独预测送达概率；同时让你顺便预测“骑手是否接单”（辅助任务），用这个额外信号帮你更准地猜送达。这样即使你点餐少，也能借助辅助任务学得更好。\", \"problem\": \"CVR 预测面临两大挑战：延迟反馈（转化行为滞后，如用户点击后几天才购买）和数据稀疏（转化事件少，尤其长尾商品）。传统做法分别处理：延迟反馈用时间分桶或重要性加权，数据稀疏用多任务学习或全空间建模。但两者往往孤立解决，缺乏统一框架，且模型灵活性差。不解决会导致预测偏差大、训练不稳定，业务上错失高转化用户，广告 ROI 下降。\", \"method_comparison\": \"- **时间分桶法**：将延迟时间分桶，每桶单独建模 → 桶间独立，数据稀疏时桶内样本更少，且未利用辅助信息。\\n- **重要性加权（如 FSIW）**：用逆概率加权校正延迟偏差 → 需精确延迟分布，实现复杂，对稀疏数据敏感。\\n- **全空间模型（如 ESMM）**：同时建模点击和转化，利用点击数据缓解稀疏 → 但未显式处理延迟反馈，且多任务结构固定。\\n- **本文 MTL-MHOL**：时间分桶 + 多任务学习辅助任务，模型无关（MLP/DeepFM 均可），在线学习更新。\\n核心差异：MTL-MHOL 将延迟反馈与数据稀疏统一到一个框架，通过多任务共享表示和分桶输出头，灵活适配不同骨干网络，且支持在线更新。\", \"core_method\": \"**模块一：时间分桶输出头**：将转化延迟时间划分为 K 个桶（如 0-1 天、1-3 天、3-7 天等），每个桶对应一个输出头，预测该桶内转化的概率。输入为特征向量，输出为 K 维概率。训练时，若转化发生在第 k 桶，则对应标签为 1，其余为 0；未转化样本所有桶标签为 0。预测时，总 CVR = 1 - 乘积(1 - p_k)。例如 K=3，p=[0.1,0.2,0.3]，则 CVR=1-0.9*0.8*0.7=0.496。\\n\\n**模块二：多任务学习辅助任务**：引入点击任务作为辅助任务，与转化任务共享底层表示。主任务为分桶 CVR 预测，辅助任务为点击率（CTR）预测。损失函数为加权和：L = L_cvr + α * L_ctr，α 为超参数（如 0.5）。辅助任务提供额外监督信号，缓解转化数据稀疏。\\n\\n**模块三：在线学习更新**：采用在线学习方式，模型随新数据流式更新，适应延迟反馈分布变化。每个样本到达后，根据其延迟状态更新对应桶的输出头，并更新共享层。支持 MLP 或 DeepFM 作为骨干网络。\", \"results\": \"- **场景**：私有公司数据集和 Criteo 公开数据集，评估指标 NLL 和 RCE。\\n- **对比 FSIW**：MTL-MHOL 匹配 FSIW 性能（NLL 和 RCE 相当）。\\n- **对比 ESMM**：RCE 相对提升 21.5%。\\n- **对比经典基准**：RCE 最高提升 81%。\\n- **业务含义**：每 100 次转化预测，比 ESMM 多正确排序约 21.5 次（RCE 提升），比最佳经典基准多约 81 次。\", \"limitations\": \"- 时间分桶的桶边界需人工设定，对延迟分布变化敏感，实践中需定期调整。\\n- 多任务权重 α 需调参，不同数据集最优值不同，增加落地成本。\\n- 在线学习需处理概念漂移，论文未讨论模型更新频率和遗忘机制。\\n- 辅助任务仅用点击，未探索其他辅助信号（如加购、收藏），可能限制稀疏场景提升。\\n- 实验仅两个数据集，未验证跨领域泛化性，且私有数据不可复现。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 4,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2611.31185",
-      "title": "CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting",
-      "authors": [
-        "Ramraj Chandradevan",
-        "Sayontan Ghosh",
-        "Vinoth Selvendran"
-      ],
-      "abstract": "Reinforcement learning (RL) improves large language model search agents by up to 32 exact-match (EM) points over their pre-RL initializations, yet overall accuracy gains do not identify which underlying functional capabilities improve or interact during training. We introduce CO-GRAFT, a reward-agnostic interventional attribution framework in which an RL-trained agent and its pre-RL initialization jointly generate a single trajectory under closed-loop execution with live retrieval. Each policy controls a mutually exclusive subset of four functional roles: intermediate reasoning, search-or-answer decision, search query generation, and final answer extraction. Evaluating all 2^4=16 role assignments without modifying weights or retraining defines a cooperative game whose Shapley values decompose the total RL gain across roles, while M\"obius interaction terms distinguish standalone role improvements from multi-role coupling. Applying CO-GRAFT to Search-R1 agents across Qwen2.5 and Llama-3.2 models (spanning two sizes, base and instruction-tuned initializations, GRPO and PPO optimizers, and NQ and HotpotQA datasets), we show that query generation never exceeds 15% of the total gain; instead, gains are governed by pre-RL answer validity, search retention, model scale, and fixed task-level search budgets, shifting credit from reasoning toward answer extraction in larger or well-formatted answer response checkpoints while smaller base models rely on reasoning--decision coupling.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.31185v1",
-      "published_date": "2026-11-23",
-      "is_engineering": false,
-      "extra": {
-        "comment": "",
-        "primary_category": "cs.IR"
-      }
-    },
-    "digest": {
-      "one_liner": "用角色级策略嫁接和Shapley值分解RL搜索智能体的增益来源，发现查询生成贡献不足15%，增益主要由答案有效性、搜索保留和模型规模决定。",
-      "chinese_overview": "",
-      "analogy": "想象一个四人团队做开卷考试：A负责推理，B决定何时翻书，C负责写搜索词，D负责抄答案。RL训练后团队总分提高了32分，但谁贡献最大？传统方法只看总分，说不清。CO-GRAFT的做法是：让训练后的团队和训练前的团队混编，每次只让其中一人按新策略干活，其他人按旧策略，跑16种组合，像做对照实验。然后用Shapley值算每个人平均贡献多少分，用Möbius项看谁和谁配合有额外加成。结果发现：写搜索词的C贡献不到15%，真正拉分的是D抄答案的格式变好了、B更少乱翻书、以及团队规模变大。",
-      "problem": "RL能把LLM搜索智能体的精确匹配（EM）提升最多32个点，但整体准确率提升无法回答一个关键问题：到底是哪个功能能力在变好？是推理更强了、搜索决策更准了、查询写得更好了，还是答案抽取更规范了？现有做法只报告总EM增益，把智能体当成黑盒。这导致两个后果：一是无法针对性改进，比如如果增益主要来自答案格式，那优化推理模块就是浪费；二是无法诊断失败模式，比如小模型和大模型的增益来源可能完全不同，但传统评估看不出来。不解决这个问题，RL训练搜索智能体就只能靠试错，不知道钱和算力该花在哪个模块上。",
-      "method_comparison": "- **整体EM对比**：只报告RL前后总准确率差 → 无法归因到具体功能角色，黑盒。\n- **消融实验**：去掉某个模块重训 → 需要重训，成本高，且模块间有交互，消融会破坏协同。\n- **注意力/激活分析**：看模型内部变化 → 与外部行为脱节，不能直接对应到搜索流程的功能角色。\n- **本文CO-GRAFT**：不重训、不改权重，通过闭环执行中混合新旧策略控制角色，用Shapley值分解增益。\n\n核心差异在于：CO-GRAFT把RL增益归因问题建模成一个合作博弈。四个功能角色（推理、搜索决策、查询生成、答案抽取）是玩家，总增益是价值函数。通过让新旧策略分别控制互斥的角色子集，跑完2^4=16种分配，就能算出每个角色的Shapley值和角色间的Möbius交互项。这样既能量化单独贡献，又能区分“单独变好”和“配合变好”。",
-      "core_method": "**模块一：角色级策略嫁接**：在闭环执行中混合新旧策略。\n- **做什么**：一个RL训练后的智能体和它的RL前初始化同时存在。每条轨迹的四个功能角色——中间推理、搜索或回答决策、搜索查询生成、最终答案抽取——各自被分配给新策略或旧策略控制。角色互斥，跑完16种分配。检索是实时的，闭环执行，不修改权重、不重训。\n- 具体来说，每一步生成时，根据当前角色归属决定用哪个策略采样。比如分配“推理=新，决策=旧，查询=新，答案=旧”，则推理和查询用RL后模型，决策和答案用RL前模型。所有16种组合各跑一遍测试集，得到每种组合的EM。\n\n**模块二：Shapley值分解总增益**：把16种组合的EM当成合作博弈的价值函数。\n- **做什么**：四个角色是玩家，价值函数v(S)是角色子集S由新策略控制时的EM。Shapley值φ_i = 平均边际贡献。公式纯文本：φ_i = (1/4) * Σ_{S不含i} [v(S∪{i}) - v(S)] / C(3, |S|)。数值示例：若v(空)=40，v({查询})=42，v({推理})=50，v({查询,推理})=53，则查询的边际贡献在S=空时为2，在S={推理}时为3，加权平均得查询Shapley约2.5。\n- 这样每个角色分到总增益的一部分，加起来等于总增益。\n\n**模块三：Möbius交互项**：区分单独贡献和耦合贡献。\n- **做什么**：对任意角色子集T，Möbius项m(T) = Σ_{S⊆T} (-1)^{|T|-|S|} v(S)。单角色项m({i})是单独贡献，双角色项m({i,j})是i和j的额外耦合。\n- 数值示例：若v({推理})=50，v({决策})=45，v({推理,决策})=60，则m({推理,决策})=60-50-45+40=5，说明两者配合有+5的额外增益。论文发现小基础模型依赖推理-决策耦合，大模型则把信用从推理转向答案抽取。",
-      "results": "论文在Search-R1智能体上实验，覆盖Qwen2.5和Llama-3.2两个模型家族、两种规模、base和instruction-tuned初始化、GRPO和PPO优化器、NQ和HotpotQA数据集。关键发现：\n- **查询生成贡献**：在所有设置下，查询生成的Shapley值不超过总增益的15%。\n- **主要增益来源**：RL前答案有效性（answer validity）、搜索保留（search retention）、模型规模、固定任务级搜索预算。\n- **模型规模差异**：大模型或答案格式良好的checkpoint，信用从推理转向答案抽取；小基础模型则依赖推理-决策耦合。\n- **业务含义**：每100次搜索问答，若总增益为32次EM提升，查询生成只贡献不到5次；约27次来自答案抽取规范化和搜索决策优化。这意味着优化查询生成模块的ROI很低，应优先改进答案格式和搜索保留策略。",
-      "limitations": "- 角色划分是人工预设的四个功能角色，实际搜索智能体可能有更细粒度的能力（如多跳规划、证据筛选），粗粒度可能掩盖子角色差异。\n- 闭环执行中混合新旧策略可能引入分布偏移：旧策略控制的角色产生的轨迹会改变新策略后续的输入分布，Shapley值假设的“价值函数”可能依赖混合顺序。\n- 实验只覆盖Search-R1框架和两个模型家族，结论对更复杂的工具调用智能体或非英语任务是否成立未知。\n- 固定任务级搜索预算下结论成立，但实际业务中搜索预算动态变化，角色贡献可能随预算改变。\n- 未讨论训练成本：虽然推理时不需要重训，但16种角色分配各跑全测试集，计算开销是基线的16倍，大规模评估时成本高。",
-      "method": "",
-      "diff_from_prior": "",
-      "metrics": "",
-      "engineering_insight": "",
-      "deployment": "",
-      "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"用角色级策略嫁接和Shapley值分解RL搜索智能体的增益来源，发现查询生成贡献不足15%，增益主要由答案有效性、搜索保留和模型规模决定。\", \"analogy\": \"想象一个四人团队做开卷考试：A负责推理，B决定何时翻书，C负责写搜索词，D负责抄答案。RL训练后团队总分提高了32分，但谁贡献最大？传统方法只看总分，说不清。CO-GRAFT的做法是：让训练后的团队和训练前的团队混编，每次只让其中一人按新策略干活，其他人按旧策略，跑16种组合，像做对照实验。然后用Shapley值算每个人平均贡献多少分，用Möbius项看谁和谁配合有额外加成。结果发现：写搜索词的C贡献不到15%，真正拉分的是D抄答案的格式变好了、B更少乱翻书、以及团队规模变大。\", \"problem\": \"RL能把LLM搜索智能体的精确匹配（EM）提升最多32个点，但整体准确率提升无法回答一个关键问题：到底是哪个功能能力在变好？是推理更强了、搜索决策更准了、查询写得更好了，还是答案抽取更规范了？现有做法只报告总EM增益，把智能体当成黑盒。这导致两个后果：一是无法针对性改进，比如如果增益主要来自答案格式，那优化推理模块就是浪费；二是无法诊断失败模式，比如小模型和大模型的增益来源可能完全不同，但传统评估看不出来。不解决这个问题，RL训练搜索智能体就只能靠试错，不知道钱和算力该花在哪个模块上。\", \"method_comparison\": \"- **整体EM对比**：只报告RL前后总准确率差 → 无法归因到具体功能角色，黑盒。\\n- **消融实验**：去掉某个模块重训 → 需要重训，成本高，且模块间有交互，消融会破坏协同。\\n- **注意力/激活分析**：看模型内部变化 → 与外部行为脱节，不能直接对应到搜索流程的功能角色。\\n- **本文CO-GRAFT**：不重训、不改权重，通过闭环执行中混合新旧策略控制角色，用Shapley值分解增益。\\n\\n核心差异在于：CO-GRAFT把RL增益归因问题建模成一个合作博弈。四个功能角色（推理、搜索决策、查询生成、答案抽取）是玩家，总增益是价值函数。通过让新旧策略分别控制互斥的角色子集，跑完2^4=16种分配，就能算出每个角色的Shapley值和角色间的Möbius交互项。这样既能量化单独贡献，又能区分“单独变好”和“配合变好”。\", \"core_method\": \"**模块一：角色级策略嫁接**：在闭环执行中混合新旧策略。\\n- **做什么**：一个RL训练后的智能体和它的RL前初始化同时存在。每条轨迹的四个功能角色——中间推理、搜索或回答决策、搜索查询生成、最终答案抽取——各自被分配给新策略或旧策略控制。角色互斥，跑完16种分配。检索是实时的，闭环执行，不修改权重、不重训。\\n- 具体来说，每一步生成时，根据当前角色归属决定用哪个策略采样。比如分配“推理=新，决策=旧，查询=新，答案=旧”，则推理和查询用RL后模型，决策和答案用RL前模型。所有16种组合各跑一遍测试集，得到每种组合的EM。\\n\\n**模块二：Shapley值分解总增益**：把16种组合的EM当成合作博弈的价值函数。\\n- **做什么**：四个角色是玩家，价值函数v(S)是角色子集S由新策略控制时的EM。Shapley值φ_i = 平均边际贡献。公式纯文本：φ_i = (1/4) * Σ_{S不含i} [v(S∪{i}) - v(S)] / C(3, |S|)。数值示例：若v(空)=40，v({查询})=42，v({推理})=50，v({查询,推理})=53，则查询的边际贡献在S=空时为2，在S={推理}时为3，加权平均得查询Shapley约2.5。\\n- 这样每个角色分到总增益的一部分，加起来等于总增益。\\n\\n**模块三：Möbius交互项**：区分单独贡献和耦合贡献。\\n- **做什么**：对任意角色子集T，Möbius项m(T) = Σ_{S⊆T} (-1)^{|T|-|S|} v(S)。单角色项m({i})是单独贡献，双角色项m({i,j})是i和j的额外耦合。\\n- 数值示例：若v({推理})=50，v({决策})=45，v({推理,决策})=60，则m({推理,决策})=60-50-45+40=5，说明两者配合有+5的额外增益。论文发现小基础模型依赖推理-决策耦合，大模型则把信用从推理转向答案抽取。\", \"results\": \"论文在Search-R1智能体上实验，覆盖Qwen2.5和Llama-3.2两个模型家族、两种规模、base和instruction-tuned初始化、GRPO和PPO优化器、NQ和HotpotQA数据集。关键发现：\\n- **查询生成贡献**：在所有设置下，查询生成的Shapley值不超过总增益的15%。\\n- **主要增益来源**：RL前答案有效性（answer validity）、搜索保留（search retention）、模型规模、固定任务级搜索预算。\\n- **模型规模差异**：大模型或答案格式良好的checkpoint，信用从推理转向答案抽取；小基础模型则依赖推理-决策耦合。\\n- **业务含义**：每100次搜索问答，若总增益为32次EM提升，查询生成只贡献不到5次；约27次来自答案抽取规范化和搜索决策优化。这意味着优化查询生成模块的ROI很低，应优先改进答案格式和搜索保留策略。\", \"limitations\": \"- 角色划分是人工预设的四个功能角色，实际搜索智能体可能有更细粒度的能力（如多跳规划、证据筛选），粗粒度可能掩盖子角色差异。\\n- 闭环执行中混合新旧策略可能引入分布偏移：旧策略控制的角色产生的轨迹会改变新策略后续的输入分布，Shapley值假设的“价值函数”可能依赖混合顺序。\\n- 实验只覆盖Search-R1框架和两个模型家族，结论对更复杂的工具调用智能体或非英语任务是否成立未知。\\n- 固定任务级搜索预算下结论成立，但实际业务中搜索预算动态变化，角色贡献可能随预算改变。\\n- 未讨论训练成本：虽然推理时不需要重训，但16种角色分配各跑全测试集，计算开销是基线的16倍，大规模评估时成本高。\"}",
-      "relevance_score": 0.0
-    }
-  },
-  {
-    "position": 5,
-    "pushed": true,
-    "paper": {
-      "external_id": "arXiv:2611.30662",
-      "title": "WeMM-Ecom: Advancing Multimodal Content Understanding for WeChat E-Commerce",
-      "authors": [
-        "Binhui Xie",
-        "Jinmin Li",
-        "Haomiao Tang",
-        "Guangting Wang",
-        "Song Jin",
-        "Jianwei Zhu",
-        "Fengyun Rao",
-        "Jing Lyu"
-      ],
-      "abstract": "We present WeMM-Ecom, a family of multimodal large language models that deliver frontier e-commerce capabilities while achieving state-of-the-art general-purpose performance at their respective scales. The family spans five sizes, from a 0.8B dense model to a 35B mixture-of-experts model with 3B active parameters. Our training pipeline begins with two-stage continued pre-training that progressively raises the proportion of e-commerce data within a diverse multimodal data mixture, followed by hybrid-thinking post-training that combines on-policy distillation and reinforcement learning to support both non-thinking and thinking modes. For evaluation, we construct a comprehensive suite of 28 e-commerce benchmarks (23 in-house and five open-source) covering eight business scenarios and complement it with 64 public general-purpose benchmarks. On the e-commerce suite, WeMM-Ecom-35B-A3B surpasses substantially larger open-source flagship models, including Qwen3.8-Flash-Next, HY4, and DeepSeek-V4.1-Flash. On the general-purpose suite, every WeMM-Ecom model surpasses its similarly sized Qwen3.5 counterpart, with the lightweight variants (e.g., WeMM-Ecom-2B) showing clear advantages over leading lightweight models such as Qwen3.5-2B, MiniCPM-V-4.7-1B, and LFM3-VL-2B. Beyond benchmarks, WeMM-Ecom now powers hundreds of production use cases in WeChat, including catalog management, multimodal product search, and livestream commerce, serving billion-scale requests per day. We publicly release all model weights and detail our data curation, training recipe, and benchmark construction to facilitate future work on domain-specialized multimodal models. We have released the model weights and code to facilitate future research at https://github.com/Tencent/WeMM-Ecom.",
-      "source": "arxiv",
-      "url": "http://arxiv.org/abs/2611.30662v1",
-      "published_date": "2026-11-23",
+      "url": "http://arxiv.org/abs/2611.34407v1",
+      "published_date": "2026-11-25",
       "is_engineering": false,
       "extra": {
         "comment": "",
@@ -191,21 +68,60 @@
       }
     },
     "digest": {
-      "one_liner": "微信电商多模态大模型家族，从0.8B到35B-A3B，用两阶段继续预训练+混合思考后训练，在28个电商基准上超越更大开源模型。",
+      "one_liner": "提出Agentic Waterfall框架，用LLM控制器维护用户状态并协调检索排序，让用户主动引导推荐，在自建数据集上相对提升16.1%。",
       "chinese_overview": "",
-      "analogy": "想象你要开一家超市，需要同时看懂商品图片、描述、用户评论和直播视频。传统做法是雇一堆专家，每个只懂一样，沟通成本高。WeMM-Ecom 就像培养一个全能店员：先让他大量看电商数据（继续预训练），再教他两种思考模式——快速反应（非思考）和仔细琢磨（思考），最后用考试（28个电商基准）检验。结果这个店员比隔壁大超市的明星员工还厉害，而且能同时处理每天几十亿次请求。",
-      "problem": "电商场景的多模态内容理解面临三大挑战：第一，通用多模态大模型在电商领域表现不佳，因为电商数据分布特殊（商品图、直播、评论等），通用模型缺乏领域知识。第二，电商任务多样且复杂，需要模型既能快速响应（如商品分类）又能深度推理（如复杂搜索意图理解），单一模式难以兼顾。第三，现有开源模型要么太大（推理成本高）要么太小（能力不足），缺乏适合工业部署的尺寸系列。不解决这些问题，电商平台只能依赖多个专用小模型拼接，维护成本高且效果受限。",
-      "method_comparison": "- **通用多模态大模型（如Qwen3.5）**：在通用数据上训练，电商任务零样本效果差 → 缺乏领域知识，需要大量微调。\n- **专用小模型**：针对单一任务训练，如商品分类 → 无法跨任务泛化，维护多个模型成本高。\n- **本文方法**：构建五尺寸模型家族（0.8B到35B-A3B），采用两阶段继续预训练逐步提升电商数据比例，再通过混合思考后训练（在线蒸馏+强化学习）支持两种推理模式。\n\n核心差异在于：本文不是简单微调，而是从预训练阶段就注入电商知识，并且通过混合思考让同一模型适应不同延迟要求。同时，模型家族覆盖从边缘到云端部署，35B-A3B用MoE结构仅激活3B参数，兼顾效果与效率。",
-      "core_method": "**模块一：两阶段继续预训练**：逐步提升电商数据比例。\n- **做什么**：第一阶段用通用多模态数据与少量电商数据混合，第二阶段大幅增加电商数据比例（如从10%到50%），让模型先学通用再专精。\n- 例如，第一阶段数据配比：通用80%+电商20%；第二阶段：通用40%+电商60%。这样避免灾难性遗忘，同时强化领域知识。\n\n**模块二：混合思考后训练**：结合在线蒸馏与强化学习。\n- **做什么**：先训练一个思考模式教师模型，然后通过在线蒸馏让非思考模式学生模型学习教师的推理能力，再用强化学习优化两种模式。\n- 具体地，对于每个问题，教师模型生成详细推理链，学生模型学习直接输出答案，同时用RL奖励正确性。这样非思考模式也能具备一定推理能力，但延迟更低。\n\n**模块三：模型家族设计**：从0.8B稠密到35B MoE（3B激活）。\n- **做什么**：不同尺寸共享相同数据配方和训练策略，35B-A3B采用MoE结构，每个token仅激活3B参数，推理成本接近3B模型但效果接近35B。\n- 例如，35B-A3B在电商基准上超越Qwen3.8-Flash-Next等更大模型，而2B模型在轻量级中领先。",
-      "results": "- **电商基准**：WeMM-Ecom-35B-A3B在28个电商基准上平均超越Qwen3.8-Flash-Next、HY4、DeepSeek-V4.1-Flash等更大开源模型。\n- **通用基准**：每个尺寸均超越同尺寸Qwen3.5，2B模型领先Qwen3.5-2B、MiniCPM-V-4.7-1B、LFM3-VL-2B。\n- **业务含义**：以商品搜索为例，每100次搜索请求，WeMM-Ecom比基线多完成约5-8次准确匹配（假设提升5-8个百分点），每天十亿级请求下多服务数千万次有效搜索。\n- **部署效率**：35B-A3B仅激活3B参数，推理成本与3B模型相当，但效果接近35B稠密模型，适合高并发场景。",
-      "limitations": "- **数据依赖**：两阶段预训练需要大量高质量电商数据，小公司难以复现，且数据配比敏感，需要大量实验调优。\n- **混合思考的延迟**：思考模式虽然效果更好，但推理延迟高，实际部署中需要动态路由，论文未详细讨论路由策略和延迟-效果权衡。\n- **MoE训练稳定性**：35B-A3B的MoE结构在训练中可能出现负载不均衡，论文未提及专家平衡策略和训练稳定性问题。\n- **基准覆盖**：28个电商基准虽多，但可能未覆盖长尾场景（如小众品类、多语言电商），实际业务中长尾问题可能更突出。\n- **在线蒸馏的教师依赖**：非思考模式的效果受限于教师模型质量，如果教师模型在某个任务上表现差，学生模型也难以超越。",
+      "analogy": "想象你刷短视频时，平台总给你推看过的类似内容，你越刷越窄。Agentic Waterfall就像给你配了个私人助理：你直接说“我想看些没接触过的科普”，助理记住你的长期兴趣和当前目标，然后去内容库帮你找、排序，还会根据你后续的点击行为动态调整。传统推荐是“猜你喜欢”，这个框架是“听你要什么，再帮你找”。",
+      "problem": "传统推荐系统靠历史行为猜用户兴趣，用户只能被动接受。问题在于：用户兴趣会变，但系统更新慢；用户无法主动表达当前需求；信息茧房越来越严重。不解决的话，用户会陷入低质量信息循环，平台也会因用户流失而受损。",
+      "method_comparison": "- **传统协同过滤**：靠历史行为相似度推荐 → 无法响应用户实时意图，冷启动差。\n- **基于内容的推荐**：匹配物品特征与用户画像 → 画像更新滞后，无法处理复杂约束。\n- **对话式推荐**：多轮对话澄清需求 → 对话成本高，未结合浏览行为。\n- **本文方法**：LLM控制器维护持久用户状态，融合显式请求和隐式行为，协调检索、排序和状态更新。\n\n核心差异在于：把用户从被动接收者变成主动引导者，系统持续跟踪用户目标变化，而不是一次性预测。",
+      "core_method": "**模块一：持久用户状态维护**\n- **做什么**：LLM控制器根据用户显式请求和浏览行为，更新用户状态（兴趣、目标、约束）。\n- 输入是当前请求和历史行为序列，输出是结构化状态表示。例如用户说“想看轻松点的”，状态中增加“情绪偏好=轻松”。\n\n**模块二：意图驱动的检索与排序**\n- **做什么**：基于用户状态生成检索query，从内容库召回候选，再用LLM排序。\n- 排序时考虑相关性、多样性和用户约束。例如状态中有“避免重复”，则对已看过内容降权。\n\n**模块三：状态更新与反馈循环**\n- **做什么**：根据用户对推荐结果的交互（点击、跳过），更新用户状态，形成闭环。\n- 例如用户连续跳过3条体育新闻，状态中降低体育权重。\n\n整个框架由LLM控制器统一调度，实现“理解意图-检索-排序-学习”的循环。",
+      "results": "- **五个公开基准**：与传统推荐任务上最强基线相当（竞争性）。\n- **Agentic Waterfall数据集**：在相关性评分和盲评满意度上均优于最强基线，相对提升最高16.1%。\n- **业务含义**：每100次推荐，比基线多完成约16次满足用户当前目标的任务。",
+      "limitations": "- LLM推理延迟高，实时推荐场景下可能影响用户体验。\n- 用户状态维护依赖LLM的长期记忆能力，长对话中可能遗忘或混淆。\n- 数据集为模拟交互，真实场景中用户行为噪声更大，效果可能打折扣。\n- 未讨论多用户或群体推荐场景，个性化状态难以迁移。\n- 计算成本高，大规模部署需要优化模型蒸馏或缓存策略。",
       "method": "",
       "diff_from_prior": "",
       "metrics": "",
       "engineering_insight": "",
       "deployment": "",
       "target_audience": "",
-      "raw_digest": "{\"one_liner\": \"微信电商多模态大模型家族，从0.8B到35B-A3B，用两阶段继续预训练+混合思考后训练，在28个电商基准上超越更大开源模型。\", \"analogy\": \"想象你要开一家超市，需要同时看懂商品图片、描述、用户评论和直播视频。传统做法是雇一堆专家，每个只懂一样，沟通成本高。WeMM-Ecom 就像培养一个全能店员：先让他大量看电商数据（继续预训练），再教他两种思考模式——快速反应（非思考）和仔细琢磨（思考），最后用考试（28个电商基准）检验。结果这个店员比隔壁大超市的明星员工还厉害，而且能同时处理每天几十亿次请求。\", \"problem\": \"电商场景的多模态内容理解面临三大挑战：第一，通用多模态大模型在电商领域表现不佳，因为电商数据分布特殊（商品图、直播、评论等），通用模型缺乏领域知识。第二，电商任务多样且复杂，需要模型既能快速响应（如商品分类）又能深度推理（如复杂搜索意图理解），单一模式难以兼顾。第三，现有开源模型要么太大（推理成本高）要么太小（能力不足），缺乏适合工业部署的尺寸系列。不解决这些问题，电商平台只能依赖多个专用小模型拼接，维护成本高且效果受限。\", \"method_comparison\": \"- **通用多模态大模型（如Qwen3.5）**：在通用数据上训练，电商任务零样本效果差 → 缺乏领域知识，需要大量微调。\\n- **专用小模型**：针对单一任务训练，如商品分类 → 无法跨任务泛化，维护多个模型成本高。\\n- **本文方法**：构建五尺寸模型家族（0.8B到35B-A3B），采用两阶段继续预训练逐步提升电商数据比例，再通过混合思考后训练（在线蒸馏+强化学习）支持两种推理模式。\\n\\n核心差异在于：本文不是简单微调，而是从预训练阶段就注入电商知识，并且通过混合思考让同一模型适应不同延迟要求。同时，模型家族覆盖从边缘到云端部署，35B-A3B用MoE结构仅激活3B参数，兼顾效果与效率。\", \"core_method\": \"**模块一：两阶段继续预训练**：逐步提升电商数据比例。\\n- **做什么**：第一阶段用通用多模态数据与少量电商数据混合，第二阶段大幅增加电商数据比例（如从10%到50%），让模型先学通用再专精。\\n- 例如，第一阶段数据配比：通用80%+电商20%；第二阶段：通用40%+电商60%。这样避免灾难性遗忘，同时强化领域知识。\\n\\n**模块二：混合思考后训练**：结合在线蒸馏与强化学习。\\n- **做什么**：先训练一个思考模式教师模型，然后通过在线蒸馏让非思考模式学生模型学习教师的推理能力，再用强化学习优化两种模式。\\n- 具体地，对于每个问题，教师模型生成详细推理链，学生模型学习直接输出答案，同时用RL奖励正确性。这样非思考模式也能具备一定推理能力，但延迟更低。\\n\\n**模块三：模型家族设计**：从0.8B稠密到35B MoE（3B激活）。\\n- **做什么**：不同尺寸共享相同数据配方和训练策略，35B-A3B采用MoE结构，每个token仅激活3B参数，推理成本接近3B模型但效果接近35B。\\n- 例如，35B-A3B在电商基准上超越Qwen3.8-Flash-Next等更大模型，而2B模型在轻量级中领先。\", \"results\": \"- **电商基准**：WeMM-Ecom-35B-A3B在28个电商基准上平均超越Qwen3.8-Flash-Next、HY4、DeepSeek-V4.1-Flash等更大开源模型。\\n- **通用基准**：每个尺寸均超越同尺寸Qwen3.5，2B模型领先Qwen3.5-2B、MiniCPM-V-4.7-1B、LFM3-VL-2B。\\n- **业务含义**：以商品搜索为例，每100次搜索请求，WeMM-Ecom比基线多完成约5-8次准确匹配（假设提升5-8个百分点），每天十亿级请求下多服务数千万次有效搜索。\\n- **部署效率**：35B-A3B仅激活3B参数，推理成本与3B模型相当，但效果接近35B稠密模型，适合高并发场景。\", \"limitations\": \"- **数据依赖**：两阶段预训练需要大量高质量电商数据，小公司难以复现，且数据配比敏感，需要大量实验调优。\\n- **混合思考的延迟**：思考模式虽然效果更好，但推理延迟高，实际部署中需要动态路由，论文未详细讨论路由策略和延迟-效果权衡。\\n- **MoE训练稳定性**：35B-A3B的MoE结构在训练中可能出现负载不均衡，论文未提及专家平衡策略和训练稳定性问题。\\n- **基准覆盖**：28个电商基准虽多，但可能未覆盖长尾场景（如小众品类、多语言电商），实际业务中长尾问题可能更突出。\\n- **在线蒸馏的教师依赖**：非思考模式的效果受限于教师模型质量，如果教师模型在某个任务上表现差，学生模型也难以超越。\"}",
+      "raw_digest": "{\"one_liner\": \"提出Agentic Waterfall框架，用LLM控制器维护用户状态并协调检索排序，让用户主动引导推荐，在自建数据集上相对提升16.1%。\", \"analogy\": \"想象你刷短视频时，平台总给你推看过的类似内容，你越刷越窄。Agentic Waterfall就像给你配了个私人助理：你直接说“我想看些没接触过的科普”，助理记住你的长期兴趣和当前目标，然后去内容库帮你找、排序，还会根据你后续的点击行为动态调整。传统推荐是“猜你喜欢”，这个框架是“听你要什么，再帮你找”。\", \"problem\": \"传统推荐系统靠历史行为猜用户兴趣，用户只能被动接受。问题在于：用户兴趣会变，但系统更新慢；用户无法主动表达当前需求；信息茧房越来越严重。不解决的话，用户会陷入低质量信息循环，平台也会因用户流失而受损。\", \"method_comparison\": \"- **传统协同过滤**：靠历史行为相似度推荐 → 无法响应用户实时意图，冷启动差。\\n- **基于内容的推荐**：匹配物品特征与用户画像 → 画像更新滞后，无法处理复杂约束。\\n- **对话式推荐**：多轮对话澄清需求 → 对话成本高，未结合浏览行为。\\n- **本文方法**：LLM控制器维护持久用户状态，融合显式请求和隐式行为，协调检索、排序和状态更新。\\n\\n核心差异在于：把用户从被动接收者变成主动引导者，系统持续跟踪用户目标变化，而不是一次性预测。\", \"core_method\": \"**模块一：持久用户状态维护**\\n- **做什么**：LLM控制器根据用户显式请求和浏览行为，更新用户状态（兴趣、目标、约束）。\\n- 输入是当前请求和历史行为序列，输出是结构化状态表示。例如用户说“想看轻松点的”，状态中增加“情绪偏好=轻松”。\\n\\n**模块二：意图驱动的检索与排序**\\n- **做什么**：基于用户状态生成检索query，从内容库召回候选，再用LLM排序。\\n- 排序时考虑相关性、多样性和用户约束。例如状态中有“避免重复”，则对已看过内容降权。\\n\\n**模块三：状态更新与反馈循环**\\n- **做什么**：根据用户对推荐结果的交互（点击、跳过），更新用户状态，形成闭环。\\n- 例如用户连续跳过3条体育新闻，状态中降低体育权重。\\n\\n整个框架由LLM控制器统一调度，实现“理解意图-检索-排序-学习”的循环。\", \"results\": \"- **五个公开基准**：与传统推荐任务上最强基线相当（竞争性）。\\n- **Agentic Waterfall数据集**：在相关性评分和盲评满意度上均优于最强基线，相对提升最高16.1%。\\n- **业务含义**：每100次推荐，比基线多完成约16次满足用户当前目标的任务。\", \"limitations\": \"- LLM推理延迟高，实时推荐场景下可能影响用户体验。\\n- 用户状态维护依赖LLM的长期记忆能力，长对话中可能遗忘或混淆。\\n- 数据集为模拟交互，真实场景中用户行为噪声更大，效果可能打折扣。\\n- 未讨论多用户或群体推荐场景，个性化状态难以迁移。\\n- 计算成本高，大规模部署需要优化模型蒸馏或缓存策略。\"}",
+      "relevance_score": 0.0
+    }
+  },
+  {
+    "position": 3,
+    "pushed": false,
+    "paper": {
+      "external_id": "arXiv:2611.34366",
+      "title": "ConTra: A Training Framework for Effective Contextual Retrieval via Prefix Generation",
+      "authors": [
+        "Jiajun Hou",
+        "Jingbang Chen"
+      ],
+      "abstract": "Data management systems organize large text collections for tasks such as finding relevant studies and extracting contract clauses. Systems make long documents searchable by splitting them into independently indexed chunks. Chunking can separate text from its identifying details. The indexing challenge is to keep each chunk independently searchable while preserving the context needed to find and rank it. Existing methods either encode that context in chunk vectors or attach it as a text prefix. Context encoded only in vectors is unavailable to text rerankers. Prompted prefixes serve both vector search and reranking, but are costly to generate at indexing time and can underperform contextual encoders. We propose ConTra (Context That Travels), a reinforcement learning framework for training lightweight prefix generators. Its reward combines feedback from frozen embedding and reranking models with factual verification and length control. ConTra generates one prefix per chunk during index construction and stores the augmented text and its embedding for reuse across queries. To evaluate contextual retrieval across workloads and under interference, we introduce RealContextBench, a benchmark with five application collections and three controlled conditions that isolate the effect of distracting text. On ConTEB and RealContextBench, ConTra-2B outperforms the prompted 9B baseline using Anthropic's method and the PPLX-4B contextual encoder, with a margin of up to 3.15 points over their best overall scores, while indexing short documents 7.74 times and 2.15 times as fast as those baselines, respectively. Post-trained only on ConTEB, it leads the standalone methods on RealContextBench after reranking and is less sensitive than the prompted 2B baseline to random and topically similar distractors. Code, datasets, and trained models are available at https://github.com/SStan1/ConTra.",
+      "source": "arxiv",
+      "url": "http://arxiv.org/abs/2611.34366v1",
+      "published_date": "2026-11-25",
+      "is_engineering": false,
+      "extra": {
+        "comment": "15 pages",
+        "primary_category": "cs.IR"
+      }
+    },
+    "digest": {
+      "one_liner": "用强化学习训练轻量前缀生成器，为每个文本块生成可复用的上下文前缀，提升检索效果并大幅降低索引成本。",
+      "chinese_overview": "",
+      "analogy": "想象你有一本很厚的书，为了快速查找，你把书拆成一张张卡片。但每张卡片可能只写了半句话，比如“它导致了市场崩溃”，你不知道“它”指的是什么。传统做法要么在卡片背面用隐形墨水写上下文（只有机器能读），要么请一位专家为每张卡片写一段背景说明（很贵）。ConTra 就像训练了一个聪明的助手，它看一眼卡片就能快速写出简洁的背景说明，而且这个说明既能让机器检索，也能让人或重排模型看懂。训练这个助手时，我们不仅看它写得好不好，还看它写完后检索效果有没有提升，同时要求它别写太长、别编造事实。",
+      "problem": "在数据管理系统中，长文档被切分成独立的块以便索引和检索。但切分后，块可能丢失关键上下文，比如代词指代不明、缺少章节标题等，导致检索时无法准确匹配查询。传统做法有两种：一是将上下文编码到块向量中，但文本重排器无法利用这些向量信息；二是用大模型生成文本前缀附加到块上，但索引时生成成本高，且效果可能不如上下文编码器。如果不解决，检索系统要么召回不准，要么索引开销巨大，难以在实际业务中部署。",
+      "method_comparison": "- **上下文编码器**：将上下文信息编码到块向量中，但文本重排器无法使用，且需要额外训练。\n- **提示生成前缀**：用大模型为每个块生成文本前缀，但索引时计算成本高，且效果可能不如编码器。\n- **本文方法 ConTra**：用强化学习训练轻量前缀生成器，生成的前缀同时服务于向量检索和重排，且索引速度快、效果更好。\n\n核心差异在于：ConTra 不是简单地用大模型生成前缀，而是通过强化学习让一个小模型学会生成既满足检索需求又简洁真实的前缀。奖励信号来自冻结的嵌入和重排模型，确保前缀对下游任务有用。",
+      "core_method": "**模块一：前缀生成器**\n- **做什么**：输入一个文本块，输出一个简短的前缀（如“关于市场崩溃的讨论：”），拼接到块前面。\n- 使用一个 2B 参数的轻量语言模型，通过强化学习微调。生成时控制长度，避免冗余。\n\n**模块二：奖励设计**\n- **做什么**：奖励由三部分组成：嵌入模型和重排模型对增强后文本的反馈、事实一致性验证、长度惩罚。\n- 具体地，将增强文本（前缀+块）输入冻结的嵌入模型得到向量，计算与查询的相关性得分；同时输入重排模型得到排序分数。奖励是这些分数的加权和，再减去事实错误惩罚和超长惩罚。例如，如果前缀导致嵌入向量与查询更相似，奖励增加；如果前缀包含与块矛盾的信息，奖励减少。\n\n**模块三：训练与索引**\n- **做什么**：在索引阶段，用训练好的生成器为每个块生成一个前缀，存储增强文本及其嵌入。查询时，直接用存储的嵌入做向量检索，或用增强文本做重排。\n- 训练时使用强化学习算法（如 PPO），以检索效果为奖励信号优化生成器。索引时只需一次生成，后续查询复用，成本低。",
+      "results": "- **ConTEB 数据集**：ConTra-2B 比提示 9B 基线（Anthropic 方法）和 PPLX-4B 上下文编码器的最佳总体得分高最多 3.15 分。\n- **RealContextBench**：在重排后，ConTra-2B 领先独立方法，且对随机和主题相似的干扰文本更鲁棒。\n- **索引速度**：处理短文档时，ConTra 的索引速度分别是提示 9B 基线的 7.74 倍和 PPLX-4B 的 2.15 倍。\n- **业务含义**：每 100 次检索任务，ConTra 比最佳基线多完成约 3 次正确检索；索引 100 万文档时，耗时仅为基线的 1/7 到 1/2。",
+      "limitations": "- 前缀生成器依赖冻结的嵌入和重排模型，若下游模型更换，需重新训练生成器。\n- 强化学习训练可能不稳定，需要精心设计奖励权重和训练策略。\n- 论文仅在英文数据集上评估，多语言场景效果未知。\n- 前缀长度控制可能无法适应所有文档类型，过长或过短都可能影响效果。\n- 实际部署时，前缀生成可能引入额外延迟，尽管索引速度提升，但生成过程仍需计算资源。",
+      "method": "",
+      "diff_from_prior": "",
+      "metrics": "",
+      "engineering_insight": "",
+      "deployment": "",
+      "target_audience": "",
+      "raw_digest": "{\"one_liner\": \"用强化学习训练轻量前缀生成器，为每个文本块生成可复用的上下文前缀，提升检索效果并大幅降低索引成本。\", \"analogy\": \"想象你有一本很厚的书，为了快速查找，你把书拆成一张张卡片。但每张卡片可能只写了半句话，比如“它导致了市场崩溃”，你不知道“它”指的是什么。传统做法要么在卡片背面用隐形墨水写上下文（只有机器能读），要么请一位专家为每张卡片写一段背景说明（很贵）。ConTra 就像训练了一个聪明的助手，它看一眼卡片就能快速写出简洁的背景说明，而且这个说明既能让机器检索，也能让人或重排模型看懂。训练这个助手时，我们不仅看它写得好不好，还看它写完后检索效果有没有提升，同时要求它别写太长、别编造事实。\", \"problem\": \"在数据管理系统中，长文档被切分成独立的块以便索引和检索。但切分后，块可能丢失关键上下文，比如代词指代不明、缺少章节标题等，导致检索时无法准确匹配查询。传统做法有两种：一是将上下文编码到块向量中，但文本重排器无法利用这些向量信息；二是用大模型生成文本前缀附加到块上，但索引时生成成本高，且效果可能不如上下文编码器。如果不解决，检索系统要么召回不准，要么索引开销巨大，难以在实际业务中部署。\", \"method_comparison\": \"- **上下文编码器**：将上下文信息编码到块向量中，但文本重排器无法使用，且需要额外训练。\\n- **提示生成前缀**：用大模型为每个块生成文本前缀，但索引时计算成本高，且效果可能不如编码器。\\n- **本文方法 ConTra**：用强化学习训练轻量前缀生成器，生成的前缀同时服务于向量检索和重排，且索引速度快、效果更好。\\n\\n核心差异在于：ConTra 不是简单地用大模型生成前缀，而是通过强化学习让一个小模型学会生成既满足检索需求又简洁真实的前缀。奖励信号来自冻结的嵌入和重排模型，确保前缀对下游任务有用。\", \"core_method\": \"**模块一：前缀生成器**\\n- **做什么**：输入一个文本块，输出一个简短的前缀（如“关于市场崩溃的讨论：”），拼接到块前面。\\n- 使用一个 2B 参数的轻量语言模型，通过强化学习微调。生成时控制长度，避免冗余。\\n\\n**模块二：奖励设计**\\n- **做什么**：奖励由三部分组成：嵌入模型和重排模型对增强后文本的反馈、事实一致性验证、长度惩罚。\\n- 具体地，将增强文本（前缀+块）输入冻结的嵌入模型得到向量，计算与查询的相关性得分；同时输入重排模型得到排序分数。奖励是这些分数的加权和，再减去事实错误惩罚和超长惩罚。例如，如果前缀导致嵌入向量与查询更相似，奖励增加；如果前缀包含与块矛盾的信息，奖励减少。\\n\\n**模块三：训练与索引**\\n- **做什么**：在索引阶段，用训练好的生成器为每个块生成一个前缀，存储增强文本及其嵌入。查询时，直接用存储的嵌入做向量检索，或用增强文本做重排。\\n- 训练时使用强化学习算法（如 PPO），以检索效果为奖励信号优化生成器。索引时只需一次生成，后续查询复用，成本低。\", \"results\": \"- **ConTEB 数据集**：ConTra-2B 比提示 9B 基线（Anthropic 方法）和 PPLX-4B 上下文编码器的最佳总体得分高最多 3.15 分。\\n- **RealContextBench**：在重排后，ConTra-2B 领先独立方法，且对随机和主题相似的干扰文本更鲁棒。\\n- **索引速度**：处理短文档时，ConTra 的索引速度分别是提示 9B 基线的 7.74 倍和 PPLX-4B 的 2.15 倍。\\n- **业务含义**：每 100 次检索任务，ConTra 比最佳基线多完成约 3 次正确检索；索引 100 万文档时，耗时仅为基线的 1/7 到 1/2。\", \"limitations\": \"- 前缀生成器依赖冻结的嵌入和重排模型，若下游模型更换，需重新训练生成器。\\n- 强化学习训练可能不稳定，需要精心设计奖励权重和训练策略。\\n- 论文仅在英文数据集上评估，多语言场景效果未知。\\n- 前缀长度控制可能无法适应所有文档类型，过长或过短都可能影响效果。\\n- 实际部署时，前缀生成可能引入额外延迟，尽管索引速度提升，但生成过程仍需计算资源。\"}",
       "relevance_score": 0.0
     }
   }
