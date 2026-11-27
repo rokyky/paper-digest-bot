@@ -88,7 +88,7 @@
   },
   {
     "position": 3,
-    "pushed": false,
+    "pushed": true,
     "paper": {
       "external_id": "arXiv:2611.34366",
       "title": "ConTra: A Training Framework for Effective Contextual Retrieval via Prefix Generation",
